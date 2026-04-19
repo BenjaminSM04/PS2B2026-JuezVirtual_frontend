@@ -1,6 +1,6 @@
 export const m = {
   // 404.vue
-  Go_Home: 'Ir al Inicio',
+  Go_Home: 'Volver al Inicio',
   // Problem.vue
   Description: 'Descripción',
   Input: 'Entrada',
@@ -20,7 +20,7 @@ export const m = {
   Show: 'Mostrar',
   Submit: 'Enviar',
   Submitting: 'Enviando',
-  Judging: 'Juzgando',
+  Judging: 'Evaluando',
   Wrong_Answer: 'Respuesta Incorrecta',
   Statistic: 'Estadística',
   Close: 'Cerrar',
@@ -28,32 +28,32 @@ export const m = {
   Are_you_sure_you_want_to_reset_your_code: '¿Estás seguro de que quieres restablecer tu código?',
   Code_can_not_be_empty: 'El código no puede estar vacío',
   Submit_code_successfully: 'Código enviado con éxito',
-  You_have_solved_the_problem: 'Has resuelto el problema',
+  You_have_solved_the_problem: '¡Has resuelto el problema!',
   Submitted_successfully: 'Enviado con éxito',
   You_have_submitted_a_solution: 'Has enviado una solución.',
   Contest_has_ended: 'El concurso ha finalizado',
-  You_have_submission_in_this_problem_sure_to_cover_it: 'Tienes un envío en este problema, ¿seguro que quieres sobrescribirlo?',
+  You_have_submission_in_this_problem_sure_to_cover_it: 'Tienes un envío en este problema, ¿Seguro que quieres sobrescribirlo?',
   // About.vue
   Compiler: 'Compilador',
   Result_Explanation: 'Explicación del Resultado',
-  Pending_Judging_Description: 'Tu solución será juzgada pronto, por favor espera el resultado.',
+  Pending_Judging_Description: 'Tu solución será evaluada pronto, por favor espera el resultado.',
   Compile_Error_Description: "Error al compilar tu código fuente. Haz clic en el enlace para ver la salida del compilador.",
   Accepted_Description: 'Felicidades. Tu solución es correcta.',
-  Wrong_Answer_Description: "La salida de tu programa no coincide con la respuesta del juez.",
+  Wrong_Answer_Description: "La salida de tu programa no coincide con la respuesta del Juez.",
   Runtime_Error_Description: 'Tu programa terminó de manera anormal. Las posibles razones son: fallo de segmento, dividido por cero o terminó con un código diferente a 0.',
   Time_Limit_Exceeded_Description: 'El tiempo de CPU que usó tu programa ha excedido el límite.',
   Memory_Limit_Exceeded_Description: 'La memoria que usó tu programa ha excedido el límite.',
-  System_Error_Description: 'Ups, algo salió mal con el juez. Por favor reporta esto al administrador.',
+  System_Error_Description: 'Ups, algo salió mal con el Juez. Por favor reporta esto al administrador.',
   // ACMContestRank.vue
   Menu: 'Menú',
   Chart: 'Gráfico',
   Auto_Refresh: 'Autorefrescar',
   RealName: 'Nombre Real',
   Force_Update: 'Forzar Actualización',
-  download_csv: 'descargar csv',
+  download_csv: 'Descargar csv',
   TotalTime: 'Tiempo Total',
   Top_10_Teams: 'Top 10 Equipos',
-  save_as_image: 'guardar como imagen',
+  save_as_image: 'Guardar como imagen',
   // ACMHelper.vue
   ACM_Helper: 'Asistente ACM',
   AC_Time: 'Tiempo AC',
@@ -65,7 +65,7 @@ export const m = {
   Check_It: 'Revisarlo',
   // ACMRank.vue
   ACM_Ranklist: 'Ranking ACM',
-  mood: 'estado de ánimo',
+  mood: 'Estado de ánimo',
   AC: 'AC',
   Rating: 'Calificación',
   // Announcements.vue
@@ -97,7 +97,7 @@ export const m = {
   How_Can_I_use_CPP_Int64_answer_part_3: 'resultará en',
   Java_specifications: '¿Especificaciones de Java?',
   Java_specifications_answer_part_1: 'Todos los programas deben comenzar en un método main estático en una clase',
-  Java_specifications_answer_part_2: '. No uses clases públicas: incluso',
+  Java_specifications_answer_part_2: '. No uses clases públicas: Incluso',
   Java_specifications_answer_part_3: 'debe ser no pública para evitar error de compilación. Usa I/O con buffer para evitar tiempo límite excedido debido a vaciado excesivo.',
   About_presentation_error: '¿Acerca del error de presentación?',
   About_presentation_error_answer_part_1: 'No hay error de presentación en este juez. El juez recortará los espacios y saltos de línea al final de tu',
@@ -158,8 +158,8 @@ export const m = {
   Register: 'Registrarse',
   MyHome: 'Mi Perfil',
   MySubmissions: 'Mis Envíos',
-  Settings: 'Configuraciones',
-  Management: 'Administración',
+  Settings: 'Configuración',
+  Management: 'Panel Administrativo',
   Logout: 'Cerrar Sesión',
   Welcome_to: 'Bienvenido a',
   // announcements.vue
@@ -187,7 +187,7 @@ export const m = {
   No_Account: '¿No tienes cuenta? ¡Regístrate ahora!',
   Forget_Password: 'Olvidé mi Contraseña',
   UserLogin: 'Iniciar Sesión',
-  Welcome_back: 'Bienvenido de nuevo a OJ',
+  Welcome_back: 'Bienvenido nuevamente a Juez Virtual',
   // OIRank.vue
   OI_Ranklist: 'Ranking OI',
   // OIContestRank.vue
@@ -210,28 +210,28 @@ export const m = {
   Password_Again: 'Contraseña de Nuevo',
   Captcha: 'Captcha',
   UserRegister: 'Registrarse',
-  Already_Registed: '¿Ya estás registrado? ¡Inicia sesión ahora!',
+  Already_Registed: '¿Ya tienes cuenta? ¡Inicia sesión ahora!',
   The_username_already_exists: 'El nombre de usuario ya existe.',
   The_email_already_exists: 'El correo electrónico ya existe.',
-  password_does_not_match: 'la contraseña no coincide',
-  Thanks_for_registering: 'Gracias por registrarte, ahora puedes iniciar sesión',
+  password_does_not_match: 'La contraseña no coincide',
+  Thanks_for_registering: 'Registro exitoso. Ya puedes iniciar sesión en Juez Virtual.',
   // ResetPassword.vue and ApplyResetPassword.vue
-  Reset_Password: 'Contraseña Perdida',
+  Reset_Password: 'Recuperar Contraseña',
   RPassword: 'Contraseña',
-  RPassword_Again: 'Contraseña de Nuevo',
+  RPassword_Again: 'Contraseña de nuevo',
   RCaptcha: 'Captcha',
-  ApplyEmail: 'Tu Dirección de Correo',
-  Send_Password_Reset_Email: 'Enviar Correo de Restablecimiento',
-  Your_password_has_been_reset: 'Tu contraseña ha sido restablecida.',
+  ApplyEmail: 'Tu dirección de correo',
+  Send_Password_Reset_Email: 'Enviar correo de restablecimiento',
+  Your_password_has_been_reset: 'Tu contraseña fue restablecida correctamente.',
   // Save.vue
   Save: 'Guardar',
   // Simditor.vue
-  Uploading_is_in_progress: 'Carga en progreso, ¿estás seguro de salir de esta página?',
+  Uploading_is_in_progress: 'Carga en progreso, ¿Estás seguro de salir de esta página?',
   // SubmissionDetails.vue
   Lang: 'Lenguaje',
   Share: 'Compartir',
   UnShare: 'Dejar de Compartir',
-  Succeeded: 'Exitoso',
+  Succeeded: 'Completado',
   Real_Time: 'Tiempo Real',
   Signal: 'Señal',
   // SubmissionList.vue
@@ -257,5 +257,5 @@ export const m = {
   UserHomeserSubmissions: 'Envíos',
   UserHomeScore: 'Puntaje',
   List_Solved_Problems: 'Lista de problemas resueltos',
-  UserHomeIntro: 'Este chico es tan perezoso que no ha resuelto ningún problema aún.'
+  UserHomeIntro: 'Este usuario aún no ha resuelto ningún ejercicio.'
 }

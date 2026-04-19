@@ -1,6 +1,6 @@
 export const m = {
   // SideMenu.vue
-  Dashboard: 'Panel de Control',
+  Dashboard: 'Panel Administrativo',
   General: 'General',
   User: 'Usuarios',
   Announcement: 'Anuncios',
@@ -117,8 +117,8 @@ export const m = {
   Force_HTTPS: 'Forzar HTTPS',
   CDN_HOST: 'HOST CDN',
   // Login.vue
-  Welcome_to_Login: 'Bienvenido al Acceso',
-  GO: 'ENTRAR',
-  username: 'usuario',
-  password: 'contraseña'
+  Welcome_to_Login: 'Bienvenido a Juez Virtual',
+  GO: 'INGRESAR',
+  username: 'Usuario',
+  password: 'Contraseña'
 }
