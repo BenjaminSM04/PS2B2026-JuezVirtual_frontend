@@ -18,7 +18,9 @@
         <router-view></router-view>
       </transition>
       <div class="footer">
-        Build Version: {{ version }}
+        <p>
+          &copy; 2026 <b>LizardJudge Univalle</b> | Universidad Privada del Valle - La Paz
+        </p>
       </div>
     </div>
 
