@@ -112,6 +112,8 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
   .announcements-container {
     margin-top: -10px;
     margin-bottom: 10px;
@@ -131,10 +133,10 @@
           text-align: left;
           padding-left: 10px;
           a.entry {
-            color: #495060;
+            color: @oj-text;
             &:hover {
-              color: #2d8cf0;
-              border-bottom: 1px solid #2d8cf0;
+              color: @oj-link;
+              border-bottom: 1px solid @oj-link;
             }
           }
         }
@@ -159,7 +161,7 @@
   .no-announcement {
     text-align: center;
     font-size: 16px;
-  }changeLocale
+  }
 
   .announcement-animate-enter-active {
     animation: fadeIn 1s;

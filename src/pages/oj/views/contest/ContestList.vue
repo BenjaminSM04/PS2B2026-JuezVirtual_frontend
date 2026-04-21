@@ -52,11 +52,11 @@
             </p>
             <ul class="detail">
               <li>
-                <Icon type="calendar" color="#3091f2"></Icon>
+                <Icon type="calendar" color="#003B4A"></Icon>
                 {{contest.start_time | localtime('YYYY-M-D HH:mm') }}
               </li>
               <li>
-                <Icon type="android-time" color="#3091f2"></Icon>
+                <Icon type="android-time" color="#003B4A"></Icon>
                 {{getDuration(contest.start_time, contest.end_time)}}
               </li>
               <li>
@@ -186,6 +186,8 @@
   }
 </script>
 <style lang="less" scoped>
+  @import (reference) '../../../../styles/theme-oj.less';
+
   #contest-card {
     #keyword {
       width: 80%;
@@ -211,10 +213,10 @@
           .title {
             font-size: 18px;
             a.entry {
-              color: #495060;
+              color: @oj-text;
               &:hover {
-                color: #2d8cf0;
-                border-bottom: 1px solid #2d8cf0;
+                color: @oj-link;
+                border-bottom: 1px solid @oj-link;
               }
             }
           }

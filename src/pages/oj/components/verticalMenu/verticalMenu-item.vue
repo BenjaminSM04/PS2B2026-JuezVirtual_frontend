@@ -30,6 +30,8 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
   .disabled {
     /*background-color: #ccc;*/
     opacity: 1;
@@ -45,14 +47,14 @@
 
   li {
     border-bottom: 1px dashed #e9eaec;
-    color: #495060;
+    color: @oj-text;
     display: block;
     text-align: left;
     padding: 15px 20px;
     &:hover {
       background: #f8f8f9;
-      border-left: 2px solid #5cadff;
-      color: #2d8cf0;
+      border-left: 2px solid @oj-link;
+      color: @oj-link;
     }
     & > .ivu-icon {
       font-size: 16px;

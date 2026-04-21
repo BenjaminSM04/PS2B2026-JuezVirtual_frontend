@@ -30,6 +30,8 @@
 </script>
 
 <style lang="less" scoped>
+  @import (reference) '../../../../styles/theme-oj.less';
+
   @keyframes error404animation {
     0% {
       transform: rotateZ(0deg);
@@ -60,13 +62,13 @@
         text-align: center;
         font-size: 240px;
         font-weight: 700;
-        color: #2d8cf0;
+        color: @oj-link;
         height: 260px;
         line-height: 260px;
         margin-top: 40px;
         span {
           display: inline-block;
-          color: #19be6b;
+          color: @oj-success;
           font-size: 230px;
           animation: error404animation 3s ease 0s infinite alternate;
         }

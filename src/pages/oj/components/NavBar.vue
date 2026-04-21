@@ -68,8 +68,7 @@
             <Button v-if="website.allow_register"
                     type="primary"
                     class="nav-btn"
-                    @click="handleBtnClick('register')"
-                    style="margin-left: 10px;">{{$t('m.Register')}}
+                    @click="handleBtnClick('register')">{{$t('m.Register')}}
             </Button>
           </div>
         </template>
@@ -89,8 +88,8 @@
         </template>
       </div>
     </Menu>
-    <Modal v-model="modalVisible" :width="400">
-      <div slot="header" class="modal-title">{{$t('m.Welcome_to')}} {{website.website_name_shortcut}}</div>
+    <Modal v-model="modalVisible" :width="560" class-name="auth-modal">
+      <div slot="header" class="modal-title">{{$t('m.Welcome_to')}} {{website.website_name_shortcut || 'Lizard'}}</div>
       <component :is="modalStatus.mode" v-if="modalVisible"></component>
       <div slot="footer" style="display: none"></div>
     </Modal>
@@ -154,47 +153,53 @@
 </script>
 
 <style lang="less" scoped>
+  @import (reference) '../../../styles/theme-oj.less';
+
   #header {
     min-width: 300px;
     position: fixed;
     top: 0;
     left: 0;
-    height: auto;
     width: 100%;
     z-index: 1000;
-    background-color: #5d4e56;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: @oj-primary;
+    box-shadow: 0 2px 10px 0 fade(#000, 22%);
     
     .oj-menu {
-      background: #5d4e56;
+      background: @oj-primary;
+      border-bottom: none;
+      height: 70px;
+      line-height: 70px;
     }
     
-    /* Override iView Menu Styles for dark brown theme */
+    /* Navbar theme */
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-item, 
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu {
       color: #ffffff;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 15px;
+      height: 70px;
+      line-height: 70px;
     }
     
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-item-active, 
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-item:hover, 
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu-active, 
     /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu:hover {
-      color: #dfced9;
-      border-bottom: 2px solid #dfced9;
+      color: @oj-success;
+      border-bottom: 3px solid @oj-success;
     }
 
-    /* Solución para Menús Desplegables (Dropdown submenus) para que no queden blancos sobre blanco */
-    /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-select-dropdown .ivu-menu-item {
-      color: #495060; /* Color gris oscuro estándar para el texto */
-      font-weight: 400; /* Grosor de letra normal */
-      border-bottom: none !important; /* Desactiva la línea debajo al hacer hover */
+    /* Dropdown list under Rank/About/User/Language */
+    /deep/ .ivu-select-dropdown .ivu-menu-item {
+      color: @oj-text;
+      font-weight: 500;
+      border-bottom: none !important;
     }
 
-    /deep/ .ivu-menu-light.ivu-menu-horizontal .ivu-select-dropdown .ivu-menu-item:hover {
-      background-color: #f3f3f3; /* Foco ligeramente gris al pasar el mouse */
-      color: #5d4e56; /* Tono de la marca */
+    /deep/ .ivu-select-dropdown .ivu-menu-item:hover {
+      background-color: fade(@oj-success, 70%);
+      color: @oj-dark;
     }
 
     .logo {
@@ -202,7 +207,7 @@
       margin-right: 2%;
       font-size: 20px;
       float: left;
-      line-height: 60px;
+      line-height: 70px;
       color: #ffffff;
     }
 
@@ -210,35 +215,46 @@
       float: right;
       display: flex;
       align-items: center;
-      height: 60px;
-      margin-right: 20px;
+      height: 70px;
+      margin-right: 24px;
     }
     
     .drop-menu {
-      margin-right: 20px;
+      margin-right: 16px;
       &-title {
-        font-size: 18px;
+        font-size: 16px;
         color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
       }
+    }
+
+    /deep/ .drop-menu-title.ivu-btn-text:hover,
+    /deep/ .drop-menu-title.ivu-btn-text:focus {
+      color: @oj-success;
     }
     
     .btn-menu {
-      font-size: 16px;
       display: flex;
       align-items: center;
+      gap: 10px;
       
       .nav-btn {
-        background-color: #9e8593;
-        border-color: #9e8593;
+        min-width: 126px;
+        height: 38px;
+        padding: 0 20px;
+        background-color: @oj-secondary;
+        border-color: @oj-secondary;
         color: #ffffff;
-        font-weight: 500;
-        font-size: 14px;
-        border-radius: 4px;
-        padding: 5px 20px;
+        font-weight: 700;
+        font-size: 13px;
+        border-radius: 6px;
         
         &:hover {
-          background-color: #b59cac;
-          border-color: #b59cac;
+          background-color: @oj-primary;
+          border-color: @oj-primary;
         }
       }
     }
@@ -246,7 +262,9 @@
 
   .modal {
     &-title {
-      font-size: 18px;
+      font-size: 36px;
+      line-height: 1.15;
+      color: #111;
       font-weight: 600;
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="auth-form">
     <Form ref="formLogin" :model="formLogin" :rules="ruleLogin">
       <FormItem prop="username">
         <Input type="text" v-model="formLogin.username" :placeholder="$t('m.LoginUsername')" size="large" @on-enter="handleLogin">
@@ -21,12 +21,14 @@
       <Button
         type="primary"
         @click="handleLogin"
-        class="btn" long
+        class="btn auth-submit-btn" long
         :loading="btnLoginLoading">
         {{$t('m.UserLogin')}}
       </Button>
-      <a v-if="website.allow_register" @click.stop="handleBtnClick('register')">{{$t('m.No_Account')}}</a>
-      <a @click.stop="goResetPassword" style="float: right">{{$t('m.Forget_Password')}}</a>
+      <div class="auth-links">
+        <a class="auth-link" v-if="website.allow_register" @click.stop="handleBtnClick('register')">{{$t('m.No_Account')}}</a>
+        <a class="auth-link" @click.stop="goResetPassword">{{$t('m.Forget_Password')}}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -112,16 +114,88 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
+  .auth-form {
+    /deep/ .ivu-form-item {
+      margin-bottom: 18px;
+    }
+
+    /deep/ .ivu-input-group-prepend {
+      background: #fff;
+      border: 2px solid @oj-secondary;
+      border-right: none;
+      color: @oj-secondary;
+      border-radius: 12px 0 0 12px;
+      min-width: 46px;
+    }
+
+    /deep/ .ivu-input-group-prepend i {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    /deep/ .ivu-input-group-prepend + .ivu-input {
+      border: 2px solid @oj-secondary;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      height: 46px;
+      font-size: 16px;
+      padding-left: 12px;
+      color: @oj-text;
+    }
+
+    /deep/ .ivu-input-group-prepend + .ivu-input:focus {
+      box-shadow: 0 0 0 3px fade(@oj-primary, 18%);
+    }
+
+    /deep/ .ivu-input::placeholder {
+      color: fade(@oj-secondary, 50%);
+    }
+  }
+
   .footer {
     overflow: auto;
-    margin-top: 20px;
-    margin-bottom: -15px;
+    margin-top: 4px;
     text-align: left;
+
     .btn {
-      margin: 0 0 15px 0;
+      margin: 0 0 14px 0;
       &:last-child {
         margin: 0;
       }
     }
+  }
+
+  .auth-submit-btn {
+    height: 52px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    background-color: @oj-secondary;
+    border-color: @oj-secondary;
+  }
+
+  .auth-submit-btn:hover {
+    background-color: @oj-primary;
+    border-color: @oj-primary;
+  }
+
+  .auth-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .auth-link {
+    color: #202020;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .auth-link:hover {
+    color: @oj-primary;
   }
 </style>

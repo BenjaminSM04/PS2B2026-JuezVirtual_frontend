@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="auth-form">
     <Form ref="formRegister" :model="formRegister" :rules="ruleRegister">
       <FormItem prop="username">
         <Input type="text" v-model="formRegister.username" :placeholder="$t('m.RegisterUsername')" size="large" @on-enter="handleRegister">
@@ -40,14 +40,14 @@
       <Button
         type="primary"
         @click="handleRegister"
-        class="btn" long
+        class="btn auth-submit-btn" long
         :loading="btnRegisterLoading">
         {{$t('m.UserRegister')}}
       </Button>
       <Button
         type="ghost"
         @click="switchMode('login')"
-        class="btn" long>
+        class="btn auth-switch-btn" long>
         {{$t('m.Already_Registed')}}
       </Button>
     </div>
@@ -162,16 +162,86 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
+  .auth-form {
+    /deep/ .ivu-form-item {
+      margin-bottom: 14px;
+    }
+
+    /deep/ .ivu-input-group-prepend {
+      background: #fff;
+      border: 2px solid @oj-secondary;
+      border-right: none;
+      color: @oj-secondary;
+      border-radius: 12px 0 0 12px;
+      min-width: 46px;
+    }
+
+    /deep/ .ivu-input-group-prepend i {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    /deep/ .ivu-input-group-prepend + .ivu-input {
+      border: 2px solid @oj-secondary;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      height: 46px;
+      font-size: 16px;
+      padding-left: 12px;
+      color: @oj-text;
+    }
+
+    /deep/ .ivu-input::placeholder {
+      color: fade(@oj-secondary, 50%);
+    }
+
+    .oj-captcha-img {
+      border: 2px solid fade(@oj-secondary, 55%);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+  }
+
   .footer {
     overflow: auto;
-    margin-top: 20px;
-    margin-bottom: -15px;
+    margin-top: 8px;
     text-align: left;
+
     .btn {
-      margin: 0 0 15px 0;
+      margin: 0 0 12px 0;
       &:last-child {
         margin: 0;
       }
     }
+  }
+
+  .auth-submit-btn {
+    height: 52px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    background-color: @oj-secondary;
+    border-color: @oj-secondary;
+  }
+
+  .auth-submit-btn:hover {
+    background-color: @oj-primary;
+    border-color: @oj-primary;
+  }
+
+  .auth-switch-btn {
+    height: 46px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: @oj-primary;
+    border-color: fade(@oj-secondary, 72%);
+  }
+
+  .auth-switch-btn:hover {
+    color: @oj-dark;
+    border-color: @oj-primary;
   }
 </style>
