@@ -5,10 +5,10 @@
   "author": "zemal <rawidn@163.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "node --openssl-legacy-provider build/dev-server.js",
     "start": "npm run dev",
-    "build": "node build/build.js",
-    "build:dll": "webpack --config=build/webpack.dll.conf.js",
+    "build": "node --openssl-legacy-provider build/build.js",
+    "build:dll": "node --openssl-legacy-provider ./node_modules/webpack/bin/webpack.js --config=build/webpack.dll.conf.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
