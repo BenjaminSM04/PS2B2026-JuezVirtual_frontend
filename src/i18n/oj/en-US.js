@@ -88,7 +88,7 @@ export const m = {
   Where_is_the_input_and_the_output_answer_part_8: 'in C or',
   Where_is_the_input_and_the_output_answer_part_9: 'in C++ to write to stdout.  User programs are not allowed to read or write files, or you will get a',
   What_is_the_meaning_of_submission_execution_time: 'What\'s the meaning of the submission execution time?',
-  What_is_the_meaning_of_submission_execution_time_answer: 'The onlinejudge might test your code multiple times with different input files. If your code gives the correct answer within the time limit for each input file, the execution time displayed is the max of the time spent for each test case. Otherwise, the execution time will have no sense.',
+  What_is_the_meaning_of_submission_execution_time_answer: 'The lizardjudge might test your code multiple times with different input files. If your code gives the correct answer within the time limit for each input file, the execution time displayed is the max of the time spent for each test case. Otherwise, the execution time will have no sense.',
   How_Can_I_use_CPP_Int64: 'How can I use C++ Int64?',
   How_Can_I_use_CPP_Int64_answer_part_1: 'You should declare as',
   How_Can_I_use_CPP_Int64_answer_part_2: 'and use with',
@@ -104,7 +104,7 @@ export const m = {
   last: 'last',
   About_presentation_error_answer_part_2: 'line.  if it\'s still different with the correct output, the result will be',
   How_to_report_bugs: 'How to report bugs about this oj?',
-  How_to_report_bugs_answer_part_1: 'The onlinejudge is open source, you can open an issue in',
+  How_to_report_bugs_answer_part_1: 'The lizardjudge is open source, you can open an issue in',
   How_to_report_bugs_answer_part_2: 'The details(like env, version..) about a bug is required, which will help us a lot to solve the bug. Certainly, we are very pleased to merge your pull requests.',
   // Cancel.vue
   Cancel: 'Cancel',
