@@ -51,6 +51,10 @@
         next(vm => {
           vm.languages = languages
         })
+      }).catch(() => {
+        next(vm => {
+          vm.languages = []
+        })
       })
     }
   }

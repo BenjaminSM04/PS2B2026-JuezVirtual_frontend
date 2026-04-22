@@ -99,9 +99,29 @@
           toolbox: {
             show: true,
             feature: {
-              dataView: {show: true, readOnly: true},
-              magicType: {show: true, type: ['line', 'bar', 'stack']},
-              saveAsImage: {show: true}
+              dataView: {
+                show: true,
+                readOnly: true,
+                title: this.$i18n.t('m.toolbox_data_view'),
+                lang: [
+                  this.$i18n.t('m.toolbox_data_view'),
+                  this.$i18n.t('m.toolbox_data_view_close'),
+                  this.$i18n.t('m.toolbox_data_view_refresh')
+                ]
+              },
+              magicType: {
+                show: true,
+                type: ['line', 'bar', 'stack'],
+                title: {
+                  line: this.$i18n.t('m.toolbox_switch_line'),
+                  bar: this.$i18n.t('m.toolbox_switch_bar'),
+                  stack: this.$i18n.t('m.toolbox_switch_stack')
+                }
+              },
+              saveAsImage: {
+                show: true,
+                title: this.$i18n.t('m.save_as_image')
+              }
             },
             right: '10%'
           },

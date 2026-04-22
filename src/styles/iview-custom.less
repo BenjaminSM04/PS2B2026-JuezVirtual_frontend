@@ -158,6 +158,28 @@ fieldset[disabled] .ivu-btn {
   box-shadow: 0 0 0 2px @oj-focus;
 }
 
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item,
+.ivu-select-dropdown .ivu-dropdown-item {
+  color: @oj-text !important;
+  font-weight: 500 !important;
+}
+
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item:hover,
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item:focus,
+.ivu-select-dropdown .ivu-dropdown-item:hover,
+.ivu-select-dropdown .ivu-dropdown-item:focus {
+  background-color: fade(@oj-success, 70%) !important;
+  color: @oj-dark !important;
+}
+
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-active,
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-selected,
+.ivu-select-dropdown .ivu-dropdown-item-active,
+.ivu-select-dropdown .ivu-dropdown-item-selected {
+  background-color: fade(@oj-success, 88%) !important;
+  color: @oj-dark !important;
+}
+
 .ivu-modal-footer {
   border-top-width: 0;
   padding: 0 18px 20px 18px;

@@ -54,6 +54,12 @@ export const m = {
   TotalTime: '总时间',
   Top_10_Teams: '前 10 强队伍',
   save_as_image: '保存图片',
+  toolbox_data_view: '数据视图',
+  toolbox_data_view_close: '关闭',
+  toolbox_data_view_refresh: '刷新',
+  toolbox_switch_line: '切换为折线图',
+  toolbox_switch_bar: '切换为柱状图',
+  toolbox_switch_stack: '切换为堆叠',
   // ACMHelper.vue
   ACM_Helper: 'ACM 助手',
   AC_Time: 'AC 时间',

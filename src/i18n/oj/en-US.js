@@ -54,6 +54,12 @@ export const m = {
   TotalTime: 'TotalTime',
   Top_10_Teams: 'Top 10 Teams',
   save_as_image: 'save as image',
+  toolbox_data_view: 'Data View',
+  toolbox_data_view_close: 'Close',
+  toolbox_data_view_refresh: 'Refresh',
+  toolbox_switch_line: 'Switch to Line Chart',
+  toolbox_switch_bar: 'Switch to Bar Chart',
+  toolbox_switch_stack: 'Switch to Stacked',
   // ACMHelper.vue
   ACM_Helper: 'ACM Helper',
   AC_Time: 'AC Time',

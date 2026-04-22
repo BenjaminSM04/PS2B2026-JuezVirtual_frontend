@@ -38,7 +38,7 @@
         <Menu-item name="/about">
           {{$t('m.Judger')}}
         </Menu-item>
-        <Menu-item name="/FAQ">
+        <Menu-item name="/faq">
           {{$t('m.FAQ')}}
         </Menu-item>
       </Submenu>

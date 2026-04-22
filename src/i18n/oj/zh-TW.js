@@ -54,6 +54,12 @@ export const m = {
   TotalTime: '總時間',
   Top_10_Teams: '前10名隊伍',
   save_as_image: '保存圖片',
+  toolbox_data_view: '資料檢視',
+  toolbox_data_view_close: '關閉',
+  toolbox_data_view_refresh: '重新整理',
+  toolbox_switch_line: '切換為折線圖',
+  toolbox_switch_bar: '切換為長條圖',
+  toolbox_switch_stack: '切換為堆疊',
   // ACMHelper.vue
   ACM_Helper: 'ACM助手',
   AC_Time: 'AC 時間',
