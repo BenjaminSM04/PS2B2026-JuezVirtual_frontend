@@ -1,27 +1,46 @@
 <template>
-  <div class="container">
-    <div>
+  <div class="admin-shell">
+    <aside class="admin-shell__sidebar">
       <SideMenu></SideMenu>
-    </div>
-    <div id="header">
-      <i class="el-icon-fa-font katex-editor" @click="katexVisible=true" ></i>
-      <screen-full :width="14" :height="14" class="screen-full"></screen-full>
-      <el-dropdown @command="handleCommand">
-        <span>{{user.username}}<i class="el-icon-caret-bottom el-icon--right"></i></span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="logout">Logout</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-    <div class="content-app">
-      <transition name="fadeInUp" mode="out-in">
-        <router-view></router-view>
-      </transition>
-      <div class="footer">
+    </aside>
+
+    <div class="admin-shell__main">
+      <header class="admin-shell__header">
+        <div class="admin-shell__header-copy">
+          <p class="admin-shell__eyebrow">{{$t('m.Dashboard')}}</p>
+          <h1 class="admin-shell__title">{{$t('m.Admin_Workspace')}}</h1>
+        </div>
+
+        <div class="admin-shell__actions">
+          <button class="admin-shell__icon-button" type="button" @click="katexVisible = true">
+            <i class="el-icon-fa-font"></i>
+          </button>
+          <div class="admin-shell__icon-button admin-shell__icon-button--screen">
+            <screen-full :width="14" :height="14" class="screen-full"></screen-full>
+          </div>
+          <el-dropdown @command="handleCommand">
+            <span class="admin-shell__profile-trigger">
+              <span class="admin-shell__profile-name">{{user.username}}</span>
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="logout">Logout</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </header>
+
+      <main class="admin-shell__content">
+        <transition name="fadeInUp" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </main>
+
+      <footer class="admin-shell__footer">
         <p>
           &copy; 2026 <b>LizardJudge Univalle</b> | Universidad Privada del Valle - La Paz
         </p>
-      </div>
+      </footer>
     </div>
 
     <el-dialog :title="$t('m.Latex_Editor')" :visible.sync="katexVisible">
@@ -91,42 +110,147 @@
     border-style: none
   }
 
-  .container {
-    overflow: auto;
-    font-weight: 400;
-    height: 100%;
-    -webkit-font-smoothing: antialiased;
-    background-color: #EDECEC;
-    overflow-y: scroll;
-    min-width: 1000px;
-  }
-
   * {
     box-sizing: border-box;
   }
 
-  #header {
-    text-align: right;
-    padding-left: 210px;
-    padding-right: 30px;
-    line-height: 50px;
-    height: 50px;
-    background: #F9FAFC;
-    .screen-full {
-      margin-right: 8px;
+  .admin-shell {
+    min-height: 100%;
+    display: flex;
+    background:
+      radial-gradient(circle at top left, rgba(181, 235, 216, 0.55), transparent 34%),
+      linear-gradient(180deg, #f8f6f2 0%, #f1efeb 100%);
+    color: #18322f;
+
+    &__sidebar {
+      width: 250px;
+      flex: 0 0 250px;
+      position: relative;
+      z-index: 4;
+    }
+
+    &__main {
+      flex: 1;
+      min-width: 0;
+      min-height: 100vh;
+      padding: 22px 22px 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__header {
+      min-height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 24px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(24, 50, 47, 0.08);
+      box-shadow: 0 18px 40px rgba(41, 53, 52, 0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    &__header-copy {
+      min-width: 0;
+    }
+
+    &__eyebrow {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #78a69c;
+    }
+
+    &__title {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #113731;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    &__icon-button {
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(17, 55, 49, 0.1);
+      border-radius: 14px;
+      background: #f7fbf9;
+      color: #335f58;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        border-color: rgba(17, 55, 49, 0.2);
+        background: #ecf7f3;
+      }
+
+      i {
+        font-size: 16px;
+      }
+
+      &--screen {
+        padding: 0;
+      }
+    }
+
+    &__profile-trigger {
+      min-width: 180px;
+      height: 42px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: #113731;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 14px 24px rgba(17, 55, 49, 0.18);
+      cursor: pointer;
+    }
+
+    &__profile-name {
+      max-width: 180px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &__content {
+      flex: 1;
+      padding-top: 22px;
+      min-width: 0;
+    }
+
+    &__footer {
+      padding: 18px 6px 0;
+      text-align: center;
+      color: #65807b;
+      font-size: 12px;
     }
   }
 
-  .content-app {
-    padding-top: 20px;
-    padding-right: 10px;
-    padding-left: 210px;
-  }
-
-  .footer {
-    margin: 15px;
-    text-align: center;
-    font-size: small;
+  .screen-full {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   @keyframes fadeInUp {
@@ -145,11 +269,43 @@
     animation: fadeInUp .8s;
   }
 
-  .katex-editor {
-    margin-right: 5px;
-    /*font-size: 18px;*/
+  @media (max-width: 1200px) {
+    .admin-shell {
+      &__sidebar {
+        width: 220px;
+        flex-basis: 220px;
+      }
+    }
   }
 
+  @media (max-width: 960px) {
+    .admin-shell {
+      flex-direction: column;
 
+      &__sidebar {
+        width: 100%;
+        flex-basis: auto;
+      }
 
+      &__main {
+        padding: 14px;
+      }
+
+      &__header {
+        border-radius: 22px;
+        padding: 16px 18px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      &__actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      &__title {
+        font-size: 24px;
+      }
+    }
+  }
 </style>
