@@ -19,9 +19,11 @@
 </template>
 
 <script>
-  const katex = require('katex')
+  import katex from 'katex'
+  import 'katex/dist/katex.min.css'
+
   export default {
-    name: '',
+    name: 'KatexEditor',
     data () {
       return {
         input: 'c = \\pm\\sqrt{a^2 + b^2}',

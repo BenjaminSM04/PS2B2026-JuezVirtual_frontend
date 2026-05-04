@@ -17,56 +17,98 @@
     </div>
 
     <div class="dashboard-page__grid">
-      <section class="dashboard-card dashboard-card--profile">
-        <div class="dashboard-card__header">
-          <span class="dashboard-card__eyebrow">{{$t('m.Admin_Profile')}}</span>
-        </div>
+      <div class="dashboard-page__left-col">
+        <section class="dashboard-card dashboard-card--profile">
+          <div class="dashboard-card__header">
+            <span class="dashboard-card__eyebrow">{{$t('m.Admin_Profile')}}</span>
+          </div>
 
-        <div class="profile-card">
-          <div class="profile-card__avatar">
-            <img
-              v-if="showAvatar"
-              class="profile-card__avatar-image"
-              :src="profile.avatar"
-              :alt="user.username"
-              @error="handleAvatarError">
-            <div v-else class="profile-card__avatar-fallback">
-              <i class="el-icon-fa-user"></i>
+          <div class="profile-card">
+            <div class="profile-card__avatar">
+              <img
+                v-if="showAvatar"
+                class="profile-card__avatar-image"
+                :src="profile.avatar"
+                :alt="user.username"
+                @error="handleAvatarError">
+              <div v-else class="profile-card__avatar-fallback">
+                <i class="el-icon-fa-user"></i>
+              </div>
+            </div>
+
+            <div class="profile-card__identity">
+              <h2 class="profile-card__name">{{user.username}}</h2>
+              <p class="profile-card__role">{{user.admin_type || '--'}}</p>
             </div>
           </div>
 
-          <div class="profile-card__identity">
-            <h2 class="profile-card__name">{{user.username}}</h2>
-            <p class="profile-card__role">{{user.admin_type || '--'}}</p>
-          </div>
-        </div>
+          <div class="session-card">
+            <div class="session-card__header">
+              <h3>{{$t('m.Last_Login')}}</h3>
+              <span class="session-card__pill">{{$t('m.Session_Info')}}</span>
+            </div>
 
-        <div class="session-card">
-          <div class="session-card__header">
-            <h3>{{$t('m.Last_Login')}}</h3>
-            <span class="session-card__pill">{{$t('m.Session_Info')}}</span>
+            <div class="session-card__items">
+              <div class="session-card__item">
+                <span class="session-card__label">{{$t('m.Time')}}</span>
+                <span class="session-card__value">{{sessionTime}}</span>
+              </div>
+              <div class="session-card__item">
+                <span class="session-card__label">{{$t('m.IP')}}</span>
+                <span class="session-card__value">{{session.ip || '--'}}</span>
+              </div>
+              <div class="session-card__item">
+                <span class="session-card__label">{{$t('m.Operating_System')}}</span>
+                <span class="session-card__value">{{os}}</span>
+              </div>
+              <div class="session-card__item">
+                <span class="session-card__label">{{$t('m.Browser')}}</span>
+                <span class="session-card__value">{{browser}}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section v-if="isSuperAdmin" class="dashboard-card dashboard-card--overview">
+          <div class="dashboard-card__header">
+            <div>
+              <span class="dashboard-card__eyebrow">{{$t('m.System_Status')}}</span>
+              <h2 class="dashboard-card__title">{{$t('m.System_Overview')}}</h2>
+            </div>
           </div>
 
-          <div class="session-card__items">
-            <div class="session-card__item">
-              <span class="session-card__label">{{$t('m.Time')}}</span>
-              <span class="session-card__value">{{sessionTime}}</span>
-            </div>
-            <div class="session-card__item">
-              <span class="session-card__label">{{$t('m.IP')}}</span>
-              <span class="session-card__value">{{session.ip || '--'}}</span>
-            </div>
-            <div class="session-card__item">
-              <span class="session-card__label">{{$t('m.Operating_System')}}</span>
-              <span class="session-card__value">{{os}}</span>
-            </div>
-            <div class="session-card__item">
-              <span class="session-card__label">{{$t('m.Browser')}}</span>
-              <span class="session-card__value">{{browser}}</span>
+          <div class="overview-grid">
+            <div v-for="item in systemItems" :key="item.key" class="overview-item">
+              <span class="overview-item__label">{{item.label}}</span>
+              <div class="overview-item__value">
+                <template v-if="item.tagType">
+                  <el-tag :type="item.tagType" size="small">{{item.value}}</el-tag>
+                </template>
+                <template v-else>
+                  <span>{{item.value}}</span>
+                </template>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section v-if="!isSuperAdmin" class="dashboard-card dashboard-card--welcome">
+          <div class="dashboard-card__header">
+            <div>
+              <span class="dashboard-card__eyebrow">{{$t('m.Admin_Workspace')}}</span>
+              <h2 class="dashboard-card__title">{{$t('m.Welcome_Back')}}</h2>
+            </div>
+          </div>
+
+          <div class="welcome-card">
+            <p>{{welcomeMessage}}</p>
+            <div class="welcome-card__hint">
+              <i class="el-icon-fa-compass"></i>
+              <span>{{$t('m.Admin_Limited_View')}}</span>
+            </div>
+          </div>
+        </section>
+      </div>
 
       <section v-if="isSuperAdmin" class="dashboard-card dashboard-card--notes">
         <div class="dashboard-card__header">
@@ -108,46 +150,6 @@
           <div v-else class="notes-card__empty">
             <i class="el-icon-fa-sticky-note-o"></i>
             <p>{{$t('m.No_Release_Notes')}}</p>
-          </div>
-        </div>
-      </section>
-
-      <section v-if="isSuperAdmin" class="dashboard-card dashboard-card--overview">
-        <div class="dashboard-card__header">
-          <div>
-            <span class="dashboard-card__eyebrow">{{$t('m.System_Status')}}</span>
-            <h2 class="dashboard-card__title">{{$t('m.System_Overview')}}</h2>
-          </div>
-        </div>
-
-        <div class="overview-grid">
-          <div v-for="item in systemItems" :key="item.key" class="overview-item">
-            <span class="overview-item__label">{{item.label}}</span>
-            <div class="overview-item__value">
-              <template v-if="item.tagType">
-                <el-tag :type="item.tagType" size="small">{{item.value}}</el-tag>
-              </template>
-              <template v-else>
-                <span>{{item.value}}</span>
-              </template>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section v-else class="dashboard-card dashboard-card--welcome">
-        <div class="dashboard-card__header">
-          <div>
-            <span class="dashboard-card__eyebrow">{{$t('m.Admin_Workspace')}}</span>
-            <h2 class="dashboard-card__title">{{$t('m.Welcome_Back')}}</h2>
-          </div>
-        </div>
-
-        <div class="welcome-card">
-          <p>{{welcomeMessage}}</p>
-          <div class="welcome-card__hint">
-            <i class="el-icon-fa-compass"></i>
-            <span>{{$t('m.Admin_Limited_View')}}</span>
           </div>
         </div>
       </section>
@@ -344,6 +346,12 @@
       gap: 20px;
       align-items: start;
     }
+
+    &__left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
   }
 
   .dashboard-stat,
@@ -408,11 +416,6 @@
 
     &--notes {
       min-height: 540px;
-    }
-
-    &--overview,
-    &--welcome {
-      grid-column: 1 / 2;
     }
 
     &__header {
@@ -687,13 +690,6 @@
 
       &__grid {
         grid-template-columns: 1fr;
-      }
-    }
-
-    .dashboard-card {
-      &--overview,
-      &--welcome {
-        grid-column: auto;
       }
     }
   }

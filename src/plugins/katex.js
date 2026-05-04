@@ -1,6 +1,5 @@
 import 'katex/dist/katex.min.css'
-
-const renderMathInElement = require('katex/dist/contrib/auto-render.js')
+import renderMathInElement from 'katex/dist/contrib/auto-render.js'
 
 function _ () {
 }
