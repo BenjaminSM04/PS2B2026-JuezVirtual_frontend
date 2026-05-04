@@ -20,7 +20,7 @@
 
 <script>
   import 'katex/dist/katex.min.css'
-  const katex = require('katex')
+  import katex from 'katex'
 
   export default {
     name: 'KatexEditor',
