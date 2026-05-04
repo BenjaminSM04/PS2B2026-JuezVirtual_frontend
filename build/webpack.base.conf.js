@@ -7,11 +7,11 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntries () {
+function getEntries() {
   const base = {
     'oj': ['./src/pages/oj/index.js'],
     'admin': ['./src/pages/admin/index.js']
@@ -36,7 +36,7 @@ Object.keys(entries).forEach(entry => {
 })
 
 // prepare vendor asserts
-const globOptions = {cwd: resolve('static/js')};
+const globOptions = { cwd: resolve('static/js') };
 let vendorAssets = glob.sync('vendor.dll.*.js', globOptions);
 vendorAssets = vendorAssets.map(file => 'static/js/' + file)
 
@@ -80,7 +80,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader?cacheDirectory=true',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts'), resolve('node_modules/katex')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
