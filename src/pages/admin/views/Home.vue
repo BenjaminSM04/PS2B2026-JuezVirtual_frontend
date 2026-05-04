@@ -12,12 +12,21 @@
         </div>
 
         <div class="admin-shell__actions">
-          <button class="admin-shell__icon-button" type="button" @click="katexVisible = true">
-            <i class="el-icon-fa-font"></i>
-          </button>
-          <div class="admin-shell__icon-button admin-shell__icon-button--screen">
-            <screen-full :width="14" :height="14" class="screen-full"></screen-full>
-          </div>
+          <el-tooltip effect="dark" :content="$t('m.Back_To_OJ')" placement="bottom">
+            <button class="admin-shell__icon-button" type="button" @click="goOj">
+              <i class="el-icon-fa-home"></i>
+            </button>
+          </el-tooltip>
+          <el-tooltip effect="dark" :content="$t('m.Open_Latex_Editor')" placement="bottom">
+            <button class="admin-shell__icon-button" type="button" @click="katexVisible = true">
+              <i class="el-icon-fa-font"></i>
+            </button>
+          </el-tooltip>
+          <el-tooltip effect="dark" :content="$t('m.Toggle_Fullscreen')" placement="bottom">
+            <div class="admin-shell__icon-button admin-shell__icon-button--screen">
+              <screen-full :width="13" :height="13" class="screen-full"></screen-full>
+            </div>
+          </el-tooltip>
           <el-dropdown @command="handleCommand">
             <span class="admin-shell__profile-trigger">
               <span class="admin-shell__profile-name">{{user.username}}</span>
@@ -83,6 +92,9 @@
       })
     },
     methods: {
+      goOj () {
+        window.location.href = '/'
+      },
       handleCommand (command) {
         if (command === 'logout') {
           api.logout().then(() => {
@@ -123,8 +135,8 @@
     color: #18322f;
 
     &__sidebar {
-      width: 250px;
-      flex: 0 0 250px;
+      width: 270px;
+      flex: 0 0 270px;
       position: relative;
       z-index: 4;
     }
@@ -139,13 +151,13 @@
     }
 
     &__header {
-      min-height: 84px;
+      min-height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      padding: 18px 24px;
-      border-radius: 28px;
+      padding: 16px 22px;
+      border-radius: 22px;
       background: rgba(255, 255, 255, 0.86);
       border: 1px solid rgba(24, 50, 47, 0.08);
       box-shadow: 0 18px 40px rgba(41, 53, 52, 0.08);
@@ -167,7 +179,7 @@
 
     &__title {
       margin: 0;
-      font-size: 28px;
+      font-size: 24px;
       line-height: 1.1;
       font-weight: 700;
       color: #113731;
@@ -182,13 +194,13 @@
     }
 
     &__icon-button {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(17, 55, 49, 0.1);
-      border-radius: 14px;
+      border-radius: 12px;
       background: #f7fbf9;
       color: #335f58;
       cursor: pointer;
@@ -201,7 +213,7 @@
       }
 
       i {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       &--screen {
@@ -210,13 +222,13 @@
     }
 
     &__profile-trigger {
-      min-width: 180px;
-      height: 42px;
-      padding: 0 16px;
+      min-width: 140px;
+      height: 38px;
+      padding: 0 14px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 14px;
+      border-radius: 12px;
       background: #113731;
       color: #fff;
       font-weight: 600;
@@ -225,7 +237,7 @@
     }
 
     &__profile-name {
-      max-width: 180px;
+      max-width: 150px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -272,8 +284,8 @@
   @media (max-width: 1200px) {
     .admin-shell {
       &__sidebar {
-        width: 220px;
-        flex-basis: 220px;
+        width: 250px;
+        flex-basis: 250px;
       }
     }
   }
