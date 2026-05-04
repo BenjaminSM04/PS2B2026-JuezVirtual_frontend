@@ -88,33 +88,33 @@
 
 <style scoped lang="less">
   .admin-sidemenu {
-    width: 250px;
+    width: 270px;
     min-height: 100vh;
-    padding: 26px 20px 20px;
+    padding: 22px 16px 18px;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 249, 0.98) 100%);
     border-right: 1px solid rgba(17, 55, 49, 0.08);
     box-shadow: 10px 0 30px rgba(35, 54, 51, 0.05);
 
     &__brand {
-      padding: 12px 0 22px;
+      padding: 8px 0 18px;
       display: flex;
       justify-content: center;
     }
 
     &__logo {
-      width: 112px;
-      height: 112px;
+      width: 92px;
+      height: 92px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 32px;
+      border-radius: 24px;
       background: #fff;
       box-shadow: 0 20px 40px rgba(39, 60, 55, 0.08);
 
       img {
-        width: 72px;
-        height: 72px;
+        width: 62px;
+        height: 62px;
         object-fit: contain;
       }
     }
@@ -127,21 +127,24 @@
 
   /deep/ .admin-sidemenu__menu .el-menu-item,
   /deep/ .admin-sidemenu__menu .el-submenu__title {
-    height: 56px;
-    line-height: 56px;
-    margin-bottom: 8px;
-    border-radius: 18px;
+    height: 48px;
+    line-height: 48px;
+    margin-bottom: 6px;
+    border-radius: 14px;
     color: #1a3e39;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     transition: all 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /deep/ .admin-sidemenu__menu .el-menu-item i,
   /deep/ .admin-sidemenu__menu .el-submenu__title i {
-    width: 24px;
-    margin-right: 12px;
-    font-size: 18px;
+    width: 20px;
+    margin-right: 9px;
+    font-size: 15px;
     color: #4b6c67;
     text-align: center;
   }
@@ -169,16 +172,18 @@
 
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu {
     background: transparent;
-    padding: 4px 0 10px 12px;
+    padding: 2px 0 8px 8px;
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu-item {
-    height: 44px;
-    line-height: 44px;
+    height: 38px;
+    line-height: 38px;
     margin-bottom: 4px;
-    font-size: 14px;
+    padding-left: 24px !important;
+    padding-right: 14px;
+    font-size: 13px;
     font-weight: 600;
-    border-radius: 14px;
+    border-radius: 12px;
     color: #54726d;
   }
 
@@ -188,16 +193,16 @@
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu__icon-arrow {
-    margin-top: -6px;
-    right: 18px;
+    margin-top: -5px;
+    right: 12px;
     color: #7f9792;
   }
 
   @media (max-width: 1200px) {
     .admin-sidemenu {
-      width: 220px;
-      padding-left: 14px;
-      padding-right: 14px;
+      width: 250px;
+      padding-left: 12px;
+      padding-right: 12px;
     }
   }
 
