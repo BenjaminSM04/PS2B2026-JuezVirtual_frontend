@@ -19,8 +19,8 @@
 </template>
 
 <script>
-  import katex from 'katex'
   import 'katex/dist/katex.min.css'
+  const katex = require('katex')
 
   export default {
     name: 'KatexEditor',

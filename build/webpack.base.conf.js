@@ -80,7 +80,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader?cacheDirectory=true',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/katex'), resolve('node_modules/vue-echarts')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
