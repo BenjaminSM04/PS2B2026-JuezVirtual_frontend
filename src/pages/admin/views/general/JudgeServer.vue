@@ -8,17 +8,30 @@
         :data="servers"
         :default-expand-all="true"
         border>
-        <el-table-column
-          type="expand">
+        <el-table-column type="expand">
           <template slot-scope="props">
             <p>{{$t('m.IP')}}:
-              <el-tag type="success">{{ props.row.ip }}</el-tag>&nbsp;&nbsp;
+              <el-tag class="custom-green-tag">
+              {{ props.row.ip }}
+              </el-tag>&nbsp;&nbsp;
+
               {{$t('m.Judger_Version')}}:
-              <el-tag type="success">{{ props.row.judger_version }}</el-tag>
+              <el-tag class="custom-green-tag">
+              {{ props.row.judger_version }}
+              </el-tag>
             </p>
-            <p>{{$t('m.Service_URL')}}: <code>{{ props.row.service_url }}</code></p>
-            <p>{{$t('m.Last_Heartbeat')}}: {{ props.row.last_heartbeat | localtime}}</p>
-            <p>{{$t('m.Create_Time')}}: {{ props.row.create_time | localtime }}</p>
+
+            <p>{{$t('m.Service_URL')}}:
+              <code>{{ props.row.service_url }}</code>
+            </p>
+
+            <p>{{$t('m.Last_Heartbeat')}}:
+              {{ props.row.last_heartbeat | localtime}}
+            </p>
+
+            <p>{{$t('m.Create_Time')}}:
+              {{ props.row.create_time | localtime }}
+            </p>
           </template>
         </el-table-column>
         <el-table-column
@@ -26,7 +39,7 @@
           label="Status">
           <template slot-scope="scope">
             <el-tag
-              :type="scope.row.status === 'normal' ? 'success' : 'danger'">
+              :class="scope.row.status === 'normal' ? 'custom-green-tag' : 'custom-red-tag'">
               {{ scope.row.status === 'normal' ? 'Normal' : 'Abnormal' }}
             </el-tag>
           </template>
@@ -121,3 +134,22 @@
     }
   }
 </script>
+<style>
+.panel {
+  border: 2px solid rgba(17, 55, 49, 0.15) !important;
+  border-radius: 18px;
+}
+
+.custom-green-tag {
+  background-color: #BDF2D4 !important;
+  color: #0f5132 !important;
+  border-radius: 8px;
+}
+
+.custom-red-tag {
+  background-color: #A60550 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+</style>
+
