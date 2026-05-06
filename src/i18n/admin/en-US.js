@@ -31,6 +31,14 @@ export const m = {
   Problem_Permission: 'Problem Permission',
   Two_Factor_Auth: 'Two Factor Auth',
   Is_Disabled: 'Is Disabled',
+
+  Password_Length: 'Password Length',
+  Generate_and_Export: 'Generate and Export',
+  Delete: 'Delete',
+  Keyword: 'Keyword',
+  Regular_User: 'Regular User',
+  Edit_Announcement: 'Edit Announcement',
+  Create_Announcement: 'Create Announcement',
   // Announcement.vue
   General_Announcement: 'Announcement',
   Announcement_Title: 'Title',

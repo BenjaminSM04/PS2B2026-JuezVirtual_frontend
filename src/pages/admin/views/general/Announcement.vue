@@ -54,6 +54,8 @@
               <el-switch v-model="scope.row.visible"
                          active-text=""
                          inactive-text=""
+                         active-color="#BDF2D4"
+                inactive-color="#A60550"
                          @change="handleVisibleSwitch(scope.row)">
               </el-switch>
             </template>
@@ -101,12 +103,14 @@
           <el-switch
             v-model="announcement.visible"
             active-text=""
-            inactive-text="">
+            inactive-text=""
+            active-color="#BDF2D4"
+            inactive-color="#A60550">
           </el-switch>
         </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
-          <cancel @click.native="showEditAnnouncementDialog = false"></cancel>
+          <cancel @click.native="showEditAnnouncementDialog = false" style="color: white; background-color: #A60550;"></cancel>
           <save type="primary" @click.native="submitAnnouncement"></save>
         </span>
     </el-dialog>
@@ -225,9 +229,9 @@
       },
       // 删除公告
       deleteAnnouncement (announcementId) {
-        this.$confirm('Are you sure you want to delete this announcement?', 'Warning', {
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Cancel',
+        this.$confirm('¿Estás seguro de que deseas eliminar este anuncio?', 'Alerta', {
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar',
           type: 'warning'
         }).then(() => {
           // then 为确定
@@ -246,7 +250,7 @@
         this.showEditAnnouncementDialog = true
         if (id !== null) {
           this.currentAnnouncementId = id
-          this.announcementDialogTitle = 'Edit Announcement'
+          this.announcementDialogTitle = this.$t("m.Edit_Announcement")
           this.announcementList.find(item => {
             if (item.id === this.currentAnnouncementId) {
               this.announcement.title = item.title
@@ -256,7 +260,7 @@
             }
           })
         } else {
-          this.announcementDialogTitle = 'Create Announcement'
+          this.announcementDialogTitle = this.$t("m.Create_Announcement")
           this.announcement.title = ''
           this.announcement.visible = true
           this.announcement.content = ''
@@ -264,15 +268,44 @@
         }
       },
       handleVisibleSwitch (row) {
-        this.mode = 'edit'
-        this.submitAnnouncement({
-          id: row.id,
-          title: row.title,
-          content: row.content,
-          visible: row.visible
-        })
-      }
+      this.mode = 'edit'
+      this.submitAnnouncement({
+        id: row.id,
+        title: row.title,
+        content: row.content,
+        visible: row.visible
+      })
     },
+
+    submitAnnouncement (data = undefined) {
+      let funcName = ''
+      if (!data.title) {
+        data = {
+          id: this.currentAnnouncementId,
+          title: this.announcement.title,
+          content: this.announcement.content,
+          visible: this.announcement.visible
+        }
+      }
+      
+      if (this.contestID) {
+        data.contest_id = this.contestID
+        funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
+      } else {
+        funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
+      }
+
+      api[funcName](data).then(res => {
+        // Notificación de éxito traducida
+        this.$success(this.$t('m.Succeeded'))
+        this.showEditAnnouncementDialog = false
+        this.init()
+      }).catch(() => {
+        // En caso de error, refrescamos para que el switch vuelva a su estado real
+        this.init()
+      })
+    },
+  },
     watch: {
       $route () {
         this.init()
