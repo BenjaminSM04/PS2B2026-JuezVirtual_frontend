@@ -21,6 +21,7 @@ export const m = {
   User_User: 'Usuario',
   Import_User: 'Importar Usuario',
   Generate_User: 'Generar Usuario',
+
   // User.vue-dialog
   User_Info: 'Usuario',
   User_Username: 'Nombre de Usuario',
@@ -31,6 +32,15 @@ export const m = {
   Problem_Permission: 'Permisos de Problemas',
   Two_Factor_Auth: 'Autenticación de Dos Factores',
   Is_Disabled: 'Deshabilitado',
+
+  Prefix: 'Prefijo',
+  Suffix: 'Sufijo',
+  Start_Number: 'Número de Inicio',
+  End_Number: 'Número Final',
+  Password_Length: 'Longitud de Contraseña',
+  Generate_and_Export: 'Generar y Exportar',
+  Delete: 'Eliminar',
+  Keyword: 'Palabra clave',
   // Announcement.vue
   General_Announcement: 'Anuncio',
   Announcement_Title: 'Título',
