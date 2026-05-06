@@ -41,11 +41,22 @@ export const m = {
   Generate_and_Export: 'Generar y Exportar',
   Delete: 'Eliminar',
   Keyword: 'Palabra clave',
+  Regular_User: 'Usuario Regular',
   // Announcement.vue
   General_Announcement: 'Anuncio',
   Announcement_Title: 'Título',
   Announcement_Content: 'Contenido',
   Announcement_visible: 'Visible',
+<<<<<<< Updated upstream
+=======
+  Create: 'Crear',
+  
+  Title: 'Título',
+  Last_Update_Time: 'Última Actualización',
+  Edit_Announcement: 'Editar Anuncio',
+  Create_Announcement: 'Crear Anuncio',
+  Succeeded: 'Éxito',
+>>>>>>> Stashed changes
   // Conf.vue
   SMTP_Config: 'Configuración SMTP',
   Server: 'Servidor',
