@@ -7,8 +7,9 @@
         </Input>
       </FormItem>
       <FormItem prop="password">
-        <Input type="password" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
+        <Input :type="showPassword ? 'text' : 'password'" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
+        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPassword = !showPassword"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
@@ -53,6 +54,7 @@
       return {
         tfaRequired: false,
         btnLoginLoading: false,
+        showPassword: false,
         formLogin: {
           username: '',
           password: '',
@@ -151,6 +153,13 @@
 
     /deep/ .ivu-input::placeholder {
       color: fade(@oj-secondary, 50%);
+    }
+
+    /deep/ .password-eye {
+      cursor: pointer;
+      font-size: 18px;
+      color: fade(@oj-secondary, 60%);
+      &:hover { color: @oj-secondary; }
     }
   }
 

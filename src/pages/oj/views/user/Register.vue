@@ -12,13 +12,15 @@
         </Input>
       </FormItem>
       <FormItem prop="password">
-        <Input type="password" v-model="formRegister.password" :placeholder="$t('m.RegisterPassword')" size="large" @on-enter="handleRegister">
+        <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.RegisterPassword')" size="large" @on-enter="handleRegister">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
+        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPassword = !showPassword"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="passwordAgain">
-        <Input type="password" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
+        <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
+        <Icon :type="showPasswordAgain ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPasswordAgain = !showPasswordAgain"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="captcha" style="margin-bottom:10px">
@@ -83,6 +85,20 @@
           }
         }, _ => callback())
       }
+      const CheckUsernameFormat = (rule, value, callback) => {
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ_-]([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ _-]*[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ_-])?$/.test(value)) {
+          callback(new Error(this.$i18n.t('m.Username_only_letters')))
+        } else {
+          callback()
+        }
+      }
+      const CheckEmailFormat = (rule, value, callback) => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          callback(new Error(this.$i18n.t('m.Invalid_email_format')))
+        } else {
+          callback()
+        }
+      }
       const CheckPassword = (rule, value, callback) => {
         if (this.formRegister.password !== '') {
           // 对第二个密码框再次验证
@@ -100,6 +116,8 @@
 
       return {
         btnRegisterLoading: false,
+        showPassword: false,
+        showPasswordAgain: false,
         formRegister: {
           username: '',
           password: '',
@@ -110,10 +128,12 @@
         ruleRegister: {
           username: [
             {required: true, trigger: 'blur'},
+            {validator: CheckUsernameFormat, trigger: 'blur'},
             {validator: CheckUsernameNotExist, trigger: 'blur'}
           ],
           email: [
             {required: true, type: 'email', trigger: 'blur'},
+            {validator: CheckEmailFormat, trigger: 'blur'},
             {validator: CheckEmailNotExist, trigger: 'blur'}
           ],
           password: [
@@ -202,6 +222,13 @@
       border-radius: 10px;
       background: #fff;
       overflow: hidden;
+    }
+
+    /deep/ .password-eye {
+      cursor: pointer;
+      font-size: 18px;
+      color: fade(@oj-secondary, 60%);
+      &:hover { color: @oj-secondary; }
     }
   }
 

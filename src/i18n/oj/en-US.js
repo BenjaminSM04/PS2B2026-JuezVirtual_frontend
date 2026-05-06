@@ -193,7 +193,7 @@ export const m = {
   No_Account: 'No account? Register now!',
   Forget_Password: 'Forget Password',
   UserLogin: 'Login',
-  Welcome_back: 'Welcome back to OJ',
+  Welcome_back: 'Welcome back to LizarJudge',
   // OIRank.vue
   OI_Ranklist: 'OI Ranklist',
   // OIContestRank.vue
@@ -221,6 +221,8 @@ export const m = {
   The_email_already_exists: 'The email already exists',
   password_does_not_match: 'password does not match',
   Thanks_for_registering: 'Thanks for your registering, you can login now',
+  Username_only_letters: 'Username can only contain letters, spaces (not at start or end), hyphens and underscores',
+  Invalid_email_format: 'Please enter a valid email address',
   // ResetPassword.vue and ApplyResetPassword.vue
   Reset_Password: 'Lost Password',
   RPassword: 'Password',
