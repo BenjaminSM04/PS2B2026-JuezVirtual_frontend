@@ -43,12 +43,11 @@ export const m = {
   Keyword: 'Palabra clave',
   Regular_User: 'Usuario Regular',
   // Announcement.vue
-  General_Announcement: 'Anuncio',
+  General_Announcement: 'Anuncios',
   Announcement_Title: 'Título',
   Announcement_Content: 'Contenido',
   Announcement_visible: 'Visible',
-<<<<<<< Updated upstream
-=======
+
   Create: 'Crear',
   
   Title: 'Título',
@@ -56,7 +55,6 @@ export const m = {
   Edit_Announcement: 'Editar Anuncio',
   Create_Announcement: 'Crear Anuncio',
   Succeeded: 'Éxito',
->>>>>>> Stashed changes
   // Conf.vue
   SMTP_Config: 'Configuración SMTP',
   Server: 'Servidor',
