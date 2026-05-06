@@ -1,44 +1,55 @@
 <template>
   <div class="announcement view">
-    <Panel :title="$t('m.General_Announcement')">
+    <Panel style="margin-bottom: 25px;">
+      <span slot="title" style="color: #82a69a; font-weight: bold;">
+        {{ $t('m.General_Announcement') }}
+      </span>
       <div class="list">
         <el-table
           v-loading="loading"
           element-loading-text="loading"
           ref="table"
           :data="announcementList"
-          style="width: 100%">
+          style="width: 100%"
+          :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
+          
           <el-table-column
             width="100"
             prop="id"
-            label="ID">
+            label="ID"
+            align="center">
           </el-table-column>
           <el-table-column
             prop="title"
-            label="Title">
+            :label="$t('m.Title')"
+            align="center">
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="CreateTime">
+            :label="$t('m.Create_Time')"
+            align="center">
             <template slot-scope="scope">
               {{ scope.row.create_time | localtime }}
             </template>
           </el-table-column>
           <el-table-column
             prop="last_update_time"
-            label="LastUpdateTime">
+            :label="$t('m.Last_Update_Time')"
+            align="center">
             <template slot-scope="scope">
               {{scope.row.last_update_time | localtime }}
             </template>
           </el-table-column>
           <el-table-column
             prop="created_by.username"
-            label="Author">
+            :label="$t('m.Author')"
+            align="center">
           </el-table-column>
           <el-table-column
             width="100"
             prop="visible"
-            label="Visible">
+            :label="$t('m.Announcement_visible')"
+            align="center">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.visible"
                          active-text=""
@@ -49,7 +60,9 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="Option"
+            :label="$t('m.Option')"
+            align="center"
+            aria-label=""
             width="200">
             <div slot-scope="scope">
               <icon-btn name="Edit" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
@@ -58,7 +71,7 @@
           </el-table-column>
         </el-table>
         <div class="panel-options">
-          <el-button type="primary" size="small" @click="openAnnouncementDialog(null)" icon="el-icon-plus">Create</el-button>
+          <el-button type="primary" size="small" @click="openAnnouncementDialog(null)" icon="el-icon-plus">{{$t('m.Create')}}</el-button>
           <el-pagination
             v-if="!contestID"
             class="page"
@@ -277,5 +290,33 @@
     margin-top: 10px;
     width: 205px;
     float: left;
+  }
+
+  .panel {
+    background: #ffffff !important;
+    border-radius: 20px !important; 
+    border: none !important; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden; 
+    padding: 0 10px !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+  /* Personalización de los botones existentes en el sistema */
+  .el-button--primary {
+    background-color: #003B4A !important;
+    border-color: #003B4A !important;
+    border-radius: 10px !important;
+    height: 40px !important; 
+    padding: 0 20px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px !important;
+    font-weight: 600;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #245965 !important;
+    }
   }
 </style>

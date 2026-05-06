@@ -32,10 +32,14 @@ export const m = {
   Two_Factor_Auth: 'Autenticación de Dos Factores',
   Is_Disabled: 'Deshabilitado',
   // Announcement.vue
-  General_Announcement: 'Anuncio',
+  General_Announcement: 'Anuncios',
   Announcement_Title: 'Título',
   Announcement_Content: 'Contenido',
   Announcement_visible: 'Visible',
+  Create: 'Crear',
+  
+  Title: 'Título',
+  Last_Update_Time: 'Última Actualización',
   // Conf.vue
   SMTP_Config: 'Configuración SMTP',
   Server: 'Servidor',
