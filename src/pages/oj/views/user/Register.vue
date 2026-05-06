@@ -14,13 +14,13 @@
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.RegisterPassword')" size="large" @on-enter="handleRegister">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPassword = !showPassword"></Icon>
+        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPassword = !showPassword"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="passwordAgain">
         <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPasswordAgain ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPasswordAgain = !showPasswordAgain"></Icon>
+        <Icon :type="showPasswordAgain ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPasswordAgain = !showPasswordAgain"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="captcha" style="margin-bottom:10px">
@@ -217,18 +217,30 @@
       color: fade(@oj-secondary, 50%);
     }
 
+    /deep/ .ivu-input-group-with-append .ivu-input-group-prepend + .ivu-input {
+      border-right: none;
+      border-radius: 0;
+    }
+
+    /deep/ .ivu-input-group-append {
+      background: #fff;
+      border: 2px solid @oj-secondary;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      padding: 0 12px;
+      cursor: pointer;
+      .password-eye {
+        font-size: 18px;
+        color: fade(@oj-secondary, 60%);
+        &:hover { color: @oj-secondary; }
+      }
+    }
+
     .oj-captcha-img {
       border: 2px solid fade(@oj-secondary, 55%);
       border-radius: 10px;
       background: #fff;
       overflow: hidden;
-    }
-
-    /deep/ .password-eye {
-      cursor: pointer;
-      font-size: 18px;
-      color: fade(@oj-secondary, 60%);
-      &:hover { color: @oj-secondary; }
     }
   }
 

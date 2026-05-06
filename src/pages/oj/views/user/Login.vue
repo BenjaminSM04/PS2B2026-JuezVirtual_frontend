@@ -9,7 +9,7 @@
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="suffix" class="password-eye" @click="showPassword = !showPassword"></Icon>
+        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPassword = !showPassword"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
@@ -155,11 +155,23 @@
       color: fade(@oj-secondary, 50%);
     }
 
-    /deep/ .password-eye {
+    /deep/ .ivu-input-group-with-append .ivu-input-group-prepend + .ivu-input {
+      border-right: none;
+      border-radius: 0;
+    }
+
+    /deep/ .ivu-input-group-append {
+      background: #fff;
+      border: 2px solid @oj-secondary;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      padding: 0 12px;
       cursor: pointer;
-      font-size: 18px;
-      color: fade(@oj-secondary, 60%);
-      &:hover { color: @oj-secondary; }
+      .password-eye {
+        font-size: 18px;
+        color: fade(@oj-secondary, 60%);
+        &:hover { color: @oj-secondary; }
+      }
     }
   }
 
