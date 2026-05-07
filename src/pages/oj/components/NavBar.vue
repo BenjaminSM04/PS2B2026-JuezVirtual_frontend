@@ -1,7 +1,10 @@
 <template>
   <div id="header">
     <Menu theme="light" mode="horizontal" @on-select="handleRoute" :active-name="activeMenu" class="oj-menu">
-      <div class="logo"><span>{{website.website_name}}</span></div>
+      <div class="logo">
+        <img src="../../../assets/Logo2.png" alt="LizardJudge" class="logo-img"/>
+        <span>{{website.website_name}}</span>
+      </div>
       <Menu-item name="/">
         <Icon type="home"></Icon>
         {{$t('m.Home')}}
@@ -89,7 +92,7 @@
       </div>
     </Menu>
     <Modal v-model="modalVisible" :width="560" class-name="auth-modal">
-      <div slot="header" class="modal-title">{{$t('m.Welcome_to')}} LizarJudge</div>
+      <div slot="header" class="modal-title">{{$t('m.Welcome_to')}} LizardJudge</div>
       <component :is="modalStatus.mode" v-if="modalVisible"></component>
       <div slot="footer" style="display: none"></div>
     </Modal>
@@ -207,8 +210,22 @@
       margin-right: 2%;
       font-size: 20px;
       float: left;
-      line-height: 70px;
+      height: 70px;
       color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+
+      .logo-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+        border: 2px solid rgba(255, 255, 255, 0.65);
+      }
     }
 
     .right-menu {

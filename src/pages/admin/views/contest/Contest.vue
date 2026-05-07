@@ -1,20 +1,20 @@
 <template>
   <div class="view">
     <Panel :title="title">
-      <el-form label-position="top">
+      <el-form :model="contest" :rules="rules" ref="contestForm" label-position="top">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item :label="$t('m.ContestTitle')" required>
+            <el-form-item :label="$t('m.ContestTitle')" prop="title" required>
               <el-input v-model="contest.title" :placeholder="$t('m.ContestTitle')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="$t('m.ContestDescription')" required>
+            <el-form-item :label="$t('m.ContestDescription')" prop="description" required>
               <Simditor v-model="contest.description"></Simditor>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Start_Time')" required>
+            <el-form-item :label="$t('m.Contest_Start_Time')" prop="start_time" required>
               <el-date-picker
                 v-model="contest.start_time"
                 type="datetime"
@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_End_Time')" required>
+            <el-form-item :label="$t('m.Contest_End_Time')" prop="end_time" required>
               <el-date-picker
                 v-model="contest.end_time"
                 type="datetime"
@@ -32,7 +32,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Password')">
+            <el-form-item :label="$t('m.Contest_Password')" prop="password">
               <el-input v-model="contest.password" :placeholder="$t('m.Contest_Password')"></el-input>
             </el-form-item>
           </el-col>
@@ -94,6 +94,35 @@
       Simditor
     },
     data () {
+      const validateDescription = (rule, value, callback) => {
+        const stripped = (value || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, '').trim()
+        if (!stripped) {
+          callback(new Error('La descripción no puede estar vacía'))
+        } else {
+          callback()
+        }
+      }
+      const validateEndTime = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('La fecha de finalización es obligatoria'))
+          return
+        }
+        if (this.contest.start_time && new Date(value) <= new Date(this.contest.start_time)) {
+          callback(new Error('La fecha de finalización debe ser posterior a la de inicio'))
+        } else {
+          callback()
+        }
+      }
+      const validateIPRanges = (rule, value, callback) => {
+        const cidrRegex = /^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]?\d?\d)\/([0-9]|[12]\d|3[0-2])$/
+        for (let r of value) {
+          if (r.value && !cidrRegex.test(r.value.trim())) {
+            callback(new Error(`Formato CIDR inválido: ${r.value}`))
+            return
+          }
+        }
+        callback()
+      }
       return {
         title: 'Crear Concurso',
         disableRuleType: false,
@@ -109,23 +138,50 @@
           allowed_ip_ranges: [{
             value: ''
           }]
+        },
+        rules: {
+          title: [
+            {required: true, message: 'El título es obligatorio', trigger: 'blur'},
+            {min: 3, max: 128, message: 'El título debe tener entre 3 y 128 caracteres', trigger: 'blur'}
+          ],
+          description: [
+            {required: true, validator: validateDescription, trigger: 'blur'}
+          ],
+          start_time: [
+            {required: true, message: 'La fecha de inicio es obligatoria', trigger: 'change'}
+          ],
+          end_time: [
+            {required: true, validator: validateEndTime, trigger: 'change'}
+          ],
+          password: [
+            {min: 4, message: 'La contraseña debe tener al menos 4 caracteres', trigger: 'blur'}
+          ],
+          allowed_ip_ranges: [
+            {validator: validateIPRanges, trigger: 'blur'}
+          ]
         }
       }
     },
     methods: {
       saveContest () {
-        let funcName = this.$route.name === 'edit-contest' ? 'editContest' : 'createContest'
-        let data = Object.assign({}, this.contest)
-        let ranges = []
-        for (let v of data.allowed_ip_ranges) {
-          if (v.value !== '') {
-            ranges.push(v.value)
+        this.$refs.contestForm.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores antes de guardar')
+            return
           }
-        }
-        data.allowed_ip_ranges = ranges
-        api[funcName](data).then(res => {
-          this.$router.push({name: 'contest-list', query: {refresh: 'true'}})
-        }).catch(() => {
+          let funcName = this.$route.name === 'edit-contest' ? 'editContest' : 'createContest'
+          let data = Object.assign({}, this.contest)
+          let ranges = []
+          for (let v of data.allowed_ip_ranges) {
+            if (v.value !== '') {
+              ranges.push(v.value)
+            }
+          }
+          data.allowed_ip_ranges = ranges
+          api[funcName](data).then(res => {
+            this.$router.push({name: 'contest-list', query: {refresh: 'true'}})
+          }).catch(() => {
+          })
         })
       },
       addIPRange () {

@@ -146,7 +146,7 @@
       <span slot="title" style="color: #82a69a; font-weight: bold;">
         {{ $t('m.Generate_User') }}
       </span>
-      <el-form :model="formGenerateUser" ref="formGenerateUser">
+      <el-form :model="formGenerateUser" :rules="generateRules" ref="formGenerateUser">
         <el-row type="flex" justify="space-between">
           <el-col :span="4">
             <el-form-item :label="$t('m.Prefix')" prop="prefix" style="font-weight: bold;">
@@ -160,17 +160,17 @@
           </el-col>
           <el-col :span="4">
             <el-form-item :label="$t('m.Start_Number')" prop="number_from" required style="font-weight: bold;">
-              <el-input-number v-model="formGenerateUser.number_from" style="width: 100%"></el-input-number>
+              <el-input-number v-model="formGenerateUser.number_from" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item :label="$t('m.End_Number')" prop="number_to" required style="font-weight: bold;">
-              <el-input-number v-model="formGenerateUser.number_to" style="width: 100%"></el-input-number>
+              <el-input-number v-model="formGenerateUser.number_to" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item :label="$t('m.Password_Length')" prop="password_length" required style="font-weight: bold;">
-              <el-input v-model="formGenerateUser.password_length"
+              <el-input v-model.number="formGenerateUser.password_length"
                         placeholder="Password Length"></el-input>
             </el-form-item>
           </el-col>
@@ -198,25 +198,25 @@
     :close-on-click-modal="false" 
     width="900px"
   custom-class="user-edit-dialog">
-      <el-form :model="user" label-width="150px" label-position="left">
+      <el-form :model="user" :rules="userRules" ref="userForm" label-width="150px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="$t('m.User_Username')" required>
+            <el-form-item :label="$t('m.User_Username')" prop="username" required>
               <el-input v-model="user.username"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.User_Real_Name')" required>
+            <el-form-item :label="$t('m.User_Real_Name')" prop="real_name" required>
               <el-input v-model="user.real_name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.User_Email')" required>
+            <el-form-item :label="$t('m.User_Email')" prop="email" required>
               <el-input v-model="user.email"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.User_New_Password')">
+            <el-form-item :label="$t('m.User_New_Password')" prop="password">
               <el-input v-model="user.password"></el-input>
             </el-form-item>
           </el-col>
@@ -284,26 +284,55 @@
   export default {
     name: 'User',
     data () {
+      const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
+      const validateEmail = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('El correo es obligatorio'))
+        } else if (!emailRegex.test(value)) {
+          callback(new Error('Formato de correo inválido'))
+        } else {
+          callback()
+        }
+      }
+      const validateOptionalPassword = (rule, value, callback) => {
+        if (value && value.length < 6) {
+          callback(new Error('La contraseña debe tener al menos 6 caracteres'))
+        } else {
+          callback()
+        }
+      }
+      const validateNumberTo = (rule, value, callback) => {
+        if (value === null || value === undefined || value === '') {
+          callback(new Error('Número final es obligatorio'))
+        } else if (!Number.isInteger(value)) {
+          callback(new Error('Debe ser un entero'))
+        } else if (value < this.formGenerateUser.number_from) {
+          callback(new Error('El número final debe ser mayor o igual al inicial'))
+        } else {
+          callback()
+        }
+      }
+      const validatePasswordLength = (rule, value, callback) => {
+        const num = Number(value)
+        if (!Number.isInteger(num) || num < 6 || num > 16) {
+          callback(new Error('La longitud debe ser un entero entre 6 y 16'))
+        } else {
+          callback()
+        }
+      }
       return {
-        // 一页显示的用户数
         pageSize: 10,
-        // 用户总数
         total: 0,
-        // 用户列表
         userList: [],
         uploadUsers: [],
         uploadUsersPage: [],
         uploadUsersCurrentPage: 1,
         uploadUsersPageSize: 15,
-        // 搜索关键字
         keyword: '',
-        // 是否显示用户对话框
         showUserDialog: false,
-        // 当前用户model
         user: {},
         loadingTable: false,
         loadingGenerate: false,
-        // 当前页码
         currentPage: 0,
         selectedUsers: [],
         formGenerateUser: {
@@ -312,6 +341,39 @@
           number_from: 0,
           number_to: 0,
           password_length: 8
+        },
+        userRules: {
+          username: [
+            {required: true, message: 'El usuario es obligatorio', trigger: 'blur'},
+            {min: 1, max: 32, message: 'El usuario debe tener entre 1 y 32 caracteres', trigger: 'blur'}
+          ],
+          real_name: [
+            {required: true, message: 'El nombre real es obligatorio', trigger: 'blur'},
+            {max: 32, message: 'Máximo 32 caracteres', trigger: 'blur'}
+          ],
+          email: [
+            {required: true, validator: validateEmail, trigger: 'blur'}
+          ],
+          password: [
+            {validator: validateOptionalPassword, trigger: 'blur'}
+          ]
+        },
+        generateRules: {
+          prefix: [
+            {max: 16, message: 'Máximo 16 caracteres', trigger: 'blur'}
+          ],
+          suffix: [
+            {max: 16, message: 'Máximo 16 caracteres', trigger: 'blur'}
+          ],
+          number_from: [
+            {required: true, message: 'Número inicial es obligatorio', type: 'number', trigger: 'blur'}
+          ],
+          number_to: [
+            {required: true, validator: validateNumberTo, trigger: 'blur'}
+          ],
+          password_length: [
+            {required: true, validator: validatePasswordLength, trigger: 'blur'}
+          ]
         }
       }
     },
@@ -326,12 +388,17 @@
       },
       // 提交修改用户的信息
       saveUser () {
-        api.editUser(this.user).then(res => {
-          // 更新列表
-          this.getUserList(this.currentPage)
-        }).then(() => {
-          this.showUserDialog = false
-        }).catch(() => {
+        this.$refs.userForm.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores')
+            return
+          }
+          api.editUser(this.user).then(res => {
+            this.getUserList(this.currentPage)
+          }).then(() => {
+            this.showUserDialog = false
+          }).catch(() => {
+          })
         })
       },
       // 打开用户对话框

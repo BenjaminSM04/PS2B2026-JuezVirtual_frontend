@@ -2,7 +2,7 @@
   <div class="admin-sidemenu">
     <div class="admin-sidemenu__brand">
       <div class="admin-sidemenu__logo">
-        <img src="../../../assets/logo.svg" alt="oj admin"/>
+        <img src="../../../assets/Logo2.png" alt="LizardJudge"/>
       </div>
     </div>
 
@@ -108,14 +108,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 24px;
+      border-radius: 50%;
       background: #fff;
+      overflow: hidden;
       box-shadow: 0 20px 40px rgba(39, 60, 55, 0.08);
 
       img {
-        width: 62px;
-        height: 62px;
-        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
       }
     }
 

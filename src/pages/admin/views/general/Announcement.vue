@@ -88,14 +88,14 @@
     <!--对话框-->
     <el-dialog :title="announcementDialogTitle" :visible.sync="showEditAnnouncementDialog"
                @open="onOpenEditDialog" :close-on-click-modal="false">
-      <el-form label-position="top">
-        <el-form-item :label="$t('m.Announcement_Title')" required>
+      <el-form :model="announcement" :rules="rules" ref="announcementForm" label-position="top">
+        <el-form-item :label="$t('m.Announcement_Title')" prop="title" required>
           <el-input
             v-model="announcement.title"
             :placeholder="$t('m.Announcement_Title')" class="title-input">
           </el-input>
         </el-form-item>
-        <el-form-item :label="$t('m.Announcement_Content')" required>
+        <el-form-item :label="$t('m.Announcement_Content')" prop="content" required>
           <Simditor v-model="announcement.content"></Simditor>
         </el-form-item>
         <div class="visible-box">
@@ -127,30 +127,38 @@
       Simditor
     },
     data () {
+      const validateContent = (rule, value, callback) => {
+        const stripped = (value || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, '').trim()
+        if (!stripped) {
+          callback(new Error('El contenido no puede estar vacío'))
+        } else {
+          callback()
+        }
+      }
       return {
         contestID: '',
-        // 显示编辑公告对话框
         showEditAnnouncementDialog: false,
-        // 公告列表
         announcementList: [],
-        // 一页显示的公告数
         pageSize: 15,
-        // 总公告数
         total: 0,
-        // 当前公告id
         currentAnnouncementId: null,
         mode: 'create',
-        // 公告 (new | edit) model
         announcement: {
           title: '',
           visible: true,
           content: ''
         },
-        // 对话框标题
+        rules: {
+          title: [
+            {required: true, message: 'El título es obligatorio', trigger: 'blur'},
+            {min: 1, max: 128, message: 'El título debe tener entre 1 y 128 caracteres', trigger: 'blur'}
+          ],
+          content: [
+            {required: true, validator: validateContent, trigger: 'blur'}
+          ]
+        },
         announcementDialogTitle: 'Edit Announcement',
-        // 是否显示loading
         loading: true,
-        // 当前页码
         currentPage: 0
       }
     },
@@ -278,32 +286,46 @@
     },
 
     submitAnnouncement (data = undefined) {
-      let funcName = ''
-      if (!data.title) {
-        data = {
-          id: this.currentAnnouncementId,
-          title: this.announcement.title,
-          content: this.announcement.content,
-          visible: this.announcement.visible
+      const fromDialog = !data || !data.title
+      const proceed = () => {
+        let funcName = ''
+        let payload = data
+        if (fromDialog) {
+          payload = {
+            id: this.currentAnnouncementId,
+            title: this.announcement.title,
+            content: this.announcement.content,
+            visible: this.announcement.visible
+          }
         }
-      }
-      
-      if (this.contestID) {
-        data.contest_id = this.contestID
-        funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
-      } else {
-        funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
+
+        if (this.contestID) {
+          payload.contest_id = this.contestID
+          funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
+        } else {
+          funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
+        }
+
+        api[funcName](payload).then(res => {
+          this.$success(this.$t('m.Succeeded'))
+          this.showEditAnnouncementDialog = false
+          this.init()
+        }).catch(() => {
+          this.init()
+        })
       }
 
-      api[funcName](data).then(res => {
-        // Notificación de éxito traducida
-        this.$success(this.$t('m.Succeeded'))
-        this.showEditAnnouncementDialog = false
-        this.init()
-      }).catch(() => {
-        // En caso de error, refrescamos para que el switch vuelva a su estado real
-        this.init()
-      })
+      if (fromDialog && this.$refs.announcementForm) {
+        this.$refs.announcementForm.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores')
+            return
+          }
+          proceed()
+        })
+      } else {
+        proceed()
+      }
     },
   },
     watch: {

@@ -1,6 +1,10 @@
 <template>
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px"
            class="demo-ruleForm login-container">
+    <div class="login-brand">
+      <img src="../../../../assets/Logo2.png" alt="LizardJudge" class="login-logo"/>
+      <h2>LizardJudge Univalle</h2>
+    </div>
     <h3 class="title">{{$t('m.Welcome_to_Login')}}</h3>
     <el-form-item prop="account">
       <el-input type="text" v-model="ruleForm2.account" auto-complete="off" :placeholder="$t('m.username')" @keyup.enter.native="handleLogin"></el-input>
@@ -28,10 +32,12 @@
         },
         rules2: {
           account: [
-            {required: true, trigger: 'blur'}
+            {required: true, message: 'Por favor ingresa tu usuario', trigger: 'blur'},
+            {min: 1, max: 32, message: 'El usuario debe tener entre 1 y 32 caracteres', trigger: 'blur'}
           ],
           password: [
-            {required: true, trigger: 'blur'}
+            {required: true, message: 'Por favor ingresa tu contraseña', trigger: 'blur'},
+            {min: 1, message: 'La contraseña no puede estar vacía', trigger: 'blur'}
           ]
         },
         checked: true
@@ -77,6 +83,30 @@
     }
     .remember {
       margin: 0px 0px 35px 0px;
+    }
+    .login-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .login-logo {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border: 3px solid #fff;
+      }
+
+      h2 {
+        margin: 14px 0 0 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #003B4A;
+        text-align: center;
+      }
     }
   }
 </style>

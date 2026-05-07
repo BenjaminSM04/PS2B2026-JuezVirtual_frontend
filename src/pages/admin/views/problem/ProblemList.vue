@@ -215,6 +215,14 @@
         })
       },
       updateProblem (row) {
+        if (!row._id || !String(row._id).trim()) {
+          this.$error('El Display ID no puede estar vacío')
+          return
+        }
+        if (!row.title || !String(row.title).trim()) {
+          this.$error('El título no puede estar vacío')
+          return
+        }
         let data = Object.assign({}, row)
         let funcName = ''
         if (this.contestId) {

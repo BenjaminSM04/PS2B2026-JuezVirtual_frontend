@@ -37,13 +37,13 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item :label="$t('m.Time_Limit') + ' (ms)' " required>
-              <el-input type="Number" :placeholder="$t('m.Time_Limit')" v-model="problem.time_limit"></el-input>
+            <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)' " required>
+              <el-input type="Number" :placeholder="$t('m.Time_Limit')" v-model.number="problem.time_limit"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Memory_limit') + ' (MB)' " required>
-              <el-input type="Number" :placeholder="$t('m.Memory_limit')" v-model="problem.memory_limit"></el-input>
+            <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)' " required>
+              <el-input type="Number" :placeholder="$t('m.Memory_limit')" v-model.number="problem.memory_limit"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -284,7 +284,15 @@
           _id: {required: true, message: 'Display ID is required', trigger: 'blur'},
           title: {required: true, message: 'Title is required', trigger: 'blur'},
           input_description: {required: true, message: 'Input Description is required', trigger: 'blur'},
-          output_description: {required: true, message: 'Output Description is required', trigger: 'blur'}
+          output_description: {required: true, message: 'Output Description is required', trigger: 'blur'},
+          time_limit: [
+            {required: true, message: 'El tiempo límite es obligatorio', trigger: 'blur'},
+            {type: 'integer', min: 1, max: 60000, message: 'El tiempo debe ser un entero entre 1 y 60000 ms', trigger: 'blur'}
+          ],
+          memory_limit: [
+            {required: true, message: 'El límite de memoria es obligatorio', trigger: 'blur'},
+            {type: 'integer', min: 1, max: 4096, message: 'La memoria debe ser un entero entre 1 y 4096 MB', trigger: 'blur'}
+          ]
         },
         loadingCompile: false,
         mode: '',
@@ -508,6 +516,15 @@
         })
       },
       submit () {
+        this.$refs.form.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores')
+            return
+          }
+          this._doSubmit()
+        })
+      },
+      _doSubmit () {
         if (!this.problem.samples.length) {
           this.$error('Sample is required')
           return
@@ -544,6 +561,17 @@
           this.error.testCase = 'Test case is not uploaded yet'
           this.$error(this.error.testCase)
           return
+        }
+        if (this.problem.io_mode && this.problem.io_mode.io_mode === 'File IO') {
+          const fileNameRegex = /^[A-Za-z0-9_.\-]+$/
+          if (!this.problem.io_mode.input || !fileNameRegex.test(this.problem.io_mode.input)) {
+            this.$error('Nombre de archivo de entrada inválido (solo letras, números, _ . -)')
+            return
+          }
+          if (!this.problem.io_mode.output || !fileNameRegex.test(this.problem.io_mode.output)) {
+            this.$error('Nombre de archivo de salida inválido (solo letras, números, _ . -)')
+            return
+          }
         }
         if (this.problem.rule_type === 'OI') {
           for (let item of this.problem.test_case_score) {

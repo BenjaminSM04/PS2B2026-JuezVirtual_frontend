@@ -1,25 +1,25 @@
 <template>
   <div class="view">
     <Panel :title="$t('m.SMTP_Config')">
-      <el-form label-position="left" label-width="70px" :model="smtp">
+      <el-form label-position="left" label-width="70px" :model="smtp" :rules="smtpRules" ref="smtpForm">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item :label="$t('m.Server')" required>
+            <el-form-item :label="$t('m.Server')" prop="server" required>
               <el-input v-model="smtp.server" placeholder="smtp.ejemplo.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.Port')" required>
-              <el-input type="number" v-model="smtp.port" placeholder="Puerto del Servidor SMTP"></el-input>
+            <el-form-item :label="$t('m.Port')" prop="port" required>
+              <el-input type="number" v-model.number="smtp.port" placeholder="Puerto del Servidor SMTP"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.Email')" required>
+            <el-form-item :label="$t('m.Email')" prop="email" required>
               <el-input v-model="smtp.email" placeholder="email@ejemplo.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.Password')" label-width="90px" required>
+            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" required>
               <el-input v-model="smtp.password" type="password" placeholder="Contraseña del Servidor SMTP"></el-input>
             </el-form-item>
           </el-col>
@@ -40,25 +40,25 @@
     </Panel>
 
     <Panel :title="$t('m.Website_Config')">
-      <el-form label-position="left" label-width="100px" ref="form" :model="websiteConfig">
+      <el-form label-position="left" label-width="100px" ref="websiteForm" :model="websiteConfig" :rules="websiteRules">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item :label="$t('m.Base_Url')" required>
-              <el-input v-model="websiteConfig.website_base_url" placeholder="smtp.ejemplo.com"></el-input>
+            <el-form-item :label="$t('m.Base_Url')" prop="website_base_url" required>
+              <el-input v-model="websiteConfig.website_base_url" placeholder="https://example.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Name')" required>
+            <el-form-item :label="$t('m.Name')" prop="website_name" required>
               <el-input v-model="websiteConfig.website_name" placeholder="Juez Virtual"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Shortcut')" required>
+            <el-form-item :label="$t('m.Shortcut')" prop="website_name_shortcut" required>
               <el-input v-model="websiteConfig.website_name_shortcut" placeholder="oj"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="$t('m.Footer')" required>
+            <el-form-item :label="$t('m.Footer')" prop="website_footer">
               <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="websiteConfig.website_footer"
                         placeholder="Pie de Página de la pagina HTML"></el-input>
             </el-form-item>
@@ -98,6 +98,35 @@
   export default {
     name: 'Conf',
     data () {
+      const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
+      const validateEmail = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('El correo es obligatorio'))
+        } else if (!emailRegex.test(value)) {
+          callback(new Error('Formato de correo inválido'))
+        } else {
+          callback()
+        }
+      }
+      const validatePort = (rule, value, callback) => {
+        const num = Number(value)
+        if (value === '' || value === null || value === undefined) {
+          callback(new Error('El puerto es obligatorio'))
+        } else if (!Number.isInteger(num) || num < 1 || num > 65535) {
+          callback(new Error('El puerto debe ser un entero entre 1 y 65535'))
+        } else {
+          callback()
+        }
+      }
+      const validateUrl = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('La URL base es obligatoria'))
+        } else if (!/^https?:\/\/.+/.test(value)) {
+          callback(new Error('La URL debe comenzar con http:// o https://'))
+        } else {
+          callback()
+        }
+      }
       return {
         init: false,
         saved: false,
@@ -109,7 +138,34 @@
           email: '',
           tls: true
         },
-        websiteConfig: {}
+        websiteConfig: {},
+        smtpRules: {
+          server: [
+            {required: true, message: 'El servidor SMTP es obligatorio', trigger: 'blur'}
+          ],
+          port: [
+            {required: true, validator: validatePort, trigger: 'blur'}
+          ],
+          email: [
+            {required: true, validator: validateEmail, trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: 'La contraseña es obligatoria', trigger: 'blur'}
+          ]
+        },
+        websiteRules: {
+          website_base_url: [
+            {required: true, validator: validateUrl, trigger: 'blur'}
+          ],
+          website_name: [
+            {required: true, message: 'El nombre del sitio es obligatorio', trigger: 'blur'},
+            {max: 128, message: 'Máximo 128 caracteres', trigger: 'blur'}
+          ],
+          website_name_shortcut: [
+            {required: true, message: 'El acrónimo es obligatorio', trigger: 'blur'},
+            {max: 32, message: 'Máximo 32 caracteres', trigger: 'blur'}
+          ]
+        }
       }
     },
     mounted () {
@@ -128,17 +184,23 @@
     },
     methods: {
       saveSMTPConfig () {
-        if (!this.init) {
-          api.editSMTPConfig(this.smtp).then(() => {
-            this.saved = true
-          }, () => {
-          })
-        } else {
-          api.createSMTPConfig(this.smtp).then(() => {
-            this.saved = true
-          }, () => {
-          })
-        }
+        this.$refs.smtpForm.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores')
+            return
+          }
+          if (!this.init) {
+            api.editSMTPConfig(this.smtp).then(() => {
+              this.saved = true
+            }, () => {
+            })
+          } else {
+            api.createSMTPConfig(this.smtp).then(() => {
+              this.saved = true
+            }, () => {
+            })
+          }
+        })
       },
       testSMTPConfig () {
         this.$prompt('Por favor, ingresa tu correo electrónico', 'Prueba de SMTP', {
@@ -155,8 +217,14 @@
         })
       },
       saveWebsiteConfig () {
-        api.editWebsiteConfig(this.websiteConfig).then(() => {
-        }).catch(() => {
+        this.$refs.websiteForm.validate((valid) => {
+          if (!valid) {
+            this.$error('Por favor, corrige los campos con errores')
+            return
+          }
+          api.editWebsiteConfig(this.websiteConfig).then(() => {
+          }).catch(() => {
+          })
         })
       }
     }
