@@ -8,8 +8,7 @@
         </el-popover>
       </span>
       <el-table :data="data">
-        <el-table-column
-          label="Last Modified">
+        <el-table-column label="Last Modified">
           <template slot-scope="{row}">
             {{row.create_time | timestampFormat }}
           </template>
@@ -28,10 +27,13 @@
         </el-table-column>
       </el-table>
       <div class="panel-options" v-show="data.length > 0">
-        <el-button type="warning" size="small"
-                   :loading="loading"
-                   icon="el-icon-fa-trash"
-                   @click="deleteTestCase()">Delete All
+        <el-button
+          class="btn-delete"
+          size="small"
+          :loading="loading"
+          icon="el-icon-fa-trash"
+          @click="deleteTestCase()">
+          Delete All
         </el-button>
       </div>
     </panel>
@@ -78,6 +80,31 @@
   }
 </script>
 
-<style>
+<style scoped>
+.panel {
+  border: 2px solid rgba(17, 55, 49, 0.15) !important;
+  border-radius: 18px;
+}
 
+.btn-delete {
+  background-color: #A60550 !important;
+  border: 1px solid #7a043b !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.btn-delete:hover {
+  background-color: #8c0442 !important;
+  border-color: #66032f !important;
+}
+
+.el-table th {
+  background-color: #f4fbf8;
+  color: #1f3d3a;
+  font-weight: 700;
+}
+
+.el-table td {
+  color: #355f5a;
+}
 </style>
