@@ -47,7 +47,7 @@
 
         <el-table-column prop="real_name" :label="$t('m.User_Real_Name')" width="150" align="center"></el-table-column>
 
-        <el-table-column prop="email" :label="$t('m.User_Email')" width="200" align="center"></el-table-column>
+        <el-table-column prop="email" :label="$t('m.User_Email')" width="180" align="center"></el-table-column>
 
         <el-table-column prop="admin_type" :label="$t('m.User_Type')" width="130" align="center">
           <template slot-scope="scope">
@@ -55,7 +55,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column  :label="$t('m.Option')" width="100" align="center">
+        <el-table-column  :label="$t('m.Option')" width="130" align="center">
           <template slot-scope="{row}">
             <icon-btn name="Edit" icon="edit" style="color: #409EFF;" @click.native="openUserDialog(row.id)"></icon-btn>
             <icon-btn name="Delete" icon="trash" style="color: #F56C6C; background-color: red; border-radius: 10px;" @click.native="deleteUsers([row.id])"></icon-btn>
@@ -78,8 +78,8 @@
     <Panel>
       <span slot="title" style="color: #82a69a; font-weight: bold;">{{$t('m.Import_User')}}
         <el-popover placement="right" trigger="hover">
-          <p>Only support csv file without headers, check the <a
-            href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> for details</p>
+          <p>Solo se admiten archivos CSV sin encabezados; consulta el <a
+            href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> para obtener más detalles.</p>
           <i slot="reference" class="el-icon-fa-question-circle import-user-icon"></i>
         </el-popover>
       </span>
@@ -92,22 +92,22 @@
       </el-upload>
       <template v-else>
         <el-table :data="uploadUsersPage">
-          <el-table-column label="Username">
+          <el-table-column :label="$t('m.User_Username')">
             <template slot-scope="{row}">
               {{row[0]}}
             </template>
           </el-table-column>
-          <el-table-column label="Password">
+          <el-table-column :label="$t('m.User_New_Password')">
             <template slot-scope="{row}">
               {{row[1]}}
             </template>
           </el-table-column>
-          <el-table-column label="Email">
+          <el-table-column :label="$t('m.User_Email')">
             <template slot-scope="{row}">
               {{row[2]}}
             </template>
           </el-table-column>
-          <el-table-column label="RealName">
+          <el-table-column :label="$t('m.User_Real_Name')">
             <template slot-scope="{row}">
               {{row[3]}}
             </template>
@@ -116,11 +116,20 @@
         <div class="panel-options">
           <el-button type="primary" 
                      icon="el-icon-fa-upload"
-                     @click="handleUsersUpload">Import All
+                     @click="handleUsersUpload">Importar Usuarios
           </el-button>
-          <el-button type="warning"
+          <el-button 
                      icon="el-icon-fa-undo"
-                     @click="handleResetData">Reset Data
+                     @click="handleResetData" style="border-radius: 10px !important;
+    height: 40px !important; 
+    padding: 0 20px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A60550 !important;
+    font-weight: 600;
+    color: white;
+    font-size: 14px;">Reiniciar
           </el-button>
           <el-pagination
             class="page"
@@ -172,7 +181,7 @@
           </el-button>
           <span class="userPreview" v-if="formGenerateUser.number_from && formGenerateUser.number_to &&
                                           formGenerateUser.number_from <= formGenerateUser.number_to">
-            The usernames will be {{formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix}},
+            Los nombres de usuario serán {{formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix}},
             <span v-if="formGenerateUser.number_from + 1 < formGenerateUser.number_to">
               {{formGenerateUser.prefix + (formGenerateUser.number_from + 1) + formGenerateUser.suffix + '...'}}
             </span>
@@ -184,8 +193,11 @@
       </el-form>
     </Panel>
     <!--Cuadro de dialogo-->
-    <el-dialog :title="$t('m.User_Info')" :visible.sync="showUserDialog" :close-on-click-modal="false" width="900px"
-  custom-class="user-edit-dialog" style="border-radius: 50px;">
+    <el-dialog :title="$t('m.User_Info')" 
+    :visible.sync="showUserDialog" 
+    :close-on-click-modal="false" 
+    width="900px"
+  custom-class="user-edit-dialog">
       <el-form :model="user" label-width="150px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -209,9 +221,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.User_Type')">
+            <el-form-item :label="$t('m.User_Type')" >
               <el-select v-model="user.admin_type">
-                <el-option label="Regular User" value="Regular User"></el-option>
+                <el-option :label="$t('m.Regular_User')" value="Regular User"></el-option>
                 <el-option label="Admin" value="Admin"></el-option>
                 <el-option label="Super Admin" value="Super Admin"></el-option>
               </el-select>
@@ -231,8 +243,8 @@
               <el-switch
                 v-model="user.two_factor_auth"
                 :disabled="!user.real_tfa"
-                active-color="#13ce66"
-                inactive-color="#ff4949">
+                active-color="#BDF2D4"
+                inactive-color="#A60550">
               </el-switch>
             </el-form-item>
           </el-col>
@@ -240,22 +252,24 @@
             <el-form-item label="Open Api">
               <el-switch
                 v-model="user.open_api"
-                active-color="#13ce66"
-                inactive-color="#ff4949">
+                active-color="#BDF2D4"
+                inactive-color="#A60550">
               </el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item :label="$t('m.Is_Disabled')">
               <el-switch
-                v-model="user.is_disabled">
+                v-model="user.is_disabled"
+                active-color="#BDF2D4"
+                inactive-color="#A60550">
               </el-switch>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <cancel @click.native="showUserDialog = false">Cancel</cancel>
+        <cancel @click.native="showUserDialog = false" style="color: white; background-color: #A60550;">Cancel</cancel>
         <save @click.native="saveUser()"></save>
       </span>
     </el-dialog>
@@ -341,13 +355,14 @@
         })
       },
       deleteUsers (ids) {
-        this.$confirm('Sure to delete the user? The associated resources created by this user will be deleted as well, like problem, contest, announcement, etc.', 'confirm', {
+        this.$confirm('¿Estás seguro de eliminar al usuario? Los recursos asociados creados por este usuario también se eliminarán, como problemas, concursos, anuncios, etc.', 'Confirmación', {
           type: 'warning'
         }).then(() => {
           api.deleteUsers(ids.join(',')).then(res => {
-            this.getUserList(this.currentPage)
-          }).catch(() => {
-            this.getUserList(this.currentPage)
+      this.$success(this.$t('m.Succeeded'))
+      this.getUserList(this.currentPage)
+    }).catch(() => {
+      this.getUserList(this.currentPage)
           })
         }, () => {
         })
@@ -358,7 +373,7 @@
       generateUser () {
         this.$refs['formGenerateUser'].validate((valid) => {
           if (!valid) {
-            this.$error('Please validate the error fields')
+            this.$error('Por favor, valide los campos con errores')
             return
           }
           this.loadingGenerate = true
@@ -367,7 +382,9 @@
             this.loadingGenerate = false
             let url = '/admin/generate_user?file_id=' + res.data.data.file_id
             utils.downloadFile(url).then(() => {
-              this.$alert('All users created successfully, the users sheets have downloaded to your disk.', 'Notice')
+              this.$alert('Todos los usuarios se crearon con éxito; las hojas de datos de los usuarios se han descargado en su disco.', 'Notificación', {
+                confirmButtonText: 'OK',
+              })
             })
             this.getUserList(1)
           }).catch(() => {
@@ -383,7 +400,7 @@
             })
             let delta = results.data.length - data.length
             if (delta > 0) {
-              this.$warning(delta + ' users have been filtered due to empty value')
+              this.$warning(delta + ' usuarios han sido filtrados debido a valores vacíos')
             }
             this.uploadUsersCurrentPage = 1
             this.uploadUsers = data
@@ -483,6 +500,5 @@
     }
   }
 
-
-
 </style>
+
