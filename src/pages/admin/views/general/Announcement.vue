@@ -1,55 +1,70 @@
 <template>
   <div class="announcement view">
-    <Panel :title="$t('m.General_Announcement')">
+    <Panel style="margin-bottom: 25px;">
+      <span slot="title" style="color: #82a69a; font-weight: bold;">
+        {{ $t('m.General_Announcement') }}
+      </span>
       <div class="list">
         <el-table
           v-loading="loading"
           element-loading-text="loading"
           ref="table"
           :data="announcementList"
-          style="width: 100%">
+          style="width: 100%"
+          :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
+          
           <el-table-column
             width="100"
             prop="id"
-            label="ID">
+            label="ID"
+            align="center">
           </el-table-column>
           <el-table-column
             prop="title"
-            label="Title">
+            :label="$t('m.Title')"
+            align="center">
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="CreateTime">
+            :label="$t('m.Create_Time')"
+            align="center">
             <template slot-scope="scope">
               {{ scope.row.create_time | localtime }}
             </template>
           </el-table-column>
           <el-table-column
             prop="last_update_time"
-            label="LastUpdateTime">
+            :label="$t('m.Last_Update_Time')"
+            align="center">
             <template slot-scope="scope">
               {{scope.row.last_update_time | localtime }}
             </template>
           </el-table-column>
           <el-table-column
             prop="created_by.username"
-            label="Author">
+            :label="$t('m.Author')"
+            align="center">
           </el-table-column>
           <el-table-column
             width="100"
             prop="visible"
-            label="Visible">
+            :label="$t('m.Announcement_visible')"
+            align="center">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.visible"
                          active-text=""
                          inactive-text=""
+                         active-color="#BDF2D4"
+                inactive-color="#A60550"
                          @change="handleVisibleSwitch(scope.row)">
               </el-switch>
             </template>
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="Option"
+            :label="$t('m.Option')"
+            align="center"
+            aria-label=""
             width="200">
             <div slot-scope="scope">
               <icon-btn name="Edit" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
@@ -58,7 +73,7 @@
           </el-table-column>
         </el-table>
         <div class="panel-options">
-          <el-button type="primary" size="small" @click="openAnnouncementDialog(null)" icon="el-icon-plus">Create</el-button>
+          <el-button type="primary" size="small" @click="openAnnouncementDialog(null)" icon="el-icon-plus">{{$t('m.Create')}}</el-button>
           <el-pagination
             v-if="!contestID"
             class="page"
@@ -88,12 +103,14 @@
           <el-switch
             v-model="announcement.visible"
             active-text=""
-            inactive-text="">
+            inactive-text=""
+            active-color="#BDF2D4"
+            inactive-color="#A60550">
           </el-switch>
         </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
-          <cancel @click.native="showEditAnnouncementDialog = false"></cancel>
+          <cancel @click.native="showEditAnnouncementDialog = false" style="color: white; background-color: #A60550;"></cancel>
           <save type="primary" @click.native="submitAnnouncement"></save>
         </span>
     </el-dialog>
@@ -212,9 +229,9 @@
       },
       // 删除公告
       deleteAnnouncement (announcementId) {
-        this.$confirm('Are you sure you want to delete this announcement?', 'Warning', {
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Cancel',
+        this.$confirm('¿Estás seguro de que deseas eliminar este anuncio?', 'Alerta', {
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'Cancelar',
           type: 'warning'
         }).then(() => {
           // then 为确定
@@ -233,7 +250,7 @@
         this.showEditAnnouncementDialog = true
         if (id !== null) {
           this.currentAnnouncementId = id
-          this.announcementDialogTitle = 'Edit Announcement'
+          this.announcementDialogTitle = this.$t("m.Edit_Announcement")
           this.announcementList.find(item => {
             if (item.id === this.currentAnnouncementId) {
               this.announcement.title = item.title
@@ -243,7 +260,7 @@
             }
           })
         } else {
-          this.announcementDialogTitle = 'Create Announcement'
+          this.announcementDialogTitle = this.$t("m.Create_Announcement")
           this.announcement.title = ''
           this.announcement.visible = true
           this.announcement.content = ''
@@ -251,15 +268,44 @@
         }
       },
       handleVisibleSwitch (row) {
-        this.mode = 'edit'
-        this.submitAnnouncement({
-          id: row.id,
-          title: row.title,
-          content: row.content,
-          visible: row.visible
-        })
-      }
+      this.mode = 'edit'
+      this.submitAnnouncement({
+        id: row.id,
+        title: row.title,
+        content: row.content,
+        visible: row.visible
+      })
     },
+
+    submitAnnouncement (data = undefined) {
+      let funcName = ''
+      if (!data.title) {
+        data = {
+          id: this.currentAnnouncementId,
+          title: this.announcement.title,
+          content: this.announcement.content,
+          visible: this.announcement.visible
+        }
+      }
+      
+      if (this.contestID) {
+        data.contest_id = this.contestID
+        funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
+      } else {
+        funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
+      }
+
+      api[funcName](data).then(res => {
+        // Notificación de éxito traducida
+        this.$success(this.$t('m.Succeeded'))
+        this.showEditAnnouncementDialog = false
+        this.init()
+      }).catch(() => {
+        // En caso de error, refrescamos para que el switch vuelva a su estado real
+        this.init()
+      })
+    },
+  },
     watch: {
       $route () {
         this.init()
@@ -277,5 +323,33 @@
     margin-top: 10px;
     width: 205px;
     float: left;
+  }
+
+  .panel {
+    background: #ffffff !important;
+    border-radius: 20px !important; 
+    border: none !important; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden; 
+    padding: 0 10px !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+  /* Personalización de los botones existentes en el sistema */
+  .el-button--primary {
+    background-color: #003B4A !important;
+    border-color: #003B4A !important;
+    border-radius: 10px !important;
+    height: 40px !important; 
+    padding: 0 20px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px !important;
+    font-weight: 600;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #245965 !important;
+    }
   }
 </style>

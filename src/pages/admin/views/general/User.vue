@@ -1,16 +1,21 @@
 <template>
   <div class="view">
-    <Panel :title="$t('m.User_User') ">
+    <!-- para que los paneles se vean separados y flotando -->
+    <Panel style="margin-bottom: 25px;">
+      <span slot="title" style="color: #82a69a; font-weight: bold;">
+        {{ $t('m.User_User') }}
+      </span>
       <div slot="header">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-button v-show="selectedUsers.length"
-                       type="warning" icon="el-icon-fa-trash"
-                       @click="deleteUsers(selectedUserIDs)">Delete
+            style="background-color: red; font-weight: bold; color: white; border-radius: 10px"
+                       icon="el-icon-fa-trash"
+                       @click="deleteUsers(selectedUserIDs)">{{ $t('m.Delete') }}
             </el-button>
           </el-col>
           <el-col :span="selectedUsers.length ? 16: 24">
-            <el-input v-model="keyword" prefix-icon="el-icon-search" placeholder="Keywords"></el-input>
+            <el-input v-model="keyword" prefix-icon="el-icon-search" :placeholder="$t('m.Keyword')"></el-input>
           </el-col>
         </el-row>
       </div>
@@ -20,41 +25,44 @@
         @selection-change="handleSelectionChange"
         ref="table"
         :data="userList"
-        style="width: 100%">
-        <el-table-column type="selection" width="55"></el-table-column>
+        style="width: 100%"
+        :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
+        <el-table-column type="selection" width="55" align="center" header-align="center"></el-table-column>
 
-        <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table-column prop="id" :label="$t('m.ID')" width="60" align="center"></el-table-column>
 
-        <el-table-column prop="username" label="Username"></el-table-column>
+        <el-table-column prop="username" :label="$t('m.User_Username')" width="150" align="center"></el-table-column>
 
-        <el-table-column prop="create_time" label="Create Time">
+        <el-table-column prop="create_time" :label="$t('m.Create_Time')" width="150" align="center">
           <template slot-scope="scope">
             {{scope.row.create_time | localtime }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="last_login" label="Last Login">
+        <el-table-column prop="last_login" :label="$t('m.Last_Login')" width="150" align="center">
           <template slot-scope="scope">
             {{scope.row.last_login | localtime }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="real_name" label="Real Name"></el-table-column>
+        <el-table-column prop="real_name" :label="$t('m.User_Real_Name')" width="150" align="center"></el-table-column>
 
-        <el-table-column prop="email" label="Email"></el-table-column>
+        <el-table-column prop="email" :label="$t('m.User_Email')" width="200" align="center"></el-table-column>
 
-        <el-table-column prop="admin_type" label="User Type">
+        <el-table-column prop="admin_type" :label="$t('m.User_Type')" width="130" align="center">
           <template slot-scope="scope">
             {{ scope.row.admin_type }}
           </template>
         </el-table-column>
 
-        <el-table-column fixed="right" label="Option" width="200">
+        <el-table-column  :label="$t('m.Option')" width="100" align="center">
           <template slot-scope="{row}">
-            <icon-btn name="Edit" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>
-            <icon-btn name="Delete" icon="trash" @click.native="deleteUsers([row.id])"></icon-btn>
+            <icon-btn name="Edit" icon="edit" style="color: #409EFF;" @click.native="openUserDialog(row.id)"></icon-btn>
+            <icon-btn name="Delete" icon="trash" style="color: #F56C6C; background-color: red; border-radius: 10px;" @click.native="deleteUsers([row.id])"></icon-btn>
           </template>
         </el-table-column>
+
+        
       </el-table>
       <div class="panel-options">
         <el-pagination
@@ -68,7 +76,7 @@
     </Panel>
 
     <Panel>
-      <span slot="title">{{$t('m.Import_User')}}
+      <span slot="title" style="color: #82a69a; font-weight: bold;">{{$t('m.Import_User')}}
         <el-popover placement="right" trigger="hover">
           <p>Only support csv file without headers, check the <a
             href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> for details</p>
@@ -80,7 +88,7 @@
                  :show-file-list="false"
                  accept=".csv"
                  :before-upload="handleUsersCSV">
-        <el-button size="small" icon="el-icon-fa-upload" type="primary">Choose File</el-button>
+        <el-button icon="el-icon-fa-upload" type="primary">Elegir Archivo</el-button>
       </el-upload>
       <template v-else>
         <el-table :data="uploadUsersPage">
@@ -106,11 +114,11 @@
           </el-table-column>
         </el-table>
         <div class="panel-options">
-          <el-button type="primary" size="small"
+          <el-button type="primary" 
                      icon="el-icon-fa-upload"
                      @click="handleUsersUpload">Import All
           </el-button>
-          <el-button type="warning" size="small"
+          <el-button type="warning"
                      icon="el-icon-fa-undo"
                      @click="handleResetData">Reset Data
           </el-button>
@@ -125,31 +133,34 @@
       </template>
     </Panel>
 
-    <Panel :title="$t('m.Generate_User')">
+    <Panel style="margin-bottom: 25px;">
+      <span slot="title" style="color: #82a69a; font-weight: bold;">
+        {{ $t('m.Generate_User') }}
+      </span>
       <el-form :model="formGenerateUser" ref="formGenerateUser">
         <el-row type="flex" justify="space-between">
           <el-col :span="4">
-            <el-form-item label="Prefix" prop="prefix">
-              <el-input v-model="formGenerateUser.prefix" placeholder="Prefix"></el-input>
+            <el-form-item :label="$t('m.Prefix')" prop="prefix" style="font-weight: bold;">
+              <el-input v-model="formGenerateUser.prefix" :placeholder="$t('m.Prefix')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="Suffix" prop="suffix">
-              <el-input v-model="formGenerateUser.suffix" placeholder="Suffix"></el-input>
+            <el-form-item :label="$t('m.Suffix')" prop="suffix" style="font-weight: bold;">
+              <el-input v-model="formGenerateUser.suffix" :placeholder="$t('m.Suffix')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="Start Number" prop="number_from" required>
+            <el-form-item :label="$t('m.Start_Number')" prop="number_from" required style="font-weight: bold;">
               <el-input-number v-model="formGenerateUser.number_from" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="End Number" prop="number_to" required>
+            <el-form-item :label="$t('m.End_Number')" prop="number_to" required style="font-weight: bold;">
               <el-input-number v-model="formGenerateUser.number_to" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="Password Length" prop="password_length" required>
+            <el-form-item :label="$t('m.Password_Length')" prop="password_length" required style="font-weight: bold;">
               <el-input v-model="formGenerateUser.password_length"
                         placeholder="Password Length"></el-input>
             </el-form-item>
@@ -157,7 +168,7 @@
         </el-row>
 
         <el-form-item>
-          <el-button type="primary" @click="generateUser" icon="el-icon-fa-users" :loading="loadingGenerate">Generate & Export
+          <el-button type="primary" @click="generateUser" icon="el-icon-fa-users" :loading="loadingGenerate">{{ $t('m.Generate_and_Export') }}
           </el-button>
           <span class="userPreview" v-if="formGenerateUser.number_from && formGenerateUser.number_to &&
                                           formGenerateUser.number_from <= formGenerateUser.number_to">
@@ -172,9 +183,10 @@
         </el-form-item>
       </el-form>
     </Panel>
-    <!--对话框-->
-    <el-dialog :title="$t('m.User_Info')" :visible.sync="showUserDialog" :close-on-click-modal="false">
-      <el-form :model="user" label-width="120px" label-position="left">
+    <!--Cuadro de dialogo-->
+    <el-dialog :title="$t('m.User_Info')" :visible.sync="showUserDialog" :close-on-click-modal="false" width="900px"
+  custom-class="user-edit-dialog" style="border-radius: 50px;">
+      <el-form :model="user" label-width="150px" label-position="left">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="$t('m.User_Username')" required>
@@ -206,7 +218,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('m.Problem_Permission')">
+            <el-form-item :label="$t('m.Problem_Permission')" width="250px">
               <el-select v-model="user.problem_permission" :disabled="user.admin_type!=='Admin'">
                 <el-option label="None" value="None"></el-option>
                 <el-option label="Own" value="Own"></el-option>
@@ -422,7 +434,7 @@
 
 <style scoped lang="less">
   .import-user-icon {
-    color: #555555;
+    color: #82a69a;
     margin-left: 4px;
   }
 
@@ -436,4 +448,41 @@
       text-align: left;
     }
   }
+
+  //otras modificaciones
+  .panel {
+    background: #ffffff !important;
+    border-radius: 20px !important; 
+    border: none !important; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden; 
+    padding: 0 10px !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+  /* Personalización de los botones existentes en el sistema */
+  .el-button--primary {
+    background-color: #003B4A !important;
+    border-color: #003B4A !important;
+    border-radius: 10px !important;
+    height: 40px !important; 
+    padding: 0 20px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-weight: 600;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #245965 !important;
+    }
+
+    i {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+
+
+
 </style>
