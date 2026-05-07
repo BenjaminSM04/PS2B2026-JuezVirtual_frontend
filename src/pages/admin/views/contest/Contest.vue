@@ -46,8 +46,8 @@
             <el-form-item :label="$t('m.Real_Time_Rank')">
               <el-switch
                 v-model="contest.real_time_rank"
-                active-color="#13ce66"
-                inactive-color="#ff4949">
+                active-color="#A60550"
+                inactive-color="#987284">
               </el-switch>
             </el-form-item>
           </el-col>
@@ -56,7 +56,9 @@
               <el-switch
                 v-model="contest.visible"
                 active-text=""
-                inactive-text="">
+                inactive-text=""
+                active-color="#A60550"
+                inactive-color="#987284">
               </el-switch>
             </el-form-item>
           </el-col>
@@ -93,7 +95,7 @@
     },
     data () {
       return {
-        title: 'Create Contest',
+        title: 'Crear Concurso',
         disableRuleType: false,
         contest: {
           title: '',
@@ -138,7 +140,7 @@
     },
     mounted () {
       if (this.$route.name === 'edit-contest') {
-        this.title = 'Edit Contest'
+        this.title = 'Editar Concurso'
         this.disableRuleType = true
         api.getContest(this.$route.params.contestId).then(res => {
           let data = res.data.data
@@ -157,3 +159,100 @@
     }
   }
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap");
+
+.admin-shell__eyebrow {
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.admin-shell__title {
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.panel {
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden;
+    padding: 0 10px !important;
+    font-family: 'Funnel Display', sans-serif;
+}
+
+.view .el-form-item__label:before {
+  display: none !important;
+}
+
+.view .title{
+  color:#090808 !important;
+  font-size: 25px !important;
+  font-weight: bold !important;
+}
+
+.view .el-form-item__label {
+  display: block;
+  text-align: left;
+  padding: 0;
+  font-size: 20px;
+  color: black;
+  font-weight:400 ;
+}
+
+.view .el-input__inner {
+  border: 2px solid #987284;   
+  border-radius: 10px;        
+  height: 40px;               
+  font-size: 15px;            
+  padding: 0 12px 0 35px;             
+  max-width: 500px;
+}
+
+.view .el-input__inner::placeholder {
+  color: #ADADAD;
+  font-weight: bold;
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.view .el-button{
+  background-color: #003B4A;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Funnel Display', sans-serif;
+  font-weight: bold;
+  border-color: #003B4A;
+  border-radius: 10px;
+  width: 140px !important;
+  height: 37.98px !important;
+  padding: 0;
+  line-height: 37.98px ;
+  /*transition: all 0.3s ease;*/
+}
+.view .el-textarea__inner {
+  border: 2px solid #987284;
+  border-radius: 10px;
+  color: #000000;
+}
+.view .el-button:hover {
+  background-color: #245965;
+  border-color: #245965;
+  /*transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+}
+
+.view .el-radio__inner {
+  border-color: #987284;
+}
+
+.view .el-radio__input.is-checked .el-radio__inner {
+  background-color: #A60550;
+  border-color: #A60550;
+}
+
+.view .el-radio__input.is-checked + .el-radio__label {
+  color: #A60550;
+  font-family: 'Funnel Display', sans-serif;
+  font-size: 20px;
+}
+
+</style>

@@ -1,25 +1,26 @@
 <template>
   <div class="view">
-    <Panel title="Contest List">
+    <Panel title="Lista de Concursos">
       <div slot="header">
         <el-input
           v-model="keyword"
           prefix-icon="el-icon-search"
-          placeholder="Keywords">
+          placeholder="Palabras clave">
         </el-input>
       </div>
       <el-table
         v-loading="loading"
-        element-loading-text="loading"
+        
+        element-loading-text="Cargando..."
         ref="table"
         :data="contestList"
         style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <p>Start Time: {{props.row.start_time | localtime }}</p>
-            <p>End Time: {{props.row.end_time | localtime }}</p>
-            <p>Create Time: {{props.row.create_time | localtime}}</p>
-            <p>Creator: {{props.row.created_by.username}}</p>
+            <p>Hora de Inicio: {{props.row.start_time | localtime }}</p>
+            <p>Hora de Fin: {{props.row.end_time | localtime }}</p>
+            <p>Fecha de Creación: {{props.row.create_time | localtime}}</p>
+            <p>Creador: {{props.row.created_by.username}}</p>
           </template>
         </el-table-column>
         <el-table-column
@@ -29,17 +30,17 @@
         </el-table-column>
         <el-table-column
           prop="title"
-          label="Title">
+          label="Título">
         </el-table-column>
         <el-table-column
-          label="Rule Type"
+          label="Tipo de Regla"
           width="130">
           <template slot-scope="scope">
             <el-tag type="gray">{{scope.row.rule_type}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          label="Contest Type"
+          label="Tipo de Concurso"
           width="180">
           <template slot-scope="scope">
             <el-tag :type="scope.row.contest_type === 'Public' ? 'success' : 'primary'">
@@ -48,7 +49,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Status"
+          label="Estado"
           width="130">
           <template slot-scope="scope">
             <el-tag
@@ -64,6 +65,8 @@
             <el-switch v-model="scope.row.visible"
                        active-text=""
                        inactive-text=""
+                       active-color="#A60550"
+                        inactive-color="#987284"
                        @change="handleVisibleSwitch(scope.row)">
             </el-switch>
           </template>
@@ -71,7 +74,7 @@
         <el-table-column
           fixed="right"
           width="250"
-          label="Operation">
+          label="Operación">
           <div slot-scope="scope">
             <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
             <icon-btn name="Problem" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
@@ -92,12 +95,12 @@
         </el-pagination>
       </div>
     </Panel>
-    <el-dialog title="Download Contest Submissions"
+    <el-dialog title="Descargar Entregas del Concurso"
                width="30%"
                :visible.sync="downloadDialogVisible">
-      <el-switch v-model="excludeAdmin" active-text="Exclude admin submissions"></el-switch>
+      <el-switch v-model="excludeAdmin" active-text="EExcluir entregas de admin"></el-switch>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="downloadSubmissions">确 定</el-button>
+        <el-button type="primary" @click="downloadSubmissions">Aceptar</el-button>
       </span>
     </el-dialog>
   </div>
@@ -176,3 +179,38 @@
     }
   }
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap");
+
+.view .title{
+  color:#090808 !important;
+  font-size: 25px !important;
+  font-weight: bold !important;
+}
+.view .cell{
+  font-family: 'Funnel Display', sans-serif;
+  font-size: 16px;
+}
+
+.view .el-button{
+  background-color: #003B4A;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Funnel Display', sans-serif;
+  font-weight: bold;
+  border-color: #003B4A;
+  border-radius: 10px;
+  width: 35px !important;
+  height: 35px !important;
+  padding: 0;
+  line-height: 35px ;
+  /*transition: all 0.3s ease;*/
+}
+
+.view .el-button:hover {
+  background-color: #245965;
+  border-color: #245965;
+  /*transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+}
+</style>
