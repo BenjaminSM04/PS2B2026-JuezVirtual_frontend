@@ -330,13 +330,13 @@ function ajax (url, method, options) {
       } else {
         resolve(res)
         if (method !== 'get') {
-          Vue.prototype.$success('Operación exitosa')
+          Vue.prototype.$success('Succeeded')
         }
       }
     }, res => {
       // API请求异常，一般为Server error 或 network error
       reject(res)
-      Vue.prototype.$error('Error del servidor o de red')
+      Vue.prototype.$error(res.data.data)
     })
   })
 }

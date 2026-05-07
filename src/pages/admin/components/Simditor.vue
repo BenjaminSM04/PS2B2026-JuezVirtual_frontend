@@ -4,31 +4,6 @@
 
 <script>
   import Simditor from 'tar-simditor'
-  Simditor.i18n['es'] = {
-  'title': 'Título',
-  'normalText': 'Texto normal',
-  'bold': 'Negrita',
-  'italic': 'Cursiva',
-  'underline': 'Subrayado',
-  'strikethrough': 'Tachado',
-  'fontScale': 'Tamaño de fuente',
-  'color': 'Color de texto',
-  'ol': 'Lista numerada',
-  'ul': 'Lista de viñetas',
-  'blockquote': 'Cita',
-  'code': 'Código',
-  'table': 'Tabla',
-  'image': 'Imagen',
-  'link': 'Enlace',
-  'hr': 'Línea horizontal',
-  'indent': 'Aumentar sangría',
-  'outdent': 'Disminuir sangría',
-  'alignment': 'Alineación',
-  'markdown': 'Markdown'
-}
-
-Simditor.locale = 'es'
-
   import 'tar-simditor/styles/simditor.css'
   import 'tar-simditor-markdown'
   import 'tar-simditor-markdown/styles/simditor-markdown.css'
@@ -88,7 +63,6 @@ Simditor.locale = 'es'
       this.editor = new Simditor({
         textarea: this.$refs.editor,
         toolbar: this.toolbar,
-        locale: 'es',
         pasteImage: true,
         markdown: false,
         // Esta es la configuración completa para que el menú aparezca
