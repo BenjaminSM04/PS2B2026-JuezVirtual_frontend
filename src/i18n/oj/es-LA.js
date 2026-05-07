@@ -193,7 +193,7 @@ export const m = {
   No_Account: '¿No tienes cuenta? ¡Regístrate ahora!',
   Forget_Password: 'Olvidé mi Contraseña',
   UserLogin: 'Iniciar Sesión',
-  Welcome_back: 'Bienvenido nuevamente a Juez Virtual',
+  Welcome_back: 'Bienvenido nuevamente a LizarJudge',
   // OIRank.vue
   OI_Ranklist: 'Ranking OI',
   // OIContestRank.vue
@@ -221,6 +221,8 @@ export const m = {
   The_email_already_exists: 'El correo electrónico ya existe.',
   password_does_not_match: 'La contraseña no coincide',
   Thanks_for_registering: 'Registro exitoso. Ya puedes iniciar sesión en Juez Virtual.',
+  Username_only_letters: 'El nombre de usuario solo puede contener letras, espacios (no al inicio ni al final), guiones y guiones bajos',
+  Invalid_email_format: 'Por favor ingresa una dirección de correo electrónico válida',
   // ResetPassword.vue and ApplyResetPassword.vue
   Reset_Password: 'Recuperar Contraseña',
   RPassword: 'Contraseña',
