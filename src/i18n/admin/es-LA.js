@@ -47,16 +47,11 @@ export const m = {
   Announcement_Title: 'Título',
   Announcement_Content: 'Contenido',
   Announcement_visible: 'Visible',
-  Create: 'Crear',
-
   Title: 'Título',
-  Last_Update_Time: 'Última Actualización',
-  Edit_Announcement: 'Editar Anuncio',
   Create_Announcement: 'Crear Anuncio',
   Succeeded: 'Éxito',
   // Conf.vue
   SMTP_Config: 'Configuración SMTP',
-  Server: 'Servidor',
   Port: 'Puerto',
   Email: 'Correo',
   Password: 'Contraseña',
