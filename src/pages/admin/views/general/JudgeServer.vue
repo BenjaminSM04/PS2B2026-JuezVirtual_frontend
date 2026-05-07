@@ -8,74 +8,56 @@
         :data="servers"
         :default-expand-all="true"
         border>
+
         <el-table-column type="expand">
           <template slot-scope="props">
-            <p>{{$t('m.IP')}}:
-              <el-tag class="custom-green-tag">
-              {{ props.row.ip }}
-              </el-tag>&nbsp;&nbsp;
+            <p>
+              {{$t('m.IP')}}:
+              <el-tag class="tag-green bold">
+                {{ props.row.ip }}
+              </el-tag>
+
+              &nbsp;&nbsp;
 
               {{$t('m.Judger_Version')}}:
-              <el-tag class="custom-green-tag">
-              {{ props.row.judger_version }}
+              <el-tag class="tag-green bold">
+                {{ props.row.judger_version }}
               </el-tag>
             </p>
-
-            <p>{{$t('m.Service_URL')}}:
-              <code>{{ props.row.service_url }}</code>
-            </p>
-
-            <p>{{$t('m.Last_Heartbeat')}}:
-              {{ props.row.last_heartbeat | localtime}}
-            </p>
-
-            <p>{{$t('m.Create_Time')}}:
-              {{ props.row.create_time | localtime }}
-            </p>
+            <p>{{$t('m.Service_URL')}}: <code>{{ props.row.service_url }}</code></p>
+            <p>{{$t('m.Last_Heartbeat')}}: {{ props.row.last_heartbeat | localtime}}</p>
+            <p>{{$t('m.Create_Time')}}: {{ props.row.create_time | localtime }}</p>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="status"
-          label="Status">
+        <el-table-column prop="status" label="Status">
           <template slot-scope="scope">
             <el-tag
-              :class="scope.row.status === 'normal' ? 'custom-green-tag' : 'custom-red-tag'">
+              :class="scope.row.status === 'normal' ? 'tag-green bold' : 'tag-red bold'">
               {{ scope.row.status === 'normal' ? 'Normal' : 'Abnormal' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="hostname"
-          label="Hostname">
-        </el-table-column>
-        <el-table-column
-          prop="task_number"
-          label="Task Number">
-        </el-table-column>
-        <el-table-column
-          prop="cpu_core"
-          label="CPU Core">
-        </el-table-column>
-        <el-table-column
-          prop="cpu_usage"
-          label="CPU Usage">
+        <el-table-column prop="hostname" label="Hostname"></el-table-column>
+        <el-table-column prop="task_number" label="Task Number"></el-table-column>
+        <el-table-column prop="cpu_core" label="CPU Core"></el-table-column>
+        <el-table-column prop="cpu_usage" label="CPU Usage">
           <template slot-scope="scope">{{ scope.row.cpu_usage }}%</template>
         </el-table-column>
-        <el-table-column
-          prop="memory_usage"
-          label="Memory Usage">
+        <el-table-column prop="memory_usage" label="Memory Usage">
           <template slot-scope="scope">{{ scope.row.memory_usage }}%</template>
         </el-table-column>
         <el-table-column label="Disabled">
           <template slot-scope="{row}">
-            <el-switch v-model="row.is_disabled" @change="handleDisabledSwitch(row.id, row.is_disabled)"></el-switch>
+            <el-switch v-model="row.is_disabled"
+              @change="handleDisabledSwitch(row.id, row.is_disabled)">
+            </el-switch>
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="Options">
+        <el-table-column fixed="right" label="Options">
           <template slot-scope="scope">
-            <icon-btn name="Delete" icon="trash" @click.native="deleteJudgeServer(scope.row.hostname)"></icon-btn>
+            <icon-btn name="Delete" icon="trash"
+              @click.native="deleteJudgeServer(scope.row.hostname)">
+            </icon-btn>
           </template>
         </el-table-column>
       </el-table>
@@ -134,22 +116,26 @@
     }
   }
 </script>
-<style>
-.panel {
-  border: 2px solid rgba(17, 55, 49, 0.15) !important;
-  border-radius: 18px;
-}
 
-.custom-green-tag {
-  background-color: #BDF2D4 !important;
-  color: #0f5132 !important;
-  border-radius: 8px;
-}
+<style scoped>
+  .tag-green {
+    background-color: #BDF2D4 !important;
+    color: #1f5c48 !important;
+    border: 1px solid #8edbb8 !important;
+  }
 
-.custom-red-tag {
-  background-color: #A60550 !important;
-  color: white !important;
-  border-radius: 8px;
-}
+  .tag-red {
+    background-color: #A60550 !important;
+    color: #ffffff !important;
+    border: 1px solid #7a043b !important;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .panel {
+    border: 2px solid rgba(17, 55, 49, 0.15) !important;
+    border-radius: 18px;
+  }
 </style>
-
