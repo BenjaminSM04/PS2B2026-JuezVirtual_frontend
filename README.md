@@ -7,7 +7,7 @@
 [![katex](https://img.shields.io/badge/katex-0.16.45-blue.svg?style=flat-square)](https://katex.org/)
 [![licencia](https://img.shields.io/badge/licencia-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
-> Frontend de **LizardJudge Univalle**, plataforma de juez en línea para la **Universidad Privada del Valle (UPV) — sede La Paz, Bolivia**.
+> Frontend de **LizardJudge Univalle**, plataforma de juez en línea para la **Universidad Privada del Valle (Univalle) — sede La Paz, Bolivia**.
 
 Permite a estudiantes resolver problemas de programación, participar en concursos y consultar rankings; y a los docentes administrar problemas, anuncios y servidores de evaluación.
 
@@ -156,7 +156,7 @@ Las tareas asignadas a cada sprint se encuentran en el [Project board](https://g
 
 ## Atribución
 
-LizardJudge Univalle es un **fork** del proyecto [OnlineJudgeFE](https://github.com/QingdaoU/OnlineJudgeFE) desarrollado originalmente por el equipo de [QingdaoU](https://github.com/QingdaoU). Conserva la misma licencia MIT del proyecto original. Agradecimientos a sus autores por proporcionar la base sobre la cual se construye esta personalización para la UPV.
+LizardJudge Univalle es un **fork** del proyecto [OnlineJudgeFE](https://github.com/QingdaoU/OnlineJudgeFE) desarrollado originalmente por el equipo de [QingdaoU](https://github.com/QingdaoU). Conserva la misma licencia MIT del proyecto original. Agradecimientos a sus autores por proporcionar la base sobre la cual se construye esta personalización para la Universidad Privada del Valle.
 
 El backend recomendado para esta plataforma es [QingdaoU/OnlineJudge](https://github.com/QingdaoU/OnlineJudge).
 
