@@ -2,12 +2,12 @@
   <div class="flex-container">
     <div id="main">
       <Panel shadow>
-        <div slot="title">{{title}}</div>
+        <div slot="title" style="font-weight: bold; color: #a60550;">{{title}}</div>
         <div slot="extra">
           <ul class="filter">
             <li>
               <Dropdown @on-click="handleResultChange">
-                <span>{{status}}
+                <span style="color: #a60550; font-weight: bold">{{status}}
                   <Icon type="arrow-down-b"></Icon>
                 </span>
                 <Dropdown-menu slot="list">
@@ -21,17 +21,22 @@
 
 
             <li>
-              <i-switch size="large" v-model="formFilter.myself" @on-change="handleQueryChange">
+              <i-switch size="large" v-model="formFilter.myself" @on-change="handleQueryChange" >
                 <span slot="open">{{$t('m.Mine')}}</span>
                 <span slot="close">{{$t('m.All')}}</span>
               </i-switch>
             </li>
             <li>
-              <Input v-model="formFilter.username" :placeholder="$t('m.Search_Author')" @on-enter="handleQueryChange"/>
+              <Input v-model="formFilter.username" icon="ios-search" :placeholder="$t('m.Search_Author')" @on-enter="handleQueryChange" class="search-input-left"/>
             </li>
 
             <li>
-              <Button type="info" icon="refresh" @click="getSubmissions">{{$t('m.Refresh')}}</Button>
+              <Button type="info" icon="refresh" @click="getSubmissions" 
+              @mouseover.native="isHover = true" 
+              @mouseleave.native="isHover = false"
+              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
+                      borderColor: isHover ? '#987284' : '#a60550',
+                      fontWeight: 'bold'}">{{$t('m.Refresh')}}</Button>
             </li>
           </ul>
         </div>
@@ -57,6 +62,7 @@
     },
     data () {
       return {
+        isHover: false,
         formFilter: {
           myself: false,
           result: '',
@@ -77,8 +83,9 @@
               if (params.row.show_link) {
                 return h('span', {
                   style: {
-                    color: '#664D59',
-                    cursor: 'pointer'
+                    color: '#A60550',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
                   },
                   on: {
                     click: () => {
@@ -345,4 +352,46 @@
       width: 210px;
     }
   }
+
+/deep/ .ivu-switch-large {
+    width: 80px; /* Ajusta este valor para hacerlo tan largo como se quiera */
+  }
+
+  /*Ajustar la posición del círculo cuando está ACTIVADO */
+  /deep/ .ivu-switch-large.ivu-switch-checked:after {
+    left: 58px; /* Debe ser proporcional al ancho de arriba */
+  }
+  
+  /deep/ .ivu-switch{
+    border-color: #A60550 !important; 
+    background-color: #A60550 !important; 
+  }
+  /deep/ .ivu-switch-checked {
+    border-color: #BDF2D4 !important;
+    background-color: #BDF2D4 !important;
+  }
+  /* Texto cuando está en Verde (Activado) */
+  /deep/ .ivu-switch-checked .ivu-switch-inner {
+    color: black !important;
+  }
+
+  /* Cambia el color de fondo y texto del encabezado "Opción" */
+  /deep/ .ivu-table-fixed-right thead th {
+    background-color: #664D59 !important;
+    color: #ffffff !important; /* Texto blanco para que resalte */
+  }
+
+  /* texto "Opción" esté en negritas */
+  /deep/ .ivu-table-fixed-right thead th span {
+    font-weight: bold;
+  }
+
+
+  /deep/ .ivu-table-header th {
+    border-bottom: 2px solid #A60550 !important;
+    border-top:2px solid #A60550 !important;
+  }
+
+
 </style>
+
