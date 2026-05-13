@@ -1,6 +1,6 @@
 <template>
   <Panel shadow :padding="10">
-    <div slot="title">
+    <div slot="title" class="announcement-title">
       {{title}}
     </div>
     <div slot="extra">
@@ -166,4 +166,13 @@
   .announcement-animate-enter-active {
     animation: fadeIn 1s;
   }
+
+  /* Modificación 05/12/2026 */
+  .announcement-title {
+  color: #7B1E3A !important;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
 </style>
