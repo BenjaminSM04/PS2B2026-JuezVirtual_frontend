@@ -1299,12 +1299,19 @@ braces@^2.3.1, braces@^2.3.2:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-braces@^3.0.3, braces@~3.0.2:
+braces@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/braces/-/braces-3.0.3.tgz"
   integrity sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==
   dependencies:
     fill-range "^7.1.1"
+
+braces@~3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/braces/-/braces-3.0.2.tgz"
+  integrity sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
+  dependencies:
+    fill-range "^7.0.1"
 
 brorand@^1.0.1, brorand@^1.1.0:
   version "1.1.0"
@@ -3351,15 +3358,7 @@ extend-shallow@^2.0.1:
   dependencies:
     is-extendable "^0.1.0"
 
-extend-shallow@^3.0.0:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/extend-shallow/-/extend-shallow-3.0.2.tgz"
-  integrity sha512-BwY5b5Ql4+qZoefgMj2NUmx+tehVTH/Kf4k1ZEtOHNFcm2wSxMRo992l6X3TIgni2eZVTZ85xMOjF31fwZAj6Q==
-  dependencies:
-    assign-symbols "^1.0.0"
-    is-extendable "^1.0.1"
-
-extend-shallow@^3.0.2:
+extend-shallow@^3.0.0, extend-shallow@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/extend-shallow/-/extend-shallow-3.0.2.tgz"
   integrity sha512-BwY5b5Ql4+qZoefgMj2NUmx+tehVTH/Kf4k1ZEtOHNFcm2wSxMRo992l6X3TIgni2eZVTZ85xMOjF31fwZAj6Q==
@@ -3482,6 +3481,13 @@ fill-range@^4.0.0:
     is-number "^3.0.0"
     repeat-string "^1.6.1"
     to-regex-range "^2.1.0"
+
+fill-range@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.npmjs.org/fill-range/-/fill-range-7.0.1.tgz"
+  integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
+  dependencies:
+    to-regex-range "^5.0.1"
 
 fill-range@^7.1.1:
   version "7.1.1"
@@ -4391,15 +4397,7 @@ is-descriptor@^0.1.0:
     is-accessor-descriptor "^1.0.1"
     is-data-descriptor "^1.0.1"
 
-is-descriptor@^1.0.0:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/is-descriptor/-/is-descriptor-1.0.3.tgz"
-  integrity sha512-JCNNGbwWZEVaSPtS45mdtrneRWJFp07LLmykxeFV5F6oBvNF8vHSfJuJgoT472pSfk+Mf8VnlrspaFBHWM8JAw==
-  dependencies:
-    is-accessor-descriptor "^1.0.1"
-    is-data-descriptor "^1.0.1"
-
-is-descriptor@^1.0.2:
+is-descriptor@^1.0.0, is-descriptor@^1.0.2:
   version "1.0.3"
   resolved "https://registry.npmjs.org/is-descriptor/-/is-descriptor-1.0.3.tgz"
   integrity sha512-JCNNGbwWZEVaSPtS45mdtrneRWJFp07LLmykxeFV5F6oBvNF8vHSfJuJgoT472pSfk+Mf8VnlrspaFBHWM8JAw==
@@ -4413,6 +4411,11 @@ is-directory@^0.3.1:
   integrity sha512-yVChGzahRFvbkscn2MlwGismPO12i9+znNruC5gVEntG3qu0xQMzsGg/JFbrsqDOHtHFPci+V5aP5T9I+yeKqw==
 
 is-extendable@^0.1.0, is-extendable@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/is-extendable/-/is-extendable-0.1.1.tgz"
+  integrity sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw==
+
+is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/is-extendable/-/is-extendable-0.1.1.tgz"
   integrity sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw==
@@ -4715,10 +4718,10 @@ jquery@^2.1.4, jquery@2.x:
   resolved "https://registry.npmjs.org/jquery/-/jquery-2.2.4.tgz"
   integrity sha512-lBHj60ezci2u1v2FqnZIraShGgEXq35qCzMv4lITyHGppTnA13rwR0MgwyNJh9TnDs3aXUvd1xjAotfraMHX/Q==
 
-jquery@^3.1.1, jquery@^3.3.1:
-  version "3.7.1"
-  resolved "https://registry.npmjs.org/jquery/-/jquery-3.7.1.tgz"
-  integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
+jquery@=3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/jquery/-/jquery-3.1.1.tgz"
+  integrity sha512-zuiWRmx65Kd1oFGdWLvAjbsumdOBFvs3r1vuqCyKFF79R7exBHNbiNEJ8LR+xkzgfxqBznMD/4Cv6PHXS6mvEw==
 
 js-base64@^2.1.9:
   version "2.6.4"
@@ -5195,7 +5198,15 @@ micromatch@^3.1.10, micromatch@^3.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-micromatch@^4.0.2, micromatch@^4.0.8:
+micromatch@^4.0.2:
+  version "4.0.8"
+  resolved "https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz"
+  integrity sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==
+  dependencies:
+    braces "^3.0.3"
+    picomatch "^2.3.1"
+
+micromatch@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz"
   integrity sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==
@@ -7566,8 +7577,7 @@ simple-hotkeys@^1.0.3, simple-hotkeys@~1.0.3:
 
 "simple-hotkeys@github:itargaryen/simple-hotkeys":
   version "0.2.1"
-  resolved "git+ssh://git@github.com/itargaryen/simple-hotkeys.git"
-  integrity sha512-vi1LFf9LbKGd0M29eN2qVZVfjimRR+MwJJlTznT4qGejG7PIqAjd2QEMZJAPNYZiDwOar/42wp/mgPjGsA5Lrw==
+  resolved "git+ssh://git@github.com/itargaryen/simple-hotkeys.git#8a6b2cf19d06100ac86d7ce4d442df08c561b7e9"
 
 simple-module@^2.0.6, simple-module@~2.0.5, simple-module@~2.0.6:
   version "2.0.6"
@@ -7576,12 +7586,11 @@ simple-module@^2.0.6, simple-module@~2.0.5, simple-module@~2.0.6:
   dependencies:
     jquery "2.x"
 
-simple-module@~3.0.0, "simple-module@github:itargaryen/simple-module#v2.1.0":
-  version "3.0.5"
-  resolved "git+ssh://git@github.com/itargaryen/simple-module.git"
-  integrity sha512-vq4Nk0PQjOdxQn4sz0UtfhqeGA44WdxWlT+DXyCYBBx9QXzrlwXPSbWM/P45BDOY/Qi/Scr52rYfcxrsbS+3+w==
+"simple-module@github:itargaryen/simple-module#v2.1.0":
+  version "2.1.0"
+  resolved "git+ssh://git@github.com/itargaryen/simple-module.git#ea2688c579170eca533cd0bd8ba7f83c8d241a1c"
   dependencies:
-    jquery "^3.1.1"
+    jquery "=3.1.1"
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
@@ -7599,12 +7608,11 @@ simple-uploader@^2.0.7, simple-uploader@~2.0.7:
     simple-module "~2.0.5"
 
 "simple-uploader@github:itargaryen/simple-uploader#v2.1.0":
-  version "3.0.1"
-  resolved "git+ssh://git@github.com/itargaryen/simple-uploader.git"
-  integrity sha512-QV09CnlZvQuIKE35ZddxrHt9atatp92uhHY5gcUSRatBULbowjFswMnhwGJ8X/AE/bx6gHBSS2AzxU9sS1l5Kg==
+  version "2.1.0"
+  resolved "git+ssh://git@github.com/itargaryen/simple-uploader.git#79d795ca1ce0b163c0e335fddad5bf9393004780"
   dependencies:
-    jquery "^3.3.1"
-    simple-module "~3.0.0"
+    jquery "=3.1.1"
+    simple-module "github:itargaryen/simple-module#v2.1.0"
 
 slash@^1.0.0:
   version "1.0.0"
