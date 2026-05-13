@@ -193,7 +193,9 @@ export const m = {
   No_Account: '¿No tienes cuenta? ¡Regístrate ahora!',
   Forget_Password: 'Olvidé mi Contraseña',
   UserLogin: 'Iniciar Sesión',
-  Welcome_back: 'Bienvenido nuevamente a LizarJudge',
+  Welcome_back: 'Bienvenido de vuelta a LizardJudge Univalle',
+  University_Subtitle: 'Universidad Privada del Valle · Sede La Paz',
+  University_Footer: 'Universidad Privada del Valle — La Paz, Bolivia',
   // OIRank.vue
   OI_Ranklist: 'Ranking OI',
   // OIContestRank.vue

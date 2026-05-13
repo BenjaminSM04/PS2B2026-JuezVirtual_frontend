@@ -54,8 +54,7 @@ Simditor.locale = 'es'
       }
     },
     mounted () {
-      Simditor.i18n = {
-    'zh-CN': {
+      Simditor.i18n['zh-CN'] = {
       'title': 'Título',
       'bold': 'Negrita',
       'italic': 'Cursiva',
@@ -82,8 +81,7 @@ Simditor.locale = 'es'
       'title1': 'Título 1',
       'title2': 'Título 2',
       'title3': 'Título 3'
-    }
-  }
+      }
 
       this.editor = new Simditor({
         textarea: this.$refs.editor,

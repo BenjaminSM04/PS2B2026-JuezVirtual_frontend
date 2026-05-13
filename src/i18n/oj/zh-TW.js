@@ -193,7 +193,9 @@ export const m = {
   No_Account: '沒有帳號，立即註冊!',
   Forget_Password: '忘記密碼',
   UserLogin: '登入',
-  Welcome_back: '歡迎回來',
+  Welcome_back: '歡迎回到 LizardJudge Univalle',
+  University_Subtitle: '瓦列私立大學 · 拉巴斯校區',
+  University_Footer: '瓦列私立大學 — 玻利維亞拉巴斯',
   // OIRank.vue
   OI_Ranklist: 'OI 排名',
   // OIContestRank.vue

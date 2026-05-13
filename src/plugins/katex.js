@@ -1,34 +1,29 @@
 import 'katex/dist/katex.min.css'
+import renderMathInElement from 'katex/dist/contrib/auto-render.js'
 
-const renderMathInElement = require('katex/dist/contrib/auto-render.js')
-
-function _ () {
-}
+const noop = () => {}
 
 const defaultOptions = {
-  errorCallback: _,
+  errorCallback: noop,
   throwOnError: false,
   delimiters: [
     {left: '$$', right: '$$', display: true},
-    {left: '$', right: '$', display: false},
     {left: '\\[', right: '\\]', display: true},
-    {left: '\\(', right: '\\)', display: false}
+    {left: '\\(', right: '\\)', display: false},
+    {left: '$', right: '$', display: false}
   ]
 }
 
 function render (el, binding) {
-  let options = {}
-  if (binding.value) {
-    options = binding.value.options || {}
-  }
-  Object.assign(options, defaultOptions)
+  const userOptions = binding.value && binding.value.options ? binding.value.options : {}
+  const options = Object.assign({}, defaultOptions, userOptions)
   renderMathInElement(el, options)
 }
 
 export default {
-  install: function (Vue, options) {
+  install: function (Vue) {
     Vue.directive('katex', {
-      bind: render,
+      inserted: render,
       componentUpdated: render
     })
   }

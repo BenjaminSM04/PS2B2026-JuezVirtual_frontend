@@ -92,7 +92,11 @@
       </div>
     </Menu>
     <Modal v-model="modalVisible" :width="560" class-name="auth-modal">
-      <div slot="header" class="modal-title" style="font-size: 25px; font-weight: 700; text-align: center; margin-top: 15px; margin-bottom: 15px;">{{$t('m.Welcome_to')}} LizardJudge</div>
+      <div slot="header" class="auth-modal-header">
+        <img src="../../../assets/Logo2.png" alt="LizardJudge Univalle" class="auth-modal-logo"/>
+        <div class="auth-modal-title">{{$t('m.Welcome_to')}} LizardJudge Univalle</div>
+        <div class="auth-modal-subtitle">{{$t('m.University_Subtitle')}}</div>
+      </div>
       <component :is="modalStatus.mode" v-if="modalVisible"></component>
       <div slot="footer" style="display: none"></div>
     </Modal>
@@ -284,5 +288,39 @@
       color: #111;
       font-weight: 600;
     }
+  }
+
+  .auth-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 4px 0 12px;
+  }
+
+  .auth-modal-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    border: 2px solid fade(@oj-secondary, 30%);
+    margin-bottom: 12px;
+  }
+
+  .auth-modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: @oj-dark;
+    line-height: 1.2;
+  }
+
+  .auth-modal-subtitle {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: @oj-secondary;
+    letter-spacing: 0.2px;
   }
 </style>

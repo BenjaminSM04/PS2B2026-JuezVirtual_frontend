@@ -30,6 +30,7 @@
         <a class="auth-link" v-if="website.allow_register" @click.stop="handleBtnClick('register')">{{$t('m.No_Account')}}</a>
         <a class="auth-link" @click.stop="goResetPassword">{{$t('m.Forget_Password')}}</a>
       </div>
+      <div class="auth-footer-brand">{{$t('m.University_Footer')}}</div>
     </div>
   </div>
 </template>
@@ -218,5 +219,14 @@
 
   .auth-link:hover {
     color: @oj-primary;
+  }
+
+  .auth-footer-brand {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: fade(@oj-secondary, 75%);
+    letter-spacing: 0.3px;
   }
 </style>
