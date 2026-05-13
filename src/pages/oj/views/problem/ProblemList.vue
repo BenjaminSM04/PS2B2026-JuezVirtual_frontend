@@ -39,7 +39,8 @@
           </li>
         </ul>
       </div>
-      <Table style="width: 100%; font-size: 16px;"
+      <Table 
+            style="width: 100%; font-size: 16px;"
              :columns="problemTableColumns"
              :data="problemList"
              :loading="loadings.table"
@@ -137,9 +138,9 @@
             title: this.$i18n.t('m.Level'),
             render: (h, params) => {
               let t = params.row.difficulty
-              let color = 'blue'
-              if (t === 'Low') color = 'green'
-              else if (t === 'High') color = 'yellow'
+              let color = '#6D6E71' //blue
+              if (t === 'Low') color = '#4CAF50' //green
+              else if (t === 'High') color = '#7B1E3A' //yellow
               return h('Tag', {
                 props: {
                   color: color
@@ -288,6 +289,24 @@
 </script>
 
 <style scoped lang="less">
+  .filter li {
+    margin-right: 15px;
+  }
+
+  .filter .ivu-dropdown {
+    color: #7B1E3A;
+    font-weight: bold;
+  }
+
+  .filter .ivu-input {
+    border-radius: 8px;
+  }
+
+  .filter .ivu-btn-info {
+    background: #7B1E3A;
+    border-color: #7B1E3A;
+  }
+  
   .taglist-title {
     margin-left: -10px;
     margin-bottom: -10px;

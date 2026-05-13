@@ -2,12 +2,16 @@
   <Row type="flex">
     <Col :span="24">
     <Panel id="contest-card" shadow>
-      <div slot="title">{{query.rule_type === '' ? this.$i18n.t('m.All') : query.rule_type}} {{$t('m.Contests')}}</div>
+      <div slot="title" class="contest-panel-title">
+        <Icon type="clipboard"/>
+        {{query.rule_type === '' ? this.$i18n.t('m.All') : query.rule_type}} {{$t('m.Contests')}}
+      </div>
       <div slot="extra">
         <ul class="filter">
           <li>
             <Dropdown @on-click="onRuleChange">
-              <span>{{query.rule_type === '' ? this.$i18n.t('m.Rule') : this.$i18n.t('m.' + query.rule_type)}}
+              <span>
+                {{query.rule_type === '' ? this.$i18n.t('m.Rule') : this.$i18n.t('m.' + query.rule_type)}}
                 <Icon type="arrow-down-b"></Icon>
               </span>
               <Dropdown-menu slot="list">
@@ -67,7 +71,7 @@
             </ul>
             </Col>
             <Col :span="4" style="text-align: center">
-            <Tag type="dot" :color="CONTEST_STATUS_REVERSE[contest.status].color">{{$t('m.' + CONTEST_STATUS_REVERSE[contest.status].name.replace(/ /g, "_"))}}</Tag>
+            <Tag type="dot" :color="CONTEST_STATUS_REVERSE[contest.status].color" class="contest-status">{{$t('m.' + CONTEST_STATUS_REVERSE[contest.status].name.replace(/ /g, "_"))}}</Tag>
             </Col>
           </Row>
         </li>
@@ -170,6 +174,13 @@
 
       getDuration (startTime, endTime) {
         return time.duration(startTime, endTime)
+      },
+
+      /* Modificación 05/12/2026 */
+      getStatusColor (status) {
+        if (status === 0) return '#7B1E3A'   // En curso (guindo)
+        if (status === 1) return '#6D6E71'   // Próximo (plomo)
+        if (status === -1) return '#B0B0B0'  // Finalizado (gris claro)
       }
     },
     computed: {
@@ -200,9 +211,22 @@
     }
     #contest-list {
       > li {
-        padding: 20px;
-        border-bottom: 1px solid rgba(187, 187, 187, 0.5);
-        list-style: none;
+        /* M. 05/12/2026 */
+        padding: 20px; //no cambia
+        //border-bottom: 1px solid rgba(187, 187, 187, 0.5);
+        border-bottom: 18px;
+        list-style: none; //no cambia
+        border-left: 6px solid #7B1E3A;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: 0.3s;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+        }
+        /*  */
 
         .trophy {
           height: 40px;
@@ -213,10 +237,15 @@
           .title {
             font-size: 18px;
             a.entry {
-              color: @oj-text;
+              //color: @oj-text;
+              color: #7B1E3A;
+              font-weight: bold;
+              
               &:hover {
-                color: @oj-link;
-                border-bottom: 1px solid @oj-link;
+                //color: @oj-link;
+                color: #5f1730;
+                //border-bottom: 1px solid @oj-link;
+                border-bottom: 1px solid #5f1730;
               }
             }
           }
@@ -230,5 +259,13 @@
         }
       }
     }
+  }
+
+  /* Modificación 05/12/2026 */
+  .contest-panel-title {
+    color: #7B1E3A;
+    font-weight: bold;
+    font-size: 22px;
+    letter-spacing: 0.5px;
   }
 </style>

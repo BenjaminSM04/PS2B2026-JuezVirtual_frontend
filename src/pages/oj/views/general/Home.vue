@@ -1,10 +1,24 @@
 <template>
+<div class="home-container">
+  <div class="welcome-section">
+      <Icon type="university" size="42" />
+      <h1>Bienvenido a LizardJudge Univalle</h1>
+      <p>Formando profesionales con excelencia, innovación y liderazgo.</p>
+    </div>
+
   <Row type="flex" justify="space-around">
     <Col :span="22">
     <panel shadow v-if="contests.length" class="contest">
+      
+      <!-- <div slot="title">
+        <Button type="text"  class="contest-title" @click="goContest">{{contests[index].title}}</Button>
+      </div> -->
+
       <div slot="title">
+        <Icon type="trophy"/>
         <Button type="text"  class="contest-title" @click="goContest">{{contests[index].title}}</Button>
       </div>
+
       <Carousel v-model="index" trigger="hover" autoplay :autoplay-speed="6000" class="contest">
         <CarouselItem v-for="(contest, index) of contests" :key="index">
           <div class="contest-content">
@@ -29,6 +43,8 @@
     <Announcements class="announcement"></Announcements>
     </Col>
   </Row>
+</div>
+  
 </template>
 
 <script>
@@ -71,8 +87,10 @@
 <style lang="less" scoped>
   .contest {
     &-title {
-      font-style: italic;
-      font-size: 21px;
+      color: #7B1E3A !important; //recién agregado
+      font-style: normal; //italic
+      font-size: 22px; //21px
+      font-weight: bold; //recién agregado
     }
     &-content {
       padding: 0 70px 40px 70px;
@@ -82,7 +100,40 @@
     }
   }
 
-  .announcement {
-    margin-top: 20px;
+  .welcome-section {
+  text-align: center;
+  background: linear-gradient(135deg, #7B1E3A, #6D6E71);
+  color: white;
+  padding: 35px;
+  border-radius: 18px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+    h1 {
+      margin-top: 10px;
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    p {
+      margin-top: 8px;
+      font-size: 18px;
+      opacity: 0.95;
+    }
   }
+
+  .announcement {
+    margin-top: 25px; //20px
+    border-left: 6px solid #7B1E3A;
+    border-radius: 14px;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+/*   .home-container {
+  background: #f8f9fb;
+  min-height: 100vh;
+  padding: 20px;
+} */
 </style>
