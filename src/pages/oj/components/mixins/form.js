@@ -11,7 +11,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs[formName].validate(valid => {
           if (!valid) {
-            this.$error('please validate the error fields')
+            this.$error(this.$t('m.Please_validate_the_error_fields'))
           } else {
             resolve(valid)
           }

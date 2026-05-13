@@ -2,36 +2,46 @@
 <div class="auth-form">
     <Form ref="formRegister" :model="formRegister" :rules="ruleRegister">
       <FormItem prop="username">
-        <Input type="text" v-model="formRegister.username" :placeholder="$t('m.RegisterUsername')" size="large" @on-enter="handleRegister">
+        <Input type="text" v-model.trim="formRegister.username" :placeholder="$t('m.RegisterUsername')" size="large" @on-enter="handleRegister">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="email">
-        <Input v-model="formRegister.email" :placeholder="$t('m.Email_Address')" size="large" @on-enter="handleRegister">
+        <Input v-model.trim="formRegister.email" :placeholder="$t('m.Email_Address')" size="large" @on-enter="handleRegister">
         <Icon type="ios-email-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="password">
-        <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.RegisterPassword')" size="large" @on-enter="handleRegister">
-        <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPassword = !showPassword"></Icon>
+        <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.Password')" size="large" @on-enter="handleRegister">
+          <Icon type="ios-locked-outline" slot="prepend"></Icon>
+          <Icon 
+            :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" 
+            slot="append" 
+            class="password-eye" 
+            @click.native="showPassword = !showPassword">
+          </Icon>
         </Input>
       </FormItem>
       <FormItem prop="passwordAgain">
         <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
-        <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPasswordAgain ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPasswordAgain = !showPasswordAgain"></Icon>
+          <Icon type="ios-locked-outline" slot="prepend"></Icon>
+          <Icon 
+            :type="showPasswordAgain ? 'ios-eye' : 'ios-eye-outline'" 
+            slot="append" 
+            class="password-eye" 
+            @click.native="showPasswordAgain = !showPasswordAgain">
+          </Icon>
         </Input>
       </FormItem>
-      <FormItem prop="captcha" style="margin-bottom:10px">
-        <div class="oj-captcha">
-          <div class="oj-captcha-code">
-            <Input v-model="formRegister.captcha" :placeholder="$t('m.Captcha')" size="large" @on-enter="handleRegister">
+      <FormItem prop="captcha">
+        <div class="oj-captcha" >
+          <div class="oj-captcha-code" >
+            <Input v-model.trim="formRegister.captcha" :placeholder="$t('m.Captcha')" size="large" @on-enter="handleRegister">
             <Icon type="ios-lightbulb-outline" slot="prepend"></Icon>
             </Input>
           </div>
           <div class="oj-captcha-img">
-            <Tooltip content="Click to refresh" placement="top">
+            <Tooltip :content="$t('m.Click_to_refresh_captcha')" placement="top">
               <img :src="captchaSrc" @click="getCaptchaSrc"/>
             </Tooltip>
           </div>
@@ -86,32 +96,48 @@
         }, _ => callback())
       }
       const CheckUsernameFormat = (rule, value, callback) => {
-        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ_-]([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ _-]*[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ_-])?$/.test(value)) {
-          callback(new Error(this.$i18n.t('m.Username_only_letters')))
+        // Solo permite letras (sin tildes), números, guiones y guiones bajos.
+        // Longitud de 4 a 16 caracteres. No permite espacios.
+        if (!/^[a-zA-Z0-9_-]{4,16}$/.test(value)) {
+          callback(new Error(this.$t('m.Username_format_error')))
         } else {
           callback()
         }
       }
       const CheckEmailFormat = (rule, value, callback) => {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          callback(new Error(this.$i18n.t('m.Invalid_email_format')))
+        // Valida: usuario @ dominio . extensión(mínimo 2 letras)
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (!emailRegex.test(value)) {
+          callback(new Error(this.$i18n.t('m.Email_format_error')))
         } else {
           callback()
         }
       }
+      //Contraseña Robusta (Mín 6 caracteres, Mayúscula, Minúscula, Número y Especial)
       const CheckPassword = (rule, value, callback) => {
-        if (this.formRegister.password !== '') {
-          // 对第二个密码框再次验证
-          this.$refs.formRegister.validateField('passwordAgain')
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
+    
+        if (value === '') {
+          callback(new Error(this.$t('m.Password_is_required')))
+        } else if (!passwordRegex.test(value)) {
+          callback(new Error(this.$t('m.Password_complexity_error')))
+        } else {
+          // Si la contraseña es válida, disparamos la validación del segundo campo para limpiar errores previos
+          if (this.formRegister.passwordAgain !== '') {
+            this.$refs.formRegister.validateField('passwordAgain')
+          }
+          callback()
         }
-        callback()
       }
 
       const CheckAgainPassword = (rule, value, callback) => {
-        if (value !== this.formRegister.password) {
-          callback(new Error(this.$i18n.t('m.password_does_not_match')))
+        if (value === '') {
+          callback(new Error(this.$t('m.Please_enter_the_password_again')))
+        } else if (value !== this.formRegister.password) {
+          callback(new Error(this.$t('m.Password_does_not_match')))
+        } else {
+          callback()
         }
-        callback()
       }
 
       return {
@@ -127,24 +153,29 @@
         },
         ruleRegister: {
           username: [
-            {required: true, trigger: 'blur'},
+            {
+              required: true, 
+              message: this.$i18n.t('m.Username_is_required'), 
+              trigger: 'blur'
+            },
             {validator: CheckUsernameFormat, trigger: 'blur'},
             {validator: CheckUsernameNotExist, trigger: 'blur'}
           ],
           email: [
-            {required: true, type: 'email', trigger: 'blur'},
+            {required: true, message: this.$i18n.t('m.Email_is_required'), trigger: 'blur'},
             {validator: CheckEmailFormat, trigger: 'blur'},
             {validator: CheckEmailNotExist, trigger: 'blur'}
           ],
           password: [
-            {required: true, trigger: 'blur', min: 6, max: 20},
+            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: 'blur'},
             {validator: CheckPassword, trigger: 'blur'}
           ],
           passwordAgain: [
-            {required: true, validator: CheckAgainPassword, trigger: 'change'}
+            { required: true, message: this.$t('m.Please_enter_the_password_again'), trigger: ['blur', 'change'] },
+    { validator: CheckAgainPassword, trigger: 'change' }
           ],
           captcha: [
-            {required: true, trigger: 'blur', min: 1, max: 10}
+            {required: true, message: this.$i18n.t('m.Captcha_is_required'), trigger: 'blur', min: 1, max: 10}
           ]
         }
       }
@@ -185,15 +216,36 @@
   @import (reference) '../../../../styles/theme-oj.less';
 
   .auth-form {
+
+    /deep/ .modal-title {
+    font-size: 22px !important;    /* Tamaño reducido (suele venir en 28px o más) */
+    font-weight: 700;
+    text-align: center;
+    display: block;                /* Asegura que ocupe todo el ancho para el margen */
+    
+    /* Espaciado solicitado */
+    margin-top: 20px !important;    /* Espacio respecto al tope del modal */
+    margin-bottom: 35px !important; /* Espacio respecto al campo 'Nombre de Usuario' */
+    
+    color: #1c1c1c;                 /* Color sólido para mejor legibilidad */
+  }
     /deep/ .ivu-form-item {
-      margin-bottom: 14px;
-    }
+    margin-bottom: 15px !important;
+    position: relative; /* Para posicionar el mensaje de error relativo a este contenedor */ 
+  }
+
+  /deep/ .ivu-form-item-error {
+    margin-bottom: 30px !important;
+    padding-top: 4px; 
+    top: 100%; 
+    line-height: 1;
+  }
 
     /deep/ .ivu-input-group-prepend {
-      background: #fff;
-      border: 2px solid @oj-secondary;
+      background: #A60550 !important;
+      border: 2px solid #A60550 !important;
       border-right: none;
-      color: @oj-secondary;
+      color: white;
       border-radius: 12px 0 0 12px;
       min-width: 46px;
     }
@@ -201,10 +253,12 @@
     /deep/ .ivu-input-group-prepend i {
       font-size: 18px;
       font-weight: 600;
+            border: 2px solid #a60550 !important;
+
     }
 
     /deep/ .ivu-input-group-prepend + .ivu-input {
-      border: 2px solid @oj-secondary;
+      border: 2px solid #a60550 !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       height: 46px;
@@ -212,6 +266,29 @@
       padding-left: 12px;
       color: @oj-text;
     }
+
+    /deep/ .ivu-input {
+    border: 2px solid @oj-secondary !important; 
+    border-left: none !important; 
+    border-right: none !important; 
+    height: 46px;
+    padding: 0 12px;
+  }
+    /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
+    border-right: 2px solid #a60550 !important;
+    border-radius: 0 12px 12px 0;
+  }
+  /deep/ .ivu-input:hover, 
+/deep/ .ivu-input:focus {
+  border-color: #a60550 !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* Evitar que el borde derecho desaparezca en hover si no hay icono append */
+/deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input:hover {
+  border-right: 2px solid #a60550 !important;
+}
 
     /deep/ .ivu-input::placeholder {
       color: fade(@oj-secondary, 50%);
@@ -223,31 +300,64 @@
     }
 
     /deep/ .ivu-input-group-append {
-      background: #fff;
-      border: 2px solid @oj-secondary;
+      background: #A60550 !important;
+      border: 2px solid #A60550 !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       padding: 0 12px;
       cursor: pointer;
+
       .password-eye {
         font-size: 18px;
-        color: fade(@oj-secondary, 60%);
-        &:hover { color: @oj-secondary; }
+        color: #ffffff !important; 
+        transition: opacity 0.2s;
+        
+        &:hover { 
+          opacity: 0.8; 
+        }
       }
     }
 
     .oj-captcha-img {
-      border: 2px solid fade(@oj-secondary, 55%);
+      border: 2px solid @oj-secondary;
       border-radius: 10px;
       background: #fff;
       overflow: hidden;
+      height: 46px;
     }
+    /* Ajuste específico para el bloque del captcha */
+    .oj-captcha {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px !important; /* Espacio extra para el mensaje */
+      height: auto !important; /* Permitir que el contenedor crezca con el mensaje de error */
+      .oj-captcha-code {
+        flex: 1;
+        position: relative;
+        margin-right: 10px;
+
+        /* Forzamos que el error aparezca debajo del input del captcha */
+        /deep/ .ivu-form-item-error-tip {
+          position: absolute !important;
+    /* En lugar de top 100%, usamos un valor fijo para despegarlo del borde */
+    top: 46px !important; 
+    left: 0 !important;
+    padding-top: 8px !important; /* Añadimos padding para forzar la bajada visual */
+    display: block !important;
+    line-height: 1.5 !important;
+    color: #ed4014 !important;
+        }
+      }
+    }
+  
   }
 
+  
   .footer {
     overflow: auto;
-    margin-top: 8px;
+    margin-top: 50px;
     text-align: left;
+
 
     .btn {
       margin: 0 0 12px 0;
@@ -259,28 +369,28 @@
 
   .auth-submit-btn {
     height: 52px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 18px;
     font-weight: 700;
-    background-color: @oj-secondary;
+    background-color: #A60550;
     border-color: @oj-secondary;
   }
 
   .auth-submit-btn:hover {
-    background-color: @oj-primary;
-    border-color: @oj-primary;
+    background-color: @oj-secondary;
+    border-color: @oj-secondary;
   }
 
   .auth-switch-btn {
     height: 46px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: 600;
-    color: @oj-primary;
-    border-color: fade(@oj-secondary, 72%);
+    color: #a60550;
+    border-color: #a60550;
   }
 
   .auth-switch-btn:hover {
-    color: @oj-dark;
-    border-color: @oj-primary;
+    color: @oj-secondary;
+    border-color: @oj-secondary;
   }
 </style>

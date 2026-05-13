@@ -153,5 +153,14 @@ export const m = {
   Welcome_to_Login: 'Welcome to Login',
   GO: 'GO',
   username: 'username',
-  password: 'password'
+  password: 'password',
+  //Register.vue
+  Welcome_to: 'Welcome to',
+  Username_is_required: 'Username is required',
+  Email_is_required: 'Email is required',
+  Password_is_required: 'Password is required',
+  Password_again_is_required: 'Password again is required',
+  Captcha_is_required: 'Captcha is required',
+  Click_to_refresh_captcha: 'Click to refresh captcha',
+  Please_validate_the_error_fields: 'Please validate the error fields'
 }
