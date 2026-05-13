@@ -61,6 +61,13 @@ module.exports = {
       '~': resolve('src/components')
     }
   },
+  node: {
+    fs: 'empty',
+    module: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
+  },
   module: {
     rules: [
       // {

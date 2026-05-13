@@ -158,5 +158,24 @@ export const m = {
   Welcome_to_Login: 'Bienvenido a Juez Virtual',
   GO: 'INGRESAR',
   username: 'Usuario',
-  password: 'Contraseña'
+  password: 'Contraseña',
+
+  //Register.vue
+  Welcome_to: 'Bienvenido a',
+  Username_is_required: 'El nombre de usuario es obligatorio',
+  Email_is_required: 'El correo es obligatorio',
+  Password_is_required: 'La contraseña es obligatoria',
+  Password_again_is_required: 'La contraseña de confirmación es obligatoria',
+  Captcha_is_required: 'El captcha es obligatorio',
+  Click_to_refresh_captcha: 'Actualizar captcha',
+  Please_validate_the_error_fields: 'Por favor, valide los campos con errores',
+  The_username_already_exists: 'El nombre de usuario ya existe',
+  The_email_already_exists: 'El correo electrónico ya existe',
+  Username_only_letters: 'El nombre de usuario solo puede contener letras o guiones',
+  Invalid_email_format: 'Formato de correo electrónico no válido',
+  Password_does_not_match: 'Las contraseñas no coinciden',
+  Please_enter_the_password_again: 'Por favor, ingrese la contraseña nuevamente',
+  Username_format_error: 'El usuario debe tener entre 4 y 16 caracteres (solo letras, números y guiones)',
+  Email_format_error: 'Ingresa un formato de correo válido (ejemplo: usuario@dominio.com)',
+  Password_complexity_error: 'Mínimo 6 caracteres, incluyendo al menos Mayús/Minús/Nº/Especial(@$!%*?&)'
 }

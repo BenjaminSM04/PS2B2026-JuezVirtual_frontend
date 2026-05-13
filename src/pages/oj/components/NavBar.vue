@@ -92,7 +92,7 @@
       </div>
     </Menu>
     <Modal v-model="modalVisible" :width="560" class-name="auth-modal">
-      <div slot="header" class="modal-title">{{$t('m.Welcome_to')}} LizardJudge</div>
+      <div slot="header" class="modal-title" style="font-size: 25px; font-weight: 700; text-align: center; margin-top: 15px; margin-bottom: 15px;">{{$t('m.Welcome_to')}} LizardJudge</div>
       <component :is="modalStatus.mode" v-if="modalVisible"></component>
       <div slot="footer" style="display: none"></div>
     </Modal>
