@@ -2,16 +2,16 @@
   <Row type="flex" justify="space-around">
     <Col :span="20" id="status">
       <Alert :type="status.type" showIcon>
-        <span class="title">{{$t('m.' + status.statusName.replace(/ /g, "_"))}}</span>
+        <span class="title" style="font-weight: bold;">{{$t('m.' + status.statusName.replace(/ /g, "_"))}}</span>
         <div slot="desc" class="content">
           <template v-if="isCE">
             <pre>{{submission.statistic_info.err_info}}</pre>
           </template>
           <template v-else>
-            <span>{{$t('m.Time')}}: {{submission.statistic_info.time_cost | submissionTime}}</span>
-            <span>{{$t('m.Memory')}}: {{submission.statistic_info.memory_cost | submissionMemory}}</span>
-            <span>{{$t('m.Lang')}}: {{submission.language}}</span>
-            <span>{{$t('m.Author')}}: {{submission.username}}</span>
+            <span style="font-weight: bold;">{{$t('m.TimeList')}}: {{submission.statistic_info.time_cost | submissionTime}}</span>
+            <span style="font-weight: bold;">{{$t('m.Memory')}}: {{submission.statistic_info.memory_cost | submissionMemory}}</span>
+            <span style="font-weight: bold;">{{$t('m.Lang')}}: {{submission.language}}</span>
+            <span style="font-weight: bold;">{{$t('m.Author')}}: {{submission.username}}</span>
           </template>
         </div>
       </Alert>
@@ -28,11 +28,19 @@
     <Col v-if="submission.can_unshare" :span="20">
       <div id="share-btn">
         <Button v-if="submission.shared"
-                type="warning" size="large" @click="shareSubmission(false)">
+                type="warning" size="large" @click="shareSubmission(false)" @mouseover.native="isHover = true" 
+              @mouseleave.native="isHover = false"
+              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
+                      borderColor: isHover ? '#987284' : '#a60550',
+                      fontWeight: 'bold'}">
           {{$t('m.UnShare')}}
         </Button>
         <Button v-else
-                type="primary" size="large" @click="shareSubmission(true)">
+                type="primary" size="large" @click="shareSubmission(true)" @mouseover.native="isHover = true" 
+              @mouseleave.native="isHover = false"
+              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
+                      borderColor: isHover ? '#987284' : '#a60550',
+                      fontWeight: 'bold'}">
           {{$t('m.Share')}}
         </Button>
       </div>
@@ -54,6 +62,7 @@
     },
     data () {
       return {
+        isHover: false,
         columns: [
           {
             title: this.$i18n.t('m.ID'),
@@ -79,7 +88,7 @@
             }
           },
           {
-            title: this.$i18n.t('m.Time'),
+            title: this.$i18n.t('m.TimeList'),
             align: 'center',
             render: (h, params) => {
               return h('span', utils.submissionTimeFormat(params.row.cpu_time))
@@ -206,8 +215,25 @@
     margin-right: 10px;
   }
 
+
   pre {
     border: none;
-    background: none;
+    border-left: 8px solid #A60550 !important; 
+    background-color: #82a69a;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow: auto;
   }
+
+  /* Estilo para los encabezados de la tabla */
+  /deep/ .ivu-table-header th {
+    background-color: #A60550 !important;
+    color: white !important;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
 </style>

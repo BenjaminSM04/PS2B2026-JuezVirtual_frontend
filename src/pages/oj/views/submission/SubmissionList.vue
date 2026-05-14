@@ -70,7 +70,7 @@
         },
         columns: [
           {
-            title: this.$i18n.t('m.When'),
+            title: this.$i18n.t('m.WhenDate'),
             align: 'center',
             render: (h, params) => {
               return h('span', time.utcToLocal(params.row.create_time))
@@ -82,6 +82,7 @@
             render: (h, params) => {
               if (params.row.show_link) {
                 return h('span', {
+                  class: 'id-link',
                   style: {
                     color: '#A60550',
                     cursor: 'pointer',
@@ -137,7 +138,7 @@
             }
           },
           {
-            title: this.$i18n.t('m.Time'),
+            title: this.$i18n.t('m.TimeList'),
             align: 'center',
             render: (h, params) => {
               return h('span', utils.submissionTimeFormat(params.row.statistic_info.time_cost))
@@ -259,15 +260,22 @@
         }
         const judgeColumn = {
           title: this.$i18n.t('m.Option'),
-          fixed: 'right',
           align: 'center',
-          width: 90,
+          fixed: 'right',
+          width: 130,
           render: (h, params) => {
             return h('Button', {
+              class: 'btnrejudge',
               props: {
                 type: 'primary',
                 size: 'small',
                 loading: params.row.loading
+              },
+              style: {
+                backgroundColor: '#82a69a',
+                border: '1px solid #82a69a',
+                fontWeight: 'bold',
+                borderRadius: '8px'
               },
               on: {
                 click: () => {
@@ -377,8 +385,9 @@
 
   /* Cambia el color de fondo y texto del encabezado "Opción" */
   /deep/ .ivu-table-fixed-right thead th {
-    background-color: #664D59 !important;
+    background-color: #A60550 !important;
     color: #ffffff !important; /* Texto blanco para que resalte */
+    border:none !important;
   }
 
   /* texto "Opción" esté en negritas */
@@ -386,12 +395,37 @@
     font-weight: bold;
   }
 
-
   /deep/ .ivu-table-header th {
-    border-bottom: 2px solid #A60550 !important;
     border-top:2px solid #A60550 !important;
+    background-color: #A60550 !important; /* Color ciruela */
+    color: white !important;
   }
 
 
+
+  /* Efecto al pasar el mouse sobre el nombre */
+  /deep/ .ivu-table-cell a {
+    color: #A60550 !important; /* Cambia a guindo al pasar el mouse */
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  /deep/ .ivu-table-cell a:hover {
+    color: #82a69a !important; 
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+/* Efecto para el ID cuando el mouse está encima */
+  /deep/.id-link:hover {
+    color: #82a69a !important; 
+  }
+
+  /* Efecto para el btn rejuzgar cuando el mouse está encima */
+  /deep/ .btnrejudge:hover {
+    background-color: #B2FFD9 !important; 
+    border: 1px solid #B2FFD9 !important;
+    color: black !important;
+  }
 </style>
 
