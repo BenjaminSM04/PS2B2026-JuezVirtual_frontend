@@ -177,5 +177,9 @@ export const m = {
   Please_enter_the_password_again: 'Por favor, ingrese la contraseña nuevamente',
   Username_format_error: 'El usuario debe tener entre 4 y 16 caracteres (solo letras, números y guiones)',
   Email_format_error: 'Ingresa un formato de correo válido (ejemplo: usuario@dominio.com)',
-  Password_complexity_error: 'Mínimo 6 caracteres, incluyendo al menos Mayús/Minús/Nº/Especial(@$!%*?&)'
+  Password_complexity_error: 'Mínimo 6 caracteres, incluyendo al menos Mayús/Minús/Nº/Especial(@$!%*?&)',
+
+  //submission details-list
+  WhenDate: 'Fecha',
+  TimeList: 'Tiempo'
 }
