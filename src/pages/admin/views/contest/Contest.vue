@@ -1,58 +1,193 @@
 <template>
   <div class="view">
     <Panel :title="title">
-      <el-form :model="contest" :rules="rules" ref="contestForm" label-position="top">
+      <el-form
+        :model="contest"
+        :rules="rules"
+        ref="contestForm"
+        label-position="top">
+
         <el-row :gutter="20">
+
           <el-col :span="24">
-            <el-form-item :label="$t('m.ContestTitle')" prop="title" required>
-              <el-input v-model="contest.title" :placeholder="$t('m.ContestTitle')"></el-input>
+            <el-form-item prop="title">
+              <template slot="label">
+                <span>
+                  {{ $t('m.ContestTitle') }}
+
+                  <el-tooltip
+                    content="Ingrese un nombre claro y descriptivo para el concurso."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
+              <el-input
+                v-model="contest.title"
+                :placeholder="$t('m.ContestTitle')">
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="$t('m.ContestDescription')" prop="description" required>
+            <el-form-item prop="description">
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.ContestDescription') }}
+
+                  <el-tooltip
+                    content="Describe las reglas, temática o instrucciones del concurso."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
               <Simditor v-model="contest.description"></Simditor>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Start_Time')" prop="start_time" required>
+            <el-form-item prop="start_time">
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Contest_Start_Time') }}
+
+                  <el-tooltip
+                    content="Fecha y hora en la que iniciará el concurso."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
               <el-date-picker
                 v-model="contest.start_time"
                 type="datetime"
+                format="dd/MM/yyyy HH:mm"
                 :placeholder="$t('m.Contest_Start_Time')">
               </el-date-picker>
+
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_End_Time')" prop="end_time" required>
+            <el-form-item prop="end_time">
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Contest_End_Time') }}
+
+                  <el-tooltip
+                    content="Fecha y hora en la que finalizará el concurso."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
               <el-date-picker
                 v-model="contest.end_time"
                 type="datetime"
+                format="dd/MM/yyyy HH:mm"
                 :placeholder="$t('m.Contest_End_Time')">
               </el-date-picker>
+
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item prop="password">
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Contest_Password') }}
+
+                  <el-tooltip
+                    content="Opcional. Solo usuarios con contraseña podrán ingresar."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
+              <el-input
+                v-model="contest.password"
+                :placeholder="$t('m.Contest_Password')">
+              </el-input>
+
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Password')" prop="password">
-              <el-input v-model="contest.password" :placeholder="$t('m.Contest_Password')"></el-input>
+            <el-form-item>
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Contest_Rule_Type') }}
+
+                  <el-tooltip
+                    content="ACM penaliza tiempo y errores. OI evalúa por puntaje."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
+              <el-radio
+                class="radio"
+                v-model="contest.rule_type"
+                label="ACM"
+                :disabled="disableRuleType">
+                ACM
+              </el-radio>
+
+              <el-radio
+                class="radio"
+                v-model="contest.rule_type"
+                label="OI"
+                :disabled="disableRuleType">
+                OI
+              </el-radio>
+
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Rule_Type')">
-              <el-radio class="radio" v-model="contest.rule_type" label="ACM" :disabled="disableRuleType">ACM</el-radio>
-              <el-radio class="radio" v-model="contest.rule_type" label="OI" :disabled="disableRuleType">OI</el-radio>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item :label="$t('m.Real_Time_Rank')">
+            <el-form-item>
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Real_Time_Rank') }}
+
+                  <el-tooltip
+                    content="Permite mostrar el ranking en tiempo real."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
               <el-switch
                 v-model="contest.real_time_rank"
                 active-color="#A60550"
                 inactive-color="#987284">
               </el-switch>
+
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item :label="$t('m.Contest_Status')">
+            <el-form-item>
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Contest_Status') }}
+
+                  <el-tooltip
+                    content="Activa o desactiva la visibilidad del concurso."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+
               <el-switch
                 v-model="contest.visible"
                 active-text=""
@@ -63,15 +198,44 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item :label="$t('m.Allowed_IP_Ranges')">
-              <div v-for="(range, index) in contest.allowed_ip_ranges" :key="index">
+            <el-form-item>
+
+              <template slot="label">
+                <span>
+                  {{ $t('m.Allowed_IP_Ranges') }}
+
+                  <el-tooltip
+                    content="Permite restringir el acceso a ciertas redes IP en formato CIDR."
+                    placement="top">
+                    <i class="el-icon-info tooltip-icon"></i>
+                  </el-tooltip>
+                </span>
+              </template>
+              <div
+                v-for="(range, index) in contest.allowed_ip_ranges"
+                :key="index">
+
                 <el-row :gutter="20" style="margin-bottom: 15px">
                   <el-col :span="8">
-                    <el-input v-model="range.value" :placeholder="$t('m.CIDR_Network')"></el-input>
+                    <el-input
+                      v-model="range.value"
+                      :placeholder="$t('m.CIDR_Network')">
+                    </el-input>
                   </el-col>
                   <el-col :span="10">
-                    <el-button plain icon="el-icon-fa-plus" @click="addIPRange"></el-button>
-                    <el-button plain icon="el-icon-fa-trash" @click="removeIPRange(range)"></el-button>
+                    <el-button
+                      plain
+                      icon="el-icon-fa-plus"
+                      @click="addIPRange">
+                      Agregar
+                    </el-button>
+
+                    <el-button
+                      plain
+                      icon="el-icon-fa-trash"
+                      @click="removeIPRange(range)">
+                      Eliminar
+                    </el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -79,225 +243,340 @@
           </el-col>
         </el-row>
       </el-form>
+
       <save @click.native="saveContest"></save>
+
     </Panel>
   </div>
 </template>
 
 <script>
-  import api from '../../api.js'
-  import Simditor from '../../components/Simditor.vue'
+import api from '../../api.js'
+import Simditor from '../../components/Simditor.vue'
 
-  export default {
-    name: 'CreateContest',
-    components: {
-      Simditor
-    },
-    data () {
-      const validateDescription = (rule, value, callback) => {
-        const stripped = (value || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, '').trim()
-        if (!stripped) {
-          callback(new Error('La descripción no puede estar vacía'))
-        } else {
-          callback()
-        }
-      }
-      const validateEndTime = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('La fecha de finalización es obligatoria'))
-          return
-        }
-        if (this.contest.start_time && new Date(value) <= new Date(this.contest.start_time)) {
-          callback(new Error('La fecha de finalización debe ser posterior a la de inicio'))
-        } else {
-          callback()
-        }
-      }
-      const validateIPRanges = (rule, value, callback) => {
-        const cidrRegex = /^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]?\d?\d)\/([0-9]|[12]\d|3[0-2])$/
-        for (let r of value) {
-          if (r.value && !cidrRegex.test(r.value.trim())) {
-            callback(new Error(`Formato CIDR inválido: ${r.value}`))
-            return
-          }
-        }
+export default {
+  name: 'CreateContest',
+
+  components: {
+    Simditor
+  },
+
+  data () {
+    const validateDescription = (rule, value, callback) => {
+      const stripped = (value || '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/&nbsp;/g, '')
+        .trim()
+
+      if (!stripped) {
+        callback(new Error('La descripción no puede estar vacía'))
+      } else {
         callback()
       }
-      return {
-        title: 'Crear Concurso',
-        disableRuleType: false,
-        contest: {
-          title: '',
-          description: '',
-          start_time: '',
-          end_time: '',
-          rule_type: 'ACM',
-          password: '',
-          real_time_rank: true,
-          visible: true,
-          allowed_ip_ranges: [{
-            value: ''
-          }]
-        },
-        rules: {
-          title: [
-            {required: true, message: 'El título es obligatorio', trigger: 'blur'},
-            {min: 3, max: 128, message: 'El título debe tener entre 3 y 128 caracteres', trigger: 'blur'}
-          ],
-          description: [
-            {required: true, validator: validateDescription, trigger: 'blur'}
-          ],
-          start_time: [
-            {required: true, message: 'La fecha de inicio es obligatoria', trigger: 'change'}
-          ],
-          end_time: [
-            {required: true, validator: validateEndTime, trigger: 'change'}
-          ],
-          password: [
-            {min: 4, message: 'La contraseña debe tener al menos 4 caracteres', trigger: 'blur'}
-          ],
-          allowed_ip_ranges: [
-            {validator: validateIPRanges, trigger: 'blur'}
-          ]
-        }
+    }
+
+    const validateEndTime = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('La fecha de finalización es obligatoria'))
+        return
       }
-    },
-    methods: {
-      saveContest () {
-        this.$refs.contestForm.validate((valid) => {
-          if (!valid) {
-            this.$error('Por favor, corrige los campos con errores antes de guardar')
-            return
-          }
-          let funcName = this.$route.name === 'edit-contest' ? 'editContest' : 'createContest'
-          let data = Object.assign({}, this.contest)
-          let ranges = []
-          for (let v of data.allowed_ip_ranges) {
-            if (v.value !== '') {
-              ranges.push(v.value)
-            }
-          }
-          data.allowed_ip_ranges = ranges
-          api[funcName](data).then(res => {
-            this.$router.push({name: 'contest-list', query: {refresh: 'true'}})
-          }).catch(() => {
-          })
-        })
-      },
-      addIPRange () {
-        this.contest.allowed_ip_ranges.push({value: ''})
-      },
-      removeIPRange (range) {
-        let index = this.contest.allowed_ip_ranges.indexOf(range)
-        if (index !== -1) {
-          this.contest.allowed_ip_ranges.splice(index, 1)
-        }
-      }
-    },
-    mounted () {
-      if (this.$route.name === 'edit-contest') {
-        this.title = 'Editar Concurso'
-        this.disableRuleType = true
-        api.getContest(this.$route.params.contestId).then(res => {
-          let data = res.data.data
-          let ranges = []
-          for (let v of data.allowed_ip_ranges) {
-            ranges.push({value: v})
-          }
-          if (ranges.length === 0) {
-            ranges.push({value: ''})
-          }
-          data.allowed_ip_ranges = ranges
-          this.contest = data
-        }).catch(() => {
-        })
+
+      if (
+        this.contest.start_time &&
+        new Date(value) <= new Date(this.contest.start_time)
+      ) {
+        callback(new Error('La fecha de finalización debe ser posterior a la de inicio'))
+      } else {
+        callback()
       }
     }
+
+    const validateIPRanges = (rule, value, callback) => {
+      const cidrRegex =
+        /^((25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(25[0-5]|2[0-4]\d|[01]?\d?\d)\/([0-9]|[12]\d|3[0-2])$/
+
+      for (let r of value) {
+        if (r.value && !cidrRegex.test(r.value.trim())) {
+          callback(new Error(`Formato CIDR inválido: ${r.value}`))
+          return
+        }
+      }
+
+      callback()
+    }
+
+    return {
+      title: 'Crear Concurso',
+
+      disableRuleType: false,
+
+      contest: {
+        title: '',
+        description: '',
+        start_time: '',
+        end_time: '',
+        rule_type: 'ACM',
+        password: '',
+        real_time_rank: true,
+        visible: true,
+
+        allowed_ip_ranges: [
+          {
+            value: ''
+          }
+        ]
+      },
+
+      rules: {
+        title: [
+          {
+            required: true,
+            message: 'El título es obligatorio',
+            trigger: 'blur'
+          },
+          {
+            min: 3,
+            max: 128,
+            message: 'El título debe tener entre 3 y 128 caracteres',
+            trigger: 'blur'
+          }
+        ],
+
+        description: [
+          {
+            required: true,
+            validator: validateDescription,
+            trigger: 'blur'
+          }
+        ],
+
+        start_time: [
+          {
+            required: true,
+            message: 'La fecha de inicio es obligatoria',
+            trigger: 'change'
+          }
+        ],
+
+        end_time: [
+          {
+            required: true,
+            validator: validateEndTime,
+            trigger: 'change'
+          }
+        ],
+
+        password: [
+          {
+            min: 4,
+            message: 'La contraseña debe tener al menos 4 caracteres',
+            trigger: 'blur'
+          }
+        ],
+
+        allowed_ip_ranges: [
+          {
+            validator: validateIPRanges,
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+
+  methods: {
+    saveContest () {
+      this.$refs.contestForm.validate((valid) => {
+
+        if (!valid) {
+          this.$error('Por favor, corrige los campos con errores antes de guardar')
+          return
+        }
+
+        let funcName =
+          this.$route.name === 'edit-contest'
+            ? 'editContest'
+            : 'createContest'
+
+        let data = Object.assign({}, this.contest)
+
+        let ranges = []
+
+        for (let v of data.allowed_ip_ranges) {
+          if (v.value !== '') {
+            ranges.push(v.value)
+          }
+        }
+
+        data.allowed_ip_ranges = ranges
+
+        api[funcName](data)
+          .then(res => {
+            this.$router.push({
+              name: 'contest-list',
+              query: { refresh: 'true' }
+            })
+          })
+          .catch(() => {})
+      })
+    },
+
+    addIPRange () {
+      this.contest.allowed_ip_ranges.push({
+        value: ''
+      })
+    },
+
+    removeIPRange (range) {
+      let index = this.contest.allowed_ip_ranges.indexOf(range)
+
+      if (index !== -1) {
+        this.contest.allowed_ip_ranges.splice(index, 1)
+      }
+    }
+  },
+
+  mounted () {
+    if (this.$route.name === 'edit-contest') {
+
+      this.title = 'Editar Concurso'
+      this.disableRuleType = true
+
+      api.getContest(this.$route.params.contestId)
+        .then(res => {
+
+          let data = res.data.data
+
+          let ranges = []
+
+          for (let v of data.allowed_ip_ranges) {
+            ranges.push({
+              value: v
+            })
+          }
+
+          if (ranges.length === 0) {
+            ranges.push({
+              value: ''
+            })
+          }
+
+          data.allowed_ip_ranges = ranges
+
+          this.contest = data
+
+        }).catch(() => {})
+    }
   }
+}
 </script>
+
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap");
 
-.admin-shell__eyebrow {
-  font-family: 'Funnel Display', sans-serif;
-}
-
+.admin-shell__eyebrow,
 .admin-shell__title {
   font-family: 'Funnel Display', sans-serif;
 }
 
 .panel {
-    background: #ffffff !important;
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-    overflow: hidden;
-    padding: 0 10px !important;
-    font-family: 'Funnel Display', sans-serif;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden;
+  padding: 0 10px !important;
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.view .title {
+  color: #003B4A !important;
+  font-size: 28px !important;
+  font-weight: bold !important;
+}
+
+.view .el-form-item {
+  margin-bottom: 28px;
 }
 
 .view .el-form-item__label:before {
   display: none !important;
 }
 
-.view .title{
-  color:#090808 !important;
-  font-size: 25px !important;
-  font-weight: bold !important;
-}
-
 .view .el-form-item__label {
   display: block;
   text-align: left;
   padding: 0;
-  font-size: 20px;
-  color: black;
-  font-weight:400 ;
-}
-
-.view .el-input__inner {
-  border: 2px solid #987284;   
-  border-radius: 10px;        
-  height: 40px;               
-  font-size: 15px;            
-  padding: 0 12px 0 35px;             
-  max-width: 500px;
-}
-
-.view .el-input__inner::placeholder {
-  color: #ADADAD;
-  font-weight: bold;
+  font-size: 18px;
+  color: #003B4A;
+  font-weight: 600;
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .el-button{
+.view .el-input__inner {
+  border: 2px solid #987284;
+  border-radius: 12px;
+  height: 42px;
+  font-size: 15px;
+  padding: 0 12px;
+  transition: all 0.25s ease;
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.view .el-input__inner:focus {
+  border-color: #003B4A !important;
+  box-shadow: 0 0 8px rgba(0, 59, 74, 0.20);
+}
+
+.view .el-input__inner::placeholder {
+  color: #987284;
+  font-weight: 500;
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.view .el-textarea__inner {
+  border: 2px solid #987284;
+  border-radius: 12px;
+  color: #000000;
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.view .el-textarea__inner:focus {
+  border-color: #003B4A !important;
+  box-shadow: 0 0 8px rgba(0, 59, 74, 0.20);
+}
+
+.view .el-date-editor.el-input {
+  width: 100%;
+}
+
+.view .el-button {
   background-color: #003B4A;
   color: #ffffff;
   font-size: 16px;
   font-family: 'Funnel Display', sans-serif;
   font-weight: bold;
   border-color: #003B4A;
-  border-radius: 10px;
+  border-radius: 12px;
   width: 140px !important;
-  height: 37.98px !important;
-  padding: 0;
-  line-height: 37.98px ;
-  /*transition: all 0.3s ease;*/
+  height: 40px !important;
+  transition: all 0.25s ease;
 }
-.view .el-textarea__inner {
-  border: 2px solid #987284;
-  border-radius: 10px;
-  color: #000000;
-}
+
 .view .el-button:hover {
   background-color: #245965;
   border-color: #245965;
-  /*transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 59, 74, 0.18);
 }
 
 .view .el-radio__inner {
   border-color: #987284;
+}
+
+.view .el-radio__label {
+  font-family: 'Funnel Display', sans-serif;
+  font-size: 16px;
 }
 
 .view .el-radio__input.is-checked .el-radio__inner {
@@ -307,8 +586,18 @@
 
 .view .el-radio__input.is-checked + .el-radio__label {
   color: #A60550;
-  font-family: 'Funnel Display', sans-serif;
-  font-size: 20px;
+  font-weight: 600;
 }
 
+.tooltip-icon {
+  color: #A60550;
+  margin-left: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.tooltip-icon:hover {
+  color: #003B4A;
+}
 </style>
