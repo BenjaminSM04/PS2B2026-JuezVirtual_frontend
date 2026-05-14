@@ -3,7 +3,7 @@
     <Col :span="24">
     <Panel id="contest-card" shadow>
       <div slot="title" class="contest-panel-title">
-        <Icon type="clipboard"/>
+        <Icon type="trophy"/>
         {{query.rule_type === '' ? this.$i18n.t('m.All') : query.rule_type}} {{$t('m.Contests')}}
       </div>
       <div slot="extra">
@@ -36,7 +36,7 @@
           </li>
           <li>
             <Input id="keyword" @on-enter="changeRoute" @on-click="changeRoute" v-model="query.keyword"
-                   icon="ios-search-strong" placeholder="Keyword"/>
+                   icon="ios-search-strong" placeholder="Buscar palabra"/>
           </li>
         </ul>
       </div>
@@ -198,7 +198,23 @@
 </script>
 <style lang="less" scoped>
   @import (reference) '../../../../styles/theme-oj.less';
+  .filter li {
+    margin-right: 15px;
+  }
 
+  .filter .ivu-dropdown {
+    color: #7B1E3A;
+    font-weight: bold;
+  }
+
+  .filter .ivu-input {
+    border-radius: 8px;
+  }
+
+  .filter .ivu-btn-info {
+    background: #7B1E3A;
+    border-color: #7B1E3A;
+  }
   #contest-card {
     #keyword {
       width: 80%;
