@@ -5,7 +5,6 @@
 <script>
   import Simditor from 'tar-simditor'
   import renderMathInElement from 'katex/dist/contrib/auto-render.js'
-  import 'katex/dist/katex.min.css'
 
   const KATEX_OPTIONS = {
     throwOnError: false,
