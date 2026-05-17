@@ -212,7 +212,7 @@
     #contest-list {
       > li {
         padding: 20px;
-        border-bottom: 18px;
+        margin-bottom: 18px;
         list-style: none;
         border-left: 6px solid @oj-guindo;
         border-radius: 12px;
