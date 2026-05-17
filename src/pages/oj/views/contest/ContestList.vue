@@ -227,12 +227,10 @@
     }
     #contest-list {
       > li {
-        /* M. 05/12/2026 */
-        padding: 20px; //no cambia
-        //border-bottom: 1px solid rgba(187, 187, 187, 0.5);
-        border-bottom: 18px;
-        list-style: none; //no cambia
-        border-left: 6px solid #7B1E3A;
+        padding: 20px;
+        margin-bottom: 18px;
+        list-style: none;
+        border-left: 6px solid @oj-guindo;
         border-radius: 12px;
         background: white;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -242,7 +240,6 @@
           transform: translateY(-3px);
           box-shadow: 0 8px 18px rgba(0,0,0,0.12);
         }
-        /*  */
 
         .trophy {
           height: 40px;
@@ -253,15 +250,12 @@
           .title {
             font-size: 18px;
             a.entry {
-              //color: @oj-text;
-              color: #7B1E3A;
+              color: @oj-guindo;
               font-weight: bold;
-              
+
               &:hover {
-                //color: @oj-link;
-                color: #5f1730;
-                //border-bottom: 1px solid @oj-link;
-                border-bottom: 1px solid #5f1730;
+                color: @oj-guindo-dark;
+                border-bottom: 1px solid @oj-guindo-dark;
               }
             }
           }
@@ -277,9 +271,8 @@
     }
   }
 
-  /* Modificación 05/12/2026 */
   .contest-panel-title {
-    color: #7B1E3A;
+    color: @oj-guindo;
     font-weight: bold;
     font-size: 22px;
     letter-spacing: 0.5px;

@@ -263,9 +263,10 @@ export default {
 
   data () {
     const validateDescription = (rule, value, callback) => {
-      const stripped = (value || '')
-        .replace(/<[^>]*>/g, '')
-        .replace(/&nbsp;/g, '')
+      const descriptionContainer = document.createElement('div')
+      descriptionContainer.innerHTML = value || ''
+      const stripped = (descriptionContainer.textContent || descriptionContainer.innerText || '')
+        .replace(/\u00a0/g, '')
         .trim()
 
       if (!stripped) {

@@ -131,5 +131,32 @@ export const m = {
   Recent_Contests: '近期比賽',
   Enabled: '已啟用',
   Disabled: '已停用',
-  Not_Used: '未使用'
+  Not_Used: '未使用',
+  // 通用操作
+  Save: '儲存',
+  Cancel: '取消',
+  Confirm: '確定',
+  Reset: '重設',
+  Refresh: '重新整理',
+  Create: '建立',
+  Edit: '編輯',
+  Choose_File: '選擇檔案',
+  Import_Users: '匯入使用者',
+  Send_Test_Email: '寄送測試郵件',
+  Add_From_Public_Problem: '從公共題庫加入',
+  // 匯入/匯出
+  Export_Problems_Beta: '匯出題目 (beta)',
+  Import_QDUOJ_Problems_Beta: '匯入 QDUOJ 題目 (beta)',
+  Import_FPS_Problems_Beta: '匯入 FPS 題目 (beta)',
+  Export: '匯出',
+  Upload: '上傳',
+  Drag_File_Here: '將 .zip 檔案拖曳至此',
+  Or_Click: '或點擊選擇檔案',
+  QDUOJ_Format_Hint: 'QDUOJ 格式: .zip 壓縮檔，每題一個資料夾 (problem.json + testcase/)',
+  FPS_Format_Hint: 'FPS 格式: 標準 Free Problem Set .xml 檔案',
+  Author: '作者',
+  Upload_Failed: '上傳失敗',
+  Import_Success: '成功匯入 {count} 道題目',
+  Keywords: '關鍵字',
+  Invalid_File_Type: '檔案類型無效。允許: {types}'
 }

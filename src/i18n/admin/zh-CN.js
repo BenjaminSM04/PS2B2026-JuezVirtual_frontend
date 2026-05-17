@@ -145,5 +145,32 @@ export const m = {
   Welcome_to_Login: '欢迎登录 OnlineJudge 后台管理系统',
   GO: '登录',
   username: '用户名',
-  password: '密码'
+  password: '密码',
+  // 通用操作
+  Save: '保存',
+  Cancel: '取消',
+  Confirm: '确定',
+  Reset: '重置',
+  Refresh: '刷新',
+  Create: '创建',
+  Edit: '编辑',
+  Choose_File: '选择文件',
+  Import_Users: '导入用户',
+  Send_Test_Email: '发送测试邮件',
+  Add_From_Public_Problem: '从公共题库添加',
+  // 导入/导出
+  Export_Problems_Beta: '导出题目 (beta)',
+  Import_QDUOJ_Problems_Beta: '导入 QDUOJ 题目 (beta)',
+  Import_FPS_Problems_Beta: '导入 FPS 题目 (beta)',
+  Export: '导出',
+  Upload: '上传',
+  Drag_File_Here: '将 .zip 文件拖到此处',
+  Or_Click: '或点击选择文件',
+  QDUOJ_Format_Hint: 'QDUOJ 格式: .zip 包，每题一个文件夹 (problem.json + testcase/)',
+  FPS_Format_Hint: 'FPS 格式: 标准 Free Problem Set .xml 文件',
+  Author: '作者',
+  Upload_Failed: '上传失败',
+  Import_Success: '成功导入 {count} 道题目',
+  Keywords: '关键词',
+  Invalid_File_Type: '文件类型无效。允许: {types}'
 }

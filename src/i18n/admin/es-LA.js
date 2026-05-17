@@ -178,8 +178,31 @@ export const m = {
   Username_format_error: 'El usuario debe tener entre 4 y 16 caracteres (solo letras, números y guiones)',
   Email_format_error: 'Ingresa un formato de correo válido (ejemplo: usuario@dominio.com)',
   Password_complexity_error: 'Mínimo 6 caracteres, incluyendo al menos Mayús/Minús/Nº/Especial(@$!%*?&)',
-
-  //submission details-list
-  WhenDate: 'Fecha',
-  TimeList: 'Tiempo'
+  // Acciones comunes
+  Save: 'Guardar',
+  Cancel: 'Cancelar',
+  Confirm: 'Aceptar',
+  Reset: 'Reiniciar',
+  Refresh: 'Actualizar',
+  Create: 'Crear',
+  Edit: 'Editar',
+  Choose_File: 'Elegir Archivo',
+  Import_Users: 'Importar Usuarios',
+  Send_Test_Email: 'Enviar Correo de Prueba',
+  Add_From_Public_Problem: 'Agregar desde Problema Público',
+  // Importar/Exportar
+  Export_Problems_Beta: 'Exportar Problemas (beta)',
+  Import_QDUOJ_Problems_Beta: 'Importar Problemas QDUOJ (beta)',
+  Import_FPS_Problems_Beta: 'Importar Problemas FPS (beta)',
+  Export: 'Exportar',
+  Upload: 'Subir',
+  Drag_File_Here: 'Arrastra el archivo .zip aquí',
+  Or_Click: 'o haz clic para seleccionar',
+  QDUOJ_Format_Hint: 'Formato QDUOJ: .zip con una carpeta por problema (problem.json + testcase/)',
+  FPS_Format_Hint: 'Formato FPS: archivo .xml estándar de Free Problem Set',
+  Author: 'Autor',
+  Upload_Failed: 'Error al subir el archivo',
+  Import_Success: 'Se importaron {count} problemas correctamente',
+  Keywords: 'Palabras clave',
+  Invalid_File_Type: 'Tipo de archivo inválido. Permitidos: {types}'
 }

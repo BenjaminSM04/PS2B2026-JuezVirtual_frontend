@@ -84,9 +84,8 @@
                 return h('span', {
                   class: 'id-link',
                   style: {
-                    color: '#A60550',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
+                    color: '#7b1e3a',
+                    cursor: 'pointer'
                   },
                   on: {
                     click: () => {
@@ -117,7 +116,7 @@
               return h('span',
                 {
                   style: {
-                    color: '#664D59',
+                    color: '#7b1e3a',
                     cursor: 'pointer'
                   },
                   on: {
@@ -343,10 +342,6 @@
 </script>
 
 <style scoped lang="less">
-  .ivu-btn-text {
-    color: #664D59;
-  }
-
   .flex-container {
     #main {
       flex: auto;

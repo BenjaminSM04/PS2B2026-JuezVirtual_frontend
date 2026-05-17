@@ -291,13 +291,15 @@
   }
 </script>
 
-<style lang="less">
+<style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
   .filter li {
     margin-right: 15px;
   }
 
   .filter .ivu-dropdown {
-    color: #7B1E3A;
+    color: @oj-guindo;
     font-weight: bold;
   }
 
@@ -306,8 +308,8 @@
   }
 
   .filter .ivu-btn-info {
-    background: #7B1E3A;
-    border-color: #7B1E3A;
+    background: @oj-guindo;
+    border-color: @oj-guindo;
   }
   
   .taglist-title {
