@@ -9,7 +9,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-button v-show="selectedUsers.length"
-            style="background-color: red; font-weight: bold; color: white; border-radius: 10px"
+                       type="danger"
                        icon="el-icon-fa-trash"
                        @click="deleteUsers(selectedUserIDs)">{{ $t('m.Delete') }}
             </el-button>
@@ -88,7 +88,7 @@
                  :show-file-list="false"
                  accept=".csv"
                  :before-upload="handleUsersCSV">
-        <el-button icon="el-icon-fa-upload" type="primary">Elegir Archivo</el-button>
+        <el-button icon="el-icon-fa-upload" type="primary">{{$t('m.Choose_File')}}</el-button>
       </el-upload>
       <template v-else>
         <el-table :data="uploadUsersPage">
@@ -114,22 +114,13 @@
           </el-table-column>
         </el-table>
         <div class="panel-options">
-          <el-button type="primary" 
+          <el-button type="primary"
                      icon="el-icon-fa-upload"
-                     @click="handleUsersUpload">Importar Usuarios
+                     @click="handleUsersUpload">{{$t('m.Import_Users')}}
           </el-button>
-          <el-button 
+          <el-button type="danger"
                      icon="el-icon-fa-undo"
-                     @click="handleResetData" style="border-radius: 10px !important;
-    height: 40px !important; 
-    padding: 0 20px !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #A60550 !important;
-    font-weight: 600;
-    color: white;
-    font-size: 14px;">Reiniciar
+                     @click="handleResetData">{{$t('m.Reset')}}
           </el-button>
           <el-pagination
             class="page"
@@ -269,7 +260,7 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <cancel @click.native="showUserDialog = false" style="color: white; background-color: #A60550;">Cancel</cancel>
+        <cancel @click.native="showUserDialog = false"></cancel>
         <save @click.native="saveUser()"></save>
       </span>
     </el-dialog>

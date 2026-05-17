@@ -100,7 +100,7 @@
                :visible.sync="downloadDialogVisible">
       <el-switch v-model="excludeAdmin" active-text="EExcluir entregas de admin"></el-switch>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="downloadSubmissions">Aceptar</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="downloadSubmissions">{{$t('m.Confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>

@@ -85,12 +85,14 @@
 </script>
 
 <style lang="less" scoped>
+  @import (reference) '../../../../styles/theme-oj.less';
+
   .contest {
     &-title {
-      color: #7B1E3A !important; //recién agregado
-      font-style: normal; //italic
-      font-size: 22px; //21px
-      font-weight: bold; //recién agregado
+      color: @oj-guindo !important;
+      font-style: normal;
+      font-size: 22px;
+      font-weight: bold;
     }
     &-content {
       padding: 0 70px 40px 70px;
@@ -102,7 +104,7 @@
 
   .welcome-section {
   text-align: center;
-  background: linear-gradient(135deg, #7B1E3A, #6D6E71);
+  background: linear-gradient(135deg, @oj-guindo, #6D6E71);
   color: white;
   padding: 35px;
   border-radius: 18px;
@@ -123,8 +125,8 @@
   }
 
   .announcement {
-    margin-top: 25px; //20px
-    border-left: 6px solid #7B1E3A;
+    margin-top: 25px;
+    border-left: 6px solid @oj-guindo;
     border-radius: 14px;
     background: white;
     padding: 10px;

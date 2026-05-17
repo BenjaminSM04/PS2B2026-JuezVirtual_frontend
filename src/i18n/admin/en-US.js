@@ -162,5 +162,32 @@ export const m = {
   Password_again_is_required: 'Password again is required',
   Captcha_is_required: 'Captcha is required',
   Click_to_refresh_captcha: 'Click to refresh captcha',
-  Please_validate_the_error_fields: 'Please validate the error fields'
+  Please_validate_the_error_fields: 'Please validate the error fields',
+  // Common actions
+  Save: 'Save',
+  Cancel: 'Cancel',
+  Confirm: 'Confirm',
+  Reset: 'Reset',
+  Refresh: 'Refresh',
+  Create: 'Create',
+  Edit: 'Edit',
+  Choose_File: 'Choose File',
+  Import_Users: 'Import Users',
+  Send_Test_Email: 'Send Test Email',
+  Add_From_Public_Problem: 'Add From Public Problem',
+  // Import/Export
+  Export_Problems_Beta: 'Export Problems (beta)',
+  Import_QDUOJ_Problems_Beta: 'Import QDUOJ Problems (beta)',
+  Import_FPS_Problems_Beta: 'Import FPS Problems (beta)',
+  Export: 'Export',
+  Upload: 'Upload',
+  Drag_File_Here: 'Drop your .zip file here',
+  Or_Click: 'or click to select',
+  QDUOJ_Format_Hint: 'QDUOJ format: .zip with one folder per problem (problem.json + testcase/)',
+  FPS_Format_Hint: 'FPS format: standard Free Problem Set .xml file',
+  Author: 'Author',
+  Upload_Failed: 'Upload failed',
+  Import_Success: 'Successfully imported {count} problems',
+  Keywords: 'Keywords',
+  Invalid_File_Type: 'Invalid file type. Allowed: {types}'
 }

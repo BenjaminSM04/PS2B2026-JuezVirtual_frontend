@@ -9,7 +9,7 @@
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPassword ? 'ios-eye-off-outline' : 'ios-eye-outline'" slot="append" class="password-eye" @click="showPassword = !showPassword"></Icon>
+        <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" slot="append" class="password-eye" @click.native="showPassword = !showPassword"></Icon>
         </Input>
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
@@ -120,26 +120,46 @@
   @import (reference) '../../../../styles/theme-oj.less';
 
   .auth-form {
+
+    /deep/ .modal-title {
+    font-size: 22px !important;
+    font-weight: 700;
+    text-align: center;
+    display: block;
+
+    margin-top: 20px !important;
+    margin-bottom: 35px !important;
+
+    color: #1c1c1c;
+  }
     /deep/ .ivu-form-item {
-      margin-bottom: 18px;
-    }
+    margin-bottom: 15px !important;
+    position: relative;
+  }
+
+  /deep/ .ivu-form-item-error {
+    margin-bottom: 30px !important;
+    padding-top: 4px;
+    top: 100%;
+    line-height: 1;
+  }
 
     /deep/ .ivu-input-group-prepend {
-      background: #fff;
-      border: 2px solid @oj-secondary;
+      background: @oj-guindo !important;
+      border: 2px solid @oj-guindo !important;
       border-right: none;
-      color: @oj-secondary;
+      color: white;
       border-radius: 12px 0 0 12px;
       min-width: 46px;
     }
 
     /deep/ .ivu-input-group-prepend i {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
     }
 
     /deep/ .ivu-input-group-prepend + .ivu-input {
-      border: 2px solid @oj-secondary;
+      border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       height: 46px;
@@ -148,9 +168,28 @@
       color: @oj-text;
     }
 
-    /deep/ .ivu-input-group-prepend + .ivu-input:focus {
-      box-shadow: 0 0 0 3px fade(@oj-primary, 18%);
-    }
+    /deep/ .ivu-input {
+    border: 2px solid @oj-secondary !important;
+    border-left: none !important;
+    border-right: none !important;
+    height: 46px;
+    padding: 0 12px;
+  }
+    /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
+    border-right: 2px solid @oj-guindo !important;
+    border-radius: 0 12px 12px 0;
+  }
+  /deep/ .ivu-input:hover,
+/deep/ .ivu-input:focus {
+  border-color: @oj-guindo !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* Evitar que el borde derecho desaparezca en hover si no hay icono append */
+/deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input:hover {
+  border-right: 2px solid @oj-guindo !important;
+}
 
     /deep/ .ivu-input::placeholder {
       color: fade(@oj-secondary, 50%);
@@ -162,27 +201,32 @@
     }
 
     /deep/ .ivu-input-group-append {
-      background: #fff;
-      border: 2px solid @oj-secondary;
+      background: @oj-guindo !important;
+      border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       padding: 0 12px;
       cursor: pointer;
+
       .password-eye {
         font-size: 18px;
-        color: fade(@oj-secondary, 60%);
-        &:hover { color: @oj-secondary; }
+        color: #ffffff !important;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
 
   .footer {
     overflow: auto;
-    margin-top: 4px;
+    margin-top: 50px;
     text-align: left;
 
     .btn {
-      margin: 0 0 14px 0;
+      margin: 0 0 12px 0;
       &:last-child {
         margin: 0;
       }
@@ -191,17 +235,16 @@
 
   .auth-submit-btn {
     height: 52px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 18px;
     font-weight: 700;
-    letter-spacing: 0.2px;
-    background-color: @oj-secondary;
-    border-color: @oj-secondary;
+    background-color: @oj-guindo;
+    border-color: @oj-guindo;
   }
 
   .auth-submit-btn:hover {
-    background-color: @oj-primary;
-    border-color: @oj-primary;
+    background-color: @oj-guindo-dark;
+    border-color: @oj-guindo-dark;
   }
 
   .auth-links {
@@ -215,10 +258,11 @@
     color: #202020;
     font-size: 16px;
     line-height: 1.2;
+    cursor: pointer;
   }
 
   .auth-link:hover {
-    color: @oj-primary;
+    color: @oj-guindo;
   }
 
   .auth-footer-brand {

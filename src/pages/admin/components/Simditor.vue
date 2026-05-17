@@ -4,6 +4,20 @@
 
 <script>
   import Simditor from 'tar-simditor'
+  import renderMathInElement from 'katex/dist/contrib/auto-render.js'
+  import 'katex/dist/katex.min.css'
+
+  const KATEX_OPTIONS = {
+    throwOnError: false,
+    errorCallback: () => {},
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\[', right: '\\]', display: true},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '$', right: '$', display: false}
+    ]
+  }
+
   Simditor.i18n['es'] = {
   'title': 'Título',
   'normalText': 'Texto normal',
@@ -106,12 +120,22 @@ Simditor.locale = 'es'
       
       this.editor.on('valuechanged', (e, src) => {
         this.currentValue = this.editor.getValue()
+        this.$nextTick(() => this.renderMath())
       })
       this.editor.on('decorate', (e, src) => {
         this.currentValue = this.editor.getValue()
+        this.$nextTick(() => this.renderMath())
       })
 
       this.editor.setValue(this.value)
+      this.$nextTick(() => this.renderMath())
+    },
+    methods: {
+      renderMath () {
+        if (!this.editor || !this.editor.body) return
+        const el = this.editor.body[0] || this.editor.body
+        if (el) renderMathInElement(el, KATEX_OPTIONS)
+      }
     },
     watch: {
       'value' (val) {

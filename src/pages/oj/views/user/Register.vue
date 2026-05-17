@@ -242,8 +242,8 @@
   }
 
     /deep/ .ivu-input-group-prepend {
-      background: #A60550 !important;
-      border: 2px solid #A60550 !important;
+      background: @oj-guindo !important;
+      border: 2px solid @oj-guindo !important;
       border-right: none;
       color: white;
       border-radius: 12px 0 0 12px;
@@ -253,12 +253,10 @@
     /deep/ .ivu-input-group-prepend i {
       font-size: 18px;
       font-weight: 600;
-            border: 2px solid #a60550 !important;
-
     }
 
     /deep/ .ivu-input-group-prepend + .ivu-input {
-      border: 2px solid #a60550 !important;
+      border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       height: 46px;
@@ -268,26 +266,26 @@
     }
 
     /deep/ .ivu-input {
-    border: 2px solid @oj-secondary !important; 
-    border-left: none !important; 
-    border-right: none !important; 
+    border: 2px solid @oj-secondary !important;
+    border-left: none !important;
+    border-right: none !important;
     height: 46px;
     padding: 0 12px;
   }
     /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
-    border-right: 2px solid #a60550 !important;
+    border-right: 2px solid @oj-guindo !important;
     border-radius: 0 12px 12px 0;
   }
-  /deep/ .ivu-input:hover, 
+  /deep/ .ivu-input:hover,
 /deep/ .ivu-input:focus {
-  border-color: #a60550 !important;
+  border-color: @oj-guindo !important;
   outline: none;
   box-shadow: none !important;
 }
 
 /* Evitar que el borde derecho desaparezca en hover si no hay icono append */
 /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input:hover {
-  border-right: 2px solid #a60550 !important;
+  border-right: 2px solid @oj-guindo !important;
 }
 
     /deep/ .ivu-input::placeholder {
@@ -300,8 +298,8 @@
     }
 
     /deep/ .ivu-input-group-append {
-      background: #A60550 !important;
-      border: 2px solid #A60550 !important;
+      background: @oj-guindo !important;
+      border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
       padding: 0 12px;
@@ -372,25 +370,25 @@
     border-radius: 12px;
     font-size: 18px;
     font-weight: 700;
-    background-color: #A60550;
-    border-color: @oj-secondary;
+    background-color: @oj-guindo;
+    border-color: @oj-guindo;
   }
 
   .auth-submit-btn:hover {
-    background-color: @oj-secondary;
-    border-color: @oj-secondary;
+    background-color: @oj-guindo-dark;
+    border-color: @oj-guindo-dark;
   }
 
   .auth-switch-btn {
     height: 46px;
     border-radius: 12px;
     font-weight: 600;
-    color: #a60550;
-    border-color: #a60550;
+    color: @oj-guindo;
+    border-color: @oj-guindo;
   }
 
   .auth-switch-btn:hover {
-    color: @oj-secondary;
-    border-color: @oj-secondary;
+    color: @oj-guindo-dark;
+    border-color: @oj-guindo-dark;
   }
 </style>

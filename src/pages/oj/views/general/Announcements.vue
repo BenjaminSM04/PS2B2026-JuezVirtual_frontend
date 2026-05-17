@@ -167,9 +167,8 @@
     animation: fadeIn 1s;
   }
 
-  /* Modificación 05/12/2026 */
   .announcement-title {
-  color: #7B1E3A !important;
+  color: @oj-guindo !important;
   font-weight: bold;
   font-size: 22px;
   letter-spacing: 0.5px;

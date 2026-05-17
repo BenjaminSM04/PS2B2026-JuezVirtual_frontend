@@ -34,9 +34,9 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-button type="primary" @click="saveSMTPConfig">Guardar</el-button>
-      <el-button type="warning" @click="testSMTPConfig"
-                 v-if="saved" :loading="loadingBtnTest">Enviar Correo de Prueba</el-button>
+      <el-button type="primary" icon="el-icon-fa-save" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
+      <el-button type="warning" icon="el-icon-fa-envelope" @click="testSMTPConfig"
+                 v-if="saved" :loading="loadingBtnTest">{{$t('m.Send_Test_Email')}}</el-button>
     </Panel>
 
     <Panel :title="$t('m.Website_Config')">

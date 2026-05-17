@@ -77,7 +77,7 @@
               if (params.row.show_link) {
                 return h('span', {
                   style: {
-                    color: '#664D59',
+                    color: '#7b1e3a',
                     cursor: 'pointer'
                   },
                   on: {
@@ -109,7 +109,7 @@
               return h('span',
                 {
                   style: {
-                    color: '#664D59',
+                    color: '#7b1e3a',
                     cursor: 'pointer'
                   },
                   on: {
@@ -328,10 +328,6 @@
 </script>
 
 <style scoped lang="less">
-  .ivu-btn-text {
-    color: #664D59;
-  }
-
   .flex-container {
     #main {
       flex: auto;
