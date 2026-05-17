@@ -2,7 +2,9 @@
   <Row type="flex" :gutter="18">
     <Col :span=19>
     <Panel shadow>
-      <div slot="title">{{$t('m.Problem_List')}}</div>
+      <div slot="title" class="problem-panel-title">
+        <Icon type="clipboard"/>
+        {{$t('m.Problem_List')}}</div>
       <div slot="extra">
         <ul class="filter">
           <li>
@@ -28,7 +30,7 @@
             <Input v-model="query.keyword"
                    @on-enter="filterByKeyword"
                    @on-click="filterByKeyword"
-                   placeholder="keyword"
+                   placeholder="Buscar palabra"
                    icon="ios-search-strong"/>
           </li>
           <li>
@@ -40,6 +42,7 @@
         </ul>
       </div>
       <Table 
+            class="problem-table"
             style="width: 100%; font-size: 16px;"
              :columns="problemTableColumns"
              :data="problemList"
@@ -312,6 +315,7 @@
   .taglist-title {
     margin-left: -10px;
     margin-bottom: -10px;
+    color: #7B1E3A;
   }
 
   .tag-btn {
@@ -322,4 +326,32 @@
   #pick-one {
     margin-top: 10px;
   }
+
+  /* Modificación 05/12/2026 */
+  .problem-panel-title {
+    color: #7B1E3A;
+    font-weight: bold;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+  }
+
+  /*.problem-table .ivu-table-header {
+    border-top: 2px solid #7B1E3A !important;
+    border-bottom: 2px solid #7B1E3A !important;
+  }*/
+  .problem-table .ivu-table-header th {
+    background-color: #7B1E3A !important;
+    color: white !important;
+    font-weight: bold;
+  }
+
+  .filter .ivu-btn-info:hover {
+    background: #987284 !important;
+    border-color: #987284 !important;
+  }
+
+  .ivu-switch-checked {
+  border-color: #B2F2D4 !important;
+  background-color: #B2F2D4 !important;
+}
 </style>
