@@ -70,6 +70,14 @@ export const m = {
   Service_URL: 'URL del Servicio',
   Last_Heartbeat: 'Último Latido',
   Create_Time: 'Fecha de Creación',
+  Status: 'Estado',
+  Hostname: 'Nombre de Host',
+  Task_Number: 'Número de Tareas',
+  CPU_Core: 'Núcleos de CPU',
+  CPU_Usage: 'Uso de CPU',
+  Memory_Usage: 'Uso de Memoria',
+  Online: 'Normal/En línea',
+  Offline: 'Abnormal/Fuera de línea',
   // PruneTestCase
   Test_Case_Prune_Test_Case: 'Limpiar Casos de Prueba',
   // Problem.vue

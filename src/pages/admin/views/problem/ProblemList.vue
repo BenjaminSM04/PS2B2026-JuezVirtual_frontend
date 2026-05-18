@@ -197,8 +197,8 @@
         })
       },
       deleteProblem (id) {
-        this.$confirm('Sure to delete this problem? The associated submissions will be deleted as well.', 'Delete Problem', {
-          type: 'warning'
+        this.$confirm('¿Seguro que deseas eliminar este problema? Los envíos asociados también serán eliminados.', 'Eliminar Problema', {
+            type: 'warning'
         }).then(() => {
           let funcName = this.routeName === 'problem-list' ? 'deleteProblem' : 'deleteContestProblem'
           api[funcName](id).then(() => [
@@ -209,8 +209,8 @@
         })
       },
       makeContestProblemPublic (problemID) {
-        this.$prompt('Please input display id for the public problem', 'confirm').then(({value}) => {
-          api.makeContestProblemPublic({id: problemID, display_id: value}).catch()
+      this.$prompt('Por favor, ingresa el ID de visualización para el problema público', 'Confirmar').then(({value}) => {
+            api.makeContestProblemPublic({id: problemID, display_id: value}).catch()
         }, () => {
         })
       },
@@ -264,4 +264,71 @@
 </script>
 
 <style scoped lang="less">
+.title-input {
+  margin-bottom: 20px;
+}
+
+.visible-box {
+  margin-top: 10px;
+  width: 205px;
+  float: left;
+}
+
+.panel {
+  background: #ffffff !important;
+  border-radius: 20px !important; 
+  border: none !important; 
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden; 
+  padding: 0 10px !important;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+/* Personalización de los botones existentes en el sistema */
+.el-button--primary {
+  background-color: #003B4A !important;
+  border-color: #003B4A !important;
+  border-radius: 10px !important;
+  height: 40px !important; 
+  padding: 0 20px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px !important;
+  font-weight: 600;
+  font-size: 14px;
+  &:hover {
+    background-color: #245965 !important;
+  }
+}
+
+.botones-gestion /deep/ .el-button {
+  background-color: #003B4A !important;
+  border-color: #003B4A !important;
+  color: white !important;
+  width: 42px !important;
+}
+
+.botones-gestion /deep/ .el-button:hover,
+.botones-gestion /deep/ .el-button:focus {
+  background-color: #245965 !important;
+  border-color: #245965 !important;
+  color: #ffffff !important;
+}
+
+/* Cambiar el color del número de página ACTIVO (El que está seleccionado) */
+/deep/ .el-pagination .el-pager li.active {
+  color: #003B4A !important; 
+  font-weight: bold;
+}
+
+/* Cambiar el color de los números INACTIVOS cuando pasas el mouse por encima (Hover) */
+/deep/ .el-pagination .el-pager li:hover {
+  color: #82a69a !important;
+}
+
+/* Cambiar el color de las flechas de navegación (< y >) cuando pasas el mouse por encima */
+/deep/ .el-pagination button:hover {
+  color: #003B4A !important;
+}
 </style>
