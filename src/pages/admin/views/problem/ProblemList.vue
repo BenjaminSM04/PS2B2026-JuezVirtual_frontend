@@ -1,11 +1,14 @@
 <template>
   <div class="view">
-    <Panel :title="contestId ? this.$i18n.t('m.Contest_Problem_List') : this.$i18n.t('m.Problem_List')">
+    <Panel style="margin-bottom: 25px;">
+      <span slot="title" style="color: #82a69a; font-weight: bold;">
+        {{ contestId ? $i18n.t('m.Contest_Problem_List') : $i18n.t('m.Problem_List') }}
+      </span>
       <div slot="header">
         <el-input
           v-model="keyword"
           prefix-icon="el-icon-search"
-          placeholder="Keywords">
+          :placeholder="$t('m.Keywords')">
         </el-input>
       </div>
       <el-table
@@ -14,15 +17,18 @@
         ref="table"
         :data="problemList"
         @row-dblclick="handleDblclick"
-        style="width: 100%">
+        style="width: 100%"
+        :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
         <el-table-column
           width="100"
           prop="id"
-          label="ID">
+          label="ID"
+          align="center">
         </el-table-column>
         <el-table-column
           width="150"
-          label="Display ID">
+          :label="$t('m.Display_ID')"
+          align="center">
           <template slot-scope="{row}">
             <span v-show="!row.isEditing">{{row._id}}</span>
             <el-input v-show="row.isEditing" v-model="row._id"
@@ -33,7 +39,8 @@
         </el-table-column>
         <el-table-column
           prop="title"
-          label="Title">
+          :label="$t('m.Title')"
+          align="center">
           <template slot-scope="{row}">
             <span v-show="!row.isEditing">{{row.title}}</span>
             <el-input v-show="row.isEditing" v-model="row.title"
@@ -43,12 +50,14 @@
         </el-table-column>
         <el-table-column
           prop="created_by.username"
-          label="Author">
+          :label="$t('m.Author')"
+          align="center">
         </el-table-column>
         <el-table-column
           width="200"
           prop="create_time"
-          label="Create Time">
+          :label="$t('m.Create_Time')"
+          align="center">
           <template slot-scope="scope">
             {{scope.row.create_time | localtime }}
           </template>
@@ -56,26 +65,29 @@
         <el-table-column
           width="100"
           prop="visible"
-          label="Visible">
+          :label="$t('m.Visible')"
+          align="center">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.visible"
                        active-text=""
                        inactive-text=""
+                       active-color="#BDF2D4"
+                inactive-color="#6A1B29"
                        @change="updateProblem(scope.row)">
             </el-switch>
           </template>
         </el-table-column>
         <el-table-column
-          fixed="right"
-          label="Operation"
-          width="250">
-          <div slot-scope="scope">
-            <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
-            <icon-btn v-if="contestId" name="Make Public" icon="clone"
+          :label="$t('m.Option')"
+          width="250"
+          align="center">
+          <div slot-scope="scope" class="botones-gestion">
+            <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
+            <icon-btn v-if="contestId" :name="$t('m.Make_Public')" icon="clone"
                       @click.native="makeContestProblemPublic(scope.row.id)"></icon-btn>
-            <icon-btn icon="download" name="Download TestCase"
+            <icon-btn icon="download" :name="$t('m.Download_TestCase')"
                       @click.native="downloadTestCase(scope.row.id)"></icon-btn>
-            <icon-btn icon="trash" name="Delete Problem"
+            <icon-btn icon="trash" :name="$t('m.Delete_Problem')"
                       @click.native="deleteProblem(scope.row.id)"></icon-btn>
           </div>
         </el-table-column>
@@ -93,24 +105,25 @@
           layout="prev, pager, next"
           @current-change="currentChange"
           :page-size="pageSize"
-          :total="total">
+          :total="total"
+          >
         </el-pagination>
       </div>
     </Panel>
-    <el-dialog title="Sure to update the problem? "
+    <el-dialog :title="$t('m.Sure_to_update_the_problem')" 
                width="20%"
                :visible.sync="InlineEditDialogVisible"
                @close-on-click-modal="false">
       <div>
-        <p>DisplayID: {{currentRow._id}}</p>
-        <p>Title: {{currentRow.title}}</p>
+        <p>{{$t('m.Display_ID')}}: {{currentRow._id}}</p>
+        <p>{{$t('m.Title')}}: {{currentRow.title}}</p>
       </div>
       <span slot="footer">
         <cancel @click.native="InlineEditDialogVisible = false; getProblemList(currentPage)"></cancel>
         <save @click.native="updateProblem(currentRow)"></save>
       </span>
     </el-dialog>
-    <el-dialog title="Add Contest Problem"
+    <el-dialog :title="$t('m.Add_Contest_Problem')"
                v-if="contestId"
                width="80%"
                :visible.sync="addProblemDialogVisible"
@@ -264,4 +277,72 @@
 </script>
 
 <style scoped lang="less">
+.title-input {
+    margin-bottom: 20px;
+  }
+
+  .visible-box {
+    margin-top: 10px;
+    width: 205px;
+    float: left;
+  }
+
+  .panel {
+    background: #ffffff !important;
+    border-radius: 20px !important; 
+    border: none !important; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden; 
+    padding: 0 10px !important;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+  /* Personalización de los botones existentes en el sistema */
+  .el-button--primary {
+    background-color: #003B4A !important;
+    border-color: #003B4A !important;
+    border-radius: 10px !important;
+    height: 40px !important; 
+    padding: 0 20px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px !important;
+    font-weight: 600;
+    font-size: 14px;
+    &:hover {
+      background-color: #245965 !important;
+    }
+  }
+  /* Cambia el borde y el icono al color guindo de tu paleta */
+.botones-gestion /deep/ .el-button {
+  background-color: #003B4A !important;
+  border-color: #003B4A !important;
+  color: white !important;
+}
+
+/* Efecto al pasar el cursor: se rellena de guindo con el icono blanco */
+.botones-gestion /deep/ .el-button:hover,
+.botones-gestion /deep/ .el-button:focus {
+  background-color: #245965 !important;
+  border-color: #245965 !important;
+  color: #ffffff !important;
+}
+
+
+
+/*Cambiar el color del número de página ACTIVO (El que está seleccionado) */
+/deep/ .el-pagination .el-pager li.active {
+  color: #003B4A !important; /* Tu tono guindo */
+  font-weight: bold;
+}
+
+/*Cambiar el color de los números INACTIVOS cuando pasas el mouse por encima (Hover) */
+/deep/ .el-pagination .el-pager li:hover {
+  color: #82a69a !important; /* Un guindo un poco más claro para el efecto visual */
+}
+
+/*Cambiar el color de las flechas de navegación (< y >) cuando pasas el mouse por encima */
+/deep/ .el-pagination button:hover {
+  color: #003B4A !important;
+}
 </style>
