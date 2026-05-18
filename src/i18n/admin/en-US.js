@@ -104,6 +104,7 @@ export const m = {
   Low: 'Low',
   Tag: 'Tag',
   New_Tag: 'New Tag',
+  Add_Problem: 'Add Problem',
    // ProblemList.vue
   Contest_Problem_List: 'Contest Problem List',
   // Contest.vue
