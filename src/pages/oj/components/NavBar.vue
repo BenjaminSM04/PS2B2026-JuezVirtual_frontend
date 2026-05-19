@@ -1,6 +1,23 @@
 <template>
   <div id="header">
-    <Menu theme="light" mode="horizontal" @on-select="handleRoute" :active-name="activeMenu" class="oj-menu">
+    <div class="mobile-header">
+      <div class="mobile-logo">
+        <img src="../../../assets/Logo2.png" alt="LizardJudge" class="mobile-logo-img"/>
+        <span>{{ website.website_name }}</span>
+      </div>
+
+      <div class="hamburger" @click="mobileMenuOpen = !mobileMenuOpen">
+        <Icon type="navicon-round"></Icon>
+      </div>
+    </div>
+    <Menu
+      theme="light"
+      :mode="isMobile ? 'vertical' : 'horizontal'"
+      @on-select="handleRoute"
+      :active-name="activeMenu"
+      class="oj-menu"
+      :class="{ 'mobile-menu-open': mobileMenuOpen }"
+    >
       <div class="logo">
         <img src="../../../assets/Logo2.png" alt="LizardJudge" class="logo-img"/>
         <span>{{website.website_name}}</span>
@@ -113,8 +130,19 @@
       login,
       register
     },
+    data () {
+      return {
+        mobileMenuOpen: false,
+        isMobile: false
+      }
+    },
     mounted () {
       this.getProfile()
+      this.checkScreen()
+      window.addEventListener('resize', this.checkScreen)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.checkScreen)
     },
     methods: {
       ...mapActions(['getProfile', 'changeModalStatus']),
@@ -124,6 +152,9 @@
         } else {
           window.open('/admin/')
         }
+
+        // cerrar menú en móvil
+        this.mobileMenuOpen = false
       },
       handleBtnClick (mode) {
         this.changeModalStatus({
@@ -133,7 +164,14 @@
       },
       handleLanguageChange (lang) {
         this.$i18n.locale = lang
-      }
+      },
+      checkScreen () {
+        this.isMobile = window.innerWidth <= 768
+
+        if (!this.isMobile) {
+          this.mobileMenuOpen = false
+        }
+      },
     },
     computed: {
       ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),
@@ -323,4 +361,168 @@
     color: @oj-secondary;
     letter-spacing: 0.2px;
   }
+
+  /* ================= MOBILE RESPONSIVE ================= */
+
+.mobile-header {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+
+  .mobile-header {
+    height: 60px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: @oj-primary;
+  }
+
+  .mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .mobile-logo-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .hamburger {
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ocultar logo desktop */
+  .logo {
+    display: none !important;
+  }
+
+  /* menú lateral */
+  .oj-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 60px) !important;
+    background: @oj-primary;
+    overflow-y: auto;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+
+    z-index: 999;
+    padding-top: 10px;
+    line-height: normal !important;
+  }
+
+  /* abrir menú */
+  .mobile-menu-open {
+    transform: translateX(0);
+  }
+
+  /deep/ .ivu-menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /deep/ .ivu-menu-item,
+  /deep/ .ivu-menu-submenu-title {
+    width: calc(100% - 20px);
+    margin: 4px 10px;
+    border-radius: 10px;
+
+    height: 48px !important;
+    line-height: 48px !important;
+
+    color: white !important;
+    border-bottom: none !important;
+  }
+
+  /deep/ .ivu-menu-item:hover,
+  /deep/ .ivu-menu-submenu-title:hover {
+    background: rgba(255,255,255,0.08) !important;
+  }
+
+  /deep/ .ivu-menu-item-active {
+    background: rgba(255,255,255,0.12) !important;
+    border-right: none !important;
+  }
+
+  /* arreglar submenus mobile */
+
+ /deep/ .ivu-menu-submenu .ivu-menu {
+   background: transparent !important;
+ }
+
+ /deep/ .ivu-menu-submenu .ivu-menu-item {
+   margin-left: 0 !important;
+   width: 100% !important;
+
+   height: 48px !important;
+   line-height: 48px !important;
+
+   padding-left: 45px !important;
+
+   display: flex;
+   align-items: center;
+ }
+
+ /deep/ .ivu-menu-submenu-opened > .ivu-menu-submenu-title {
+   background: rgba(255,255,255,0.08) !important;
+ }
+
+ /deep/ .ivu-menu-submenu .ivu-menu-item span {
+   white-space: nowrap;
+ }
+
+ /deep/ .ivu-select-dropdown {
+   z-index: 9999 !important;
+ }
+  
+
+  .right-menu {
+    float: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+    height: auto;
+
+    margin: 10px 0 0;
+    padding: 10px;
+  }
+
+  .btn-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .nav-btn {
+    width: 100%;
+  }
+
+  .drop-menu {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .drop-menu-title {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
 </style>
