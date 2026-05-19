@@ -21,6 +21,13 @@
             @click.native="showPassword = !showPassword">
           </Icon>
         </Input>
+        <div class="password-strength" v-if="formRegister.password"> <!-- Nuevo -->
+          <div
+            class="strength-bar"
+            :class="passwordStrength.class">
+          </div>
+          <span>{{ passwordStrength.text }}</span>
+        </div> <!-- Hasta acá -->
       </FormItem>
       <FormItem prop="passwordAgain">
         <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
@@ -156,26 +163,26 @@
             {
               required: true, 
               message: this.$i18n.t('m.Username_is_required'), 
-              trigger: 'blur'
+              trigger: ['blur', 'change']
             },
-            {validator: CheckUsernameFormat, trigger: 'blur'},
-            {validator: CheckUsernameNotExist, trigger: 'blur'}
+            {validator: CheckUsernameFormat, trigger: ['blur', 'change']},
+            {validator: CheckUsernameNotExist, trigger: ['blur', 'change']}
           ],
           email: [
-            {required: true, message: this.$i18n.t('m.Email_is_required'), trigger: 'blur'},
-            {validator: CheckEmailFormat, trigger: 'blur'},
-            {validator: CheckEmailNotExist, trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Email_is_required'), trigger: ['blur', 'change']},
+            {validator: CheckEmailFormat, trigger: ['blur', 'change']},
+            {validator: CheckEmailNotExist, trigger: ['blur', 'change']}
           ],
           password: [
-            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: 'blur'},
-            {validator: CheckPassword, trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: ['blur', 'change']},
+            {validator: CheckPassword, trigger: ['blur', 'change']}
           ],
           passwordAgain: [
             { required: true, message: this.$t('m.Please_enter_the_password_again'), trigger: ['blur', 'change'] },
     { validator: CheckAgainPassword, trigger: 'change' }
           ],
           captcha: [
-            {required: true, message: this.$i18n.t('m.Captcha_is_required'), trigger: 'blur', min: 1, max: 10}
+            {required: true, message: this.$i18n.t('m.Captcha_is_required'), trigger: ['blur', 'change'], min: 1, max: 10}
           ]
         }
       }
@@ -206,8 +213,25 @@
       }
     },
     computed: {
-      ...mapGetters(['website', 'modalStatus'])
+      ...mapGetters(['website', 'modalStatus']),
+        passwordStrength () {
+        const pwd = this.formRegister.password
 
+        let score = 0
+
+        if (pwd.length >= 6) score++
+        if (/[A-Z]/.test(pwd)) score++
+        if (/[0-9]/.test(pwd)) score++
+        if (/[@$!%*?&]/.test(pwd)) score++
+
+        if (score <= 1) {
+          return { text: 'Débil', class: 'weak' }
+        }
+        if (score <= 3) {
+          return { text: 'Media', class: 'medium' }
+        }
+        return { text: 'Fuerte', class: 'strong' }
+      }
     }
   }
 </script>
@@ -391,4 +415,35 @@
     color: @oj-guindo-dark;
     border-color: @oj-guindo-dark;
   }
+
+  .password-strength {
+  margin-top: 8px;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.strength-bar {
+  height: 6px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  transition: 0.3s;
+}
+
+.weak {
+  width: 33%;
+  background: #ed4014;
+}
+
+.medium {
+  width: 66%;
+  background: #ff9900;
+}
+
+.strong {
+  width: 100%;
+  background: #19be6b;
+}
 </style>

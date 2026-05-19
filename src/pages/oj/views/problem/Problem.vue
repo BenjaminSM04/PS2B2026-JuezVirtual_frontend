@@ -2,7 +2,7 @@
   <div class="flex-container">
     <div id="problem-main">
       <!--problem main-->
-      <Panel :padding="40" shadow>
+      <Panel :padding="40" shadow class="problem-panel">
         <div slot="title">{{problem.title}}</div>
         <div id="problem-content" class="markdown-body" v-katex>
           <p class="title">{{$t('m.Description')}}</p>
@@ -25,11 +25,11 @@
                     <Icon type="clipboard"></Icon>
                   </a>
                 </p>
-                <pre>{{sample.input}}</pre>
+                <pre><code>{{sample.input}}</code></pre>
               </div>
               <div class="sample-output">
                 <p class="title">{{$t('m.Sample_Output')}} {{index + 1}}</p>
-                <pre>{{sample.output}}</pre>
+                <pre><code>{{sample.output}}</code></pre>
               </div>
             </div>
           </div>
@@ -139,31 +139,32 @@
           <span class="card-title">{{$t('m.Information')}}</span>
         </div>
         <ul>
-          <li><p>ID</p>
+          <li><p><Icon type="pound"></Icon>ID</p>
             <p>{{problem._id}}</p></li>
           <li>
-            <p>{{$t('m.Time_Limit')}}</p>
-            <p>{{problem.time_limit}}MS</p></li>
+            <p><Icon type="clock"></Icon>{{$t('m.Time_Limit')}}</p>
+            <p>{{problem.time_limit}} MS</p>
+          </li>
           <li>
-            <p>{{$t('m.Memory_Limit')}}</p>
-            <p>{{problem.memory_limit}}MB</p></li>
-
+            <p><Icon type="ios-speedometer"></Icon>{{$t('m.Memory_Limit')}}</p>
+            <p>{{problem.memory_limit}} MB</p>
+          </li>
           <li>
-            <p>{{$t('m.IOMode')}}</p>
+            <p><Icon type="ios-shuffle"></Icon>{{$t('m.IOMode')}}</p>
             <p>{{problem.io_mode.io_mode}}</p>
           </li>
           <li>
-            <p>{{$t('m.Created')}}</p>
+            <p><Icon type="person"></Icon>{{$t('m.Created')}}</p>
             <p>{{problem.created_by.username}}</p></li>
           <li v-if="problem.difficulty">
-            <p>{{$t('m.Level')}}</p>
+            <p><Icon type="stats-bars"></Icon>{{$t('m.Level')}}</p>
             <p>{{$t('m.' + problem.difficulty)}}</p></li>
           <li v-if="problem.total_score">
-            <p>{{$t('m.Score')}}</p>
+            <p><Icon type="trophy"></Icon>{{$t('m.Score')}}</p>
             <p>{{problem.total_score}}</p>
           </li>
           <li>
-            <p>{{$t('m.Tags')}}</p>
+            <p><Icon type="pricetag"></Icon>{{$t('m.Tags')}}</p>
             <p>
               <Poptip trigger="hover" placement="left-end">
                 <a>{{$t('m.Show')}}</a>
@@ -180,7 +181,7 @@
         <div slot="title">
           <Icon type="ios-analytics"></Icon>
           <span class="card-title">{{$t('m.Statistic')}}</span>
-          <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">Details</Button>
+          <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">Detalles</Button>
         </div>
         <div class="echarts">
           <ECharts :options="pie"></ECharts>
@@ -523,40 +524,60 @@
     }
     #right-column {
       flex: none;
-      width: 220px;
+      width: 240px;
     }
+  }
+
+  /* panel principal */
+  .problem-panel {
+    border-top: 5px solid #7B1E3A;
+    border-radius: 16px;
   }
 
   #problem-content {
     margin-top: -50px;
     .title {
-      font-size: 20px;
-      font-weight: 400;
-      margin: 25px 0 8px 0;
-      color: #003B4A;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 30px 0 12px 0;
+      color: #7B1E3A;
       .copy {
         padding-left: 8px;
+        color: #987284
       }
     }
     p.content {
       margin-left: 25px;
       margin-right: 20px;
-      font-size: 15px
+      font-size: 15px;
+      /* Nuevo */
+      line-height: 1.8;
+      color: #333;
     }
     .sample {
+      /* Nuevo */
+      gap: 20px;
       align-items: stretch;
       &-input, &-output {
         width: 50%;
-        flex: 1 1 auto;
+        flex: 1; //1 1 auto
         display: flex;
         flex-direction: column;
-        margin-right: 5%;
+        //margin-right: 5%;
       }
       pre {
-        flex: 1 1 auto;
-        align-self: stretch;
+        flex: 1; //1 1 auto
+        /* Nuevo */
+        padding: 18px;
+        background: #1e1e1e;
+        color: white;
+        border-radius: 12px;
+        overflow-x: auto;
+        border-left: 5px solid #7B1E3A;
+        font-size: 14px;
+        /*align-self: stretch;
         border-style: solid;
-        background: transparent;
+        background: transparent;*/
       }
     }
   }
@@ -564,6 +585,9 @@
   #submit-code {
     margin-top: 20px;
     margin-bottom: 20px;
+    /* Nuevo */
+    border-radius: 16px;
+    /*  */
     .status {
       float: left;
       span {
@@ -584,19 +608,30 @@
   #info {
     margin-bottom: 20px;
     margin-top: 20px;
+    border-radius: 16px; //nuevo
     ul {
       list-style-type: none;
       li {
-        border-bottom: 1px dotted #e9eaec;
-        margin-bottom: 10px;
+        /*border-bottom: 1px solid #eee;//dotted
+        //margin-bottom: 10px;
+        padding: 8px 0; //Nuevo*/
+
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         p {
           display: inline-block;
         }
         p:first-child {
-          width: 90px;
+          width: 110px;//90
+          color: #7B1E3A;
+          font-weight: 600;
         }
         p:last-child {
           float: right;
+          color: #444;//Nuevo
         }
       }
     }
@@ -607,6 +642,7 @@
   }
 
   #pieChart {
+    border-radius: 16px;
     .echarts {
       height: 250px;
       width: 210px;
@@ -623,5 +659,24 @@
     width: 500px;
     height: 480px;
   }
+
+    #info ul li p {
+      margin: 0;
+    }
+
+    #info ul li p:first-child {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #7B1E3A;
+      font-weight: 600;
+    }
+
+    #info ul li p:last-child {
+      color: #444;
+      text-align: right;
+      white-space: nowrap;
+    }
+
 </style>
 
