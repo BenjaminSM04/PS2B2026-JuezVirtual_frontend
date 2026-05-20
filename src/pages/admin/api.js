@@ -330,7 +330,7 @@ function ajax (url, method, options) {
       } else {
         resolve(res)
         if (method !== 'get') {
-          Vue.prototype.$success('Succeeded')
+          Vue.prototype.$success('Éxito')
         }
       }
     }, res => {

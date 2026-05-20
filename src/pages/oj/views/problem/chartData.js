@@ -1,4 +1,4 @@
-const pieColorMap = {
+/*const pieColorMap = {
   'AC': {color: '#19be6b'},
   'WA': {color: '#ed3f14'},
   'TLE': {color: '#ff9300'},
@@ -6,6 +6,16 @@ const pieColorMap = {
   'RE': {color: '#ff6104'},
   'CE': {color: '#80848f'},
   'PAC': {color: '#2d8cf0'}
+}*/
+
+const pieColorMap = {
+  'AC':  { color: '#7B1E3A' }, // vino principal
+  'WA':  { color: '#987284' }, // rosa viejo
+  'TLE': { color: '#C9ADA7' }, // beige rosado
+  'MLE': { color: '#003B4A' }, 
+  'RE':  { color: '#BDF2D4' }, // terracota
+  'CE':  { color: '#6D6875' }, // gris morado
+  'PAC': { color: '#4A4E69' }  // azul gris
 }
 
 function getItemColor (obj) {

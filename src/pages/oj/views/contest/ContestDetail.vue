@@ -7,17 +7,31 @@
       </transition>
       <!--children end-->
       <div class="flex-container" v-if="route_name === 'contest-details'">
-        <template>
           <div id="contest-desc">
+
+            <div class="contest-timer" :class="timerClass">
+              <div class="timer-label">
+                {{ contestStatus === '1'
+                  ? 'Empieza en'
+                  : contestStatus === '0'
+                    ? 'Termina en'
+                    : 'Finalizado' }}
+              </div>
+              <div class="timer-value">
+                {{ countdown }}
+              </div>
+            </div>
+
+
             <Panel :padding="20" shadow>
               <div slot="title">
                 {{contest.title}}
               </div>
-              <div slot="extra">
+              <!-- <div slot="extra">
                 <Tag type="dot" :color="countdownColor">
                   <span id="countdown">{{countdown}}</span>
                 </Tag>
-              </div>
+              </div> -->
               <div v-katex v-html="contest.description" class="markdown-body"></div>
               <div v-if="passwordFormVisible" class="contest-password">
                 <Input v-model="contestPassword" type="password"
@@ -28,7 +42,6 @@
             </Panel>
             <Table :columns="columns" :data="contest_table" disabled-hover style="margin-bottom: 40px;"></Table>
           </div>
-        </template>
       </div>
 
     </div>
@@ -115,7 +128,8 @@
           {
             title: this.$i18n.t('m.Rule'),
             render: (h, params) => {
-              return h('span', this.$i18n.t('m.' + params.row.rule_type))
+              return h('span', params.row.rule_type ? this.$i18n.t('m.' + params.row.rule_type) : '')
+              //return h('span', this.$i18n.t('m.' + params.row.rule_type))
             }
           },
           {
@@ -179,6 +193,30 @@
       },
       showAdminHelper () {
         return this.isContestAdmin && this.contestRuleType === 'ACM'
+      },
+      timerClass () {
+        const status = this.contestStatus
+
+        if (status === CONTEST_STATUS.ENDED) {
+          return 'timer-ended'
+        }
+
+        const parts = (this.countdown || '').split(':')
+        if (parts.length < 3) return 'timer-safe'
+
+        const seconds =
+          (+parts[0]) * 3600 +
+          (+parts[1]) * 60 +
+          (+parts[2])
+
+        if (seconds <= 300) {
+          return 'timer-danger'
+        }
+
+        if (seconds <= 1800) {
+          return 'timer-warning'
+        }
+        return 'timer-safe'
       }
     },
     watch: {
@@ -196,13 +234,14 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
   pre {
     display: inline-block;
   }
 
-  #countdown {
+  /*#countdown {
     font-size: 16px;
-  }
+  }*/
 
   .flex-container {
     #contest-main {
@@ -226,4 +265,86 @@
       }
     }
   }
+
+  #contest-menu .ivu-icon {
+    color: @oj-guindo;
+  }
+
+  #contest-menu .ivu-menu-item-active .ivu-icon {
+    color: #6D6E71;
+  }
+
+  .contest-timer {
+  background: linear-gradient(135deg, @oj-guindo, #6D6E71);
+    color: white;
+    padding: 18px 20px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .contest-timer > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .contest-timer::before {
+    content: '';
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    top: -100%;
+    left: -100%;
+    transform: rotate(20deg);
+    background: linear-gradient(135deg, @oj-guindo, #6D6E71);
+    opacity: 0.2;
+  }
+
+  .timer-label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+  }
+
+  .timer-value {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  .timer-safe {
+  background: linear-gradient(135deg, #1f8b4c, #2ecc71);
+}
+
+.timer-warning {
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+}
+
+.timer-danger {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  animation: pulse 1.2s infinite;
+}
+
+.timer-ended {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+}
 </style>
