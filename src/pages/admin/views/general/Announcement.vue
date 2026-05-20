@@ -55,7 +55,7 @@
                          active-text=""
                          inactive-text=""
                          active-color="#BDF2D4"
-                inactive-color="#A60550"
+                inactive-color="#6A1B29"
                          @change="handleVisibleSwitch(scope.row)">
               </el-switch>
             </template>
