@@ -214,12 +214,5 @@ export const m = {
   Keywords: 'Palabras clave',
   Invalid_File_Type: 'Tipo de archivo inválido. Permitidos: {types}',
   //crear problema
-  Add_Problem: 'Agregar Problema',
-  Add_From_Public_Problem: 'Agregar desde Problema Público',
-  //editar problema
-  Delete_Problem: 'Eliminar Problema',
-  Make_Public: 'Hacer Público',
-  Download_TestCase: 'Descargar Casos de Prueba',
-  Sure_to_update_the_problem: '¿Seguro que deseas actualizar el problema?',
-  Add_Contest_Problem: 'Agregar Problema al Concurso'
+  Add_Problem: 'Agregar Problema'
 }

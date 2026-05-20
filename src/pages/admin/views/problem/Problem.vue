@@ -38,12 +38,24 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)' " required>
-              <el-input type="Number" :placeholder="$t('m.Time_Limit')" v-model.number="problem.time_limit"></el-input>
+              <el-input-number 
+                v-model="problem.time_limit" 
+                :min="100" 
+                :step="100"
+                :placeholder="$t('m.Time_Limit')"
+                style="width: 100%;">
+              </el-input-number>            
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)' " required>
-              <el-input type="Number" :placeholder="$t('m.Memory_limit')" v-model.number="problem.memory_limit"></el-input>
+              <el-input-number 
+                v-model.number="problem.memory_limit" 
+                :min="32" 
+                :step="1"
+                :placeholder="$t('m.Memory_limit')"
+                style="width: 100%;">
+              </el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -281,17 +293,17 @@
     data () {
       return {
         rules: {
-          _id: {required: true, message: 'Display ID is required', trigger: 'blur'},
-          title: {required: true, message: 'Title is required', trigger: 'blur'},
-          input_description: {required: true, message: 'Input Description is required', trigger: 'blur'},
-          output_description: {required: true, message: 'Output Description is required', trigger: 'blur'},
+          _id: {required: true, message: 'El ID de visualización es requerido', trigger: 'blur'},
+          title: {required: true, message: 'El título es requerido', trigger: 'blur'},
+          input_description: {required: true, message: 'La descripción de la entrada es requerida', trigger: 'blur'},
+          output_description: {required: true, message: 'La descripción de la salida es requerida', trigger: 'blur'},
           time_limit: [
-            {required: true, message: 'El tiempo límite es obligatorio', trigger: 'blur'},
-            {type: 'integer', min: 1, max: 60000, message: 'El tiempo debe ser un entero entre 1 y 60000 ms', trigger: 'blur'}
+            {type: 'integer',required: true, message: 'El tiempo límite es obligatorio', trigger: 'blur'},
+            {type: 'integer', min: 100, max: 60000, message: 'El tiempo debe ser un entero entre 100 y 60000 ms (60 segundos)', trigger: 'blur'}
           ],
           memory_limit: [
             {required: true, message: 'El límite de memoria es obligatorio', trigger: 'blur'},
-            {type: 'integer', min: 1, max: 4096, message: 'La memoria debe ser un entero entre 1 y 4096 MB', trigger: 'blur'}
+            {type: 'integer', min: 32, max: 4096, message: 'La memoria debe ser un entero entre 32 y 4096 MB', trigger: 'blur'}
           ]
         },
         loadingCompile: false,
