@@ -1,9 +1,4 @@
 import 'katex/dist/katex.min.css'
-import autoRender from 'katex/dist/contrib/auto-render.js'
-
-// auto-render puede exportarse como función o como { default: fn }
-// dependiendo del interop del bundler; normalizamos a una función.
-const renderMathInElement = typeof autoRender === 'function' ? autoRender : autoRender.default
 
 const noop = () => {}
 
@@ -18,14 +13,32 @@ const defaultOptions = {
   ]
 }
 
+// Resolve KaTeX's auto-render lazily and defensively. Depending on the bundler
+// interop it may be a function or be wrapped as { default: fn }; resolving it
+// inside a try/catch guarantees it can never crash the app at load time.
+let cachedRenderer
+let rendererResolved = false
+function resolveRenderer () {
+  if (rendererResolved) return cachedRenderer
+  rendererResolved = true
+  try {
+    const mod = require('katex/dist/contrib/auto-render.js')
+    cachedRenderer = typeof mod === 'function' ? mod : (mod && mod.default)
+  } catch (e) {
+    cachedRenderer = null
+  }
+  return cachedRenderer
+}
+
 function render (el, binding) {
+  const renderMathInElement = resolveRenderer()
   if (typeof renderMathInElement !== 'function') return
   const userOptions = binding.value && binding.value.options ? binding.value.options : {}
   const options = Object.assign({}, defaultOptions, userOptions)
   try {
     renderMathInElement(el, options)
   } catch (e) {
-    // No romper el render del componente si KaTeX falla.
+    // Do not break the component render if KaTeX fails.
   }
 }
 
