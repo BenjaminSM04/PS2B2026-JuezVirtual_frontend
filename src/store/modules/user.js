@@ -29,7 +29,9 @@ const getters = {
 const mutations = {
   [types.CHANGE_PROFILE] (state, {profile}) {
     state.profile = profile
-    if (profile.language) {
+    // Only adopt the server profile language when the user has not picked
+    // one manually (a stored choice from the language selector wins).
+    if (profile.language && !storage.get(STORAGE_KEY.LANGUAGE)) {
       i18n.locale = profile.language
     }
     storage.set(STORAGE_KEY.AUTHED, !!profile.user)

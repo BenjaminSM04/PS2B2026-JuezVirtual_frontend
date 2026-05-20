@@ -17,30 +17,52 @@
     ]
   }
 
-  Simditor.i18n['es'] = {
-  'title': 'Título',
-  'normalText': 'Texto normal',
-  'bold': 'Negrita',
-  'italic': 'Cursiva',
-  'underline': 'Subrayado',
-  'strikethrough': 'Tachado',
-  'fontScale': 'Tamaño de fuente',
-  'color': 'Color de texto',
-  'ol': 'Lista numerada',
-  'ul': 'Lista de viñetas',
-  'blockquote': 'Cita',
-  'code': 'Código',
-  'table': 'Tabla',
-  'image': 'Imagen',
-  'link': 'Enlace',
-  'hr': 'Línea horizontal',
-  'indent': 'Aumentar sangría',
-  'outdent': 'Disminuir sangría',
-  'alignment': 'Alineación',
-  'markdown': 'Markdown'
-}
+  // Toolbar labels for the Simditor editor, selected by the app language.
+  Simditor.i18n['es-LA'] = {
+    'title': 'Título',
+    'normalText': 'Texto normal',
+    'bold': 'Negrita',
+    'italic': 'Cursiva',
+    'underline': 'Subrayado',
+    'strikethrough': 'Tachado',
+    'fontScale': 'Tamaño de fuente',
+    'color': 'Color de texto',
+    'ol': 'Lista numerada',
+    'ul': 'Lista de viñetas',
+    'blockquote': 'Cita',
+    'code': 'Código',
+    'table': 'Tabla',
+    'image': 'Imagen',
+    'link': 'Enlace',
+    'hr': 'Línea horizontal',
+    'indent': 'Aumentar sangría',
+    'outdent': 'Disminuir sangría',
+    'alignment': 'Alineación',
+    'markdown': 'Markdown'
+  }
 
-Simditor.locale = 'es'
+  Simditor.i18n['en-US'] = {
+    'title': 'Title',
+    'normalText': 'Normal text',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strikethrough': 'Strikethrough',
+    'fontScale': 'Font size',
+    'color': 'Text color',
+    'ol': 'Numbered list',
+    'ul': 'Bullet list',
+    'blockquote': 'Quote',
+    'code': 'Code',
+    'table': 'Table',
+    'image': 'Image',
+    'link': 'Link',
+    'hr': 'Horizontal line',
+    'indent': 'Increase indent',
+    'outdent': 'Decrease indent',
+    'alignment': 'Alignment',
+    'markdown': 'Markdown'
+  }
 
   import 'tar-simditor/styles/simditor.css'
   import 'tar-simditor-markdown'
@@ -67,39 +89,12 @@ Simditor.locale = 'es'
       }
     },
     mounted () {
-      Simditor.i18n['zh-CN'] = {
-      'title': 'Título',
-      'bold': 'Negrita',
-      'italic': 'Cursiva',
-      'underline': 'Subrayado',
-      'strikethrough': 'Tachado',
-      'fontScale': 'Tamaño',
-      'color': 'Color',
-      'ol': 'Lista Numerada',
-      'ul': 'Lista de Viñetas',
-      'blockquote': 'Cita',
-      'code': 'Código',
-      'table': 'Tabla',
-      'link': 'Enlace',
-      'image': 'Imagen',
-      'hr': 'Línea Horizontal',
-      'indent': 'Aumentar Sangría',
-      'outdent': 'Disminuir Sangría',
-      'alignment': 'Alineación',
-      'upload file': 'Subir archivo',
-    'uploadFile': 'Subir archivo',
-    'upload': 'Subir archivo',  
-      'markdown': 'Modo Markdown',   
-      'normalText': 'Texto Normal',
-      'title1': 'Título 1',
-      'title2': 'Título 2',
-      'title3': 'Título 3'
-      }
+      const editorLocale = Simditor.i18n[this.$i18n.locale] ? this.$i18n.locale : 'en-US'
 
       this.editor = new Simditor({
         textarea: this.$refs.editor,
         toolbar: this.toolbar,
-        locale: 'es',
+        locale: editorLocale,
         pasteImage: true,
         markdown: false,
         // Esta es la configuración completa para que el menú aparezca

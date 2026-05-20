@@ -5,22 +5,22 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item :label="$t('m.Server')" prop="server" required>
-              <el-input v-model="smtp.server" placeholder="smtp.ejemplo.com"></el-input>
+              <el-input v-model="smtp.server" placeholder="smtp.example.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('m.Port')" prop="port" required>
-              <el-input type="number" v-model.number="smtp.port" placeholder="Puerto del Servidor SMTP"></el-input>
+              <el-input type="number" v-model.number="smtp.port" :placeholder="$t('m.SMTP_Port_Placeholder')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('m.Email')" prop="email" required>
-              <el-input v-model="smtp.email" placeholder="email@ejemplo.com"></el-input>
+              <el-input v-model="smtp.email" placeholder="email@example.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" required>
-              <el-input v-model="smtp.password" type="password" placeholder="Contraseña del Servidor SMTP"></el-input>
+              <el-input v-model="smtp.password" type="password" :placeholder="$t('m.SMTP_Password_Placeholder')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -60,7 +60,7 @@
           <el-col :span="24">
             <el-form-item :label="$t('m.Footer')" prop="website_footer">
               <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="websiteConfig.website_footer"
-                        placeholder="Pie de Página de la pagina HTML"></el-input>
+                        :placeholder="$t('m.Website_Footer_Placeholder')"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -101,9 +101,9 @@
       const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
       const validateEmail = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('El correo es obligatorio'))
+          callback(new Error(this.$i18n.t('m.Email_Required')))
         } else if (!emailRegex.test(value)) {
-          callback(new Error('Formato de correo inválido'))
+          callback(new Error(this.$i18n.t('m.Email_Invalid')))
         } else {
           callback()
         }
@@ -111,18 +111,18 @@
       const validatePort = (rule, value, callback) => {
         const num = Number(value)
         if (value === '' || value === null || value === undefined) {
-          callback(new Error('El puerto es obligatorio'))
+          callback(new Error(this.$i18n.t('m.Port_Required')))
         } else if (!Number.isInteger(num) || num < 1 || num > 65535) {
-          callback(new Error('El puerto debe ser un entero entre 1 y 65535'))
+          callback(new Error(this.$i18n.t('m.Port_Invalid')))
         } else {
           callback()
         }
       }
       const validateUrl = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('La URL base es obligatoria'))
+          callback(new Error(this.$i18n.t('m.Base_Url_Required')))
         } else if (!/^https?:\/\/.+/.test(value)) {
-          callback(new Error('La URL debe comenzar con http:// o https://'))
+          callback(new Error(this.$i18n.t('m.Url_Invalid')))
         } else {
           callback()
         }
@@ -141,7 +141,7 @@
         websiteConfig: {},
         smtpRules: {
           server: [
-            {required: true, message: 'El servidor SMTP es obligatorio', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.SMTP_Server_Required'), trigger: 'blur'}
           ],
           port: [
             {required: true, validator: validatePort, trigger: 'blur'}
@@ -150,7 +150,7 @@
             {required: true, validator: validateEmail, trigger: 'blur'}
           ],
           password: [
-            {required: true, message: 'La contraseña es obligatoria', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Password_Required'), trigger: 'blur'}
           ]
         },
         websiteRules: {
@@ -158,12 +158,12 @@
             {required: true, validator: validateUrl, trigger: 'blur'}
           ],
           website_name: [
-            {required: true, message: 'El nombre del sitio es obligatorio', trigger: 'blur'},
-            {max: 128, message: 'Máximo 128 caracteres', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Website_Name_Required'), trigger: 'blur'},
+            {max: 128, message: this.$i18n.t('m.Max_128_Chars'), trigger: 'blur'}
           ],
           website_name_shortcut: [
-            {required: true, message: 'El acrónimo es obligatorio', trigger: 'blur'},
-            {max: 32, message: 'Máximo 32 caracteres', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Shortcut_Required'), trigger: 'blur'},
+            {max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur'}
           ]
         }
       }
@@ -174,7 +174,7 @@
           this.smtp = res.data.data
         } else {
           this.init = true
-          this.$warning('Por favor, configure el SMTP primero')
+          this.$warning(this.$i18n.t('m.Configure_SMTP_First'))
         }
       })
       api.getWebsiteConfig().then(res => {
@@ -186,7 +186,7 @@
       saveSMTPConfig () {
         this.$refs.smtpForm.validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, corrige los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           if (!this.init) {
@@ -203,9 +203,9 @@
         })
       },
       testSMTPConfig () {
-        this.$prompt('Por favor, ingresa tu correo electrónico', 'Prueba de SMTP', {
+        this.$prompt(this.$i18n.t('m.Input_Email'), this.$i18n.t('m.SMTP_Test'), {
           inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: 'Formato de correo inválido'
+          inputErrorMessage: this.$i18n.t('m.Email_Invalid')
         }).then(({value}) => {
           this.loadingBtnTest = true
           api.testSMTPConfig(value).then(() => {
@@ -219,7 +219,7 @@
       saveWebsiteConfig () {
         this.$refs.websiteForm.validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, corrige los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           api.editWebsiteConfig(this.websiteConfig).then(() => {

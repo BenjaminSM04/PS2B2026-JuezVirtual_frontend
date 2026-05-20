@@ -4,13 +4,12 @@
     <panel>
 
       <span slot="title" class="panel-title">
-        Limpiar Casos de Prueba
+        {{$t('m.Prune_Test_Case')}}
 
         <el-popover placement="right" trigger="hover">
 
           <p>
-            Estos casos de prueba no pertenecen a ningún problema.
-            Puedes eliminarlos de forma segura.
+            {{$t('m.Prune_Test_Case_Hint')}}
           </p>
 
           <i
@@ -25,7 +24,7 @@
         :data="data"
         border>
 
-        <el-table-column label="Última modificación">
+        <el-table-column :label="$t('m.Last_Modified')">
 
           <template slot-scope="{row}">
             {{ row.create_time | timestampFormat }}
@@ -35,12 +34,12 @@
 
         <el-table-column
           prop="id"
-          label="ID del Caso de Prueba">
+          :label="$t('m.Test_Case_ID')">
         </el-table-column>
 
         <el-table-column
           fixed="right"
-          label="Opciones"
+          :label="$t('m.Option')"
           width="220">
 
           <template slot-scope="{row}">
@@ -51,7 +50,7 @@
               icon="el-icon-delete"
               @click="confirmDelete(row.id)">
 
-              Eliminar
+              {{$t('m.Delete')}}
 
             </el-button>
 
@@ -72,7 +71,7 @@
           icon="el-icon-delete"
           @click="confirmDelete()">
 
-          Eliminar Todos
+          {{$t('m.Delete_All')}}
 
         </el-button>
 
@@ -129,14 +128,14 @@ export default {
       this.$confirm(
 
         isAll
-          ? 'Si elimina todos los casos de prueba inválidos, esta acción no se podrá deshacer.'
-          : 'Si elimina este caso de prueba, no podrá recuperarlo nuevamente.',
+          ? this.$i18n.t('m.Prune_All_Confirm')
+          : this.$i18n.t('m.Prune_One_Confirm'),
 
-        'Advertencia',
+        this.$i18n.t('m.Warning'),
 
         {
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'Cancelar',
+          confirmButtonText: this.$i18n.t('m.Delete'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
           type: 'warning',
           center: true,
           customClass: 'upv-delete-modal'
@@ -150,7 +149,7 @@ export default {
 
         this.$message({
           type: 'info',
-          message: 'Eliminación cancelada'
+          message: this.$i18n.t('m.Delete_Cancelled')
         })
 
       })
@@ -169,8 +168,8 @@ export default {
         this.$message({
           type: 'success',
           message: !id
-            ? 'Todos los casos fueron eliminados correctamente'
-            : 'Caso eliminado correctamente'
+            ? this.$i18n.t('m.Prune_All_Success')
+            : this.$i18n.t('m.Prune_One_Success')
         })
 
         this.init()

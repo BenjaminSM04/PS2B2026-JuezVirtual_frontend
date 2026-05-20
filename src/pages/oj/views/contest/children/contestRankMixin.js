@@ -8,6 +8,24 @@ export default {
   components: {
     ScreenFull
   },
+  data () {
+    return {
+      refreshFunc: null,
+      autoRefresh: true,
+      refreshInterval: 10000,
+      presentationMode: false
+    }
+  },
+  mounted () {
+    // Start the live refresh automatically for ongoing contests so the
+    // ranking chart keeps updating on its own while it is projected.
+    if (this.refreshDisabled) {
+      this.autoRefresh = false
+    } else {
+      this.autoRefresh = true
+      this.handleAutoRefresh(true)
+    }
+  },
   methods: {
     getContestRankData (page = 1, refresh = false) {
       let offset = (page - 1) * this.limit
@@ -32,14 +50,30 @@ export default {
       })
     },
     handleAutoRefresh (status) {
+      clearInterval(this.refreshFunc)
       if (status === true) {
         this.refreshFunc = setInterval(() => {
           this.page = 1
           this.getContestRankData(1, true)
-        }, 10000)
-      } else {
-        clearInterval(this.refreshFunc)
+        }, this.refreshInterval)
       }
+    },
+    restartAutoRefresh () {
+      // Re-arm the timer so a new interval takes effect immediately.
+      if (this.autoRefresh) {
+        this.handleAutoRefresh(true)
+      }
+    },
+    togglePresentation () {
+      this.presentationMode = !this.presentationMode
+      if (this.presentationMode) {
+        this.showChart = true
+      }
+      this.$nextTick(() => {
+        if (this.$refs.chart) {
+          this.$refs.chart.resize()
+        }
+      })
     }
   },
   computed: {
@@ -78,7 +112,7 @@ export default {
         this.$store.commit(types.CHANGE_CONTEST_ITEM_VISIBLE, {realName: value})
         if (value) {
           this.columns.splice(2, 0, {
-            title: 'RealName',
+            title: this.$i18n.t('m.RealName'),
             align: 'center',
             width: 150,
             render: (h, {row}) => {

@@ -27,6 +27,16 @@
               <screen-full :width="13" :height="13" class="screen-full"></screen-full>
             </div>
           </el-tooltip>
+          <el-dropdown @command="handleLanguageChange" trigger="click">
+            <button class="admin-shell__icon-button" type="button">
+              <i class="el-icon-fa-globe"></i>
+            </button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="lang in languages"
+                                :key="lang.value"
+                                :command="lang.value">{{ lang.label }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <el-dropdown @command="handleCommand">
             <span class="admin-shell__profile-trigger">
               <span class="admin-shell__profile-name">{{user.username}}</span>
@@ -65,13 +75,15 @@
   import ScreenFull from '@admin/components/ScreenFull.vue'
   import KatexEditor from '@admin/components/KatexEditor.vue'
   import api from '../api'
+  import { languages, setLanguage } from '@/i18n'
 
   export default {
     name: 'app',
     data () {
       return {
         version: process.env.VERSION,
-        katexVisible: false
+        katexVisible: false,
+        languages: languages
       }
     },
     components: {
@@ -101,6 +113,9 @@
             this.$router.push({name: 'login'})
           })
         }
+      },
+      handleLanguageChange (lang) {
+        setLanguage(lang)
       }
     },
     computed: {

@@ -124,6 +124,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import login from '@oj/views/user/Login'
   import register from '@oj/views/user/Register'
+  import { setLanguage } from '@/i18n'
 
   export default {
     components: {
@@ -163,7 +164,7 @@
         })
       },
       handleLanguageChange (lang) {
-        this.$i18n.locale = lang
+        setLanguage(lang)
       },
       checkScreen () {
         this.isMobile = window.innerWidth <= 768

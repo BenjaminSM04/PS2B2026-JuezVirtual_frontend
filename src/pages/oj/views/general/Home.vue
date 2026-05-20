@@ -2,8 +2,8 @@
 <div class="home-container">
   <div class="welcome-section">
       <Icon type="university" size="42" />
-      <h1>Bienvenido a LizardJudge Univalle</h1>
-      <p>Formando profesionales con excelencia, innovación y liderazgo.</p>
+      <h1>{{$t('m.Welcome_To')}} LizardJudge Univalle</h1>
+      <p>{{$t('m.Home_Tagline')}}</p>
     </div>
 
   <Row type="flex" justify="space-around">

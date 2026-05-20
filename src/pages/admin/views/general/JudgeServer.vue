@@ -115,9 +115,9 @@
         })
       },
       deleteJudgeServer (hostname) {
-        this.$confirm('Si eliminas este servidor de evaluación, no se podrá utilizar hasta el próximo latido (heartbeat).', 'Advertencia', {
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'Cancelar',
+        this.$confirm(this.$i18n.t('m.Delete_Judge_Server_Confirm'), this.$i18n.t('m.Warning'), {
+          confirmButtonText: this.$i18n.t('m.Delete'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
           type: 'warning'
         }).then(() => {
           api.deleteJudgeServer(hostname).then(res =>

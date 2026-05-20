@@ -126,7 +126,7 @@
         </el-row>
         <div>
           <el-form-item v-for="(sample, index) in problem.samples" :key="'sample'+index">
-            <Accordion :title="'Sample' + (index + 1)">
+            <Accordion :title="$t('m.Sample') + ' ' + (index + 1)">
               <el-button type="warning" size="small" icon="el-icon-delete" slot="header" @click="deleteSample(index)">
                 Delete
               </el-button>
@@ -271,7 +271,7 @@
         <el-form-item :label="$t('m.Source')">
           <el-input :placeholder="$t('m.Source')" v-model="problem.source"></el-input>
         </el-form-item>
-        <save @click.native="submit()">Save</save>
+        <save @click.native="submit()"></save>
       </el-form>
     </Panel>
   </div>
@@ -293,17 +293,17 @@
     data () {
       return {
         rules: {
-          _id: {required: true, message: 'El ID de visualización es requerido', trigger: 'blur'},
-          title: {required: true, message: 'El título es requerido', trigger: 'blur'},
-          input_description: {required: true, message: 'La descripción de la entrada es requerida', trigger: 'blur'},
-          output_description: {required: true, message: 'La descripción de la salida es requerida', trigger: 'blur'},
+          _id: {required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur'},
+          title: {required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur'},
+          input_description: {required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur'},
+          output_description: {required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur'},
           time_limit: [
-            {type: 'integer',required: true, message: 'El tiempo límite es obligatorio', trigger: 'blur'},
-            {type: 'integer', min: 100, max: 60000, message: 'El tiempo debe ser un entero entre 100 y 60000 ms (60 segundos)', trigger: 'blur'}
+            {type: 'integer', required: true, message: this.$i18n.t('m.Time_Limit_Required'), trigger: 'blur'},
+            {type: 'integer', min: 100, max: 60000, message: this.$i18n.t('m.Time_Limit_Range'), trigger: 'blur'}
           ],
           memory_limit: [
-            {required: true, message: 'El límite de memoria es obligatorio', trigger: 'blur'},
-            {type: 'integer', min: 32, max: 4096, message: 'La memoria debe ser un entero entre 32 y 4096 MB', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Memory_Limit_Required'), trigger: 'blur'},
+            {type: 'integer', min: 32, max: 4096, message: this.$i18n.t('m.Memory_Limit_Range'), trigger: 'blur'}
           ]
         },
         loadingCompile: false,
@@ -438,9 +438,9 @@
     methods: {
       switchSpj () {
         if (this.testCaseUploaded) {
-          this.$confirm('If you change problem judge method, you need to re-upload test cases', 'Warning', {
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
+          this.$confirm(this.$i18n.t('m.Change_Judge_Method_Confirm'), this.$i18n.t('m.Warning'), {
+            confirmButtonText: this.$i18n.t('m.Yes'),
+            cancelButtonText: this.$i18n.t('m.Cancel'),
             type: 'warning'
           }).then(() => {
             this.problem.spj = !this.problem.spj
@@ -500,7 +500,7 @@
         this.problem.test_case_id = response.data.id
       },
       uploadFailed () {
-        this.$error('Upload failed')
+        this.$error(this.$i18n.t('m.Upload_Failed'))
       },
       compileSPJ () {
         let data = {
@@ -518,7 +518,7 @@
           this.problem.spj_compile_ok = false
           const h = this.$createElement
           this.$msgbox({
-            title: 'Compile Error',
+            title: this.$i18n.t('m.Compile_Error'),
             type: 'error',
             message: h('pre', err.data.data),
             showCancelButton: false,
@@ -530,7 +530,7 @@
       submit () {
         this.$refs.form.validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, corrige los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           this._doSubmit()
@@ -538,26 +538,26 @@
       },
       _doSubmit () {
         if (!this.problem.samples.length) {
-          this.$error('Sample is required')
+          this.$error(this.$i18n.t('m.Sample_Required'))
           return
         }
         for (let sample of this.problem.samples) {
           if (!sample.input || !sample.output) {
-            this.$error('Sample input and output is required')
+            this.$error(this.$i18n.t('m.Sample_IO_Required'))
             return
           }
         }
         if (!this.problem.tags.length) {
-          this.error.tags = 'Please add at least one tag'
+          this.error.tags = this.$i18n.t('m.Add_One_Tag')
           this.$error(this.error.tags)
           return
         }
         if (this.problem.spj) {
           if (!this.problem.spj_code) {
-            this.error.spj = 'Spj code is required'
+            this.error.spj = this.$i18n.t('m.SPJ_Code_Required')
             this.$error(this.error.spj)
           } else if (!this.problem.spj_compile_ok) {
-            this.error.spj = 'SPJ code has not been successfully compiled'
+            this.error.spj = this.$i18n.t('m.SPJ_Not_Compiled')
           }
           if (this.error.spj) {
             this.$error(this.error.spj)
@@ -565,23 +565,23 @@
           }
         }
         if (!this.problem.languages.length) {
-          this.error.languages = 'Please choose at least one language for problem'
+          this.error.languages = this.$i18n.t('m.Choose_One_Language')
           this.$error(this.error.languages)
           return
         }
         if (!this.testCaseUploaded) {
-          this.error.testCase = 'Test case is not uploaded yet'
+          this.error.testCase = this.$i18n.t('m.Test_Case_Not_Uploaded')
           this.$error(this.error.testCase)
           return
         }
         if (this.problem.io_mode && this.problem.io_mode.io_mode === 'File IO') {
           const fileNameRegex = /^[A-Za-z0-9_.\-]+$/
           if (!this.problem.io_mode.input || !fileNameRegex.test(this.problem.io_mode.input)) {
-            this.$error('Nombre de archivo de entrada inválido (solo letras, números, _ . -)')
+            this.$error(this.$i18n.t('m.Invalid_Input_File_Name'))
             return
           }
           if (!this.problem.io_mode.output || !fileNameRegex.test(this.problem.io_mode.output)) {
-            this.$error('Nombre de archivo de salida inválido (solo letras, números, _ . -)')
+            this.$error(this.$i18n.t('m.Invalid_Output_File_Name'))
             return
           }
         }
@@ -589,11 +589,11 @@
           for (let item of this.problem.test_case_score) {
             try {
               if (parseInt(item.score) <= 0) {
-                this.$error('Invalid test case score')
+                this.$error(this.$i18n.t('m.Invalid_Test_Case_Score'))
                 return
               }
             } catch (e) {
-              this.$error('Test case score must be an integer')
+              this.$error(this.$i18n.t('m.Test_Case_Score_Integer'))
               return
             }
           }

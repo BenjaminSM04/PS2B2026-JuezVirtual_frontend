@@ -5,23 +5,20 @@
       <span slot="title" style="color: #82a69a; font-weight: bold;">
         {{ $t('m.User_User') }}
       </span>
-      <div slot="header">
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-button v-show="selectedUsers.length"
-                       type="danger"
-                       icon="el-icon-fa-trash"
-                       @click="deleteUsers(selectedUserIDs)">{{ $t('m.Delete') }}
-            </el-button>
-          </el-col>
-          <el-col :span="selectedUsers.length ? 16: 24">
-            <el-input v-model="keyword" prefix-icon="el-icon-search" :placeholder="$t('m.Keyword')"></el-input>
-          </el-col>
-        </el-row>
+      <div class="table-toolbar">
+        <el-button v-show="selectedUsers.length"
+                   type="danger"
+                   icon="el-icon-fa-trash"
+                   @click="deleteUsers(selectedUserIDs)">{{ $t('m.Delete') }}
+        </el-button>
+        <el-input class="table-toolbar__search"
+                  v-model="keyword"
+                  prefix-icon="el-icon-search"
+                  :placeholder="$t('m.Keyword')"></el-input>
       </div>
       <el-table
         v-loading="loadingTable"
-        element-loading-text="loading"
+        :element-loading-text="$t('m.Loading')"
         @selection-change="handleSelectionChange"
         ref="table"
         :data="userList"
@@ -29,36 +26,38 @@
         :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
         <el-table-column type="selection" width="55" align="center" header-align="center"></el-table-column>
 
-        <el-table-column prop="id" :label="$t('m.ID')" width="60" align="center"></el-table-column>
+        <el-table-column prop="id" :label="$t('m.ID')" width="70" align="center"></el-table-column>
 
-        <el-table-column prop="username" :label="$t('m.User_Username')" width="150" align="center"></el-table-column>
+        <el-table-column prop="username" :label="$t('m.User_Username')" min-width="140" align="center"></el-table-column>
 
-        <el-table-column prop="create_time" :label="$t('m.Create_Time')" width="150" align="center">
+        <el-table-column v-if="!isMobile" prop="create_time" :label="$t('m.Create_Time')" width="160" align="center">
           <template slot-scope="scope">
             {{scope.row.create_time | localtime }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="last_login" :label="$t('m.Last_Login')" width="150" align="center">
+        <el-table-column v-if="!isMobile" prop="last_login" :label="$t('m.Last_Login')" width="160" align="center">
           <template slot-scope="scope">
             {{scope.row.last_login | localtime }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="real_name" :label="$t('m.User_Real_Name')" width="150" align="center"></el-table-column>
+        <el-table-column v-if="!isMobile" prop="real_name" :label="$t('m.User_Real_Name')" min-width="140" align="center"></el-table-column>
 
-        <el-table-column prop="email" :label="$t('m.User_Email')" width="180" align="center"></el-table-column>
+        <el-table-column prop="email" :label="$t('m.User_Email')" min-width="200" align="center"></el-table-column>
 
-        <el-table-column prop="admin_type" :label="$t('m.User_Type')" width="130" align="center">
+        <el-table-column prop="admin_type" :label="$t('m.User_Type')" width="120" align="center">
           <template slot-scope="scope">
             {{ scope.row.admin_type }}
           </template>
         </el-table-column>
 
-        <el-table-column  :label="$t('m.Option')" width="130" align="center">
+        <el-table-column :label="$t('m.Option')" width="130" align="center">
           <template slot-scope="{row}">
-            <icon-btn name="Edit" icon="edit" style="color: #409EFF;" @click.native="openUserDialog(row.id)"></icon-btn>
-            <icon-btn name="Delete" icon="trash" style="color: #F56C6C; background-color: red; border-radius: 10px;" @click.native="deleteUsers([row.id])"></icon-btn>
+            <div class="botones-gestion">
+              <icon-btn name="Edit" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>
+              <icon-btn name="Delete" icon="trash" @click.native="deleteUsers([row.id])"></icon-btn>
+            </div>
           </template>
         </el-table-column>
 
@@ -78,8 +77,8 @@
     <Panel>
       <span slot="title" style="color: #82a69a; font-weight: bold;">{{$t('m.Import_User')}}
         <el-popover placement="right" trigger="hover">
-          <p>Solo se admiten archivos CSV sin encabezados; consulta el <a
-            href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> para obtener más detalles.</p>
+          <p>{{$t('m.Import_User_CSV_Hint')}} <a
+            href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> {{$t('m.For_More_Details')}}</p>
           <i slot="reference" class="el-icon-fa-question-circle import-user-icon"></i>
         </el-popover>
       </span>
@@ -138,31 +137,31 @@
         {{ $t('m.Generate_User') }}
       </span>
       <el-form :model="formGenerateUser" :rules="generateRules" ref="formGenerateUser">
-        <el-row type="flex" justify="space-between">
-          <el-col :span="4">
+        <el-row type="flex" justify="space-between" style="flex-wrap: wrap;">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-form-item :label="$t('m.Prefix')" prop="prefix" style="font-weight: bold;">
               <el-input v-model="formGenerateUser.prefix" :placeholder="$t('m.Prefix')"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-form-item :label="$t('m.Suffix')" prop="suffix" style="font-weight: bold;">
               <el-input v-model="formGenerateUser.suffix" :placeholder="$t('m.Suffix')"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-form-item :label="$t('m.Start_Number')" prop="number_from" required style="font-weight: bold;">
               <el-input-number v-model="formGenerateUser.number_from" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-form-item :label="$t('m.End_Number')" prop="number_to" required style="font-weight: bold;">
               <el-input-number v-model="formGenerateUser.number_to" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-form-item :label="$t('m.Password_Length')" prop="password_length" required style="font-weight: bold;">
               <el-input v-model.number="formGenerateUser.password_length"
-                        placeholder="Password Length"></el-input>
+                        :placeholder="$t('m.Password_Length')"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -172,7 +171,7 @@
           </el-button>
           <span class="userPreview" v-if="formGenerateUser.number_from && formGenerateUser.number_to &&
                                           formGenerateUser.number_from <= formGenerateUser.number_to">
-            Los nombres de usuario serán {{formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix}},
+            {{$t('m.Usernames_Will_Be')}} {{formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix}},
             <span v-if="formGenerateUser.number_from + 1 < formGenerateUser.number_to">
               {{formGenerateUser.prefix + (formGenerateUser.number_from + 1) + formGenerateUser.suffix + '...'}}
             </span>
@@ -191,27 +190,27 @@
   custom-class="user-edit-dialog">
       <el-form :model="user" :rules="userRules" ref="userForm" label-width="150px" label-position="left">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_Username')" prop="username" required>
               <el-input v-model="user.username"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_Real_Name')" prop="real_name" required>
               <el-input v-model="user.real_name"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_Email')" prop="email" required>
               <el-input v-model="user.email"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_New_Password')" prop="password">
               <el-input v-model="user.password"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_Type')" >
               <el-select v-model="user.admin_type">
                 <el-option :label="$t('m.Regular_User')" value="Regular User"></el-option>
@@ -220,7 +219,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Problem_Permission')" width="250px">
               <el-select v-model="user.problem_permission" :disabled="user.admin_type!=='Admin'">
                 <el-option label="None" value="None"></el-option>
@@ -229,7 +228,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Two_Factor_Auth')">
               <el-switch
                 v-model="user.two_factor_auth"
@@ -239,7 +238,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item label="Open Api">
               <el-switch
                 v-model="user.open_api"
@@ -248,7 +247,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Is_Disabled')">
               <el-switch
                 v-model="user.is_disabled"
@@ -278,27 +277,27 @@
       const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
       const validateEmail = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('El correo es obligatorio'))
+          callback(new Error(this.$i18n.t('m.Email_Required')))
         } else if (!emailRegex.test(value)) {
-          callback(new Error('Formato de correo inválido'))
+          callback(new Error(this.$i18n.t('m.Email_Invalid')))
         } else {
           callback()
         }
       }
       const validateOptionalPassword = (rule, value, callback) => {
         if (value && value.length < 6) {
-          callback(new Error('La contraseña debe tener al menos 6 caracteres'))
+          callback(new Error(this.$i18n.t('m.Password_Min_6')))
         } else {
           callback()
         }
       }
       const validateNumberTo = (rule, value, callback) => {
         if (value === null || value === undefined || value === '') {
-          callback(new Error('Número final es obligatorio'))
+          callback(new Error(this.$i18n.t('m.End_Number_Required')))
         } else if (!Number.isInteger(value)) {
-          callback(new Error('Debe ser un entero'))
+          callback(new Error(this.$i18n.t('m.Must_Be_Integer')))
         } else if (value < this.formGenerateUser.number_from) {
-          callback(new Error('El número final debe ser mayor o igual al inicial'))
+          callback(new Error(this.$i18n.t('m.End_Number_GTE_Start')))
         } else {
           callback()
         }
@@ -306,12 +305,13 @@
       const validatePasswordLength = (rule, value, callback) => {
         const num = Number(value)
         if (!Number.isInteger(num) || num < 6 || num > 16) {
-          callback(new Error('La longitud debe ser un entero entre 6 y 16'))
+          callback(new Error(this.$i18n.t('m.Password_Length_Range')))
         } else {
           callback()
         }
       }
       return {
+        windowWidth: window.innerWidth,
         pageSize: 10,
         total: 0,
         userList: [],
@@ -335,12 +335,12 @@
         },
         userRules: {
           username: [
-            {required: true, message: 'El usuario es obligatorio', trigger: 'blur'},
-            {min: 1, max: 32, message: 'El usuario debe tener entre 1 y 32 caracteres', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Username_Required'), trigger: 'blur'},
+            {min: 1, max: 32, message: this.$i18n.t('m.Username_Length'), trigger: 'blur'}
           ],
           real_name: [
-            {required: true, message: 'El nombre real es obligatorio', trigger: 'blur'},
-            {max: 32, message: 'Máximo 32 caracteres', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Real_Name_Required'), trigger: 'blur'},
+            {max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur'}
           ],
           email: [
             {required: true, validator: validateEmail, trigger: 'blur'}
@@ -351,13 +351,13 @@
         },
         generateRules: {
           prefix: [
-            {max: 16, message: 'Máximo 16 caracteres', trigger: 'blur'}
+            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
           ],
           suffix: [
-            {max: 16, message: 'Máximo 16 caracteres', trigger: 'blur'}
+            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
           ],
           number_from: [
-            {required: true, message: 'Número inicial es obligatorio', type: 'number', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Start_Number_Required'), type: 'number', trigger: 'blur'}
           ],
           number_to: [
             {required: true, validator: validateNumberTo, trigger: 'blur'}
@@ -370,8 +370,15 @@
     },
     mounted () {
       this.getUserList(1)
+      window.addEventListener('resize', this.handleResize)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.handleResize)
     },
     methods: {
+      handleResize () {
+        this.windowWidth = window.innerWidth
+      },
       // 切换页码回调
       currentChange (page) {
         this.currentPage = page
@@ -381,7 +388,7 @@
       saveUser () {
         this.$refs.userForm.validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, corrige los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           api.editUser(this.user).then(res => {
@@ -413,7 +420,7 @@
         })
       },
       deleteUsers (ids) {
-        this.$confirm('¿Estás seguro de eliminar al usuario? Los recursos asociados creados por este usuario también se eliminarán, como problemas, concursos, anuncios, etc.', 'Confirmación', {
+        this.$confirm(this.$i18n.t('m.Delete_User_Confirm'), this.$i18n.t('m.Confirmation'), {
           type: 'warning'
         }).then(() => {
           api.deleteUsers(ids.join(',')).then(res => {
@@ -431,7 +438,7 @@
       generateUser () {
         this.$refs['formGenerateUser'].validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, valide los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           this.loadingGenerate = true
@@ -440,8 +447,8 @@
             this.loadingGenerate = false
             let url = '/admin/generate_user?file_id=' + res.data.data.file_id
             utils.downloadFile(url).then(() => {
-              this.$alert('Todos los usuarios se crearon con éxito; las hojas de datos de los usuarios se han descargado en su disco.', 'Notificación', {
-                confirmButtonText: 'OK',
+              this.$alert(this.$i18n.t('m.Generate_User_Success'), this.$i18n.t('m.Notification'), {
+                confirmButtonText: 'OK'
               })
             })
             this.getUserList(1)
@@ -458,7 +465,7 @@
             })
             let delta = results.data.length - data.length
             if (delta > 0) {
-              this.$warning(delta + ' usuarios han sido filtrados debido a valores vacíos')
+              this.$warning(this.$i18n.t('m.Users_Filtered', {count: delta}))
             }
             this.uploadUsersCurrentPage = 1
             this.uploadUsers = data
@@ -481,6 +488,9 @@
       }
     },
     computed: {
+      isMobile () {
+        return this.windowWidth < 768
+      },
       selectedUserIDs () {
         let ids = []
         for (let user of this.selectedUsers) {
@@ -558,5 +568,59 @@
     }
   }
 
+  .table-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .table-toolbar__search {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .botones-gestion {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .botones-gestion /deep/ .el-button {
+    background-color: #003B4A !important;
+    border-color: #003B4A !important;
+    color: #ffffff !important;
+  }
+
+  .botones-gestion /deep/ .el-button:hover,
+  .botones-gestion /deep/ .el-button:focus {
+    background-color: #245965 !important;
+    border-color: #245965 !important;
+    color: #ffffff !important;
+  }
+
+  @media (max-width: 768px) {
+    .panel {
+      padding: 0 4px !important;
+    }
+
+    .table-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .table-toolbar__search {
+      min-width: 0;
+    }
+  }
+</style>
+
+<style lang="less">
+  @media (max-width: 768px) {
+    .user-edit-dialog {
+      width: 95% !important;
+    }
+  }
 </style>
 

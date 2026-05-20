@@ -267,5 +267,14 @@ export const m = {
   UserHomeserSubmissions: 'Submissions',
   UserHomeScore: 'Score',
   List_Solved_Problems: 'List of solved problems',
-  UserHomeIntro: 'The guy is so lazy that has not solved any problem yet.'
+  UserHomeIntro: 'The guy is so lazy that has not solved any problem yet.',
+  // Home.vue
+  Welcome_To: 'Welcome to',
+  Home_Tagline: 'Shaping professionals with excellence, innovation and leadership.',
+  // Search
+  Search_Word: 'Search keyword',
+  // Contest ranking
+  Refresh_Interval: 'Refresh Interval',
+  Presentation_Mode: 'Presentation Mode',
+  Exit_Presentation: 'Exit Presentation'
 }

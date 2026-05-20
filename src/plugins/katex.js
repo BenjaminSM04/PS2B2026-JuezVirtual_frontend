@@ -1,5 +1,9 @@
 import 'katex/dist/katex.min.css'
-import renderMathInElement from 'katex/dist/contrib/auto-render.js'
+import autoRender from 'katex/dist/contrib/auto-render.js'
+
+// auto-render puede exportarse como función o como { default: fn }
+// dependiendo del interop del bundler; normalizamos a una función.
+const renderMathInElement = typeof autoRender === 'function' ? autoRender : autoRender.default
 
 const noop = () => {}
 
@@ -15,9 +19,14 @@ const defaultOptions = {
 }
 
 function render (el, binding) {
+  if (typeof renderMathInElement !== 'function') return
   const userOptions = binding.value && binding.value.options ? binding.value.options : {}
   const options = Object.assign({}, defaultOptions, userOptions)
-  renderMathInElement(el, options)
+  try {
+    renderMathInElement(el, options)
+  } catch (e) {
+    // No romper el render del componente si KaTeX falla.
+  }
 }
 
 export default {

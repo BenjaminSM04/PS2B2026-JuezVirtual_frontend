@@ -7,7 +7,7 @@
       <div class="list">
         <el-table
           v-loading="loading"
-          element-loading-text="loading"
+          :element-loading-text="$t('m.Loading')"
           ref="table"
           :data="announcementList"
           style="width: 100%"
@@ -16,7 +16,7 @@
           <el-table-column
             width="100"
             prop="id"
-            label="ID"
+            :label="$t('m.ID')"
             align="center">
           </el-table-column>
           <el-table-column
@@ -67,8 +67,8 @@
             aria-label=""
             width="200">
             <div slot-scope="scope">
-              <icon-btn name="Edit" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
-              <icon-btn name="Delete" icon="trash" @click.native="deleteAnnouncement(scope.row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Delete')" icon="trash" @click.native="deleteAnnouncement(scope.row.id)"></icon-btn>
             </div>
           </el-table-column>
         </el-table>
@@ -130,7 +130,7 @@
       const validateContent = (rule, value, callback) => {
         const stripped = (value || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, '').trim()
         if (!stripped) {
-          callback(new Error('El contenido no puede estar vacío'))
+          callback(new Error(this.$i18n.t('m.Content_Required')))
         } else {
           callback()
         }
@@ -150,14 +150,14 @@
         },
         rules: {
           title: [
-            {required: true, message: 'El título es obligatorio', trigger: 'blur'},
-            {min: 1, max: 128, message: 'El título debe tener entre 1 y 128 caracteres', trigger: 'blur'}
+            {required: true, message: this.$i18n.t('m.Announcement_Title_Required'), trigger: 'blur'},
+            {min: 1, max: 128, message: this.$i18n.t('m.Announcement_Title_Length'), trigger: 'blur'}
           ],
           content: [
             {required: true, validator: validateContent, trigger: 'blur'}
           ]
         },
-        announcementDialogTitle: 'Edit Announcement',
+        announcementDialogTitle: '',
         loading: true,
         currentPage: 0
       }
@@ -237,9 +237,9 @@
       },
       // 删除公告
       deleteAnnouncement (announcementId) {
-        this.$confirm('¿Estás seguro de que deseas eliminar este anuncio?', 'Alerta', {
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'Cancelar',
+        this.$confirm(this.$i18n.t('m.Delete_Announcement_Confirm'), this.$i18n.t('m.Warning'), {
+          confirmButtonText: this.$i18n.t('m.Delete'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
           type: 'warning'
         }).then(() => {
           // then 为确定
@@ -318,7 +318,7 @@
       if (fromDialog && this.$refs.announcementForm) {
         this.$refs.announcementForm.validate((valid) => {
           if (!valid) {
-            this.$error('Por favor, corrige los campos con errores')
+            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
           proceed()

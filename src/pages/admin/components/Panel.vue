@@ -93,4 +93,15 @@
       top: 20px;
     }
   }
+
+  @media (max-width: 768px) {
+    .panel-options {
+      height: auto;
+      padding-bottom: 12px;
+    }
+    .panel-options > .page {
+      position: static;
+      margin-top: 12px;
+    }
+  }
 </style>

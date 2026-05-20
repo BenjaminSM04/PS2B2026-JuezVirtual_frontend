@@ -30,7 +30,7 @@
             <Input v-model="query.keyword"
                    @on-enter="filterByKeyword"
                    @on-click="filterByKeyword"
-                   placeholder="Buscar palabra"
+                   :placeholder="$t('m.Search_Word')"
                    icon="ios-search-strong"/>
           </li>
           <li>

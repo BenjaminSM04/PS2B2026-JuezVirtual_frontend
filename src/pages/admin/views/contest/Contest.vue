@@ -16,7 +16,7 @@
                   {{ $t('m.ContestTitle') }}
 
                   <el-tooltip
-                    content="Ingrese un nombre claro y descriptivo para el concurso."
+                    :content="$t('m.Contest_Title_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -37,7 +37,7 @@
                   {{ $t('m.ContestDescription') }}
 
                   <el-tooltip
-                    content="Describe las reglas, temática o instrucciones del concurso."
+                    :content="$t('m.Contest_Description_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -55,7 +55,7 @@
                   {{ $t('m.Contest_Start_Time') }}
 
                   <el-tooltip
-                    content="Fecha y hora en la que iniciará el concurso."
+                    :content="$t('m.Contest_Start_Time_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -78,7 +78,7 @@
                   {{ $t('m.Contest_End_Time') }}
 
                   <el-tooltip
-                    content="Fecha y hora en la que finalizará el concurso."
+                    :content="$t('m.Contest_End_Time_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -103,7 +103,7 @@
                   {{ $t('m.Contest_Password') }}
 
                   <el-tooltip
-                    content="Opcional. Solo usuarios con contraseña podrán ingresar."
+                    :content="$t('m.Contest_Password_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -125,7 +125,7 @@
                   {{ $t('m.Contest_Rule_Type') }}
 
                   <el-tooltip
-                    content="ACM penaliza tiempo y errores. OI evalúa por puntaje."
+                    :content="$t('m.Contest_Rule_Type_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -158,7 +158,7 @@
                   {{ $t('m.Real_Time_Rank') }}
 
                   <el-tooltip
-                    content="Permite mostrar el ranking en tiempo real."
+                    :content="$t('m.Real_Time_Rank_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -181,7 +181,7 @@
                   {{ $t('m.Contest_Status') }}
 
                   <el-tooltip
-                    content="Activa o desactiva la visibilidad del concurso."
+                    :content="$t('m.Contest_Status_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -205,7 +205,7 @@
                   {{ $t('m.Allowed_IP_Ranges') }}
 
                   <el-tooltip
-                    content="Permite restringir el acceso a ciertas redes IP en formato CIDR."
+                    :content="$t('m.Allowed_IP_Ranges_Tip')"
                     placement="top">
                     <i class="el-icon-info tooltip-icon"></i>
                   </el-tooltip>
@@ -227,14 +227,14 @@
                       plain
                       icon="el-icon-fa-plus"
                       @click="addIPRange">
-                      Agregar
+                      {{$t('m.Add')}}
                     </el-button>
 
                     <el-button
                       plain
                       icon="el-icon-fa-trash"
                       @click="removeIPRange(range)">
-                      Eliminar
+                      {{$t('m.Delete')}}
                     </el-button>
                   </el-col>
                 </el-row>
@@ -270,7 +270,7 @@ export default {
         .trim()
 
       if (!stripped) {
-        callback(new Error('La descripción no puede estar vacía'))
+        callback(new Error(this.$i18n.t('m.Description_Required')))
       } else {
         callback()
       }
@@ -278,7 +278,7 @@ export default {
 
     const validateEndTime = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('La fecha de finalización es obligatoria'))
+        callback(new Error(this.$i18n.t('m.End_Time_Required')))
         return
       }
 
@@ -286,7 +286,7 @@ export default {
         this.contest.start_time &&
         new Date(value) <= new Date(this.contest.start_time)
       ) {
-        callback(new Error('La fecha de finalización debe ser posterior a la de inicio'))
+        callback(new Error(this.$i18n.t('m.End_Time_After_Start')))
       } else {
         callback()
       }
@@ -298,7 +298,7 @@ export default {
 
       for (let r of value) {
         if (r.value && !cidrRegex.test(r.value.trim())) {
-          callback(new Error(`Formato CIDR inválido: ${r.value}`))
+          callback(new Error(this.$i18n.t('m.CIDR_Invalid', {value: r.value})))
           return
         }
       }
@@ -307,7 +307,7 @@ export default {
     }
 
     return {
-      title: 'Crear Concurso',
+      title: this.$i18n.t('m.Create_Contest'),
 
       disableRuleType: false,
 
@@ -332,13 +332,13 @@ export default {
         title: [
           {
             required: true,
-            message: 'El título es obligatorio',
+            message: this.$i18n.t('m.Title_Required'),
             trigger: 'blur'
           },
           {
             min: 3,
             max: 128,
-            message: 'El título debe tener entre 3 y 128 caracteres',
+            message: this.$i18n.t('m.Title_Length_3_128'),
             trigger: 'blur'
           }
         ],
@@ -354,7 +354,7 @@ export default {
         start_time: [
           {
             required: true,
-            message: 'La fecha de inicio es obligatoria',
+            message: this.$i18n.t('m.Start_Time_Required'),
             trigger: 'change'
           }
         ],
@@ -370,7 +370,7 @@ export default {
         password: [
           {
             min: 4,
-            message: 'La contraseña debe tener al menos 4 caracteres',
+            message: this.$i18n.t('m.Password_Min_4'),
             trigger: 'blur'
           }
         ],
@@ -390,7 +390,7 @@ export default {
       this.$refs.contestForm.validate((valid) => {
 
         if (!valid) {
-          this.$error('Por favor, corrige los campos con errores antes de guardar')
+          this.$error(this.$i18n.t('m.Fix_Form_Errors'))
           return
         }
 
@@ -440,7 +440,7 @@ export default {
   mounted () {
     if (this.$route.name === 'edit-contest') {
 
-      this.title = 'Editar Concurso'
+      this.title = this.$i18n.t('m.Edit_Contest')
       this.disableRuleType = true
 
       api.getContest(this.$route.params.contestId)

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import storage from '@/utils/storage'
+import { STORAGE_KEY } from '@/utils/constants'
 // ivew UI
 import ivenUS from 'iview/dist/locale/en-US'
 import ivzhCN from 'iview/dist/locale/zh-CN'
@@ -30,9 +32,18 @@ for (let lang of languages) {
   messages[locale] = Object.assign({m: m}, ui)
 }
 // load language packages
-export default new VueI18n({
-  locale: 'es-LA',
+const i18n = new VueI18n({
+  locale: storage.get(STORAGE_KEY.LANGUAGE) || 'es-LA',
+  fallbackLocale: 'en-US',
   messages: messages
 })
+
+// Change the active locale and persist it so it survives reloads.
+export function setLanguage (locale) {
+  i18n.locale = locale
+  storage.set(STORAGE_KEY.LANGUAGE, locale)
+}
+
+export default i18n
 
 export {languages}

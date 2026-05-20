@@ -267,5 +267,14 @@ export const m = {
   UserHomeserSubmissions: 'Envíos',
   UserHomeScore: 'Puntaje',
   List_Solved_Problems: 'Lista de problemas resueltos',
-  UserHomeIntro: 'Este usuario aún no ha resuelto ningún ejercicio.'
+  UserHomeIntro: 'Este usuario aún no ha resuelto ningún ejercicio.',
+  // Home.vue
+  Welcome_To: 'Bienvenido a',
+  Home_Tagline: 'Formando profesionales con excelencia, innovación y liderazgo.',
+  // Búsqueda
+  Search_Word: 'Buscar palabra',
+  // Ranking de concurso
+  Refresh_Interval: 'Intervalo de actualización',
+  Presentation_Mode: 'Modo presentación',
+  Exit_Presentation: 'Salir de presentación'
 }

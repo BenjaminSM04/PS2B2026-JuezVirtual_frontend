@@ -1,46 +1,50 @@
 <template>
   <div class="view">
-    <Panel title="Lista de Concursos">
-      <div slot="header">
+    <Panel :title="$t('m.Contest_List')">
+      <div class="table-toolbar">
         <el-input
+          class="table-toolbar__search"
           v-model="keyword"
           prefix-icon="el-icon-search"
-          placeholder="Palabras clave">
+          :placeholder="$t('m.Keywords')">
         </el-input>
       </div>
       <el-table
         v-loading="loading"
-        
-        element-loading-text="Cargando..."
+
+        :element-loading-text="$t('m.Loading')"
         ref="table"
         :data="contestList"
         style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <p>Hora de Inicio: {{props.row.start_time | localtime }}</p>
-            <p>Hora de Fin: {{props.row.end_time | localtime }}</p>
-            <p>Fecha de Creación: {{props.row.create_time | localtime}}</p>
-            <p>Creador: {{props.row.created_by.username}}</p>
+            <p>{{$t('m.Start_Time')}}: {{props.row.start_time | localtime }}</p>
+            <p>{{$t('m.End_Time')}}: {{props.row.end_time | localtime }}</p>
+            <p>{{$t('m.Create_Time')}}: {{props.row.create_time | localtime}}</p>
+            <p>{{$t('m.Author')}}: {{props.row.created_by.username}}</p>
           </template>
         </el-table-column>
         <el-table-column
           prop="id"
           width="80"
-          label="ID">
+          :label="$t('m.ID')">
         </el-table-column>
         <el-table-column
           prop="title"
-          label="Título">
+          :label="$t('m.Title')"
+          min-width="160">
         </el-table-column>
         <el-table-column
-          label="Tipo de Regla"
+          v-if="!isMobile"
+          :label="$t('m.Rule_Type')"
           width="130">
           <template slot-scope="scope">
             <el-tag type="gray">{{scope.row.rule_type}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          label="Tipo de Concurso"
+          v-if="!isMobile"
+          :label="$t('m.Contest_Type')"
           width="180">
           <template slot-scope="scope">
             <el-tag :type="scope.row.contest_type === 'Public' ? 'success' : 'primary'">
@@ -49,7 +53,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Estado"
+          :label="$t('m.Status')"
           width="130">
           <template slot-scope="scope">
             <el-tag
@@ -60,7 +64,7 @@
         </el-table-column>
         <el-table-column
           width="100"
-          label="Visible">
+          :label="$t('m.Visible')">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.visible"
                        active-text=""
@@ -74,13 +78,13 @@
         <el-table-column
           fixed="right"
           width="250"
-          label="Operación">
+          :label="$t('m.Option')">
           <div slot-scope="scope">
-            <icon-btn name="Edit" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
-            <icon-btn name="Problem" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
-            <icon-btn name="Announcement" icon="info-circle"
+            <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
+            <icon-btn :name="$t('m.Problem')" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
+            <icon-btn :name="$t('m.Announcement')" icon="info-circle"
                       @click.native="goContestAnnouncement(scope.row.id)"></icon-btn>
-            <icon-btn icon="download" name="Download Accepted Submissions"
+            <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
                       @click.native="openDownloadOptions(scope.row.id)"></icon-btn>
           </div>
         </el-table-column>
@@ -95,10 +99,10 @@
         </el-pagination>
       </div>
     </Panel>
-    <el-dialog title="Descargar Entregas del Concurso"
+    <el-dialog :title="$t('m.Download_Contest_Submissions')"
                width="30%"
                :visible.sync="downloadDialogVisible">
-      <el-switch v-model="excludeAdmin" active-text="EExcluir entregas de admin"></el-switch>
+      <el-switch v-model="excludeAdmin" :active-text="$t('m.Exclude_Admin_Submissions')"></el-switch>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" icon="el-icon-check" @click="downloadSubmissions">{{$t('m.Confirm')}}</el-button>
       </span>
@@ -115,6 +119,7 @@
     name: 'ContestList',
     data () {
       return {
+        windowWidth: window.innerWidth,
         pageSize: 10,
         total: 0,
         contestList: [],
@@ -128,6 +133,15 @@
     },
     mounted () {
       this.getContestList(this.currentPage)
+      window.addEventListener('resize', this.handleResize)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.handleResize)
+    },
+    computed: {
+      isMobile () {
+        return this.windowWidth < 768
+      }
     },
     filters: {
       contestStatus (value) {
@@ -135,6 +149,9 @@
       }
     },
     methods: {
+      handleResize () {
+        this.windowWidth = window.innerWidth
+      },
       // 切换页码回调
       currentChange (page) {
         this.currentPage = page
@@ -212,5 +229,24 @@
   border-color: #245965;
   /*transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+}
+
+.view .table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.view .table-toolbar__search {
+  flex: 1;
+  min-width: 220px;
+}
+
+@media (max-width: 768px) {
+  .view .table-toolbar__search {
+    min-width: 0;
+  }
 }
 </style>

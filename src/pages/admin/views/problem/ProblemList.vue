@@ -4,8 +4,9 @@
       <span slot="title" style="color: #82a69a; font-weight: bold;">
         {{ contestId ? $i18n.t('m.Contest_Problem_List') : $i18n.t('m.Problem_List') }}
       </span>
-      <div slot="header">
+      <div class="table-toolbar">
         <el-input
+          class="table-toolbar__search"
           v-model="keyword"
           prefix-icon="el-icon-search"
           :placeholder="$t('m.Keywords')">
@@ -13,7 +14,7 @@
       </div>
       <el-table
         v-loading="loading"
-        element-loading-text="loading"
+        :element-loading-text="$t('m.Loading')"
         ref="table"
         :data="problemList"
         @row-dblclick="handleDblclick"
@@ -40,6 +41,7 @@
         <el-table-column
           prop="title"
           :label="$t('m.Title')"
+          min-width="180"
           align="center">
           <template slot-scope="{row}">
             <span v-show="!row.isEditing">{{row.title}}</span>
@@ -49,11 +51,14 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           prop="created_by.username"
           :label="$t('m.Author')"
+          min-width="120"
           align="center">
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           width="200"
           prop="create_time"
           :label="$t('m.Create_Time')"
@@ -145,6 +150,7 @@
     },
     data () {
       return {
+        windowWidth: window.innerWidth,
         pageSize: 10,
         total: 0,
         problemList: [],
@@ -165,8 +171,20 @@
       this.routeName = this.$route.name
       this.contestId = this.$route.params.contestId
       this.getProblemList(this.currentPage)
+      window.addEventListener('resize', this.handleResize)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.handleResize)
+    },
+    computed: {
+      isMobile () {
+        return this.windowWidth < 768
+      }
     },
     methods: {
+      handleResize () {
+        this.windowWidth = window.innerWidth
+      },
       handleDblclick (row) {
         row.isEditing = true
       },
@@ -344,5 +362,28 @@
 /*Cambiar el color de las flechas de navegación (< y >) cuando pasas el mouse por encima */
 /deep/ .el-pagination button:hover {
   color: #003B4A !important;
+}
+
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.table-toolbar__search {
+  flex: 1;
+  min-width: 220px;
+}
+
+@media (max-width: 768px) {
+  .panel {
+    padding: 0 4px !important;
+  }
+
+  .table-toolbar__search {
+    min-width: 0;
+  }
 }
 </style>

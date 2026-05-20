@@ -13,8 +13,22 @@
             <i-switch v-model="showChart"></i-switch>
           </p>
           <p>
-            <span>{{$t('m.Auto_Refresh')}}(10s)</span>
-            <i-switch :disabled="refreshDisabled" @on-change="handleAutoRefresh"></i-switch>
+            <span>{{$t('m.Auto_Refresh')}}</span>
+            <i-switch :disabled="refreshDisabled" v-model="autoRefresh" @on-change="handleAutoRefresh"></i-switch>
+          </p>
+          <p>
+            <span>{{$t('m.Refresh_Interval')}}</span>
+            <Select v-model="refreshInterval" @on-change="restartAutoRefresh" size="small" style="width: 80px">
+              <Option :value="5000">5s</Option>
+              <Option :value="10000">10s</Option>
+              <Option :value="30000">30s</Option>
+              <Option :value="60000">60s</Option>
+            </Select>
+          </p>
+          <p>
+            <Button type="primary" size="small" @click="togglePresentation">
+              {{ presentationMode ? $t('m.Exit_Presentation') : $t('m.Presentation_Mode') }}
+            </Button>
           </p>
           <p v-if="isContestAdmin">
             <span>{{$t('m.RealName')}}</span>
@@ -26,16 +40,20 @@
         </div>
       </Poptip>
     </div>
-    <div v-show="showChart" class="echarts">
+    <div v-show="showChart" class="echarts" :class="{'echarts--presentation': presentationMode}">
       <ECharts :options="options" ref="chart" auto-resize></ECharts>
     </div>
-    <Table ref="tableRank" class="auto-resize" :columns="columns" :data="dataRank" disabled-hover></Table>
-    <Pagination :total="total"
+    <Table v-show="!presentationMode" ref="tableRank" class="auto-resize" :columns="columns" :data="dataRank" disabled-hover></Table>
+    <Pagination v-show="!presentationMode"
+                :total="total"
                 :page-size.sync="limit"
                 :current.sync="page"
                 @on-change="getContestRankData"
                 @on-page-size-change="getContestRankData(1)"
                 show-sizer></Pagination>
+    <Button v-if="presentationMode" class="exit-presentation" type="error" @click="togglePresentation">
+      {{$t('m.Exit_Presentation')}}
+    </Button>
   </Panel>
 </template>
 <script>
@@ -108,6 +126,8 @@
             text: this.$i18n.t('m.Top_10_Teams'),
             left: 'center'
           },
+          animationDurationUpdate: 600,
+          animationEasingUpdate: 'cubicInOut',
           tooltip: {
             trigger: 'axis'
           },
@@ -199,8 +219,12 @@
           usernames.push(ele.user.username)
           scores.push(ele.total_score)
         })
-        this.options.xAxis[0].data = usernames
-        this.options.series[0].data = scores
+        if (this.$refs.chart) {
+          this.$refs.chart.mergeOptions({
+            xAxis: [{data: usernames}],
+            series: [{data: scores}]
+          })
+        }
       },
       applyToTable (data) {
         // deepcopy
@@ -255,6 +279,17 @@
     margin: 20px auto;
     height: 400px;
     width: 98%;
+  }
+
+  .echarts--presentation {
+    height: 78vh;
+  }
+
+  .exit-presentation {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 1000;
   }
 
   .screen-full {
