@@ -1,91 +1,111 @@
 <template>
   <div class="error404">
+
     <div class="error404-body-con">
       <Card>
-        <div class="error404-body-con-title">4<span><Icon type="ios-navigate-outline"></Icon></span>4</div>
-        <p class="error404-body-con-message">YOU&nbsp;&nbsp;LOOK&nbsp;&nbsp;LOST</p>
-        <div class="error404-btn-con">
-          <Button @click="goHome" size="large" style="width: 200px;" type="ghost">{{$t('m.Go_Home')}}</Button>
-          <Button @click="backPage" size="large" style="width: 200px;margin-left: 40px;" type="primary">{{$t('m.Back')}}</Button>
+
+        <div class="error-img">
+          <img :src="require('@/assets/Error.png')" alt="Error UPV" />
         </div>
+
+        <p class="error404-body-con-message">
+          La página no existe
+        </p>
+
+        <p class="error404-body-con-message">
+          Algo salió mal o la URL es incorrecta
+        </p>
+
+        <!-- BOTONES (REQUERIDO) -->
+        <div class="error404-btn-con">
+          <Button
+            @click="goHome"
+            size="large"
+            style="width: 200px;"
+            type="ghost"
+          >
+            {{$t('m.Go_Home')}}
+          </Button>
+
+          <Button
+            @click="backPage"
+            size="large"
+            style="width: 200px;margin-left: 40px;"
+            type="primary"
+          >
+            {{$t('m.Back')}}
+          </Button>
+        </div>
+
       </Card>
     </div>
+
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'Error404',
-    methods: {
-      backPage () {
-        this.$router.go(-1)
-      },
-      goHome () {
-        this.$router.push({
-          name: 'home'
-        })
-      }
+export default {
+  name: 'Error404',
+  methods: {
+    backPage() {
+      this.$router.go(-1);
+    },
+    goHome() {
+      this.$router.push({ name: 'home' });
     }
   }
+}
 </script>
 
 <style lang="less" scoped>
-  @import (reference) '../../../../styles/theme-oj.less';
+@import (reference) '../../../../styles/theme-oj.less';
 
-  @keyframes error404animation {
-    0% {
-      transform: rotateZ(0deg);
-    }
-    20% {
-      transform: rotateZ(-60deg);
-    }
-    40% {
-      transform: rotateZ(-10deg);
-    }
-    60% {
-      transform: rotateZ(50deg);
-    }
-    80% {
-      transform: rotateZ(-20deg);
-    }
-    100% {
-      transform: rotateZ(0deg);
-    }
+.error404 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+
+  &-body-con {
+    width: 700px;
   }
 
-  .error404 {
-    &-body-con {
-      width: 700px;
-      height: 500px;
-      margin: 0 auto;
-      &-title {
-        text-align: center;
-        font-size: 240px;
-        font-weight: 700;
-        color: @oj-link;
-        height: 260px;
-        line-height: 260px;
-        margin-top: 40px;
-        span {
-          display: inline-block;
-          color: @oj-success;
-          font-size: 230px;
-          animation: error404animation 3s ease 0s infinite alternate;
-        }
-      }
-      &-message {
-        display: block;
-        text-align: center;
-        font-size: 30px;
-        font-weight: 500;
-        letter-spacing: 12px;
-        color: #dddde2;
-      }
-    }
-    &-btn-con {
-      text-align: center;
-      padding: 20px 0;
-      margin-bottom: 40px;
-    }
+  &-body-con-message {
+    display: block;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 500;
+    color: #dddde2;
+    margin-top: 10px;
   }
+
+  &-btn-con {
+    text-align: center;
+    padding: 20px 0;
+  }
+}
+
+.error-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.error-img img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;  
+  object-fit: cover;
+
+  animation: spinClock 6s linear infinite;
+}
+
+@keyframes spinClock {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>
