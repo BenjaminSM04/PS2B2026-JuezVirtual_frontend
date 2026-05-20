@@ -210,8 +210,8 @@
         })
       },
       deleteProblem (id) {
-        this.$confirm('Sure to delete this problem? The associated submissions will be deleted as well.', 'Delete Problem', {
-          type: 'warning'
+        this.$confirm('¿Seguro que deseas eliminar este problema? Los envíos asociados también serán eliminados.', 'Eliminar Problema', {
+            type: 'warning'
         }).then(() => {
           let funcName = this.routeName === 'problem-list' ? 'deleteProblem' : 'deleteContestProblem'
           api[funcName](id).then(() => [
@@ -222,8 +222,8 @@
         })
       },
       makeContestProblemPublic (problemID) {
-        this.$prompt('Please input display id for the public problem', 'confirm').then(({value}) => {
-          api.makeContestProblemPublic({id: problemID, display_id: value}).catch()
+      this.$prompt('Por favor, ingresa el ID de visualización para el problema público', 'Confirmar').then(({value}) => {
+            api.makeContestProblemPublic({id: problemID, display_id: value}).catch()
         }, () => {
         })
       },
