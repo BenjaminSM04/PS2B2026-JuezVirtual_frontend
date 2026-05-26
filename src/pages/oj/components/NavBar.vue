@@ -26,17 +26,23 @@
         <Icon type="home"></Icon>
         {{$t('m.Home')}}
       </Menu-item>
-      <Menu-item name="/problem">
-        <Icon type="ios-keypad"></Icon>
-        {{$t('m.NavProblems')}}
-      </Menu-item>
+      <Submenu name="problems">
+        <template slot="title">
+          <Icon type="ios-keypad"></Icon>
+          {{$t('m.NavProblems')}}
+        </template>
+        <Menu-item name="/problem">
+          <Icon type="ios-list"></Icon>
+          {{$t('m.Problem_List')}}
+        </Menu-item>
+        <Menu-item name="/status">
+          <Icon type="ios-pulse-strong"></Icon>
+          {{$t('m.Submission_Status')}}
+        </Menu-item>
+      </Submenu>
       <Menu-item name="/contest">
         <Icon type="trophy"></Icon>
         {{$t('m.Contests')}}
-      </Menu-item>
-      <Menu-item name="/status">
-        <Icon type="ios-pulse-strong"></Icon>
-        {{$t('m.NavStatus')}}
       </Menu-item>
       <Submenu name="rank">
         <template slot="title">

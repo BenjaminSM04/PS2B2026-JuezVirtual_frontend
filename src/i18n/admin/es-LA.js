@@ -42,6 +42,14 @@ export const m = {
   Delete: 'Eliminar',
   Keyword: 'Palabra clave',
   Regular_User: 'Usuario Regular',
+  User_Type_Admin: 'Administrador',
+  User_Type_Super_Admin: 'Super Administrador',
+  Permission_None: 'Ninguno',
+  Permission_Own: 'Propios',
+  Permission_All: 'Todos',
+  Open_API: 'API Abierta',
+  IO_Standard: 'Entrada/Salida Estándar',
+  IO_File: 'Entrada/Salida por Archivo',
   // Announcement.vue
   General_Announcement: 'Anuncios',
   Announcement_Title: 'Título',
@@ -76,13 +84,13 @@ export const m = {
   CPU_Core: 'Núcleos de CPU',
   CPU_Usage: 'Uso de CPU',
   Memory_Usage: 'Uso de Memoria',
-  Online: 'Normal/En línea',
-  Offline: 'Abnormal/Fuera de línea',
+  Online: 'En línea',
+  Offline: 'Fuera de línea',
+  Server: 'Servidor',
   // PruneTestCase
   Test_Case_Prune_Test_Case: 'Limpiar Casos de Prueba',
   // Problem.vue
   Display_ID: 'ID de Visualización',
-  Title: 'Título',
   Description: 'Descripción',
   Input_Description: 'Descripción de Entrada',
   Output_Description: 'Descripción de Salida',
@@ -111,6 +119,7 @@ export const m = {
   Hint: 'Pista',
   Source: 'Fuente',
   Edit_Problem: 'Editar Problema',
+  Edit_Announcement: 'Editar Anuncio',
   Add_Problme: 'Añadir Problema',
   High: 'Alta',
   Mid: 'Media',
@@ -185,7 +194,7 @@ export const m = {
   Please_enter_the_password_again: 'Por favor, ingrese la contraseña nuevamente',
   Username_format_error: 'El usuario debe tener entre 4 y 16 caracteres (solo letras, números y guiones)',
   Email_format_error: 'Ingresa un formato de correo válido (ejemplo: usuario@dominio.com)',
-  Password_complexity_error: 'Mínimo 6 caracteres, incluyendo al menos Mayús/Minús/Nº/Especial(@$!%*?&)',
+  Password_complexity_error: 'Mínimo 6 caracteres con mayúscula, minúscula, número y un carácter especial (ej: !@#$%^&*)',
   // Acciones comunes
   Save: 'Guardar',
   Cancel: 'Cancelar',
@@ -326,5 +335,8 @@ export const m = {
   Users_Filtered: '{count} usuarios han sido filtrados debido a valores vacíos',
   Import_User_CSV_Hint: 'Solo se admiten archivos CSV sin encabezados; consulta el',
   For_More_Details: 'para obtener más detalles.',
-  Usernames_Will_Be: 'Los nombres de usuario serán'
+  Usernames_Will_Be: 'Los nombres de usuario serán',
+  // 404 admin
+  Back_To_Dashboard: 'Volver al Panel',
+  Go_To_OJ: 'Ir al juez virtual'
 }

@@ -40,12 +40,19 @@
   .panel {
     margin-bottom: 20px;
     background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    border: 1px solid #f0f2f5;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    }
+
     &.small {
       max-width: 830px;
-      min-width: 700px;
+      min-width: 0;
       margin-left: 20px;
       margin-top: 10px;
     }
@@ -54,17 +61,14 @@
       z-index: 10;
       > .title {
         margin: 0;
-        color: #333;
-        border-color: #ddd;
-        font-size: 18px;
-        font-weight: 300;
-        letter-spacing: 0.025em;
-        height: 60px;
-        line-height: 45px;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        height: 56px;
+        line-height: 36px;
+        padding: 10px 20px;
+        border-bottom: 1px solid #f0f2f5;
       }
       > .header_right {
         position: absolute;
@@ -74,7 +78,7 @@
       }
     }
     .body {
-      padding: 15px;
+      padding: 20px;
     }
   }
 </style>

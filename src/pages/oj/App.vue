@@ -57,6 +57,7 @@
 </script>
 
 <style lang="less">
+  @import '../../styles/list-animations.less';
 
   * {
     -webkit-box-sizing: border-box;

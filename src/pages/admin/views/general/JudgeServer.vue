@@ -66,9 +66,11 @@
         </el-table-column>
         <el-table-column fixed="right" :label="$t('m.Option')" align="center">
           <template slot-scope="scope">
-            <icon-btn :name="$t('m.Delete')" icon="trash"
-              @click.native="deleteJudgeServer(scope.row.hostname)">
-            </icon-btn>
+            <div class="botones-gestion">
+              <icon-btn :name="$t('m.Delete')" icon="trash"
+                @click.native="deleteJudgeServer(scope.row.hostname)">
+              </icon-btn>
+            </div>
           </template>
         </el-table-column>
       </el-table>

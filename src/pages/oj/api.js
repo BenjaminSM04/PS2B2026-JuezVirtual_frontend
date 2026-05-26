@@ -268,6 +268,11 @@ export default {
     return ajax('admin/contest/acm_helper', 'put', {
       data
     })
+  },
+  createContestAnnouncement (data) {
+    return ajax('admin/contest/announcement', 'post', {
+      data
+    })
   }
 }
 

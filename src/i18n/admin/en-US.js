@@ -32,11 +32,23 @@ export const m = {
   Two_Factor_Auth: 'Two Factor Auth',
   Is_Disabled: 'Is Disabled',
 
+  Prefix: 'Prefix',
+  Suffix: 'Suffix',
+  Start_Number: 'Start Number',
+  End_Number: 'End Number',
   Password_Length: 'Password Length',
   Generate_and_Export: 'Generate and Export',
   Delete: 'Delete',
   Keyword: 'Keyword',
   Regular_User: 'Regular User',
+  User_Type_Admin: 'Admin',
+  User_Type_Super_Admin: 'Super Admin',
+  Permission_None: 'None',
+  Permission_Own: 'Own',
+  Permission_All: 'All',
+  Open_API: 'Open API',
+  IO_Standard: 'Standard IO',
+  IO_File: 'File IO',
   Edit_Announcement: 'Edit Announcement',
   Create_Announcement: 'Create Announcement',
   // Announcement.vue
@@ -65,6 +77,14 @@ export const m = {
   Service_URL: 'Service URL',
   Last_Heartbeat: 'Last Heartbeat',
   Create_Time: 'Create Time',
+  Status: 'Status',
+  Hostname: 'Hostname',
+  Task_Number: 'Task Number',
+  CPU_Core: 'CPU Core',
+  CPU_Usage: 'CPU Usage',
+  Memory_Usage: 'Memory Usage',
+  Online: 'Online',
+  Offline: 'Offline',
   // PruneTestCase
   Test_Case_Prune_Test_Case: 'Prune Test Case',
   // Problem.vue
@@ -164,6 +184,12 @@ export const m = {
   Captcha_is_required: 'Captcha is required',
   Click_to_refresh_captcha: 'Click to refresh captcha',
   Please_validate_the_error_fields: 'Please validate the error fields',
+  Password_complexity_error: 'At least 6 characters with uppercase, lowercase, number and a special character (e.g. !@#$%^&*)',
+  Password_does_not_match: 'Passwords do not match',
+  Please_enter_the_password_again: 'Please enter the password again',
+  Username_format_error: 'Username must be 4-16 chars (letters, numbers, dashes only)',
+  Email_format_error: 'Please enter a valid email format',
+  Succeeded: 'Success',
   // Common actions
   Save: 'Save',
   Cancel: 'Cancel',
@@ -302,5 +328,8 @@ export const m = {
   Users_Filtered: '{count} users were filtered out due to empty values',
   Import_User_CSV_Hint: 'Only CSV files without headers are supported; check the',
   For_More_Details: 'for more details.',
-  Usernames_Will_Be: 'The usernames will be'
+  Usernames_Will_Be: 'The usernames will be',
+  // 404 admin
+  Back_To_Dashboard: 'Back to Dashboard',
+  Go_To_OJ: 'Go to the online judge'
 }

@@ -55,8 +55,8 @@
         <el-table-column :label="$t('m.Option')" width="130" align="center">
           <template slot-scope="{row}">
             <div class="botones-gestion">
-              <icon-btn name="Edit" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>
-              <icon-btn name="Delete" icon="trash" @click.native="deleteUsers([row.id])"></icon-btn>
+              <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Delete')" icon="trash" @click.native="deleteUsers([row.id])"></icon-btn>
             </div>
           </template>
         </el-table-column>
@@ -214,17 +214,17 @@
             <el-form-item :label="$t('m.User_Type')" >
               <el-select v-model="user.admin_type">
                 <el-option :label="$t('m.Regular_User')" value="Regular User"></el-option>
-                <el-option label="Admin" value="Admin"></el-option>
-                <el-option label="Super Admin" value="Super Admin"></el-option>
+                <el-option :label="$t('m.User_Type_Admin')" value="Admin"></el-option>
+                <el-option :label="$t('m.User_Type_Super_Admin')" value="Super Admin"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Problem_Permission')" width="250px">
               <el-select v-model="user.problem_permission" :disabled="user.admin_type!=='Admin'">
-                <el-option label="None" value="None"></el-option>
-                <el-option label="Own" value="Own"></el-option>
-                <el-option label="All" value="All"></el-option>
+                <el-option :label="$t('m.Permission_None')" value="None"></el-option>
+                <el-option :label="$t('m.Permission_Own')" value="Own"></el-option>
+                <el-option :label="$t('m.Permission_All')" value="All"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -239,7 +239,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="8">
-            <el-form-item label="Open Api">
+            <el-form-item :label="$t('m.Open_API')">
               <el-switch
                 v-model="user.open_api"
                 active-color="#BDF2D4"
@@ -537,35 +537,12 @@
   //otras modificaciones
   .panel {
     background: #ffffff !important;
-    border-radius: 20px !important; 
-    border: none !important; 
+    border-radius: 20px !important;
+    border: none !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-    overflow: hidden; 
+    overflow: hidden;
     padding: 0 10px !important;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  }
-  /* Personalización de los botones existentes en el sistema */
-  .el-button--primary {
-    background-color: #003B4A !important;
-    border-color: #003B4A !important;
-    border-radius: 10px !important;
-    height: 40px !important; 
-    padding: 0 20px !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    
-    font-weight: 600;
-    font-size: 14px;
-
-    &:hover {
-      background-color: #245965 !important;
-    }
-
-    i {
-      margin-right: 8px;
-      font-size: 16px;
-    }
   }
 
   .table-toolbar {
@@ -579,25 +556,6 @@
   .table-toolbar__search {
     flex: 1;
     min-width: 220px;
-  }
-
-  .botones-gestion {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .botones-gestion /deep/ .el-button {
-    background-color: #003B4A !important;
-    border-color: #003B4A !important;
-    color: #ffffff !important;
-  }
-
-  .botones-gestion /deep/ .el-button:hover,
-  .botones-gestion /deep/ .el-button:focus {
-    background-color: #245965 !important;
-    border-color: #245965 !important;
-    color: #ffffff !important;
   }
 
   @media (max-width: 768px) {

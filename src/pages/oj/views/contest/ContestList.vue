@@ -41,15 +41,13 @@
         </ul>
       </div>
       <p id="no-contest" v-if="contests.length == 0">{{$t('m.No_contest')}}</p>
-      <ol id="contest-list">
-        <li v-for="contest in contests" :key="contest.title">
+      <ol id="contest-list" class="list-stagger">
+        <li v-for="contest in contests" :key="contest.title" class="contest-card" @click="goContest(contest)">
           <Row type="flex" justify="space-between" align="middle">
             <img class="trophy" src="../../../../assets/Cup.png"/>
             <Col :span="18" class="contest-main">
             <p class="title">
-              <a class="entry" @click.stop="goContest(contest)">
-                {{contest.title}}
-              </a>
+              <span class="entry">{{contest.title}}</span>
               <template v-if="contest.contest_type != 'Public'">
                 <Icon type="ios-locked-outline" size="20"></Icon>
               </template>
@@ -64,7 +62,7 @@
                 {{getDuration(contest.start_time, contest.end_time)}}
               </li>
               <li>
-                <Button size="small" shape="circle" @click="onRuleChange(contest.rule_type)">
+                <Button size="small" shape="circle" @click.stop="onRuleChange(contest.rule_type)">
                   {{contest.rule_type}}
                 </Button>
               </li>
@@ -235,10 +233,16 @@
         background: white;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         transition: 0.3s;
+        cursor: pointer;
 
         &:hover {
           transform: translateY(-3px);
           box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+
+          .contest-main .title .entry {
+            color: @oj-guindo-dark;
+            text-decoration: underline;
+          }
         }
 
         .trophy {
@@ -249,14 +253,10 @@
         .contest-main {
           .title {
             font-size: 18px;
-            a.entry {
+            .entry {
               color: @oj-guindo;
               font-weight: bold;
-
-              &:hover {
-                color: @oj-guindo-dark;
-                border-bottom: 1px solid @oj-guindo-dark;
-              }
+              transition: color 0.2s;
             }
           }
           li {

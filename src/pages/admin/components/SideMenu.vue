@@ -175,6 +175,11 @@
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu {
     background: transparent;
     padding: 2px 0 8px 8px;
+    transition: all 0.25s ease;
+  }
+
+  /deep/ .admin-sidemenu__menu .el-submenu__icon-arrow {
+    transition: transform 0.25s ease;
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu-item {

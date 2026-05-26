@@ -181,7 +181,7 @@
         <div slot="title">
           <Icon type="ios-analytics"></Icon>
           <span class="card-title">{{$t('m.Statistic')}}</span>
-          <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">Detalles</Button>
+          <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">{{$t('m.Details')}}</Button>
         </div>
         <div class="echarts">
           <ECharts :options="pie"></ECharts>
@@ -209,6 +209,7 @@
   import {JUDGE_STATUS, CONTEST_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
   import {pie, largePie} from './chartData'
+  import {getDefaultTemplate} from '@/utils/defaultTemplates'
 
   // 只显示这些状态的图形占用
   const filtedStatus = ['-1', '-2', '0', '1', '2', '3', '4', '8']
@@ -300,11 +301,13 @@
           if (this.code !== '') {
             return
           }
-          // try to load problem template
+          // try to load problem template, fall back to language default
           this.language = this.problem.languages[0]
           let template = this.problem.template
           if (template && template[this.language]) {
             this.code = template[this.language]
+          } else {
+            this.code = getDefaultTemplate(this.language)
           }
         }, () => {
           this.$Loading.error()
@@ -350,9 +353,11 @@
         this.$router.push(route)
       },
       onChangeLang (newLang) {
-        if (this.problem.template[newLang]) {
-          if (this.code.trim() === '') {
+        if (this.code.trim() === '') {
+          if (this.problem.template && this.problem.template[newLang]) {
             this.code = this.problem.template[newLang]
+          } else {
+            this.code = getDefaultTemplate(newLang)
           }
         }
         this.language = newLang
@@ -368,7 +373,7 @@
             if (template && template[this.language]) {
               this.code = template[this.language]
             } else {
-              this.code = ''
+              this.code = getDefaultTemplate(this.language)
             }
           }
         })

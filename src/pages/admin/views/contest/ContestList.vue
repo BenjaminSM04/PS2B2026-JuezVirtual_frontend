@@ -79,7 +79,7 @@
           fixed="right"
           width="250"
           :label="$t('m.Option')">
-          <div slot-scope="scope">
+          <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
             <icon-btn :name="$t('m.Problem')" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
             <icon-btn :name="$t('m.Announcement')" icon="info-circle"

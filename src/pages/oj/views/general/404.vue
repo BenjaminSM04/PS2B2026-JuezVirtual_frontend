@@ -9,11 +9,11 @@
         </div>
 
         <p class="error404-body-con-message">
-          La página no existe
+          {{ $t('m.Page_Not_Found_Title') }}
         </p>
 
-        <p class="error404-body-con-message">
-          Algo salió mal o la URL es incorrecta
+        <p class="error404-body-con-message error404-body-con-hint">
+          {{ $t('m.Page_Not_Found_Hint') }}
         </p>
 
         <!-- BOTONES (REQUERIDO) -->
@@ -74,9 +74,15 @@ export default {
     display: block;
     text-align: center;
     font-size: 26px;
-    font-weight: 500;
-    color: #dddde2;
+    font-weight: 600;
+    color: #2c3e50;
     margin-top: 10px;
+  }
+
+  &-body-con-hint {
+    font-size: 18px;
+    font-weight: 500;
+    color: #6D6E71;
   }
 
   &-btn-con {

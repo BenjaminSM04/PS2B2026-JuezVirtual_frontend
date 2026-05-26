@@ -9,7 +9,9 @@
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" slot="append" class="password-eye" @click.native="showPassword = !showPassword"></Icon>
+        <span slot="append" class="password-eye-wrap" @click="showPassword = !showPassword">
+          <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
+        </span>
         </Input>
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
@@ -205,17 +207,28 @@
       border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
-      padding: 0 12px;
+      padding: 0 !important;
       cursor: pointer;
+
+      .password-eye-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        min-width: 46px;
+        padding: 0 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.12);
+        }
+      }
 
       .password-eye {
         font-size: 18px;
         color: #ffffff !important;
-        transition: opacity 0.2s;
-
-        &:hover {
-          opacity: 0.8;
-        }
       }
     }
   }

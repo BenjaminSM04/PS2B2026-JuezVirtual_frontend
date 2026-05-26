@@ -66,7 +66,7 @@
             align="center"
             aria-label=""
             width="200">
-            <div slot-scope="scope">
+            <div slot-scope="scope" class="botones-gestion">
               <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
               <icon-btn :name="$t('m.Delete')" icon="trash" @click.native="deleteAnnouncement(scope.row.id)"></icon-btn>
             </div>
@@ -349,29 +349,11 @@
 
   .panel {
     background: #ffffff !important;
-    border-radius: 20px !important; 
-    border: none !important; 
+    border-radius: 20px !important;
+    border: none !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-    overflow: hidden; 
+    overflow: hidden;
     padding: 0 10px !important;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  }
-  /* Personalización de los botones existentes en el sistema */
-  .el-button--primary {
-    background-color: #003B4A !important;
-    border-color: #003B4A !important;
-    border-radius: 10px !important;
-    height: 40px !important; 
-    padding: 0 20px !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px !important;
-    font-weight: 600;
-    font-size: 14px;
-
-    &:hover {
-      background-color: #245965 !important;
-    }
   }
 </style>

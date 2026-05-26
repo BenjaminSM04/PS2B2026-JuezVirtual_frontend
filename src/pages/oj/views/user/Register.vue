@@ -14,12 +14,9 @@
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.Password')" size="large" @on-enter="handleRegister">
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
-          <Icon 
-            :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" 
-            slot="append" 
-            class="password-eye" 
-            @click.native="showPassword = !showPassword">
-          </Icon>
+          <span slot="append" class="password-eye-wrap" @click="showPassword = !showPassword">
+            <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
+          </span>
         </Input>
         <div class="password-strength" v-if="formRegister.password"> <!-- Nuevo -->
           <div
@@ -32,12 +29,9 @@
       <FormItem prop="passwordAgain">
         <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
-          <Icon 
-            :type="showPasswordAgain ? 'ios-eye' : 'ios-eye-outline'" 
-            slot="append" 
-            class="password-eye" 
-            @click.native="showPasswordAgain = !showPasswordAgain">
-          </Icon>
+          <span slot="append" class="password-eye-wrap" @click="showPasswordAgain = !showPasswordAgain">
+            <Icon :type="showPasswordAgain ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
+          </span>
         </Input>
       </FormItem>
       <FormItem prop="captcha">
@@ -120,10 +114,14 @@
           callback()
         }
       }
-      //Contraseña Robusta (Mín 6 caracteres, Mayúscula, Minúscula, Número y Especial)
+      // Contraseña Robusta (Mín 6 caracteres, Mayúscula, Minúscula, Número y Especial)
+      // Set ampliado de caracteres especiales: !@#$%^&*()_+-=[]{};':",.<>/?\|`~
+      const SPECIAL_CHARS = `!@#$%^&*()_+\\-=\\[\\]{};':",.<>/?\\\\|\`~`
       const CheckPassword = (rule, value, callback) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-    
+        const passwordRegex = new RegExp(
+          `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[${SPECIAL_CHARS}])[A-Za-z\\d${SPECIAL_CHARS}]{6,}$`
+        )
+
         if (value === '') {
           callback(new Error(this.$t('m.Password_is_required')))
         } else if (!passwordRegex.test(value)) {
@@ -222,7 +220,7 @@
         if (pwd.length >= 6) score++
         if (/[A-Z]/.test(pwd)) score++
         if (/[0-9]/.test(pwd)) score++
-        if (/[@$!%*?&]/.test(pwd)) score++
+        if (/[!@#$%^&*()_+\-=[\]{};':",.<>/?\\|`~]/.test(pwd)) score++
 
         if (score <= 1) {
           return { text: 'Débil', class: 'weak' }
@@ -326,17 +324,28 @@
       border: 2px solid @oj-guindo !important;
       border-left: none;
       border-radius: 0 12px 12px 0;
-      padding: 0 12px;
+      padding: 0 !important;
       cursor: pointer;
+
+      .password-eye-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        min-width: 46px;
+        padding: 0 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.12);
+        }
+      }
 
       .password-eye {
         font-size: 18px;
-        color: #ffffff !important; 
-        transition: opacity 0.2s;
-        
-        &:hover { 
-          opacity: 0.8; 
-        }
+        color: #ffffff !important;
       }
     }
 

@@ -26,8 +26,10 @@
         width="100"
         fixed="right">
         <template slot-scope="{row}">
-          <icon-btn icon="plus" :name="$t('m.Add_The_Problem')"
-                    @click.native="handleAddProblem(row.id)"></icon-btn>
+          <div class="botones-gestion">
+            <icon-btn icon="plus" :name="$t('m.Add_The_Problem')"
+                      @click.native="handleAddProblem(row.id)"></icon-btn>
+          </div>
         </template>
       </el-table-column>
     </el-table>

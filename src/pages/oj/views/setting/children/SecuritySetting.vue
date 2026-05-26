@@ -6,21 +6,21 @@
         <Card :padding="20" class="flex-child">
           <span slot="title" style="line-height: 20px">{{session.ip}}</span>
           <div slot="extra">
-            <Tag v-if="session.current_session" color="green">Current</Tag>
+            <Tag v-if="session.current_session" color="green">{{ $t('m.Current_Session') }}</Tag>
             <Button v-else
                     type="warning"
                     size="small"
-                    @click="deleteSession(session.session_key)">Revoke
+                    @click="deleteSession(session.session_key)">{{ $t('m.Revoke') }}
             </Button>
           </div>
           <Form :label-width="100">
-            <FormItem label="OS :" class="item">
+            <FormItem :label="$t('m.OS') + ' :'" class="item">
               {{session.user_agent | platform}}
             </FormItem>
-            <FormItem label="Browser :" class="item">
+            <FormItem :label="$t('m.Browser_Label') + ' :'" class="item">
               {{session.user_agent | browser}}
             </FormItem>
-            <FormItem label="Last Activity :" class="item">
+            <FormItem :label="$t('m.Last_Activity') + ' :'" class="item">
               {{session.last_activity | localtime }}
             </FormItem>
           </Form>
@@ -34,7 +34,7 @@
         <Alert v-if="TFAOpened"
                type="success"
                class="notice"
-               showIcon>You have enabled two-factor authentication.
+               showIcon>{{ $t('m.TFA_Enabled_Notice') }}
         </Alert>
         <FormItem v-if="!TFAOpened">
           <div class="oj-relative">
@@ -44,17 +44,17 @@
         </FormItem>
         <template v-if="!loadingQRcode">
           <FormItem style="width: 250px">
-            <Input v-model="formTwoFactor.code" placeholder="Enter the code from your application"/>
+            <Input v-model="formTwoFactor.code" :placeholder="$t('m.Enter_TFA_Code')"/>
           </FormItem>
           <Button type="primary"
                   :loading="loadingBtn"
                   @click="updateTFA(false)"
-                  v-if="!TFAOpened">Open TFA
+                  v-if="!TFAOpened">{{ $t('m.Open_TFA') }}
           </Button>
           <Button type="error"
                   :loading="loadingBtn"
                   @click="closeTFA"
-                  v-else>Close TFA
+                  v-else>{{ $t('m.Close_TFA') }}
           </Button>
         </template>
       </Form>
@@ -123,8 +123,8 @@
       },
       deleteSession (sessionKey) {
         this.$Modal.confirm({
-          title: 'Confirm',
-          content: 'Are you sure to revoke the session?',
+          title: this.$i18n.t('m.Confirmation'),
+          content: this.$i18n.t('m.Revoke_Session_Confirm'),
           onOk: () => {
             api.deleteSession(sessionKey).then(res => {
               this.getSessions()
@@ -135,8 +135,8 @@
       },
       closeTFA () {
         this.$Modal.confirm({
-          title: 'Confirm',
-          content: 'Two-factor Authentication is a powerful tool to protect your account, are you sure to close it?',
+          title: this.$i18n.t('m.Confirmation'),
+          content: this.$i18n.t('m.Close_TFA_Confirm'),
           onOk: () => {
             this.updateTFA(true)
           }

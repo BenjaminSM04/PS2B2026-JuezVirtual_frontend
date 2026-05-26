@@ -128,7 +128,7 @@
           <el-form-item v-for="(sample, index) in problem.samples" :key="'sample'+index">
             <Accordion :title="$t('m.Sample') + ' ' + (index + 1)">
               <el-button type="warning" size="small" icon="el-icon-delete" slot="header" @click="deleteSample(index)">
-                Delete
+                {{$t('m.Delete')}}
               </el-button>
               <el-row :gutter="20">
                 <el-col :span="12">
@@ -215,7 +215,7 @@
                 :show-file-list="true"
                 :on-success="uploadSucceeded"
                 :on-error="uploadFailed">
-                <el-button size="small" type="primary" icon="el-icon-fa-upload">Choose File</el-button>
+                <el-button size="small" type="primary" icon="el-icon-fa-upload">{{$t('m.Choose_File')}}</el-button>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -223,8 +223,8 @@
           <el-col :span="6">
             <el-form-item :label="$t('m.IOMode')">
               <el-radio-group v-model="problem.io_mode.io_mode">
-                <el-radio label="Standard IO">Standard IO</el-radio>
-                <el-radio label="File IO">File IO</el-radio>
+                <el-radio label="Standard IO">{{$t('m.IO_Standard')}}</el-radio>
+                <el-radio label="File IO">{{$t('m.IO_File')}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>

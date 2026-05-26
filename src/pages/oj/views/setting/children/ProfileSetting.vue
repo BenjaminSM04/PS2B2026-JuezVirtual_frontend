@@ -3,7 +3,7 @@
 
     <div class="profile-card">
       <div class="section-title">
-        Configuración de Avatar
+        {{ $t('m.Avatar_Setting') }}
       </div>
 
       <template v-if="!avatarOption.imgSrc">
@@ -22,7 +22,7 @@
             ></Icon>
 
             <p class="upload-text">
-              Arrastra una imagen aquí o haz clic para seleccionar
+              {{ $t('m.Drag_Or_Click_To_Upload') }}
             </p>
           </div>
         </Upload>
@@ -77,11 +77,11 @@
 
     <Modal
       v-model="uploadModalVisible"
-      title="Subir avatar"
+      :title="$t('m.Upload_Avatar')"
     >
       <div class="upload-modal">
         <p class="notice">
-          Tu avatar se actualizará a:
+          {{ $t('m.Avatar_Will_Update_To') }}
         </p>
 
         <img :src="uploadImgSrc"/>
@@ -93,7 +93,7 @@
           @click="uploadAvatar"
           :loading="loadingUploadBtn"
         >
-          Subir imagen
+          {{ $t('m.Upload_Image') }}
         </Button>
       </div>
     </Modal>
@@ -101,7 +101,7 @@
     <div class="profile-card">
 
       <div class="section-title">
-        Configuración del Perfil
+        {{ $t('m.Profile_Setting') }}
       </div>
 
       <Form
@@ -115,7 +115,7 @@
           <Col :span="11">
 
             <FormItem
-              label="Nombre real"
+              :label="$t('m.Real_Name')"
               prop="real_name"
             >
               <Input
@@ -125,7 +125,7 @@
             </FormItem>
 
             <FormItem
-              label="Universidad"
+              :label="$t('m.School')"
               prop="school"
             >
               <Input
@@ -135,7 +135,7 @@
             </FormItem>
 
             <FormItem
-              label="Carrera"
+              :label="$t('m.Major')"
               prop="major"
             >
               <Input
@@ -145,7 +145,7 @@
             </FormItem>
 
             <FormItem
-              label="Idioma"
+              :label="$t('m.Language_Label')"
               prop="language"
             >
               <Select v-model="formProfile.language">
@@ -166,7 +166,7 @@
                 @click="updateProfile"
                 :loading="loadingSaveBtn"
               >
-                Guardar cambios
+                {{ $t('m.Save_Changes') }}
               </Button>
             </FormItem>
 
@@ -176,7 +176,7 @@
           <Col :span="11">
 
             <FormItem
-              label="Estado"
+              :label="$t('m.Mood')"
               prop="mood"
             >
               <Input
@@ -186,7 +186,7 @@
             </FormItem>
 
             <FormItem
-              label="Blog"
+              :label="$t('m.Blog')"
               prop="blog"
             >
               <Input
@@ -196,7 +196,7 @@
             </FormItem>
 
             <FormItem
-              label="Github"
+              :label="$t('m.Github')"
               prop="github"
             >
               <Input
@@ -375,8 +375,8 @@ export default {
     reselect () {
 
       this.$Modal.confirm({
-        title: 'Confirmación',
-        content: '¿Desea descartar los cambios realizados?',
+        title: this.$i18n.t('m.Confirmation'),
+        content: this.$i18n.t('m.Discard_Changes_Confirm'),
         onOk: () => {
           this.avatarOption.imgSrc = ''
         }
@@ -417,7 +417,7 @@ export default {
 
           this.loadingUploadBtn = false
 
-          this.$success('Avatar actualizado correctamente')
+          this.$success(this.$i18n.t('m.Avatar_Updated'))
 
           this.uploadModalVisible = false
 
@@ -429,7 +429,7 @@ export default {
 
           this.loadingUploadBtn = false
 
-          this.$error('Ocurrió un error al subir la imagen')
+          this.$error(this.$i18n.t('m.Avatar_Upload_Failed'))
         })
       })
     },
@@ -439,7 +439,7 @@ export default {
       this.$refs.formProfile.validate((valid) => {
 
         if (!valid) {
-          this.$error('Complete correctamente los campos')
+          this.$error(this.$i18n.t('m.Fill_Fields_Correctly'))
           return
         }
 
@@ -452,7 +452,7 @@ export default {
 
         api.updateProfile(updateData).then(res => {
 
-          this.$success('Perfil actualizado correctamente')
+          this.$success(this.$i18n.t('m.Profile_Updated'))
 
           this.$store.commit(
             types.CHANGE_PROFILE,
@@ -467,7 +467,7 @@ export default {
 
           this.loadingSaveBtn = false
 
-          this.$error('Ocurrió un error al guardar los cambios')
+          this.$error(this.$i18n.t('m.Profile_Update_Failed'))
         })
       })
     }

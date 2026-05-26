@@ -11,3 +11,168 @@
 
 @import url("../../../node_modules/font-awesome/less/font-awesome");
 @fa-css-prefix: el-icon-fa;
+
+/* ============================================================
+ * Botones del panel administrador — estilos globales unificados
+ * ============================================================ */
+
+@admin-btn-primary: #003B4A;
+@admin-btn-primary-hover: #245965;
+@admin-btn-danger: #A60550;
+@admin-btn-danger-hover: #7B0440;
+@admin-btn-warning: #C8761E;
+@admin-btn-warning-hover: #A86116;
+@admin-btn-success: #2E7D5B;
+@admin-btn-success-hover: #1F5A40;
+@admin-btn-radius: 10px;
+
+.admin-btn-base() {
+  border-radius: @admin-btn-radius !important;
+  height: 36px;
+  padding: 0 18px;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  i {
+    margin-right: 6px;
+    font-size: 14px;
+  }
+}
+
+.el-button {
+  .admin-btn-base();
+}
+
+.el-button--mini {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  i { margin-right: 4px; font-size: 12px; }
+}
+
+.el-button--small {
+  height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.el-button--medium {
+  height: 38px;
+  padding: 0 20px;
+}
+
+.el-button--primary {
+  background-color: @admin-btn-primary !important;
+  border-color: @admin-btn-primary !important;
+  color: #ffffff !important;
+
+  &:hover, &:focus {
+    background-color: @admin-btn-primary-hover !important;
+    border-color: @admin-btn-primary-hover !important;
+  }
+
+  &.is-plain {
+    background-color: #ffffff !important;
+    color: @admin-btn-primary !important;
+    border-color: @admin-btn-primary !important;
+
+    &:hover, &:focus {
+      background-color: @admin-btn-primary !important;
+      color: #ffffff !important;
+    }
+  }
+}
+
+.el-button--danger {
+  background-color: @admin-btn-danger !important;
+  border-color: @admin-btn-danger !important;
+  color: #ffffff !important;
+
+  &:hover, &:focus {
+    background-color: @admin-btn-danger-hover !important;
+    border-color: @admin-btn-danger-hover !important;
+  }
+}
+
+.el-button--warning {
+  background-color: @admin-btn-warning !important;
+  border-color: @admin-btn-warning !important;
+  color: #ffffff !important;
+
+  &:hover, &:focus {
+    background-color: @admin-btn-warning-hover !important;
+    border-color: @admin-btn-warning-hover !important;
+  }
+}
+
+.el-button--success {
+  background-color: @admin-btn-success !important;
+  border-color: @admin-btn-success !important;
+  color: #ffffff !important;
+
+  &:hover, &:focus {
+    background-color: @admin-btn-success-hover !important;
+    border-color: @admin-btn-success-hover !important;
+  }
+}
+
+.el-button--default {
+  background-color: #ffffff !important;
+  border-color: #d8dbe0 !important;
+  color: #2e3a4b !important;
+
+  &:hover, &:focus {
+    background-color: #f5f7fa !important;
+    border-color: @admin-btn-primary !important;
+    color: @admin-btn-primary !important;
+  }
+}
+
+.el-button--text {
+  color: @admin-btn-primary !important;
+  background: transparent !important;
+  border: none !important;
+  height: auto;
+  padding: 4px 8px;
+
+  &:hover, &:focus {
+    color: @admin-btn-primary-hover !important;
+  }
+}
+
+/* IconBtn (acciones en tablas) */
+.botones-gestion {
+  display: inline-flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.botones-gestion .el-button,
+.botones-gestion .el-button.is-plain {
+  background-color: @admin-btn-primary !important;
+  border-color: @admin-btn-primary !important;
+  color: #ffffff !important;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px !important;
+
+  &:hover, &:focus {
+    background-color: @admin-btn-primary-hover !important;
+    border-color: @admin-btn-primary-hover !important;
+    color: #ffffff !important;
+  }
+}
+
+/* Botón "+ Nueva etiqueta" y similares small inline */
+.button-new-tag {
+  border-color: @admin-btn-primary !important;
+  color: @admin-btn-primary !important;
+}
