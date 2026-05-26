@@ -52,7 +52,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('m.Option')" width="100" align="center">
+        <el-table-column :label="$t('m.Option')" width="120" align="center">
           <template slot-scope="{row}">
             <div class="botones-gestion">
               <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>
@@ -183,13 +183,13 @@
       </el-form>
     </Panel>
     <!--Cuadro de dialogo-->
-    <el-dialog :title="$t('m.User_Info')" 
-    :visible.sync="showUserDialog" 
-    :close-on-click-modal="false" 
-    width="900px"
+    <el-dialog :title="$t('m.User_Info')"
+    :visible.sync="showUserDialog"
+    :close-on-click-modal="false"
+    width="720px"
   custom-class="user-edit-dialog">
-      <el-form :model="user" :rules="userRules" ref="userForm" label-width="150px" label-position="left">
-        <el-row :gutter="20">
+      <el-form :model="user" :rules="userRules" ref="userForm" label-width="130px" label-position="left">
+        <el-row :gutter="24">
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_Username')" prop="username" required>
               <el-input v-model="user.username"></el-input>
@@ -524,7 +524,14 @@
   }
 
   .userPreview {
-    padding-left: 10px;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-left: 12px;
+    border-left: 3px solid #003B4A;
+    background: #f5f7fa;
+    border-radius: 0 8px 8px 0;
+    color: #2e3a4b;
+    font-size: 13px;
   }
 
   .notification {
@@ -542,6 +549,7 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
     overflow: hidden;
     padding: 0 10px !important;
+    margin-bottom: 24px !important;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
 
@@ -550,7 +558,10 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 12px;
+    padding: 12px 14px;
     margin-bottom: 16px;
+    background: #fafbfc;
+    border-radius: 12px;
   }
 
   .table-toolbar__search {

@@ -53,11 +53,13 @@
           return
         }
         try {
-          this.rendered = katex.renderToString(this.input, {
+          const container = document.createElement('div')
+          katex.render(this.input, container, {
             displayMode: true,
             throwOnError: false,
             strict: false
           })
+          this.rendered = container.innerHTML
           this.error = ''
         } catch (e) {
           this.rendered = ''

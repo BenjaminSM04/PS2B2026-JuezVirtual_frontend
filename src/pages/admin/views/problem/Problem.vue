@@ -7,7 +7,9 @@
           <el-col :span="6">
             <el-form-item prop="_id" :label="$t('m.Display_ID')"
                           :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'">
-              <el-input :placeholder="$t('m.Display_ID')" v-model="problem._id"></el-input>
+              <el-input :placeholder="$t('m.Display_ID')"
+                        v-model="problem._id"
+                        :readonly="mode === 'add'"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="18">
@@ -433,9 +435,25 @@
         this.spjMode = this.allLanguage.spj_languages.find(item => {
           return item.name === this.problem.spj_language
         }).content_type
+      },
+      'problem.title' (newTitle) {
+        if (this.mode === 'add') {
+          this.problem._id = this.generateSlug(newTitle)
+        }
       }
     },
     methods: {
+      generateSlug (title) {
+        if (!title) return ''
+        return title
+          .toString()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .substring(0, 32)
+      },
       switchSpj () {
         if (this.testCaseUploaded) {
           this.$confirm(this.$i18n.t('m.Change_Judge_Method_Confirm'), this.$i18n.t('m.Warning'), {
