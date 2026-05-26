@@ -2,7 +2,7 @@
   <div class="view">
     <!-- para que los paneles se vean separados y flotando -->
     <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
+      <span slot="title" class="panel-title-accent">
         {{ $t('m.User_User') }}
       </span>
       <div class="table-toolbar">
@@ -75,7 +75,7 @@
     </Panel>
 
     <Panel>
-      <span slot="title" style="color: #82a69a; font-weight: bold;">{{$t('m.Import_User')}}
+      <span slot="title" class="panel-title-accent">{{$t('m.Import_User')}}
         <el-popover placement="right" trigger="hover">
           <p>{{$t('m.Import_User_CSV_Hint')}} <a
             href="http://docs.onlinejudge.me/#/onlinejudge/guide/import_users">link</a> {{$t('m.For_More_Details')}}</p>
@@ -133,33 +133,37 @@
     </Panel>
 
     <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
+      <span slot="title" class="panel-title-accent">
         {{ $t('m.Generate_User') }}
       </span>
-      <el-form :model="formGenerateUser" :rules="generateRules" ref="formGenerateUser">
-        <el-row type="flex" justify="space-between" style="flex-wrap: wrap;">
-          <el-col :xs="24" :sm="12" :md="4">
-            <el-form-item :label="$t('m.Prefix')" prop="prefix" style="font-weight: bold;">
+      <el-form :model="formGenerateUser" :rules="generateRules" ref="formGenerateUser" label-position="top">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.Prefix')" prop="prefix">
               <el-input v-model="formGenerateUser.prefix" :placeholder="$t('m.Prefix')"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="4">
-            <el-form-item :label="$t('m.Suffix')" prop="suffix" style="font-weight: bold;">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.Suffix')" prop="suffix">
               <el-input v-model="formGenerateUser.suffix" :placeholder="$t('m.Suffix')"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="4">
-            <el-form-item :label="$t('m.Start_Number')" prop="number_from" required style="font-weight: bold;">
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.Start_Number')" prop="number_from" required>
               <el-input-number v-model="formGenerateUser.number_from" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="4">
-            <el-form-item :label="$t('m.End_Number')" prop="number_to" required style="font-weight: bold;">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.End_Number')" prop="number_to" required>
               <el-input-number v-model="formGenerateUser.number_to" :min="0" style="width: 100%"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="4">
-            <el-form-item :label="$t('m.Password_Length')" prop="password_length" required style="font-weight: bold;">
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.Password_Length')" prop="password_length" required>
               <el-input v-model.number="formGenerateUser.password_length"
                         :placeholder="$t('m.Password_Length')"></el-input>
             </el-form-item>
@@ -167,20 +171,27 @@
         </el-row>
 
         <el-form-item>
-          <el-button type="primary" @click="generateUser" icon="el-icon-fa-users" :loading="loadingGenerate">{{ $t('m.Generate_and_Export') }}
+          <el-button type="primary" @click="generateUser" icon="el-icon-fa-users" :loading="loadingGenerate">
+            {{ $t('m.Generate_and_Export') }}
           </el-button>
-          <span class="userPreview" v-if="formGenerateUser.number_from && formGenerateUser.number_to &&
-                                          formGenerateUser.number_from <= formGenerateUser.number_to">
-            {{$t('m.Usernames_Will_Be')}} {{formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix}},
-            <span v-if="formGenerateUser.number_from + 1 < formGenerateUser.number_to">
-              {{formGenerateUser.prefix + (formGenerateUser.number_from + 1) + formGenerateUser.suffix + '...'}}
-            </span>
-            <span v-if="formGenerateUser.number_from + 1 <= formGenerateUser.number_to">
-              {{formGenerateUser.prefix + formGenerateUser.number_to + formGenerateUser.suffix}}
-            </span>
-          </span>
         </el-form-item>
       </el-form>
+      <div class="generate-preview"
+           v-if="formGenerateUser.number_from !== '' && formGenerateUser.number_to !== '' && formGenerateUser.number_from <= formGenerateUser.number_to">
+        <div class="generate-preview__label">{{ $t('m.Usernames_Will_Be') }}</div>
+        <div class="generate-preview__list">
+          <code>{{ formGenerateUser.prefix + formGenerateUser.number_from + formGenerateUser.suffix }}</code>
+          <template v-if="formGenerateUser.number_from + 1 < formGenerateUser.number_to">
+            <span>,</span>
+            <code>{{ formGenerateUser.prefix + (formGenerateUser.number_from + 1) + formGenerateUser.suffix }}</code>
+            <span>…</span>
+          </template>
+          <template v-if="formGenerateUser.number_from < formGenerateUser.number_to">
+            <span>,</span>
+            <code>{{ formGenerateUser.prefix + formGenerateUser.number_to + formGenerateUser.suffix }}</code>
+          </template>
+        </div>
+      </div>
     </Panel>
     <!--Cuadro de dialogo-->
     <el-dialog :title="$t('m.User_Info')"
@@ -519,19 +530,49 @@
 
 <style scoped lang="less">
   .import-user-icon {
-    color: #82a69a;
+    color: #003B4A;
     margin-left: 4px;
   }
 
-  .userPreview {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-left: 12px;
-    border-left: 3px solid #003B4A;
+  .panel-title-accent {
+    color: #003B4A;
+    font-weight: 600;
+  }
+
+  .generate-preview {
+    margin-top: 16px;
+    padding: 14px 16px;
     background: #f5f7fa;
-    border-radius: 0 8px 8px 0;
+    border-left: 3px solid #003B4A;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .generate-preview__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .generate-preview__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
     color: #2e3a4b;
     font-size: 13px;
+
+    code {
+      background: #fff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #003B4A;
+      border: 1px solid #e5e7eb;
+    }
   }
 
   .notification {

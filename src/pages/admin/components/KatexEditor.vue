@@ -11,7 +11,7 @@
     <el-form-item :label="$t('m.Output')">
       <div class="katex-editor__preview" :class="{'is-error': error}">
         <div v-if="error" class="katex-editor__error">{{ error }}</div>
-        <div v-else v-html="rendered"></div>
+        <div v-else ref="preview" class="katex-editor__math"></div>
       </div>
     </el-form-item>
   </el-form>
@@ -19,50 +19,55 @@
 
 <script>
   import 'katex/dist/katex.min.css'
-  // Resolver katex de forma defensiva: segun la interop de webpack/babel el
-  // require puede devolver el modulo CJS directo o envuelto como { default: katex }.
-  // Sin esto webpack minifica la variable a "Ve" y se cae como
-  // "Ve.renderToString is not a function".
-  const katexModule = require('katex')
-  const katex = (katexModule && typeof katexModule.renderToString === 'function')
-    ? katexModule
-    : ((katexModule && katexModule.default) || katexModule)
+  import renderMathInElement from 'katex/dist/contrib/auto-render.js'
+
+  const KATEX_OPTIONS = {
+    throwOnError: true,
+    strict: false,
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\[', right: '\\]', display: true},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '$', right: '$', display: false}
+    ]
+  }
 
   export default {
     name: 'KatexEditor',
     data () {
       return {
         input: 'c = \\pm\\sqrt{a^2 + b^2}',
-        rendered: '',
         error: ''
       }
     },
+    mounted () {
+      this.renderLatex()
+    },
     watch: {
-      input: {
-        immediate: true,
-        handler () {
-          this.renderLatex()
+      input () {
+        this.$nextTick(() => this.renderLatex())
+      },
+      error () {
+        if (!this.error) {
+          this.$nextTick(() => this.renderLatex())
         }
       }
     },
     methods: {
       renderLatex () {
+        const el = this.$refs.preview
+        if (!el) return
         if (!this.input) {
-          this.rendered = ''
+          el.textContent = ''
           this.error = ''
           return
         }
+        el.textContent = `$$${this.input}$$`
         try {
-          const container = document.createElement('div')
-          katex.render(this.input, container, {
-            displayMode: true,
-            throwOnError: false,
-            strict: false
-          })
-          this.rendered = container.innerHTML
+          renderMathInElement(el, KATEX_OPTIONS)
           this.error = ''
         } catch (e) {
-          this.rendered = ''
+          el.textContent = ''
           this.error = e.message || 'Entrada inválida'
         }
       }
@@ -89,6 +94,12 @@
       justify-content: flex-start;
       border-color: #fbc4c4;
       background: #fef0f0;
+    }
+
+    &__math {
+      max-width: 100%;
+      overflow-x: auto;
+      text-align: center;
     }
 
     &__error {

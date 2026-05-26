@@ -32,7 +32,7 @@
     name: 'AdminNotFound',
     methods: {
       goDashboard () {
-        this.$router.push('/dashboard')
+        this.$router.push({ name: 'dashboard' })
       },
       goOj () {
         window.location.href = '/'
