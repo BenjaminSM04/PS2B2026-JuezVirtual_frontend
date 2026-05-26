@@ -19,7 +19,14 @@
 
 <script>
   import 'katex/dist/katex.min.css'
-  const katex = require('katex')
+  // Resolver katex de forma defensiva: segun la interop de webpack/babel el
+  // require puede devolver el modulo CJS directo o envuelto como { default: katex }.
+  // Sin esto webpack minifica la variable a "Ve" y se cae como
+  // "Ve.renderToString is not a function".
+  const katexModule = require('katex')
+  const katex = (katexModule && typeof katexModule.renderToString === 'function')
+    ? katexModule
+    : ((katexModule && katexModule.default) || katexModule)
 
   export default {
     name: 'KatexEditor',

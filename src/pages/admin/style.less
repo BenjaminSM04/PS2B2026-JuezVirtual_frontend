@@ -152,7 +152,8 @@
 .botones-gestion {
   display: inline-flex;
   justify-content: center;
-  gap: 6px;
+  align-items: center;
+  gap: 4px;
 }
 
 .botones-gestion .el-button,
@@ -160,14 +161,37 @@
   background-color: @admin-btn-primary !important;
   border-color: @admin-btn-primary !important;
   color: #ffffff !important;
-  height: 30px;
-  padding: 0 10px;
+  width: 28px;
+  height: 28px;
+  padding: 0 !important;
   border-radius: 8px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    margin: 0 !important;
+    font-size: 13px;
+  }
 
   &:hover, &:focus {
     background-color: @admin-btn-primary-hover !important;
     border-color: @admin-btn-primary-hover !important;
     color: #ffffff !important;
+  }
+}
+
+/* Tipografia compacta para tablas del panel admin */
+.el-table {
+  font-size: 13px;
+
+  th > .cell {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .cell {
+    padding: 0 8px;
   }
 }
 

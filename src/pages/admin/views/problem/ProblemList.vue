@@ -84,7 +84,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('m.Option')"
-          width="250"
+          width="170"
           align="center">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
@@ -331,24 +331,7 @@
       background-color: #245965 !important;
     }
   }
-  /* Cambia el borde y el icono al color guindo de tu paleta */
-.botones-gestion /deep/ .el-button {
-  background-color: #003B4A !important;
-  border-color: #003B4A !important;
-  color: white !important;
-}
-
-/* Efecto al pasar el cursor: se rellena de guindo con el icono blanco */
-.botones-gestion /deep/ .el-button:hover,
-.botones-gestion /deep/ .el-button:focus {
-  background-color: #245965 !important;
-  border-color: #245965 !important;
-  color: #ffffff !important;
-}
-
-
-
-/*Cambiar el color del número de página ACTIVO (El que está seleccionado) */
+  /*Cambiar el color del número de página ACTIVO (El que está seleccionado) */
 /deep/ .el-pagination .el-pager li.active {
   color: #003B4A !important; /* Tu tono guindo */
   font-weight: bold;

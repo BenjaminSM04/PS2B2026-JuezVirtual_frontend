@@ -244,6 +244,10 @@ export const m = {
   Signal: '信号',
   // SubmissionList.vue
   When: '时间',
+  WhenDate: '日期',
+  TimeList: '时间',
+  Problem: '题目',
+  Problem_Submissions: '题目提交',
   ID: 'ID',
   Time: '时间',
   Memory: '内存',

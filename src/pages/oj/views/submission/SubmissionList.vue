@@ -2,12 +2,12 @@
   <div class="flex-container">
     <div id="main">
       <Panel shadow>
-        <div slot="title" style="font-weight: bold; color: #a60550;">{{title}}</div>
+        <div slot="title" style="font-weight: bold; color: #7B1E3A;">{{title}}</div>
         <div slot="extra">
           <ul class="filter">
             <li>
               <Dropdown @on-click="handleResultChange">
-                <span style="color: #a60550; font-weight: bold">{{status}}
+                <span style="color: #7B1E3A; font-weight: bold">{{status}}
                   <Icon type="arrow-down-b"></Icon>
                 </span>
                 <Dropdown-menu slot="list">
@@ -34,8 +34,8 @@
               <Button type="info" icon="refresh" @click="getSubmissions" 
               @mouseover.native="isHover = true" 
               @mouseleave.native="isHover = false"
-              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
-                      borderColor: isHover ? '#987284' : '#a60550',
+              :style="{backgroundColor: isHover ? '#987284' : '#7B1E3A', 
+                      borderColor: isHover ? '#987284' : '#7B1E3A',
                       fontWeight: 'bold'}">{{$t('m.Refresh')}}</Button>
             </li>
           </ul>
@@ -366,8 +366,8 @@
   }
   
   /deep/ .ivu-switch{
-    border-color: #A60550 !important; 
-    background-color: #A60550 !important; 
+    border-color: #7B1E3A !important; 
+    background-color: #7B1E3A !important; 
   }
   /deep/ .ivu-switch-checked {
     border-color: #BDF2D4 !important;
@@ -380,7 +380,7 @@
 
   /* Cambia el color de fondo y texto del encabezado "Opción" */
   /deep/ .ivu-table-fixed-right thead th {
-    background-color: #A60550 !important;
+    background-color: #7B1E3A !important;
     color: #ffffff !important; /* Texto blanco para que resalte */
     border:none !important;
   }
@@ -391,8 +391,8 @@
   }
 
   /deep/ .ivu-table-header th {
-    border-top:2px solid #A60550 !important;
-    background-color: #A60550 !important; /* Color ciruela */
+    border-top:2px solid #7B1E3A !important;
+    background-color: #7B1E3A !important; /* Color ciruela */
     color: white !important;
   }
 
@@ -400,7 +400,7 @@
 
   /* Efecto al pasar el mouse sobre el nombre */
   /deep/ .ivu-table-cell a {
-    color: #A60550 !important; /* Cambia a guindo al pasar el mouse */
+    color: #7B1E3A !important; /* Cambia a guindo al pasar el mouse */
     text-decoration: none;
     font-weight: bold;
   }

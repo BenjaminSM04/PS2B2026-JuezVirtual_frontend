@@ -52,7 +52,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('m.Option')" width="130" align="center">
+        <el-table-column :label="$t('m.Option')" width="100" align="center">
           <template slot-scope="{row}">
             <div class="botones-gestion">
               <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openUserDialog(row.id)"></icon-btn>

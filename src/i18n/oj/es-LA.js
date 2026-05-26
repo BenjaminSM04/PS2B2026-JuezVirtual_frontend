@@ -250,6 +250,10 @@ export const m = {
   Signal: 'Señal',
   // SubmissionList.vue
   When: 'Cuándo',
+  WhenDate: 'Fecha',
+  TimeList: 'Tiempo',
+  Problem: 'Problema',
+  Problem_Submissions: 'Envíos del Problema',
   ID: 'ID',
   Time: 'Tiempo',
   Memory: 'Memoria',

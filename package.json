@@ -90,6 +90,13 @@
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.26.1"
   },
+  "overrides": {
+    "tar-simditor": {
+      "simple-module": "github:itargaryen/simple-module#v2.1.0",
+      "simple-hotkeys": "github:itargaryen/simple-hotkeys",
+      "simple-uploader": "github:itargaryen/simple-uploader#v2.1.0"
+    }
+  },
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"

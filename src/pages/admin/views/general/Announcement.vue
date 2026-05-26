@@ -65,7 +65,7 @@
             :label="$t('m.Option')"
             align="center"
             aria-label=""
-            width="200">
+            width="100">
             <div slot-scope="scope" class="botones-gestion">
               <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="openAnnouncementDialog(scope.row.id)"></icon-btn>
               <icon-btn :name="$t('m.Delete')" icon="trash" @click.native="deleteAnnouncement(scope.row.id)"></icon-btn>

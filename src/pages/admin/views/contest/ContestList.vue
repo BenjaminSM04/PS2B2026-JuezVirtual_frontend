@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="250"
+          width="170"
           :label="$t('m.Option')">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
@@ -207,28 +207,6 @@
 .view .cell{
   font-family: 'Funnel Display', sans-serif;
   font-size: 16px;
-}
-
-.view .el-button{
-  background-color: #003B4A;
-  color: #ffffff;
-  font-size: 16px;
-  font-family: 'Funnel Display', sans-serif;
-  font-weight: bold;
-  border-color: #003B4A;
-  border-radius: 10px;
-  width: 35px !important;
-  height: 35px !important;
-  padding: 0;
-  line-height: 35px ;
-  /*transition: all 0.3s ease;*/
-}
-
-.view .el-button:hover {
-  background-color: #245965;
-  border-color: #245965;
-  /*transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
 }
 
 .view .table-toolbar {
