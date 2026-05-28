@@ -151,10 +151,10 @@
 /* IconBtn (acciones en tablas) */
 .botones-gestion {
   display: inline-flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .botones-gestion .el-button,
@@ -162,8 +162,9 @@
   background-color: @admin-btn-primary !important;
   border-color: @admin-btn-primary !important;
   color: #ffffff !important;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  margin: 0 !important;
   padding: 0 !important;
   border-radius: 8px !important;
   display: inline-flex;
@@ -172,7 +173,7 @@
 
   i {
     margin: 0 !important;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   &:hover, &:focus {
@@ -192,7 +193,8 @@
   }
 
   .cell {
-    padding: 0 8px;
+    padding: 4px 10px;
+    line-height: 1.5;
   }
 }
 
@@ -200,4 +202,16 @@
 .button-new-tag {
   border-color: @admin-btn-primary !important;
   color: @admin-btn-primary !important;
+}
+
+/* Diálogos responsive: en móvil los anchos fijos (px o %) se ajustan al viewport.
+ * El width inline que pone Element no lleva !important, así que esta regla lo gana. */
+@media (max-width: 768px) {
+  .el-dialog {
+    width: 92% !important;
+    margin: 0 auto;
+  }
+  .el-message-box {
+    width: 90%;
+  }
 }

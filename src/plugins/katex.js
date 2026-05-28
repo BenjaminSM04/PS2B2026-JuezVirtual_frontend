@@ -2,9 +2,15 @@ import 'katex/dist/katex.min.css'
 
 const noop = () => {}
 
+// Tags whose contents must never be treated as math. `pre`/`code`/`textarea`
+// hold sample I/O and source code where whitespace is significant — letting
+// auto-render walk into them collapses spaces between (often uppercase) words.
+const IGNORED_TAGS = ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option']
+
 const defaultOptions = {
   errorCallback: noop,
   throwOnError: false,
+  ignoredTags: IGNORED_TAGS,
   delimiters: [
     {left: '$$', right: '$$', display: true},
     {left: '\\[', right: '\\]', display: true},
@@ -30,16 +36,30 @@ function resolveRenderer () {
   return cachedRenderer
 }
 
-function render (el, binding) {
+// Render math inside `el`, merging the caller's options over the safe defaults.
+// Centralised so every call site goes through the guarded resolver instead of
+// importing `auto-render.js` directly (a raw default import crashes under the
+// webpack interop with "Object(...) is not a function"). Never throws.
+export function renderMath (el, options) {
   const renderMathInElement = resolveRenderer()
-  if (typeof renderMathInElement !== 'function') return
-  const userOptions = binding.value && binding.value.options ? binding.value.options : {}
-  const options = Object.assign({}, defaultOptions, userOptions)
+  if (!el || typeof renderMathInElement !== 'function') return false
   try {
-    renderMathInElement(el, options)
+    renderMathInElement(el, Object.assign({}, defaultOptions, options))
+    return true
   } catch (e) {
-    // Do not break the component render if KaTeX fails.
+    // Do not break the caller if KaTeX fails on malformed input.
+    return false
   }
+}
+
+// Exposed for callers that need the raw function (or to feature-detect it).
+export function getRenderer () {
+  return resolveRenderer()
+}
+
+function render (el, binding) {
+  const userOptions = binding.value && binding.value.options ? binding.value.options : {}
+  renderMath(el, userOptions)
 }
 
 export default {

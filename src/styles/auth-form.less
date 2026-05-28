@@ -1,0 +1,136 @@
+@import (reference) './theme-oj.less';
+
+/* Estilos compartidos para los formularios de autenticación del OJ
+ * (login, recuperación de contraseña). Inputs temáticos con icono prepend,
+ * botón de envío, enlaces y fila de captcha. Pensado para importarse dentro
+ * de un bloque <style scoped>, por eso usa /deep/ para llegar a los inputs de
+ * iView. */
+.auth-form {
+  /deep/ .ivu-form-item {
+    margin-bottom: 15px !important;
+    position: relative;
+  }
+
+  /deep/ .ivu-form-item-error {
+    margin-bottom: 30px !important;
+    padding-top: 4px;
+    top: 100%;
+    line-height: 1;
+  }
+
+  /deep/ .ivu-input-group-prepend {
+    background: @oj-guindo !important;
+    border: 2px solid @oj-guindo !important;
+    border-right: none;
+    color: white;
+    border-radius: 12px 0 0 12px;
+    min-width: 46px;
+  }
+
+  /deep/ .ivu-input-group-prepend i {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /deep/ .ivu-input-group-prepend + .ivu-input {
+    border: 2px solid @oj-guindo !important;
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+    height: 46px;
+    font-size: 16px;
+    padding-left: 12px;
+    color: @oj-text;
+  }
+
+  /deep/ .ivu-input {
+    height: 46px;
+    padding: 0 12px;
+  }
+
+  /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
+    border-right: 2px solid @oj-guindo !important;
+    border-radius: 0 12px 12px 0;
+  }
+
+  /deep/ .ivu-input:hover,
+  /deep/ .ivu-input:focus {
+    border-color: @oj-guindo !important;
+    outline: none;
+    box-shadow: none !important;
+  }
+
+  /* Mantener el borde derecho en hover cuando solo hay prepend (sin append). */
+  /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input:hover {
+    border-right: 2px solid @oj-guindo !important;
+  }
+
+  /deep/ .ivu-input::placeholder {
+    color: fade(@oj-secondary, 50%);
+  }
+}
+
+.auth-submit-btn {
+  height: 52px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: @oj-guindo;
+  border-color: @oj-guindo;
+
+  &:hover,
+  &:focus {
+    background-color: @oj-guindo-dark;
+    border-color: @oj-guindo-dark;
+  }
+}
+
+.auth-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.auth-link {
+  color: #202020;
+  font-size: 15px;
+  line-height: 1.2;
+  cursor: pointer;
+
+  &:hover {
+    color: @oj-guindo;
+  }
+}
+
+/* Captcha: input + imagen en una fila; la imagen es clickeable para refrescar. */
+.auth-captcha {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 10px;
+
+  &__code {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__img {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 46px;
+      border-radius: 10px;
+      border: 2px solid @oj-secondary;
+      cursor: pointer;
+      transition: border-color 0.2s;
+
+      &:hover {
+        border-color: @oj-guindo;
+      }
+    }
+  }
+}

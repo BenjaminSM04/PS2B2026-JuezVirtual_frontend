@@ -21,6 +21,17 @@
         prop="title">
       </el-table-column>
       <el-table-column
+        :label="$t('m.Author')"
+        width="140"
+        align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.created_by && row.created_by.username }}</span>
+          <el-tag size="mini" :type="isOwner(row) ? 'success' : 'info'" style="margin-left: 6px;">
+            {{ isOwner(row) ? $t('m.Own_Problem') : $t('m.Shared_Problem') }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
         :label="$t('m.Option')"
         align="center"
         width="100"
@@ -44,11 +55,15 @@
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
   import api from '@admin/api'
 
   export default {
     name: 'add-problem-from-public',
     props: ['contestID'],
+    computed: {
+      ...mapGetters(['user'])
+    },
     data () {
       return {
         page: 1,
@@ -74,7 +89,9 @@
           keyword: this.keyword,
           offset: (page - 1) * this.limit,
           limit: this.limit,
-          rule_type: this.contest.rule_type
+          rule_type: this.contest.rule_type,
+          // own + problems shared by other teachers (admins still see everything)
+          scope: 'all'
         }
         api.getProblemList(params).then(res => {
           this.loading = false
@@ -82,6 +99,9 @@
           this.problems = res.data.data.results
         }).catch(() => {
         })
+      },
+      isOwner (row) {
+        return row.created_by && this.user && row.created_by.id === this.user.id
       },
       handleAddProblem (problemID) {
         this.$prompt(this.$i18n.t('m.Input_Display_ID_For_Problem'), this.$i18n.t('m.Confirm')).then(({value}) => {

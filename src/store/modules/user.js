@@ -21,6 +21,14 @@ const getters = {
   isSuperAdmin: (state, getters) => {
     return getters.user.admin_type === USER_TYPE.SUPER_ADMIN
   },
+  isTeacher: (state, getters) => {
+    return getters.user.admin_type === USER_TYPE.TEACHER
+  },
+  isTeacherRole: (state, getters) => {
+    return getters.user.admin_type === USER_TYPE.TEACHER ||
+      getters.user.admin_type === USER_TYPE.ADMIN ||
+      getters.user.admin_type === USER_TYPE.SUPER_ADMIN
+  },
   hasProblemPermission: (state, getters) => {
     return getters.user.problem_permission !== PROBLEM_PERMISSION.NONE
   }

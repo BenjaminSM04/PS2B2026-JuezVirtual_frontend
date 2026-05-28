@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div class="view contest-list-view">
     <Panel :title="$t('m.Contest_List')">
       <div class="table-toolbar">
         <el-input
@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="170"
+          width="180"
           :label="$t('m.Option')">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
@@ -199,17 +199,18 @@
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap");
 
-.view .title{
+/* Namespaced bajo .contest-list-view para no afectar otras tablas del admin. */
+.contest-list-view .title{
   color:#090808 !important;
   font-size: 25px !important;
   font-weight: bold !important;
 }
-.view .cell{
+.contest-list-view .cell{
   font-family: 'Funnel Display', sans-serif;
   font-size: 16px;
 }
 
-.view .table-toolbar {
+.contest-list-view .table-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -217,13 +218,13 @@
   margin-bottom: 16px;
 }
 
-.view .table-toolbar__search {
+.contest-list-view .table-toolbar__search {
   flex: 1;
   min-width: 220px;
 }
 
 @media (max-width: 768px) {
-  .view .table-toolbar__search {
+  .contest-list-view .table-toolbar__search {
     min-width: 0;
   }
 }

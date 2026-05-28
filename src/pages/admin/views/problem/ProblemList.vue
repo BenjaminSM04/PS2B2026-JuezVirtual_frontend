@@ -11,6 +11,16 @@
           prefix-icon="el-icon-search"
           :placeholder="$t('m.Keywords')">
         </el-input>
+        <el-radio-group
+          v-if="routeName === 'problem-list' && !canManageAll"
+          class="table-toolbar__scope"
+          v-model="scope"
+          size="small"
+          @change="scopeChanged">
+          <el-radio-button label="mine">{{$t('m.Mine')}}</el-radio-button>
+          <el-radio-button label="shared">{{$t('m.Shared')}}</el-radio-button>
+          <el-radio-button label="all">{{$t('m.All')}}</el-radio-button>
+        </el-radio-group>
       </div>
       <el-table
         v-loading="loading"
@@ -58,6 +68,17 @@
           align="center">
         </el-table-column>
         <el-table-column
+          v-if="routeName === 'problem-list'"
+          :label="$t('m.Owner')"
+          width="130"
+          align="center">
+          <template slot-scope="{row}">
+            <el-tag size="small" :type="isOwner(row) ? 'success' : 'info'">
+              {{ isOwner(row) ? $t('m.Own_Problem') : $t('m.Shared_Problem') }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
           v-if="!isMobile"
           width="200"
           prop="create_time"
@@ -78,22 +99,26 @@
                        inactive-text=""
                        active-color="#BDF2D4"
                 inactive-color="#6A1B29"
+                       :disabled="!canModify(scope.row)"
                        @change="updateProblem(scope.row)">
             </el-switch>
           </template>
         </el-table-column>
         <el-table-column
           :label="$t('m.Option')"
-          width="170"
+          width="180"
           align="center">
           <div slot-scope="scope" class="botones-gestion">
-            <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
-            <icon-btn v-if="contestId" :name="$t('m.Make_Public')" icon="clone"
-                      @click.native="makeContestProblemPublic(scope.row.id)"></icon-btn>
-            <icon-btn icon="download" :name="$t('m.Download_TestCase')"
-                      @click.native="downloadTestCase(scope.row.id)"></icon-btn>
-            <icon-btn icon="trash" :name="$t('m.Delete_Problem')"
-                      @click.native="deleteProblem(scope.row.id)"></icon-btn>
+            <template v-if="canModify(scope.row)">
+              <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
+              <icon-btn v-if="contestId" :name="$t('m.Make_Public')" icon="clone"
+                        @click.native="makeContestProblemPublic(scope.row.id)"></icon-btn>
+              <icon-btn icon="download" :name="$t('m.Download_TestCase')"
+                        @click.native="downloadTestCase(scope.row.id)"></icon-btn>
+              <icon-btn icon="trash" :name="$t('m.Delete_Problem')"
+                        @click.native="deleteProblem(scope.row.id)"></icon-btn>
+            </template>
+            <span v-else class="readonly-hint">{{$t('m.No_Permission_Edit')}}</span>
           </div>
         </el-table-column>
       </el-table>
@@ -139,8 +164,10 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import api from '../../api.js'
   import utils from '@/utils/utils'
+  import { PROBLEM_PERMISSION } from '@/utils/constants'
   import AddProblemComponent from './AddPublicProblem.vue'
 
   export default {
@@ -159,6 +186,7 @@
         currentPage: 1,
         routeName: '',
         contestId: '',
+        scope: 'mine',
         // for make public use
         currentProblemID: '',
         currentRow: {},
@@ -177,15 +205,33 @@
       window.removeEventListener('resize', this.handleResize)
     },
     computed: {
+      ...mapGetters(['user', 'isSuperAdmin']),
       isMobile () {
         return this.windowWidth < 768
+      },
+      canManageAll () {
+        return this.isSuperAdmin || this.user.problem_permission === PROBLEM_PERMISSION.ALL
       }
     },
     methods: {
+      isOwner (row) {
+        return row.created_by && this.user && row.created_by.id === this.user.id
+      },
+      canModify (row) {
+        // contest problems are gated by contest ownership on the server; the list only
+        // returns problems from contests the user owns, so keep buttons enabled there.
+        if (this.contestId) return true
+        return this.canManageAll || this.isOwner(row)
+      },
+      scopeChanged () {
+        this.currentPage = 1
+        this.getProblemList(1)
+      },
       handleResize () {
         this.windowWidth = window.innerWidth
       },
       handleDblclick (row) {
+        if (!this.canModify(row)) return
         row.isEditing = true
       },
       goEdit (problemId) {
@@ -215,6 +261,9 @@
           offset: (page - 1) * this.pageSize,
           keyword: this.keyword,
           contest_id: this.contestId
+        }
+        if (this.routeName === 'problem-list') {
+          params.scope = this.scope
         }
         api[funcName](params).then(res => {
           this.loading = false
@@ -358,6 +407,15 @@
 .table-toolbar__search {
   flex: 1;
   min-width: 220px;
+}
+
+.table-toolbar__scope {
+  flex-shrink: 0;
+}
+
+.readonly-hint {
+  color: #999;
+  font-size: 12px;
 }
 
 @media (max-width: 768px) {

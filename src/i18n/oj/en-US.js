@@ -249,6 +249,7 @@ export const m = {
   ApplyEmail: 'Your Email Address',
   Send_Password_Reset_Email: 'Send Password Reset Email',
   Your_password_has_been_reset: 'Your password has been reset.',
+  Back_to_Login: 'Back to login',
   // Save.vue
   Save: 'Save',
   // Simditor.vue

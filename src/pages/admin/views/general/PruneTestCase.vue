@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="prune-view">
 
     <panel>
 
@@ -196,36 +196,38 @@ export default {
 
 <style>
 
-.panel {
+/* Namespaced bajo .prune-view: antes .el-table th/.panel eran globales y
+ * teñían las tablas/paneles de TODAS las pestañas del admin. */
+.prune-view .panel {
   border: 2px solid rgba(17, 55, 49, 0.15) !important;
   border-radius: 18px;
   overflow: hidden;
 }
 
-.panel-title {
+.prune-view .panel-title {
   color: #003B4A;
   font-weight: bold;
   font-size: 22px;
   letter-spacing: 0.3px;
 }
 
-.el-table {
+.prune-view .el-table {
   border-radius: 14px;
   overflow: hidden;
 }
 
-.el-table th {
+.prune-view .el-table th {
   background-color: #BDF2D4 !important;
   color: #003B4A !important;
   font-weight: bold;
 }
 
-.el-table td {
+.prune-view .el-table td {
   color: #664D59;
   font-weight: 500;
 }
 
-.btn-delete-single {
+.prune-view .btn-delete-single {
   background-color: #003B4A !important;
   border: 1px solid #003B4A !important;
   color: white !important;
@@ -235,14 +237,14 @@ export default {
   box-shadow: 0 3px 8px rgba(0, 59, 74, 0.25);
 }
 
-.btn-delete-single:hover {
+.prune-view .btn-delete-single:hover {
   background-color: #A60550 !important;
   border-color: #7B1E3A !important;
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(166, 5, 80, 0.30);
 }
 
-.btn-delete-all {
+.prune-view .btn-delete-all {
   margin-top: 18px;
   background-color: #003B4A !important;
   border: 1px solid #003B4A !important;
@@ -254,14 +256,14 @@ export default {
   box-shadow: 0 5px 12px rgba(0, 59, 74, 0.25);
 }
 
-.btn-delete-all:hover {
+.prune-view .btn-delete-all:hover {
   background-color: #A60550 !important;
   border-color: #7B1E3A !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(166, 5, 80, 0.35);
 }
 
-.import-user-icon {
+.prune-view .import-user-icon {
   color: #003B4A;
   margin-left: 6px;
   font-size: 16px;

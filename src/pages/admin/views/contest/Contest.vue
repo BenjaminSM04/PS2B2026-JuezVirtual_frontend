@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div class="view contest-view">
     <Panel :title="title">
       <el-form
         :model="contest"
@@ -480,7 +480,8 @@ export default {
   font-family: 'Funnel Display', sans-serif;
 }
 
-.panel {
+/* Namespaced bajo .contest-view para evitar fugas a otras pestañas del admin. */
+.contest-view .panel {
   background: #ffffff !important;
   border-radius: 20px !important;
   border: none !important;
@@ -490,21 +491,21 @@ export default {
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .title {
+.contest-view .title {
   color: #003B4A !important;
   font-size: 28px !important;
   font-weight: bold !important;
 }
 
-.view .el-form-item {
+.contest-view .el-form-item {
   margin-bottom: 28px;
 }
 
-.view .el-form-item__label:before {
+.contest-view .el-form-item__label:before {
   display: none !important;
 }
 
-.view .el-form-item__label {
+.contest-view .el-form-item__label {
   display: block;
   text-align: left;
   padding: 0;
@@ -514,7 +515,7 @@ export default {
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .el-input__inner {
+.contest-view .el-input__inner {
   border: 2px solid #987284;
   border-radius: 12px;
   height: 42px;
@@ -524,34 +525,34 @@ export default {
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .el-input__inner:focus {
+.contest-view .el-input__inner:focus {
   border-color: #003B4A !important;
   box-shadow: 0 0 8px rgba(0, 59, 74, 0.20);
 }
 
-.view .el-input__inner::placeholder {
+.contest-view .el-input__inner::placeholder {
   color: #987284;
   font-weight: 500;
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .el-textarea__inner {
+.contest-view .el-textarea__inner {
   border: 2px solid #987284;
   border-radius: 12px;
   color: #000000;
   font-family: 'Funnel Display', sans-serif;
 }
 
-.view .el-textarea__inner:focus {
+.contest-view .el-textarea__inner:focus {
   border-color: #003B4A !important;
   box-shadow: 0 0 8px rgba(0, 59, 74, 0.20);
 }
 
-.view .el-date-editor.el-input {
+.contest-view .el-date-editor.el-input {
   width: 100%;
 }
 
-.view .el-button {
+.contest-view .el-button {
   background-color: #003B4A;
   color: #ffffff;
   font-size: 16px;
@@ -559,38 +560,39 @@ export default {
   font-weight: bold;
   border-color: #003B4A;
   border-radius: 12px;
-  width: 140px !important;
-  height: 40px !important;
+  min-width: 140px;
+  height: 40px;
+  padding: 0 16px;
   transition: all 0.25s ease;
 }
 
-.view .el-button:hover {
+.contest-view .el-button:hover {
   background-color: #245965;
   border-color: #245965;
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0, 59, 74, 0.18);
 }
 
-.view .el-radio__inner {
+.contest-view .el-radio__inner {
   border-color: #987284;
 }
 
-.view .el-radio__label {
+.contest-view .el-radio__label {
   font-family: 'Funnel Display', sans-serif;
   font-size: 16px;
 }
 
-.view .el-radio__input.is-checked .el-radio__inner {
+.contest-view .el-radio__input.is-checked .el-radio__inner {
   background-color: #A60550;
   border-color: #A60550;
 }
 
-.view .el-radio__input.is-checked + .el-radio__label {
+.contest-view .el-radio__input.is-checked + .el-radio__label {
   color: #A60550;
   font-weight: 600;
 }
 
-.tooltip-icon {
+.contest-view .tooltip-icon {
   color: #A60550;
   margin-left: 6px;
   cursor: pointer;
@@ -598,7 +600,7 @@ export default {
   transition: 0.2s;
 }
 
-.tooltip-icon:hover {
+.contest-view .tooltip-icon:hover {
   color: #003B4A;
 }
 </style>

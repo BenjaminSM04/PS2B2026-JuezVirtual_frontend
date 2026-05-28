@@ -4,18 +4,6 @@
 
 <script>
   import Simditor from 'tar-simditor'
-  import renderMathInElement from 'katex/dist/contrib/auto-render.js'
-
-  const KATEX_OPTIONS = {
-    throwOnError: false,
-    errorCallback: () => {},
-    delimiters: [
-      {left: '$$', right: '$$', display: true},
-      {left: '\\[', right: '\\]', display: true},
-      {left: '\\(', right: '\\)', display: false},
-      {left: '$', right: '$', display: false}
-    ]
-  }
 
   // Toolbar labels for the Simditor editor, selected by the app language.
   Simditor.i18n['es-LA'] = {
@@ -112,24 +100,18 @@
         defaultImage: '/static/images/image.png'
       })
       
+      // Keep the stored value as the raw `$...$` source. Math is rendered on
+      // display (via the v-katex directive) and previewed through KatexEditor;
+      // rendering it inside the editable body here would bake KaTeX HTML into
+      // getValue() and collapse spaces around text once re-rendered.
       this.editor.on('valuechanged', (e, src) => {
         this.currentValue = this.editor.getValue()
-        this.$nextTick(() => this.renderMath())
       })
       this.editor.on('decorate', (e, src) => {
         this.currentValue = this.editor.getValue()
-        this.$nextTick(() => this.renderMath())
       })
 
       this.editor.setValue(this.value)
-      this.$nextTick(() => this.renderMath())
-    },
-    methods: {
-      renderMath () {
-        if (!this.editor || !this.editor.body) return
-        const el = this.editor.body[0] || this.editor.body
-        if (el) renderMathInElement(el, KATEX_OPTIONS)
-      }
     },
     watch: {
       'value' (val) {

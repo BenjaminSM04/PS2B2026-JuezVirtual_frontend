@@ -19,7 +19,7 @@
 
 <script>
   import 'katex/dist/katex.min.css'
-  import renderMathInElement from 'katex/dist/contrib/auto-render.js'
+  import { getRenderer } from '@/plugins/katex'
 
   const KATEX_OPTIONS = {
     throwOnError: true,
@@ -63,6 +63,11 @@
           return
         }
         el.textContent = `$$${this.input}$$`
+        const renderMathInElement = getRenderer()
+        if (typeof renderMathInElement !== 'function') {
+          this.error = ''
+          return
+        }
         try {
           renderMathInElement(el, KATEX_OPTIONS)
           this.error = ''

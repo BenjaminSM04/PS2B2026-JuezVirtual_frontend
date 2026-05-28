@@ -52,9 +52,9 @@
 
     &.small {
       max-width: 830px;
+      width: 100%;
       min-width: 0;
-      margin-left: 20px;
-      margin-top: 10px;
+      margin: 10px auto 20px;
     }
     header {
       position: relative;
@@ -85,27 +85,24 @@
 <style lang="less">
   .panel-options {
     background-color: transparent;
-    position: relative;
-    height: 50px;
-    button {
-      margin-top: 18px;
-      margin-right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 0 2px;
+    > button {
+      margin: 0;
     }
+    /* La paginación siempre se alinea a la derecha; los botones quedan a la izquierda. */
     > .page {
-      position: absolute;
-      right:20px;
-      top: 20px;
+      margin-left: auto;
     }
   }
 
   @media (max-width: 768px) {
-    .panel-options {
-      height: auto;
-      padding-bottom: 12px;
-    }
     .panel-options > .page {
-      position: static;
-      margin-top: 12px;
+      margin-left: 0;
+      width: 100%;
     }
   }
 </style>

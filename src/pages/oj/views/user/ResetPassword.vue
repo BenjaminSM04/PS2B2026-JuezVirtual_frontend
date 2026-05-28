@@ -1,47 +1,56 @@
 <template>
-  <Panel :padding="30" class="container">
-    <div slot="title" class="center">{{$t('m.Reset_Password')}}</div>
+  <Panel :padding="30" class="reset-card">
+    <div slot="title" class="reset-title">{{$t('m.Reset_Password')}}</div>
     <template v-if="!resetSuccess">
-    <Form :model=formResetPassword ref="formResetPassword" :rules="ruleResetPassword">
-      <Form-item prop="password">
-        <Input type="password" v-model="formResetPassword.password" :placeholder="$t('m.RPassword')" size="large">
-        <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        </Input>
-      </Form-item>
-      <Form-item prop="passwordAgain">
-        <Input type="password" v-model="formResetPassword.passwordAgain" :placeholder="$t('m.RPassword_Again')" size="large">
-        <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        </Input>
-      </Form-item>
-      <Form-item prop="captcha" style="margin-bottom:10px">
-        <div id="captcha">
-          <div id="captchaCode">
-            <Input v-model="formResetPassword.captcha" :placeholder="$t('m.RCaptcha')" size="large">
-            <Icon type="ios-lightbulb-outline" slot="prepend"></Icon>
+      <div class="auth-form">
+        <Form :model="formResetPassword" ref="formResetPassword" :rules="ruleResetPassword">
+          <Form-item prop="password">
+            <Input type="password" v-model="formResetPassword.password" :placeholder="$t('m.RPassword')" size="large">
+            <Icon type="ios-locked-outline" slot="prepend"></Icon>
             </Input>
-          </div>
-          <div id="captchaImg">
-            <Tooltip content="Click to refresh" placement="top">
-              <img :src="captchaSrc" @click="getCaptchaSrc"/>
-            </Tooltip>
-          </div>
+          </Form-item>
+          <Form-item prop="passwordAgain">
+            <Input type="password" v-model="formResetPassword.passwordAgain" :placeholder="$t('m.RPassword_Again')" size="large">
+            <Icon type="ios-locked-outline" slot="prepend"></Icon>
+            </Input>
+          </Form-item>
+          <Form-item prop="captcha">
+            <div class="auth-captcha">
+              <div class="auth-captcha__code">
+                <Input v-model="formResetPassword.captcha" :placeholder="$t('m.RCaptcha')" size="large" @on-enter="resetPassword">
+                <Icon type="ios-lightbulb-outline" slot="prepend"></Icon>
+                </Input>
+              </div>
+              <div class="auth-captcha__img">
+                <Tooltip content="Click to refresh" placement="top">
+                  <img :src="captchaSrc" @click="getCaptchaSrc"/>
+                </Tooltip>
+              </div>
+            </div>
+          </Form-item>
+        </Form>
+        <Button type="primary"
+                @click="resetPassword"
+                class="auth-submit-btn" long
+                :loading="btnLoading">{{$t('m.Reset_Password')}}
+        </Button>
+        <div class="auth-links">
+          <a class="auth-link" @click="goLogin">{{$t('m.Back_to_Login')}}</a>
         </div>
-      </Form-item>
-    </Form>
-    <Button type="primary"
-            @click="resetPassword"
-            class="btn" long
-            :loading="btnLoading">{{$t('m.Reset_Password')}}
-    </Button>
+      </div>
     </template>
 
     <template v-else>
-      <Alert type="success">{{$t('m.Your_password_has_been_reset')}}</Alert>
+      <Alert type="success" show-icon>{{$t('m.Your_password_has_been_reset')}}</Alert>
+      <div class="auth-links">
+        <a class="auth-link" @click="goLogin">{{$t('m.Back_to_Login')}}</a>
+      </div>
     </template>
   </Panel>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import {FormMixin} from '@oj/components/mixins'
   import api from '@oj/api'
 
@@ -92,6 +101,11 @@
       this.getCaptchaSrc()
     },
     methods: {
+      ...mapActions(['changeModalStatus']),
+      goLogin () {
+        this.$router.push({name: 'home'})
+        this.changeModalStatus({mode: 'login', visible: true})
+      },
       resetPassword () {
         this.validateForm('formResetPassword').then(valid => {
           this.btnLoading = true
@@ -111,30 +125,24 @@
   }
 </script>
 <style lang="less" scoped>
-  .container {
-    width: 450px;
-    margin: auto;
-    .center {
-      text-align: center;
-    }
-    #captcha {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      width: 100%;
-      height: 36px;
-      #captchaCode {
-        flex: auto;
-      }
-      #captchaImg {
-        margin-left: 10px;
-        padding: 3px;
-        flex: initial;
-      }
-    }
-    .btn {
-      margin-top: 18px;
-      text-align: center;
+  @import '../../../../styles/auth-form.less';
+
+  .reset-card {
+    width: 100%;
+    max-width: 460px;
+    margin: 40px auto;
+  }
+
+  .reset-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1c1c1c;
+  }
+
+  @media (max-width: 600px) {
+    .reset-card {
+      margin: 20px auto;
     }
   }
 </style>

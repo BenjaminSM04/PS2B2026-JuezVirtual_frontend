@@ -1,6 +1,6 @@
 <template>
   <el-tooltip class="item" effect="dark" :content="name" placement="top">
-    <el-button plain :icon="'el-icon-fa-' + icon" size="mini"></el-button>
+    <el-button plain :icon="'el-icon-fa-' + icon" size="mini" :aria-label="name"></el-button>
   </el-tooltip>
 </template>
 

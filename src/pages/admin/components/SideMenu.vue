@@ -22,11 +22,15 @@
           <span>{{$t('m.General')}}</span>
         </template>
         <el-menu-item index="/user">{{$t('m.User')}}</el-menu-item>
-        <el-menu-item index="/announcement">{{$t('m.Announcement')}}</el-menu-item>
         <el-menu-item index="/conf">{{$t('m.System_Config')}}</el-menu-item>
         <el-menu-item index="/judge-server">{{$t('m.Judge_Server')}}</el-menu-item>
         <el-menu-item index="/prune-test-case">{{$t('m.Prune_Test_Case')}}</el-menu-item>
       </el-submenu>
+
+      <el-menu-item v-if="isTeacherRole" index="/announcement">
+        <i class="el-icon-fa-bullhorn"></i>
+        <span>{{$t('m.Announcement')}}</span>
+      </el-menu-item>
 
       <el-submenu index="problem" v-if="hasProblemPermission">
         <template slot="title">
@@ -38,7 +42,7 @@
         <el-menu-item index="/problem/batch_ops">{{$t('m.Export_Import_Problem')}}</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="contest">
+      <el-submenu v-if="isTeacherRole" index="contest">
         <template slot="title">
           <i class="el-icon-fa-trophy"></i>
           <span>{{$t('m.Contest')}}</span>
@@ -56,7 +60,7 @@
   export default {
     name: 'SideMenu',
     computed: {
-      ...mapGetters(['user', 'isSuperAdmin', 'hasProblemPermission']),
+      ...mapGetters(['user', 'isSuperAdmin', 'isTeacherRole', 'hasProblemPermission']),
       currentPath () {
         return this.$route.path
       },
@@ -65,7 +69,6 @@
         const openeds = []
 
         if (path.indexOf('/user') === 0 ||
-          path.indexOf('/announcement') === 0 ||
           path.indexOf('/conf') === 0 ||
           path.indexOf('/judge-server') === 0 ||
           path.indexOf('/prune-test-case') === 0) {

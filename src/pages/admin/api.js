@@ -120,6 +120,9 @@ export default {
       }
     })
   },
+  getEmailHealth () {
+    return ajax('admin/email_health', 'get')
+  },
   getWebsiteConfig () {
     return ajax('admin/website', 'get')
   },

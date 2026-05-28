@@ -237,6 +237,7 @@ export const m = {
   ApplyEmail: 'Tu dirección de correo',
   Send_Password_Reset_Email: 'Enviar correo de restablecimiento',
   Your_password_has_been_reset: 'Tu contraseña fue restablecida correctamente.',
+  Back_to_Login: 'Volver a iniciar sesión',
   // Save.vue
   Save: 'Guardar',
   // Simditor.vue

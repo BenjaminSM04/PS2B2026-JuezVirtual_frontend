@@ -126,6 +126,17 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="20" v-if="routeName === 'create-problem' || routeName === 'edit-problem'">
+          <el-col :span="8">
+            <el-form-item :label="$t('m.Share_Mode')">
+              <el-select class="share-mode-select" v-model="problem.share_mode" :placeholder="$t('m.Share_Mode')">
+                <el-option :label="$t('m.Share_Mode_Private')" value="Private"></el-option>
+                <el-option :label="$t('m.Share_Mode_Shared')" value="Shared"></el-option>
+              </el-select>
+              <span class="share-mode-hint">{{ problem.share_mode === 'Shared' ? $t('m.Share_Mode_Shared_Hint') : $t('m.Share_Mode_Private_Hint') }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <div>
           <el-form-item v-for="(sample, index) in problem.samples" :key="'sample'+index">
             <Accordion :title="$t('m.Sample') + ' ' + (index + 1)">
@@ -355,6 +366,7 @@
           difficulty: 'Low',
           visible: true,
           share_submission: false,
+          share_mode: 'Shared',
           tags: [],
           languages: [],
           template: {},
@@ -651,6 +663,14 @@
     .difficulty-select {
       width: 120px;
     }
+    .share-mode-select {
+      width: 160px;
+    }
+    .share-mode-hint {
+      margin-left: 12px;
+      color: #999;
+      font-size: 12px;
+    }
     .spj-radio {
       margin-left: 10px;
       &:last-child {
@@ -704,7 +724,7 @@
   .dialog-compile-error {
     width: auto;
     max-width: 80%;
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 </style>
 

@@ -225,6 +225,7 @@
             <el-form-item :label="$t('m.User_Type')" >
               <el-select v-model="user.admin_type">
                 <el-option :label="$t('m.Regular_User')" value="Regular User"></el-option>
+                <el-option :label="$t('m.User_Type_Teacher')" value="Teacher"></el-option>
                 <el-option :label="$t('m.User_Type_Admin')" value="Admin"></el-option>
                 <el-option :label="$t('m.User_Type_Super_Admin')" value="Super Admin"></el-option>
               </el-select>
@@ -517,6 +518,8 @@
       'user.admin_type' () {
         if (this.user.admin_type === 'Super Admin') {
           this.user.problem_permission = 'All'
+        } else if (this.user.admin_type === 'Teacher') {
+          this.user.problem_permission = 'Own'
         } else if (this.user.admin_type === 'Regular User') {
           this.user.problem_permission = 'None'
         }
