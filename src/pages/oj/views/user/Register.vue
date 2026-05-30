@@ -119,7 +119,7 @@
       const SPECIAL_CHARS = `!@#$%^&*()_+\\-=\\[\\]{};':",.<>/?\\\\|\`~`
       const CheckPassword = (rule, value, callback) => {
         const passwordRegex = new RegExp(
-          `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[${SPECIAL_CHARS}])[A-Za-z\\d${SPECIAL_CHARS}]{6,}$`
+          `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[${SPECIAL_CHARS}])[A-Za-z\\d${SPECIAL_CHARS}]{8,}$`
         )
 
         if (value === '') {
@@ -217,7 +217,7 @@
 
         let score = 0
 
-        if (pwd.length >= 6) score++
+        if (pwd.length >= 8) score++
         if (/[A-Z]/.test(pwd)) score++
         if (/[0-9]/.test(pwd)) score++
         if (/[!@#$%^&*()_+\-=[\]{};':",.<>/?\\|`~]/.test(pwd)) score++

@@ -199,6 +199,17 @@ export default {
 
     const CheckNewPassword = (rule, value, callback) => {
 
+      // Política de contraseña fuerte (mismo set que registro/reset)
+      const SPECIAL_CHARS = `!@#$%^&*()_+\\-=\\[\\]{};':",.<>/?\\\\|\`~`
+      const passwordRegex = new RegExp(
+        `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[${SPECIAL_CHARS}])[A-Za-z\\d${SPECIAL_CHARS}]{8,}$`
+      )
+
+      if (value && !passwordRegex.test(value)) {
+        callback(new Error(this.$i18n.t('m.Password_complexity_error')))
+        return
+      }
+
       if (this.formPassword.old_password !== '') {
 
         if (
@@ -257,9 +268,9 @@ export default {
             trigger: 'blur'
           },
           {
-            min: 6,
+            min: 8,
             max: 20,
-            message: 'La contraseña debe tener entre 6 y 20 caracteres',
+            message: 'La contraseña debe tener entre 8 y 20 caracteres',
             trigger: 'blur'
           },
           {

@@ -201,6 +201,16 @@ fieldset[disabled] .ivu-btn {
   color: #fff;
 }
 
+// El link del problema en el header del ranking (a.emphasis) heredaba @oj-text (teal oscuro)
+// y quedaba casi invisible sobre el header burgundy. Forzamos blanco solo en el header de tabla.
+.ivu-table th a.emphasis {
+  color: #fff;
+}
+
+.ivu-table th a.emphasis:hover {
+  color: @oj-success;
+}
+
 .auth-modal {
   .ivu-modal {
     top: 70px;

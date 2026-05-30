@@ -16,6 +16,22 @@
       </article>
     </div>
 
+    <div v-if="isTeacher" class="dashboard-page__stats">
+      <article
+        v-for="card in teacherStatCards"
+        :key="card.key"
+        class="dashboard-stat"
+        :style="{ '--accent': card.color, '--accent-soft': card.softColor }">
+        <div class="dashboard-stat__icon">
+          <i :class="card.icon"></i>
+        </div>
+        <div class="dashboard-stat__body">
+          <p class="dashboard-stat__value">{{card.value}}</p>
+          <p class="dashboard-stat__label">{{card.label}}</p>
+        </div>
+      </article>
+    </div>
+
     <div class="dashboard-page__grid">
       <div class="dashboard-page__left-col">
         <section class="dashboard-card dashboard-card--profile">
@@ -38,7 +54,7 @@
 
             <div class="profile-card__identity">
               <h2 class="profile-card__name">{{user.username}}</h2>
-              <p class="profile-card__role">{{user.admin_type || '--'}}</p>
+              <p class="profile-card__role">{{roleLabel}}</p>
             </div>
           </div>
 
@@ -92,7 +108,28 @@
           </div>
         </section>
 
-        <section v-if="!isSuperAdmin" class="dashboard-card dashboard-card--welcome">
+        <section v-if="isTeacher" class="dashboard-card dashboard-card--welcome">
+          <div class="dashboard-card__header">
+            <div>
+              <span class="dashboard-card__eyebrow">{{$t('m.Teacher_Workspace')}}</span>
+              <h2 class="dashboard-card__title">{{$t('m.Quick_Actions')}}</h2>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <el-button type="primary" icon="el-icon-fa-plus" @click="goTo('create-problem')">
+              {{$t('m.Create_Problem')}}
+            </el-button>
+            <el-button type="success" icon="el-icon-fa-trophy" @click="goTo('create-contest')">
+              {{$t('m.Create_Contest')}}
+            </el-button>
+            <el-button type="warning" icon="el-icon-fa-bullhorn" @click="goTo('announcement')">
+              {{$t('m.Create_Announcement')}}
+            </el-button>
+          </div>
+        </section>
+
+        <section v-else-if="!isSuperAdmin" class="dashboard-card dashboard-card--welcome">
           <div class="dashboard-card__header">
             <div>
               <span class="dashboard-card__eyebrow">{{$t('m.Admin_Workspace')}}</span>
@@ -153,6 +190,38 @@
           </div>
         </div>
       </section>
+
+      <section v-if="isTeacher" class="dashboard-card dashboard-card--contests">
+        <div class="dashboard-card__header">
+          <div>
+            <span class="dashboard-card__eyebrow">{{$t('m.Teacher_Dashboard_Title')}}</span>
+            <h2 class="dashboard-card__title">{{$t('m.My_Active_Contests')}}</h2>
+          </div>
+        </div>
+
+        <div class="notes-card" v-loading="loadingTeacher">
+          <div v-if="activeContests.length" class="notes-card__list">
+            <article
+              v-for="contest in activeContests"
+              :key="contest.id"
+              class="release-note contest-row"
+              @click="goToContest(contest.id)">
+              <div class="release-note__header">
+                <div>
+                  <h3>{{contest.title}}</h3>
+                  <p>{{contest.start_time | localtime}}</p>
+                </div>
+                <el-tag size="mini" type="success">{{$t('m.Underway')}}</el-tag>
+              </div>
+            </article>
+          </div>
+
+          <div v-else class="notes-card__empty">
+            <i class="el-icon-fa-trophy"></i>
+            <p>{{$t('m.No_Active_Contests')}}</p>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -161,6 +230,7 @@
   import { mapGetters } from 'vuex'
   import browserDetector from 'browser-detect'
   import api from '@admin/api'
+  import { CONTEST_STATUS } from '@/utils/constants'
 
   export default {
     name: 'dashboard',
@@ -176,37 +246,75 @@
         session: {},
         loadingReleases: true,
         releases: [],
-        avatarLoadError: false
+        avatarLoadError: false,
+        loadingTeacher: false,
+        teacherMetrics: {
+          problemCount: 0,
+          contestCount: 0,
+          announcementCount: 0
+        },
+        activeContests: []
       }
     },
     mounted () {
-      api.getDashboardInfo().then(resp => {
-        this.infoData = resp.data.data
-      }, () => {
-      })
       api.getSessions().then(resp => {
         this.parseSession(resp.data.data || [])
       }, () => {
       })
-      api.getReleaseNotes().then(resp => {
-        this.loadingReleases = false
-        let data = resp.data.data
-        if (!data) {
-          return
-        }
-        let currentVersion = data.local_version
-        let updates = data.update || []
-        updates.forEach(release => {
-          if (release.version > currentVersion) {
-            release.new_version = true
-          }
-        })
-        this.releases = updates
-      }, () => {
-        this.loadingReleases = false
-      })
+      if (this.isSuperAdmin) {
+        this.loadSuperAdminInfo()
+      }
+      if (this.isTeacher) {
+        this.loadTeacherMetrics()
+      }
     },
     methods: {
+      loadSuperAdminInfo () {
+        api.getDashboardInfo().then(resp => {
+          this.infoData = resp.data.data
+        }, () => {
+        })
+        api.getReleaseNotes().then(resp => {
+          this.loadingReleases = false
+          let data = resp.data.data
+          if (!data) {
+            return
+          }
+          let currentVersion = data.local_version
+          let updates = data.update || []
+          updates.forEach(release => {
+            if (release.version > currentVersion) {
+              release.new_version = true
+            }
+          })
+          this.releases = updates
+        }, () => {
+          this.loadingReleases = false
+        })
+      },
+      loadTeacherMetrics () {
+        this.loadingTeacher = true
+        api.getProblemList({paging: true, offset: 0, limit: 1, scope: 'mine'}).then(resp => {
+          this.teacherMetrics.problemCount = resp.data.data.total
+        }, () => {})
+        api.getAnnouncementList(0, 1).then(resp => {
+          this.teacherMetrics.announcementCount = resp.data.data.total
+        }, () => {})
+        api.getContestList(0, 50).then(resp => {
+          let data = resp.data.data
+          this.teacherMetrics.contestCount = data.total
+          this.activeContests = (data.results || []).filter(c => c.status === CONTEST_STATUS.UNDERWAY)
+          this.loadingTeacher = false
+        }, () => {
+          this.loadingTeacher = false
+        })
+      },
+      goTo (name) {
+        this.$router.push({name})
+      },
+      goToContest (contestId) {
+        this.$router.push({name: 'edit-contest', params: {contestId}})
+      },
       parseSession (sessions) {
         if (!sessions.length) {
           this.session = {}
@@ -227,7 +335,35 @@
       }
     },
     computed: {
-      ...mapGetters(['profile', 'user', 'isSuperAdmin']),
+      ...mapGetters(['profile', 'user', 'isSuperAdmin', 'isTeacher']),
+      teacherStatCards () {
+        return [
+          {
+            key: 'my-problems',
+            label: this.$t('m.My_Problems'),
+            value: this.teacherMetrics.problemCount,
+            icon: 'el-icon-fa-tasks',
+            color: '#0f4f5d',
+            softColor: '#d7edf2'
+          },
+          {
+            key: 'my-contests',
+            label: this.$t('m.My_Contests'),
+            value: this.teacherMetrics.contestCount,
+            icon: 'el-icon-fa-trophy',
+            color: '#b50b62',
+            softColor: '#f6d8e7'
+          },
+          {
+            key: 'my-announcements',
+            label: this.$t('m.My_Announcements'),
+            value: this.teacherMetrics.announcementCount,
+            icon: 'el-icon-fa-bullhorn',
+            color: '#0f7a5d',
+            softColor: '#dbf3e9'
+          }
+        ]
+      },
       statCards () {
         return [
           {
@@ -318,6 +454,15 @@
       },
       welcomeMessage () {
         return this.$t('m.Admin_Welcome_Message', { username: this.user.username || 'Admin' })
+      },
+      roleLabel () {
+        const map = {
+          'Regular User': this.$t('m.Regular_User'),
+          'Teacher': this.$t('m.User_Type_Teacher'),
+          'Admin': this.$t('m.User_Type_Admin'),
+          'Super Admin': this.$t('m.User_Type_Super_Admin')
+        }
+        return map[this.user.admin_type] || this.user.admin_type || '--'
       }
     },
     watch: {
@@ -679,6 +824,28 @@
       color: #2f5f56;
       font-weight: 700;
       width: fit-content;
+    }
+  }
+
+  .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .el-button {
+      width: 100%;
+      margin-left: 0;
+      font-weight: 700;
+    }
+  }
+
+  .contest-row {
+    cursor: pointer;
+    transition: box-shadow .2s ease, border-color .2s ease;
+
+    &:hover {
+      border-color: rgba(181, 11, 98, 0.35);
+      box-shadow: 0 10px 22px rgba(39, 55, 53, 0.12);
     }
   }
 

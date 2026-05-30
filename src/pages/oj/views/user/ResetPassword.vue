@@ -58,12 +58,22 @@
     name: 'reset-password',
     mixins: [FormMixin],
     data () {
+      // Set ampliado de caracteres especiales (mismo policy que el registro)
+      const SPECIAL_CHARS = `!@#$%^&*()_+\\-=\\[\\]{};':",.<>/?\\\\|\`~`
       const CheckPassword = (rule, value, callback) => {
-        if (this.formResetPassword.passwdCheck !== '') {
-          // 对第二个密码框再次验证
-          this.$refs.formResetPassword.validateField('passwordAgain')
+        const passwordRegex = new RegExp(
+          `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[${SPECIAL_CHARS}])[A-Za-z\\d${SPECIAL_CHARS}]{8,}$`
+        )
+        if (value === '') {
+          callback(new Error(this.$i18n.t('m.Password_is_required')))
+        } else if (!passwordRegex.test(value)) {
+          callback(new Error(this.$i18n.t('m.Password_complexity_error')))
+        } else {
+          if (this.formResetPassword.passwordAgain !== '') {
+            this.$refs.formResetPassword.validateField('passwordAgain')
+          }
+          callback()
         }
-        callback()
       }
 
       const CheckAgainPassword = (rule, value, callback) => {
@@ -84,7 +94,7 @@
         },
         ruleResetPassword: {
           password: [
-            {required: true, trigger: 'blur', min: 6, max: 20},
+            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: 'blur'},
             {validator: CheckPassword, trigger: 'blur'}
           ],
           passwordAgain: [

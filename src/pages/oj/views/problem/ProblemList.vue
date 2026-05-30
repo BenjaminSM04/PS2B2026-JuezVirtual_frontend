@@ -138,6 +138,13 @@
             }
           },
           {
+            title: this.$i18n.t('m.Author'),
+            align: 'center',
+            render: (h, params) => {
+              return h('span', params.row.created_by ? params.row.created_by.username : '-')
+            }
+          },
+          {
             title: this.$i18n.t('m.Level'),
             render: (h, params) => {
               let t = params.row.difficulty

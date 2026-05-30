@@ -245,22 +245,33 @@
             align: 'center',
             key: problem.id,
             renderHeader: (h, params) => {
-              return h('a', {
-                'class': {
-                  'emphasis': true
-                },
-                on: {
-                  click: () => {
-                    this.$router.push({
-                      name: 'contest-problem-details',
-                      params: {
-                        contestID: this.contestID,
-                        problemID: problem._id
-                      }
-                    })
-                  }
+              return h('Tooltip', {
+                props: {
+                  content: this.$i18n.t('m.Author') + ': ' + (problem.created_by ? problem.created_by.username : '-'),
+                  placement: 'top',
+                  transfer: true
                 }
-              }, problem._id)
+              }, [
+                h('a', {
+                  'class': {
+                    'emphasis': true
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({
+                        name: 'contest-problem-details',
+                        params: {
+                          contestID: this.contestID,
+                          problemID: problem._id
+                        }
+                      })
+                    }
+                  }
+                }, [
+                  h('div', {style: {fontWeight: 'bold'}}, problem._id),
+                  h('div', {style: {fontSize: '12px', fontWeight: 'normal', lineHeight: '1.2', marginTop: '2px'}}, problem.title)
+                ])
+              ])
             },
             render: (h, params) => {
               return h('span', params.row[problem.id])

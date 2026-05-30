@@ -145,9 +145,9 @@ export const m = {
   Send_Test_Email: '寄送測試郵件',
   Add_From_Public_Problem: '從公共題庫加入',
   // 匯入/匯出
-  Export_Problems_Beta: '匯出題目 (beta)',
-  Import_QDUOJ_Problems_Beta: '匯入 QDUOJ 題目 (beta)',
-  Import_FPS_Problems_Beta: '匯入 FPS 題目 (beta)',
+  Export_Problems_Beta: '匯出題目',
+  Import_QDUOJ_Problems_Beta: '匯入 QDUOJ 題目',
+  Import_FPS_Problems_Beta: '匯入 FPS 題目',
   Export: '匯出',
   Upload: '上傳',
   Drag_File_Here: '將 .zip 檔案拖曳至此',
