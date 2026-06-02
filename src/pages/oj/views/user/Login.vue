@@ -45,15 +45,6 @@
   export default {
     mixins: [FormMixin],
     data () {
-      const CheckRequiredTFA = (rule, value, callback) => {
-        if (value !== '') {
-          api.tfaRequiredCheck(value).then(res => {
-            this.tfaRequired = res.data.data.result
-          })
-        }
-        callback()
-      }
-
       return {
         tfaRequired: false,
         btnLoginLoading: false,
@@ -65,8 +56,7 @@
         },
         ruleLogin: {
           username: [
-            {required: true, trigger: 'blur'},
-            {validator: CheckRequiredTFA, trigger: 'blur'}
+            {required: true, trigger: 'blur'}
           ],
           password: [
             {required: true, trigger: 'change', min: 6, max: 20}
@@ -94,8 +84,17 @@
             this.changeModalStatus({visible: false})
             this.getProfile()
             this.$success(this.$i18n.t('m.Welcome_back'))
-          }, _ => {
+          }, err => {
             this.btnLoginLoading = false
+            // Password correcto + 2FA habilitado: el backend pide el código.
+            // Mostramos el campo (sin cerrar el modal) y pedimos reintentar con el código.
+            if (err && err.data && err.data.data === 'tfa_required') {
+              this.tfaRequired = true
+              this.$info(this.$i18n.t('m.TFA_Required_Prompt'))
+              this.$nextTick(() => {
+                this.$refs.formLogin && this.$refs.formLogin.clearValidate()
+              })
+            }
           })
         })
       },
@@ -176,6 +175,7 @@
     border-right: none !important;
     height: 46px;
     padding: 0 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
     /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
     border-right: 2px solid @oj-guindo !important;

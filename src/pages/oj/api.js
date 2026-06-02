@@ -298,10 +298,14 @@ function ajax (url, method, options) {
     }).then(res => {
       // API正常返回(status=20x), 是否错误通过有无error判断
       if (res.data.error !== null) {
-        Vue.prototype.$error(res.data.data)
+        // 'tfa_required' es una señal de control del login (el handler muestra el campo
+        // del código 2FA), no un error que deba mostrarse como toast.
+        if (res.data.data !== 'tfa_required') {
+          Vue.prototype.$error(res.data.data)
+        }
         reject(res)
         // 若后端返回为登录，则为session失效，应退出当前登录用户
-        if (res.data.data.startsWith('Please login')) {
+        if (typeof res.data.data === 'string' && res.data.data.startsWith('Please login')) {
           store.dispatch('changeModalStatus', {'mode': 'login', 'visible': true})
         }
       } else {

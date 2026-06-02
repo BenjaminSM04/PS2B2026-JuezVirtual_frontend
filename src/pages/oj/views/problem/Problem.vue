@@ -183,6 +183,20 @@
           <span class="card-title">{{$t('m.Statistic')}}</span>
           <Button type="ghost" size="small" id="detail" @click="graphVisible = !graphVisible">{{$t('m.Details')}}</Button>
         </div>
+        <div class="stat-summary">
+          <div class="stat-summary__item">
+            <span class="stat-summary__value">{{statSubmissions}}</span>
+            <span class="stat-summary__label">{{$t('m.Submissions')}}</span>
+          </div>
+          <div class="stat-summary__item">
+            <span class="stat-summary__value stat-summary__value--ac">{{statAccepted}}</span>
+            <span class="stat-summary__label">{{$t('m.Accepted')}}</span>
+          </div>
+          <div class="stat-summary__item">
+            <span class="stat-summary__value">{{statACRate}}</span>
+            <span class="stat-summary__label">{{$t('m.AC_Rate')}}</span>
+          </div>
+        </div>
         <div class="echarts">
           <ECharts :options="pie"></ECharts>
         </div>
@@ -321,33 +335,40 @@
           }
         }
         let acNum = problemData.accepted_number
-        let data = [
+        // resumen simple AC/WA (fallback cuando no hay statistic_info)
+        let acWa = [
           {name: 'WA', value: problemData.submission_number - acNum},
           {name: 'AC', value: acNum}
         ]
-        this.pie.series[0].data = data
-        // 只把大图的AC selected下，这里需要做一下deepcopy
-        let data2 = JSON.parse(JSON.stringify(data))
-        data2[1].selected = true
-        this.largePie.series[1].data = data2
 
-        // 根据结果设置legend,没有提交过的legend不显示
+        // legend según los resultados realmente presentes
         let legend = Object.keys(problemData.statistic_info).map(ele => JUDGE_STATUS[ele].short)
         if (legend.length === 0) {
-          legend.push('AC', 'WA')
+          legend = ['AC', 'WA']
         }
+
+        // desglose por resultado (AC al final), reutilizado por la dona principal y el modal
+        let info = Object.assign({}, problemData.statistic_info)
+        let acCount = info['0']
+        delete info['0']
+        let breakdown = Object.keys(info).map(ele => ({name: JUDGE_STATUS[ele].short, value: info[ele]}))
+        if (acCount !== undefined) {
+          breakdown.push({name: 'AC', value: acCount})
+        }
+        if (breakdown.length === 0) {
+          breakdown = acWa
+        }
+
+        // dona principal: desglose por resultado
+        this.pie.legend.data = legend
+        this.pie.series[0].data = breakdown
+
+        // modal de detalle (largePie): mismo desglose + resumen interno AC seleccionado
         this.largePie.legend.data = legend
-
-        // 把ac的数据提取出来放在最后
-        let acCount = problemData.statistic_info['0']
-        delete problemData.statistic_info['0']
-
-        let largePieData = []
-        Object.keys(problemData.statistic_info).forEach(ele => {
-          largePieData.push({name: JUDGE_STATUS[ele].short, value: problemData.statistic_info[ele]})
-        })
-        largePieData.push({name: 'AC', value: acCount})
-        this.largePie.series[0].data = largePieData
+        this.largePie.series[0].data = breakdown
+        let data2 = JSON.parse(JSON.stringify(acWa))
+        data2[1].selected = true
+        this.largePie.series[1].data = data2
       },
       handleRoute (route) {
         this.$router.push(route)
@@ -495,6 +516,19 @@
         } else {
           return {name: 'submission-list', query: {problemID: this.problemID}}
         }
+      },
+      statSubmissions () {
+        return this.problem.submission_number || 0
+      },
+      statAccepted () {
+        return this.problem.accepted_number || 0
+      },
+      statACRate () {
+        const total = this.problem.submission_number || 0
+        if (!total) {
+          return '0.00%'
+        }
+        return (this.problem.accepted_number / total * 100).toFixed(2) + '%'
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -656,6 +690,35 @@
       position: absolute;
       right: 10px;
       top: 10px;
+    }
+  }
+
+  .stat-summary {
+    display: flex;
+    justify-content: space-around;
+    gap: 6px;
+    padding: 12px 8px 4px;
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+    }
+    &__value {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #17233d;
+      &--ac {
+        color: #19be6b;
+      }
+    }
+    &__label {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #808695;
+      text-align: center;
     }
   }
 

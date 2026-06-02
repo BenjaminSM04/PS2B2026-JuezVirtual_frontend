@@ -19,22 +19,27 @@ const pieColorMap = {
 }
 
 function getItemColor (obj) {
-  return pieColorMap[obj.name].color
+  return (pieColorMap[obj.name] && pieColorMap[obj.name].color) || '#999'
 }
 
 const pie = {
+  tooltip: {
+    trigger: 'item',
+    formatter: '{b}: {c} ({d}%)'
+  },
   legend: {
     left: 'center',
-    top: '10',
+    bottom: '4',
     orient: 'horizontal',
     data: ['AC', 'WA']
   },
   series: [
     {
-      name: 'Summary',
+      name: 'Resultados',
       type: 'pie',
-      radius: '80%',
-      center: ['50%', '55%'],
+      radius: ['42%', '68%'],
+      center: ['50%', '46%'],
+      avoidLabelOverlap: true,
       itemStyle: {
         normal: {color: getItemColor}
       },
@@ -44,9 +49,8 @@ const pie = {
       ],
       label: {
         normal: {
-          position: 'inner',
           show: true,
-          formatter: '{b}: {c}\n {d}%',
+          formatter: '{b}\n{d}%',
           textStyle: {
             fontWeight: 'bold'
           }

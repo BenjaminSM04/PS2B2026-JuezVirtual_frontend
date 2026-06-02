@@ -194,6 +194,7 @@ export const m = {
   LoginUsername: 'Nombre de Usuario',
   LoginPassword: 'Contraseña',
   TFA_Code: 'Código de tu app 2FA',
+  TFA_Required_Prompt: 'Tu cuenta tiene verificación en dos pasos. Ingresá el código de tu app y volvé a iniciar sesión.',
   No_Account: '¿No tienes cuenta? ¡Regístrate ahora!',
   Forget_Password: 'Olvidé mi Contraseña',
   UserLogin: 'Iniciar Sesión',

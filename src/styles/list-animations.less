@@ -22,6 +22,9 @@
 .list-stagger > *:nth-child(8)  { animation-delay: 0.30s; }
 .list-stagger > *:nth-child(9)  { animation-delay: 0.34s; }
 .list-stagger > *:nth-child(10) { animation-delay: 0.38s; }
+/* Ítems más allá del 10 entran juntos con un delay fijo (evita que listas
+   largas queden sin animar). */
+.list-stagger > *:nth-child(n+11) { animation-delay: 0.42s; }
 
 @media (prefers-reduced-motion: reduce) {
   .list-stagger > * {

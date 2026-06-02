@@ -72,14 +72,14 @@ export default [
   {
     name: 'contest-list',
     path: '/contest',
-    meta: {title: 'Contest List'},
+    meta: {requiresAuth: true, title: 'Contest List'},
     component: Contest.ContestList
   },
   {
     name: 'contest-details',
     path: '/contest/:contestID/',
     component: Contest.ContestDetails,
-    meta: {title: 'Contest Details'},
+    meta: {requiresAuth: true, title: 'Contest Details'},
     children: [
       {
         name: 'contest-submission-list',

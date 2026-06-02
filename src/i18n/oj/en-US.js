@@ -206,6 +206,7 @@ export const m = {
   LoginUsername: 'Username',
   LoginPassword: 'Password',
   TFA_Code: 'Code from your TFA app',
+  TFA_Required_Prompt: 'Your account has two-factor authentication. Enter the code from your app and sign in again.',
   No_Account: 'No account? Register now!',
   Forget_Password: 'Forget Password',
   UserLogin: 'Login',

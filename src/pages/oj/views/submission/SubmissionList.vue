@@ -31,12 +31,7 @@
             </li>
 
             <li>
-              <Button type="info" icon="refresh" @click="getSubmissions" 
-              @mouseover.native="isHover = true" 
-              @mouseleave.native="isHover = false"
-              :style="{backgroundColor: isHover ? '#987284' : '#7B1E3A', 
-                      borderColor: isHover ? '#987284' : '#7B1E3A',
-                      fontWeight: 'bold'}">{{$t('m.Refresh')}}</Button>
+              <Button type="info" icon="refresh" @click="getSubmissions" class="refresh-btn">{{$t('m.Refresh')}}</Button>
             </li>
           </ul>
         </div>
@@ -62,7 +57,6 @@
     },
     data () {
       return {
-        isHover: false,
         formFilter: {
           myself: false,
           result: '',
@@ -342,6 +336,22 @@
 </script>
 
 <style scoped lang="less">
+  @import (reference) '../../../../styles/theme-oj.less';
+
+  // Botón refrescar: hover por CSS (antes era un binding :style con isHover).
+  .refresh-btn {
+    background-color: @oj-guindo !important;
+    border-color: @oj-guindo !important;
+    font-weight: bold;
+    transition: background-color .2s, border-color .2s;
+
+    &:hover,
+    &:focus {
+      background-color: @oj-secondary !important;
+      border-color: @oj-secondary !important;
+    }
+  }
+
   .flex-container {
     #main {
       flex: auto;

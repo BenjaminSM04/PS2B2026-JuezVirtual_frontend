@@ -11,6 +11,11 @@
         <Icon type="ios-email-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
+      <FormItem prop="real_name">
+        <Input type="text" v-model.trim="formRegister.real_name" :placeholder="$t('m.Real_Name')" size="large" @on-enter="handleRegister">
+        <Icon type="ios-contact-outline" slot="prepend"></Icon>
+        </Input>
+      </FormItem>
       <FormItem prop="password">
         <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.Password')" size="large" @on-enter="handleRegister">
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
@@ -154,6 +159,7 @@
           password: '',
           passwordAgain: '',
           email: '',
+          real_name: '',
           captcha: ''
         },
         ruleRegister: {
@@ -293,6 +299,7 @@
     border-right: none !important;
     height: 46px;
     padding: 0 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
     /deep/ .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input {
     border-right: 2px solid @oj-guindo !important;
