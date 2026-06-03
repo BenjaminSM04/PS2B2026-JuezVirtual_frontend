@@ -9,9 +9,8 @@
     </div>
 
     <transition-group name="announcement-animate" mode="in-out">
-      <div class="no-announcement" v-if="!announcements.length" key="no-announcement">
-        <p>{{$t('m.No_Announcements')}}</p>
-      </div>
+      <empty-state v-if="!announcements.length" key="no-announcement"
+                   icon="ios-bell-outline" :message="$t('m.No_Announcements')"></empty-state>
       <template v-if="listVisible">
         <ul class="announcements-container" key="list">
           <li v-for="announcement in announcements" :key="announcement.title">
@@ -41,11 +40,13 @@
 <script>
   import api from '@oj/api'
   import Pagination from '@oj/components/Pagination'
+  import EmptyState from '@/components/EmptyState.vue'
 
   export default {
     name: 'Announcement',
     components: {
-      Pagination
+      Pagination,
+      EmptyState
     },
     data () {
       return {
@@ -124,6 +125,11 @@
       margin-left: 20px;
       font-size: 16px;
       border-bottom: 1px solid rgba(187, 187, 187, 0.5);
+      border-radius: 6px;
+      transition: background-color @oj-dur-fast @oj-ease-out;
+      &:hover {
+        background: fade(@oj-guindo, 5%);
+      }
       &:last-child {
         border-bottom: none;
       }
@@ -164,7 +170,7 @@
   }
 
   .announcement-animate-enter-active {
-    animation: fadeIn 1s;
+    animation: fadeIn .4s ease-out;
   }
 
   .announcement-title {

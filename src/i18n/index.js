@@ -17,8 +17,10 @@ Vue.use(VueI18n)
 
 const languages = [
   {value: 'en-US', label: 'English', iv: ivenUS, el: elenUS},
-  {value: 'zh-CN', label: '简体中文', iv: ivzhCN, el: elzhCN},
-  {value: 'zh-TW', label: '繁體中文', iv: ivzhTW, el: elzhTW},
+  // Chino simplificado/tradicional deshabilitados a pedido (no se usan en Univalle).
+  // Los archivos de locale se conservan; descomentar para reactivarlos.
+  // {value: 'zh-CN', label: '简体中文', iv: ivzhCN, el: elzhCN},
+  // {value: 'zh-TW', label: '繁體中文', iv: ivzhTW, el: elzhTW},
   {value: 'es-LA', label: 'Español (LA)', iv: ivesES, el: elesES}
 ]
 const messages = {}
@@ -31,9 +33,15 @@ for (let lang of languages) {
   let ui = Object.assign(lang.iv, lang.el)
   messages[locale] = Object.assign({m: m}, ui)
 }
+// Resolver el locale inicial: si lo guardado ya no está disponible
+// (p. ej. un usuario que había elegido zh-CN antes de deshabilitarlo), caer a es-LA.
+const availableLocales = languages.map(lang => lang.value)
+const storedLocale = storage.get(STORAGE_KEY.LANGUAGE)
+const initialLocale = availableLocales.includes(storedLocale) ? storedLocale : 'es-LA'
+
 // load language packages
 const i18n = new VueI18n({
-  locale: storage.get(STORAGE_KEY.LANGUAGE) || 'es-LA',
+  locale: initialLocale,
   fallbackLocale: 'en-US',
   messages: messages
 })

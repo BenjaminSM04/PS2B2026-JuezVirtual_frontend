@@ -406,6 +406,24 @@ export default {
   margin: 20px 0 30px 0;
 }
 
+/* En móvil el podio se apila verticalmente y las tarjetas igualan altura. */
+@media (max-width: 768px) {
+  .top-podium {
+    flex-direction: column;
+    align-items: center;
+  }
+  .podium-card {
+    width: 100%;
+    max-width: 280px;
+  }
+  .podium-card.first,
+  .podium-card.second,
+  .podium-card.third {
+    height: auto;
+    min-height: 140px;
+  }
+}
+
 .podium-card {
   width: 180px;
   text-align: center;

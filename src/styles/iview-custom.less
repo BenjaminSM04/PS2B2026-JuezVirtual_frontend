@@ -39,6 +39,30 @@ table {
   background-color: fade(@oj-danger, 14%);
 }
 
+/* Hover sutil de filas (tinte de marca). Funciona vía :hover nativo aunque la
+   tabla tenga disabled-hover. Se preservan los colores semánticos de las filas
+   de estado (first-ac/ac/wa) para no perder su significado al pasar el mouse. */
+.ivu-table-row td {
+  transition: background-color @oj-dur-fast @oj-ease-out;
+}
+.ivu-table-row:hover td {
+  background-color: fade(@oj-guindo, 4%);
+}
+.ivu-table-row.first-ac:hover td {
+  background-color: @oj-success;
+}
+.ivu-table-row.ac:hover td {
+  background-color: fade(@oj-success, 58%);
+}
+.ivu-table-row.wa:hover td {
+  background-color: fade(@oj-danger, 14%);
+}
+
+/* Badges/Tags: transición suave de color al cambiar de estado/veredicto. */
+.ivu-tag {
+  transition: background-color @oj-dur @oj-ease-out, color @oj-dur @oj-ease-out, border-color @oj-dur @oj-ease-out;
+}
+
 .ivu-btn {
   border-radius: 10px;
   font-weight: 600;
@@ -61,6 +85,17 @@ table {
 .ivu-btn-primary.active {
   background-color: darken(@oj-primary, 6%);
   border-color: darken(@oj-primary, 6%);
+}
+
+/* Realce sutil en hover del botón primario (la transición ya está en .ivu-btn). */
+.ivu-btn-primary:hover {
+  box-shadow: 0 4px 10px fade(@oj-primary, 32%);
+}
+
+/* Anillo de foco visible solo para navegación por teclado (accesibilidad). */
+.ivu-btn:focus-visible {
+  outline: 2px solid @oj-focus;
+  outline-offset: 2px;
 }
 
 .ivu-btn-info {
@@ -178,6 +213,13 @@ fieldset[disabled] .ivu-btn {
 .ivu-select-dropdown .ivu-dropdown-item-selected {
   background-color: fade(@oj-success, 88%) !important;
   color: @oj-dark !important;
+}
+
+/* Evita que cualquier modal con ancho fijo desborde en pantallas chicas
+   (los modales están fijos al viewport, así que esto funciona aun con el
+   min-width de escritorio del body). */
+.ivu-modal {
+  max-width: 95vw;
 }
 
 .ivu-modal-footer {

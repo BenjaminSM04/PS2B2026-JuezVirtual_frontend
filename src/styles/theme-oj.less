@@ -11,3 +11,10 @@
 @oj-surface: #f7f3f5;
 @oj-border: fade(@oj-secondary, 55%);
 @oj-focus: fade(@oj-primary, 22%);
+
+/* Tokens de movimiento (pase de pulido sutil). Importar el theme con
+   `@import (reference)` para usarlos en estilos de vista. */
+@oj-ease-out: cubic-bezier(0, 0, .2, 1);
+@oj-dur-fast: .18s;
+@oj-dur: .28s;
+@oj-lift: -2px;

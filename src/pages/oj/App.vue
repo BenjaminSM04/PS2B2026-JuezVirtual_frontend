@@ -96,7 +96,7 @@
   }
 
   .fadeInUp-enter-active {
-    animation: fadeInUp .8s;
+    animation: fadeInUp .32s ease-out;
   }
 
 

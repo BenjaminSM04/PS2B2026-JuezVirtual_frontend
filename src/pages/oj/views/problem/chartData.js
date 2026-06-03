@@ -120,4 +120,4 @@ const largePie = {
   ]
 }
 
-export { pie, largePie }
+export { pie, largePie, getItemColor }

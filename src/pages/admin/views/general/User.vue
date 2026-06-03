@@ -297,8 +297,10 @@
         }
       }
       const validateOptionalPassword = (rule, value, callback) => {
-        if (value && value.length < 6) {
-          callback(new Error(this.$i18n.t('m.Password_Min_6')))
+        // Vacío = sin cambio de contraseña (campo opcional en edición admin).
+        // Si hay valor, debe cumplir la política del backend: >=8, una mayúscula y un dígito.
+        if (value && (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value))) {
+          callback(new Error(this.$i18n.t('m.Password_Admin_Policy')))
         } else {
           callback()
         }

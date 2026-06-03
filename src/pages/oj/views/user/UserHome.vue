@@ -17,15 +17,15 @@
         <div class="flex-container">
           <div class="left">
             <p>{{$t('m.UserHomeSolved')}}</p>
-            <p class="emphasis">{{profile.accepted_number}}</p>
+            <p class="emphasis"><animated-number :value="profile.accepted_number || 0"></animated-number></p>
           </div>
           <div class="middle">
             <p>{{$t('m.UserHomeserSubmissions')}}</p>
-            <p class="emphasis">{{profile.submission_number}}</p>
+            <p class="emphasis"><animated-number :value="profile.submission_number || 0"></animated-number></p>
           </div>
           <div class="right">
             <p>{{$t('m.UserHomeScore')}}</p>
-            <p class="emphasis">{{profile.total_score}}</p>
+            <p class="emphasis"><animated-number :value="profile.total_score || 0"></animated-number></p>
           </div>
         </div>
         <div id="problems">
@@ -62,10 +62,13 @@
 </template>
 <script>
   import { mapActions } from 'vuex'
-  import time from '@/utils/time'
   import api from '@oj/api'
+  import AnimatedNumber from '@/components/AnimatedNumber.vue'
 
   export default {
+    components: {
+      AnimatedNumber
+    },
     data () {
       return {
         username: '',
@@ -84,8 +87,6 @@
           this.changeDomTitle({title: res.data.data.user.username})
           this.profile = res.data.data
           this.getSolvedProblems()
-          let registerTime = time.utcToLocal(this.profile.user.create_time, 'YYYY-MM-D')
-          console.log('The guy registered at ' + registerTime + '.')
         })
       },
       getSolvedProblems () {
@@ -131,6 +132,7 @@
 </script>
 
 <style lang="less" scoped>
+  @import (reference) '../../../../styles/theme-oj.less';
   .container {
     position: relative;
     width: 75%;
@@ -196,6 +198,15 @@
       transform: translate(-50%);
       .icon {
         padding-left: 20px;
+      }
+      a {
+        display: inline-block;
+        color: inherit;
+        transition: transform .18s @oj-ease-out, color .18s @oj-ease-out;
+        &:hover {
+          transform: translateY(-3px) scale(1.12);
+          color: @oj-guindo;
+        }
       }
     }
   }

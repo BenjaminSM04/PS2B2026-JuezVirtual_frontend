@@ -133,7 +133,7 @@
         </template>
       </VerticalMenu>
 
-      <Card id="info">
+      <Card id="info" class="hover-lift">
         <div slot="title" class="header">
           <Icon type="information-circled"></Icon>
           <span class="card-title">{{$t('m.Information')}}</span>
@@ -177,7 +177,7 @@
         </ul>
       </Card>
 
-      <Card id="pieChart" :padding="0" v-if="!this.contestID || OIContestRealTimePermission">
+      <Card id="pieChart" class="hover-lift" :padding="0" v-if="!this.contestID || OIContestRealTimePermission">
         <div slot="title">
           <Icon type="ios-analytics"></Icon>
           <span class="card-title">{{$t('m.Statistic')}}</span>
@@ -185,11 +185,11 @@
         </div>
         <div class="stat-summary">
           <div class="stat-summary__item">
-            <span class="stat-summary__value">{{statSubmissions}}</span>
+            <span class="stat-summary__value"><animated-number :value="statSubmissions"></animated-number></span>
             <span class="stat-summary__label">{{$t('m.Submissions')}}</span>
           </div>
           <div class="stat-summary__item">
-            <span class="stat-summary__value stat-summary__value--ac">{{statAccepted}}</span>
+            <span class="stat-summary__value stat-summary__value--ac"><animated-number :value="statAccepted"></animated-number></span>
             <span class="stat-summary__label">{{$t('m.Accepted')}}</span>
           </div>
           <div class="stat-summary__item">
@@ -203,9 +203,60 @@
       </Card>
     </div>
 
-    <Modal v-model="graphVisible">
-      <div id="pieChart-detail">
-        <ECharts :options="largePie" :initOptions="largePieInitOpts"></ECharts>
+    <Modal v-model="graphVisible" :width="720" class="detail-modal">
+      <div slot="header" class="detail-modal__title">
+        <Icon type="information-circled"></Icon>
+        <span>{{$t('m.Problem_Details')}}</span>
+      </div>
+      <div class="detail-modal__body">
+        <div class="detail-modal__col detail-modal__col--meta">
+          <h3 class="detail-modal__problem-title">{{problem._id}} · {{problem.title}}</h3>
+          <ul class="detail-meta">
+            <li><span>{{$t('m.Time_Limit')}}</span><b>{{problem.time_limit}} MS</b></li>
+            <li><span>{{$t('m.Memory_Limit')}}</span><b>{{problem.memory_limit}} MB</b></li>
+            <li v-if="problem.io_mode"><span>{{$t('m.IOMode')}}</span><b>{{problem.io_mode.io_mode}}</b></li>
+            <li v-if="problem.rule_type"><span>{{$t('m.Rule_Type')}}</span><b>{{problem.rule_type}}</b></li>
+            <li v-if="problem.difficulty"><span>{{$t('m.Level')}}</span><b>{{$t('m.' + problem.difficulty)}}</b></li>
+            <li v-if="problem.total_score"><span>{{$t('m.Score')}}</span><b>{{problem.total_score}}</b></li>
+            <li><span>{{$t('m.Created')}}</span><b>{{problem.created_by.username}}</b></li>
+            <li v-if="problem.create_time"><span>{{$t('m.Create_Time')}}</span><b>{{problem.create_time | localtime}}</b></li>
+            <li v-if="problem.last_update_time"><span>{{$t('m.Last_Update')}}</span><b>{{problem.last_update_time | localtime}}</b></li>
+          </ul>
+          <div class="detail-tags" v-if="problem.tags && problem.tags.length">
+            <span class="detail-tags__label">{{$t('m.Tags')}}</span>
+            <Tag v-for="tag in problem.tags" :key="tag">{{tag}}</Tag>
+          </div>
+          <table class="detail-verdicts" v-if="verdictRows.length">
+            <thead>
+              <tr><th>{{$t('m.Verdict')}}</th><th>{{$t('m.Count')}}</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in verdictRows" :key="row.short">
+                <td><span class="detail-verdicts__dot" :style="{backgroundColor: row.color}"></span>{{row.name}}</td>
+                <td>{{row.count}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="detail-modal__col detail-modal__col--stats">
+          <div class="stat-summary">
+            <div class="stat-summary__item">
+              <span class="stat-summary__value"><animated-number :value="statSubmissions"></animated-number></span>
+              <span class="stat-summary__label">{{$t('m.Submissions')}}</span>
+            </div>
+            <div class="stat-summary__item">
+              <span class="stat-summary__value stat-summary__value--ac"><animated-number :value="statAccepted"></animated-number></span>
+              <span class="stat-summary__label">{{$t('m.Accepted')}}</span>
+            </div>
+            <div class="stat-summary__item">
+              <span class="stat-summary__value">{{statACRate}}</span>
+              <span class="stat-summary__label">{{$t('m.AC_Rate')}}</span>
+            </div>
+          </div>
+          <div id="pieChart-detail">
+            <ECharts :options="largePie" :initOptions="largePieInitOpts"></ECharts>
+          </div>
+        </div>
       </div>
       <div slot="footer">
         <Button type="ghost" @click="graphVisible=false">{{$t('m.Close')}}</Button>
@@ -218,11 +269,12 @@
   import {mapGetters, mapActions} from 'vuex'
   import {types} from '../../../../store'
   import CodeMirror from '@oj/components/CodeMirror.vue'
+  import AnimatedNumber from '@/components/AnimatedNumber.vue'
   import storage from '@/utils/storage'
   import {FormMixin} from '@oj/components/mixins'
   import {JUDGE_STATUS, CONTEST_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
-  import {pie, largePie} from './chartData'
+  import {pie, largePie, getItemColor} from './chartData'
   import {getDefaultTemplate} from '@/utils/defaultTemplates'
 
   // 只显示这些状态的图形占用
@@ -231,7 +283,8 @@
   export default {
     name: 'Problem',
     components: {
-      CodeMirror
+      CodeMirror,
+      AnimatedNumber
     },
     mixins: [FormMixin],
     data () {
@@ -270,8 +323,8 @@
         largePie: largePie,
         // echarts 无法获取隐藏dom的大小，需手动指定
         largePieInitOpts: {
-          width: '500',
-          height: '480'
+          width: '400',
+          height: '380'
         }
       }
     },
@@ -529,6 +582,23 @@
           return '0.00%'
         }
         return (this.problem.accepted_number / total * 100).toFixed(2) + '%'
+      },
+      verdictRows () {
+        // Desglose por veredicto para la tabla del modal de detalle.
+        // statistic_info ya viene filtrado a los estados relevantes desde changePie().
+        const info = this.problem.statistic_info || {}
+        return Object.keys(info)
+          .map(code => {
+            const status = JUDGE_STATUS[code] || {}
+            const short = status.short || code
+            return {
+              short,
+              name: status.name || code,
+              count: info[code],
+              color: getItemColor({name: short})
+            }
+          })
+          .sort((a, b) => b.count - a.count)
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -564,6 +634,21 @@
     #right-column {
       flex: none;
       width: 240px;
+    }
+  }
+
+  /* En móvil el layout de 3 columnas se apila: la barra derecha pasa debajo
+     a ancho completo. */
+  @media (max-width: 768px) {
+    .flex-container {
+      flex-direction: column;
+      #problem-main {
+        margin-right: 0;
+      }
+      #right-column {
+        width: 100%;
+        margin-top: 16px;
+      }
     }
   }
 
@@ -723,9 +808,99 @@
   }
 
   #pieChart-detail {
-    margin-top: 20px;
-    width: 500px;
-    height: 480px;
+    margin: 10px auto 0;
+    width: 400px;
+    height: 380px;
+    max-width: 100%;
+  }
+
+  /* Modal de detalle del problema */
+  .detail-modal__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #7B1E3A;
+  }
+  .detail-modal__body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    overflow-x: auto;
+  }
+  .detail-modal__col {
+    min-width: 0;
+  }
+  .detail-modal__col--meta {
+    flex: 1 1 280px;
+  }
+  .detail-modal__col--stats {
+    flex: 1 1 380px;
+  }
+  .detail-modal__problem-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #7B1E3A;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .detail-meta {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      span {
+        color: #7B1E3A;
+        font-weight: 600;
+      }
+      b {
+        color: #444;
+        font-weight: 500;
+        text-align: right;
+        word-break: break-word;
+      }
+    }
+  }
+  .detail-tags {
+    margin-bottom: 14px;
+    &__label {
+      display: block;
+      color: #7B1E3A;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+  }
+  .detail-verdicts {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    th, td {
+      text-align: left;
+      padding: 6px 8px;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      color: #7B1E3A;
+      font-weight: 600;
+    }
+    td:last-child, th:last-child {
+      text-align: right;
+    }
+    &__dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
   }
 
     #info ul li p {

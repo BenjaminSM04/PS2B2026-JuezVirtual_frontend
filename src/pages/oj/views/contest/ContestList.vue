@@ -40,7 +40,7 @@
           </li>
         </ul>
       </div>
-      <p id="no-contest" v-if="contests.length == 0">{{$t('m.No_contest')}}</p>
+      <empty-state v-if="contests.length == 0" icon="ios-trophy-outline" :message="$t('m.No_contest')"></empty-state>
       <ol id="contest-list" class="list-stagger">
         <li v-for="contest in contests" :key="contest.title" class="contest-card" @click="goContest(contest)">
           <Row type="flex" justify="space-between" align="middle">
@@ -86,6 +86,7 @@
   import { mapGetters } from 'vuex'
   import utils from '@/utils/utils'
   import Pagination from '@/pages/oj/components/Pagination'
+  import EmptyState from '@/components/EmptyState.vue'
   import time from '@/utils/time'
   import { CONTEST_STATUS_REVERSE, CONTEST_TYPE } from '@/utils/constants'
 
@@ -94,7 +95,8 @@
   export default {
     name: 'contest-list',
     components: {
-      Pagination
+      Pagination,
+      EmptyState
     },
     data () {
       return {

@@ -10,7 +10,7 @@
           <i :class="card.icon"></i>
         </div>
         <div class="dashboard-stat__body">
-          <p class="dashboard-stat__value">{{card.value}}</p>
+          <p class="dashboard-stat__value"><animated-number :value="card.value || 0"></animated-number></p>
           <p class="dashboard-stat__label">{{card.label}}</p>
         </div>
       </article>
@@ -26,7 +26,7 @@
           <i :class="card.icon"></i>
         </div>
         <div class="dashboard-stat__body">
-          <p class="dashboard-stat__value">{{card.value}}</p>
+          <p class="dashboard-stat__value"><animated-number :value="card.value || 0"></animated-number></p>
           <p class="dashboard-stat__label">{{card.label}}</p>
         </div>
       </article>
@@ -231,9 +231,13 @@
   import browserDetector from 'browser-detect'
   import api from '@admin/api'
   import { CONTEST_STATUS } from '@/utils/constants'
+  import AnimatedNumber from '@/components/AnimatedNumber.vue'
 
   export default {
     name: 'dashboard',
+    components: {
+      AnimatedNumber
+    },
     data () {
       return {
         infoData: {
@@ -514,6 +518,12 @@
     grid-template-columns: 138px minmax(0, 1fr);
     align-items: stretch;
     gap: 16px;
+    transition: transform .28s cubic-bezier(0, 0, .2, 1), box-shadow .28s cubic-bezier(0, 0, .2, 1);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 46px rgba(39, 55, 53, 0.14);
+    }
 
     &__icon {
       border-radius: 18px;

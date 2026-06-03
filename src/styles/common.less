@@ -13,6 +13,15 @@ body {
   min-width: 900px;
 }
 
+/* En móvil (mismo breakpoint que el NavBar) liberamos el min-width de escritorio
+   para que el layout pueda encogerse al ancho del dispositivo en vez de forzar
+   scroll horizontal. Habilita las media queries responsive de las vistas. */
+@media (max-width: 768px) {
+  body {
+    min-width: 0;
+  }
+}
+
 .flex-container {
   display: flex;
   width: 100%;
@@ -82,7 +91,7 @@ a.emphasis{
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translate(0, 50px);
+    transform: translate(0, 16px);
   }
 
   to {
@@ -98,5 +107,26 @@ a.emphasis{
 
   to {
     opacity: 1;
+  }
+}
+
+/* Utilidad reusable: elevación sutil en hover para tarjetas/contenedores.
+   Usa los tokens de movimiento de theme-oj.less. */
+.hover-lift {
+  transition: transform @oj-dur @oj-ease-out, box-shadow @oj-dur @oj-ease-out;
+  &:hover {
+    transform: translateY(@oj-lift);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .10);
+  }
+}
+
+/* Accesibilidad: respetar la preferencia del sistema de reducir movimiento
+   en TODA la app (antes solo aplicaba a .list-stagger). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -79,8 +79,9 @@
           <Dropdown-menu slot="list">
             <Dropdown-item name="es-LA">Español (LA)</Dropdown-item>
             <Dropdown-item name="en-US">English</Dropdown-item>
-            <Dropdown-item name="zh-CN">简体中文</Dropdown-item>
-            <Dropdown-item name="zh-TW">繁體中文</Dropdown-item>
+            <!-- Chino simplificado/tradicional deshabilitados (no se usan en Univalle). Descomentar para reactivar. -->
+            <!-- <Dropdown-item name="zh-CN">简体中文</Dropdown-item> -->
+            <!-- <Dropdown-item name="zh-TW">繁體中文</Dropdown-item> -->
           </Dropdown-menu>
         </Dropdown>
 
