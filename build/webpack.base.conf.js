@@ -87,7 +87,10 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader?cacheDirectory=true',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts'), resolve('node_modules/katex')]
+        // NO incluir node_modules/katex: babel + transform-runtime inyecta
+        // imports ESM en sus UMD (dist/*.js) y webpack deja el exports vacio
+        // ({__esModule: true}) -> renderMathInElement queda undefined.
+        include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

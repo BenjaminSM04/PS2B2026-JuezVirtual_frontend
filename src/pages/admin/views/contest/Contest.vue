@@ -263,9 +263,10 @@ export default {
 
   data () {
     const validateDescription = (rule, value, callback) => {
-      const descriptionContainer = document.createElement('div')
-      descriptionContainer.innerHTML = value || ''
-      const stripped = (descriptionContainer.textContent || descriptionContainer.innerText || '')
+      // DOMParser no ejecuta scripts ni dispara onerror al parsear,
+      // a diferencia de asignar innerHTML (aun en un nodo desconectado).
+      const parsedDescription = new DOMParser().parseFromString(value || '', 'text/html')
+      const stripped = (parsedDescription.body.textContent || '')
         .replace(/\u00a0/g, '')
         .trim()
 

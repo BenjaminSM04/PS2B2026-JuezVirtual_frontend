@@ -178,6 +178,8 @@ export const m = {
   Admin_Workspace: 'Admin Workspace',
   Back_To_OJ: 'Back to user mode',
   Open_Latex_Editor: 'Open LaTeX editor',
+  Latex_Editor: 'LaTeX Editor',
+  Latex_Renderer_Unavailable: 'The LaTeX renderer is unavailable. Reload the page or check the browser console.',
   Toggle_Fullscreen: 'Toggle fullscreen',
   Admin_Profile: 'Admin Profile',
   Session_Info: 'Session',

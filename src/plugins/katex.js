@@ -30,8 +30,13 @@ function resolveRenderer () {
   try {
     const mod = require('katex/dist/contrib/auto-render.js')
     cachedRenderer = typeof mod === 'function' ? mod : (mod && mod.default)
+    if (typeof cachedRenderer !== 'function') {
+      cachedRenderer = null
+      console.error('[katex] auto-render no expone una funcion; modulo recibido:', mod)
+    }
   } catch (e) {
     cachedRenderer = null
+    console.error('[katex] no se pudo cargar auto-render:', e)
   }
   return cachedRenderer
 }
@@ -48,6 +53,7 @@ export function renderMath (el, options) {
     return true
   } catch (e) {
     // Do not break the caller if KaTeX fails on malformed input.
+    console.error('[katex] renderMath fallo:', e)
     return false
   }
 }

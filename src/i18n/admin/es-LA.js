@@ -179,6 +179,8 @@ export const m = {
   Admin_Workspace: 'Espacio de Administración',
   Back_To_OJ: 'Volver al modo usuario',
   Open_Latex_Editor: 'Abrir editor LaTeX',
+  Latex_Editor: 'Editor LaTeX',
+  Latex_Renderer_Unavailable: 'El renderizador LaTeX no está disponible. Recarga la página o revisa la consola del navegador.',
   Toggle_Fullscreen: 'Pantalla completa',
   Admin_Profile: 'Perfil de Administrador',
   Session_Info: 'Sesión',

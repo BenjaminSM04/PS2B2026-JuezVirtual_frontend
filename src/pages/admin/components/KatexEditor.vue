@@ -19,18 +19,7 @@
 
 <script>
   import 'katex/dist/katex.min.css'
-  import { getRenderer } from '@/plugins/katex'
-
-  const KATEX_OPTIONS = {
-    throwOnError: true,
-    strict: false,
-    delimiters: [
-      {left: '$$', right: '$$', display: true},
-      {left: '\\[', right: '\\]', display: true},
-      {left: '\\(', right: '\\)', display: false},
-      {left: '$', right: '$', display: false}
-    ]
-  }
+  import katex from 'katex'
 
   export default {
     name: 'KatexEditor',
@@ -62,14 +51,16 @@
           this.error = ''
           return
         }
-        el.textContent = `$$${this.input}$$`
-        const renderMathInElement = getRenderer()
-        if (typeof renderMathInElement !== 'function') {
-          this.error = ''
+        // katex.render directo (sin auto-render): los ParseError se propagan
+        // al catch y se muestran en la UI en vez de dejar el texto crudo.
+        if (!katex || typeof katex.render !== 'function') {
+          el.textContent = ''
+          this.error = this.$t('m.Latex_Renderer_Unavailable')
+          console.error('[katex] modulo katex no disponible en KatexEditor:', katex)
           return
         }
         try {
-          renderMathInElement(el, KATEX_OPTIONS)
+          katex.render(this.input, el, {displayMode: true, throwOnError: true, strict: false})
           this.error = ''
         } catch (e) {
           el.textContent = ''
