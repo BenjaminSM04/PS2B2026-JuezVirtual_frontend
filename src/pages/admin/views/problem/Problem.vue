@@ -220,7 +220,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item :label="$t('m.TestCase')" :error="error.testcase">
+            <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
               <el-upload
                 action="/api/admin/test_case"
                 name="file"

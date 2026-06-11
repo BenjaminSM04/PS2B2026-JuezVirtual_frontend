@@ -315,6 +315,15 @@ function ajax (url, method, options) {
   } else {
     params = data = {}
   }
+  const getErrorMessage = error => {
+    if (error && error.response && error.response.data) {
+      return error.response.data.data || error.response.data.detail || error.response.statusText || 'Error'
+    }
+    if (error && error.data) {
+      return error.data.data || error.data.detail || 'Error'
+    }
+    return (error && error.message) || 'Network error'
+  }
   return new Promise((resolve, reject) => {
     axios({
       url,
@@ -324,10 +333,11 @@ function ajax (url, method, options) {
     }).then(res => {
       // API正常返回(status=20x), 是否错误通过有无error判断
       if (res.data.error !== null) {
-        Vue.prototype.$error(res.data.data)
+        const message = res.data.data || 'Error'
+        Vue.prototype.$error(message)
         reject(res)
         // // 若后端返回为登录，则为session失效，应退出当前登录用户
-        if (res.data.data.startsWith('Please login')) {
+        if (typeof message === 'string' && message.startsWith('Please login')) {
           router.push({name: 'login'})
         }
       } else {
@@ -339,7 +349,7 @@ function ajax (url, method, options) {
     }, res => {
       // API请求异常，一般为Server error 或 network error
       reject(res)
-      Vue.prototype.$error(res.data.data)
+      Vue.prototype.$error(getErrorMessage(res))
     })
   })
 }
