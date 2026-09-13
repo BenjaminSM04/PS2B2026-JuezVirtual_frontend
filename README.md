@@ -1,5 +1,37 @@
 # LizardJudge Univalle
 
+## Entrega continua
+
+Repositorio actual: https://github.com/incubadoradesarrollo-source/F-LIZARD-JUDGE
+
+La imagen `ghcr.io/incubadoradesarrollo-source/f-lizard-judge` sirve producción con Nginx
+sin privilegios (UID 101, puerto 8080). No ejecuta Node.js en producción. El Compose del
+repositorio D conecta `/api/` y `/public/` al backend mediante la red privada.
+
+Los PR ejecutan ESLint, compilación y prueba de arranque. Cada push a `main` publica
+`latest` y el SHA completo solamente después de aprobar las comprobaciones.
+`workflow_dispatch` publica únicamente desde `main`. No existe una suite unitaria
+frontend en este proyecto; CI no inventa ni omite un comando de pruebas existente.
+
+```bash
+docker build --target ci -t lizard-frontend-ci:local .
+docker build --target runtime --build-arg APP_REVISION=prueba-local -t lizard-frontend:local .
+bash ci/smoke.sh
+```
+
+Se utiliza Node 22 y Yarn 1.22.22 con `--frozen-lockfile`. El código heredado mantiene
+Webpack 3 y Vue 2; su modernización queda pendiente. `PUBLIC_SENTRY_DSN` es la única
+variable pública opcional de compilación y se configura como variable de GitHub, no
+como secreto: su contenido será visible en el navegador. No requiere URL pública
+del backend porque usa el mismo origen. `/version.json` muestra el commit compilado
+y `/healthz` verifica que los archivos de la aplicación están disponibles.
+
+Para entregar a Coolify se requieren los secretos GitHub `COOLIFY_WEBHOOK` y
+`COOLIFY_TOKEN` (permiso `deploy`). La variable `COOLIFY_DEPLOY_ENABLED` permanece
+en `false` durante la preparación; activarla solo después del primer despliegue verificado.
+Una respuesta aceptada del webhook no confirma la salud del recurso.
+
+
 [![vue](https://img.shields.io/badge/vue-2.7.16-blue.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![vuex](https://img.shields.io/badge/vuex-3.6.2-blue.svg?style=flat-square)](https://vuex.vuejs.org/)
 [![element-ui](https://img.shields.io/badge/element--ui-2.15.14-blue.svg?style=flat-square)](https://github.com/ElemeFE/element)
@@ -59,8 +91,8 @@ La gestión de tareas se lleva en el [Project board del repositorio](https://git
 
 ## Requisitos previos
 
-- **Node.js**: versión recomendada **8.x – 16.x** (los scripts usan `--openssl-legacy-provider` para mantener compatibilidad con Webpack 3 en Node 17+).
-- **npm**: versión 3 o superior.
+- **Node.js**: versión **22.x** (los scripts usan `--openssl-legacy-provider` para mantener compatibilidad con Webpack 3 en Node 17+).
+- **Yarn**: versión **1.22.22**.
 - **Backend de OnlineJudge** corriendo en alguna URL accesible (variable de entorno `TARGET`).
 - **Git** y conexión a internet para descargar dependencias.
 
@@ -72,11 +104,11 @@ La gestión de tareas se lleva en el [Project board del repositorio](https://git
 
 ```powershell
 # 1. Clonar el repositorio
-git clone https://github.com/BenjaminSM04/PS2B2026-JuezVirtual_frontend.git
-cd PS2B2026-JuezVirtual_frontend
+git clone https://github.com/incubadoradesarrollo-source/F-LIZARD-JUDGE.git
+cd F-LIZARD-JUDGE
 
 # 2. Instalar dependencias
-npm install
+yarn install --frozen-lockfile
 
 # 3. Construir el bundle DLL (solo la primera vez o al actualizar dependencias listadas en build/webpack.dll.conf.js)
 $env:NODE_ENV = "development"
@@ -93,11 +125,11 @@ npm run dev
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/BenjaminSM04/PS2B2026-JuezVirtual_frontend.git
-cd PS2B2026-JuezVirtual_frontend
+git clone https://github.com/incubadoradesarrollo-source/F-LIZARD-JUDGE.git
+cd F-LIZARD-JUDGE
 
 # 2. Instalar dependencias
-npm install
+yarn install --frozen-lockfile
 
 # 3. Construir el bundle DLL (solo la primera vez o al actualizar build/webpack.dll.conf.js)
 export NODE_ENV=development

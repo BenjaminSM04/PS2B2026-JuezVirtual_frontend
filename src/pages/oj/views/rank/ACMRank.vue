@@ -102,7 +102,6 @@ export default {
           width: 80,
 
           render: (h, params) => {
-
             const rank = params.index + (this.page - 1) * this.limit + 1
 
             let medal = ''
@@ -134,7 +133,6 @@ export default {
           align: 'center',
 
           render: (h, params) => {
-
             return h('div', {
               style: {
                 display: 'flex',
@@ -165,7 +163,6 @@ export default {
 
                 on: {
                   click: () => {
-
                     this.$router.push({
                       name: 'user-home',
                       query: {
@@ -204,7 +201,6 @@ export default {
           align: 'center',
 
           render: (h, params) => {
-
             return h(
               'span',
               utils.getACRate(
@@ -333,7 +329,6 @@ export default {
   methods: {
 
     getRankData (page) {
-
       let offset = (page - 1) * this.limit
 
       let bar = this.$refs.chart
@@ -347,11 +342,9 @@ export default {
       api.getUserRank(offset, this.limit, RULE_TYPE.ACM)
 
         .then(res => {
-
           this.loadingTable = false
 
           if (page === 1) {
-
             this.changeCharts(
               res.data.data.results.slice(0, 10)
             )
@@ -365,7 +358,6 @@ export default {
         })
 
         .catch(() => {
-
           this.loadingTable = false
 
           bar.hideLoading()
@@ -373,11 +365,9 @@ export default {
     },
 
     changeCharts (rankData) {
-
       let [usernames, acData, totalData] = [[], [], []]
 
       rankData.forEach(ele => {
-
         usernames.push(ele.user.username)
 
         acData.push(ele.accepted_number)

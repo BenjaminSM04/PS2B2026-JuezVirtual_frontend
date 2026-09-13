@@ -438,10 +438,10 @@
           type: 'warning'
         }).then(() => {
           api.deleteUsers(ids.join(',')).then(res => {
-      this.$success(this.$t('m.Succeeded'))
-      this.getUserList(this.currentPage)
-    }).catch(() => {
-      this.getUserList(this.currentPage)
+            this.$success(this.$t('m.Succeeded'))
+            this.getUserList(this.currentPage)
+          }).catch(() => {
+            this.getUserList(this.currentPage)
           })
         }, () => {
         })

@@ -95,130 +95,126 @@ export default {
 
       dataRank: [],
       columns: [
-      {
-        align: 'center',
-        width: 80,
+        {
+          align: 'center',
+          width: 80,
 
-        render: (h, params) => {
+          render: (h, params) => {
+            const rank = params.index + (this.page - 1) * this.limit + 1
 
-          const rank = params.index + (this.page - 1) * this.limit + 1
+            let medal = ''
+            let color = '#664D59'
 
-          let medal = ''
-          let color = '#664D59'
-
-          if (rank === 1) {
-            medal = '🥇'
-            color = '#A60550'
-          } else if (rank === 2) {
-            medal = '🥈'
-            color = '#987284'
-          } else if (rank === 3) {
-            medal = '🥉'
-            color = '#664D59'
-          }
-
-      return h('div', {
-        style: {
-          fontWeight: 'bold',
-          fontSize: '20px',
-          color: color
-        }
-      }, medal || rank)
-    }
-  },
-
-  {
-    title: this.$i18n.t('m.User_User'),
-    align: 'center',
-
-    render: (h, params) => {
-
-      return h('div', {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px'
-        }
-      }, [
-
-        h('Avatar', {
-          props: {
-            icon: 'ios-person'
-          },
-          style: {
-            backgroundColor: '#003B4A',
-            color: '#fff'
-          }
-        }),
-
-        h('a', {
-
-          style: {
-            display: 'inline-block',
-            maxWidth: '200px',
-            fontWeight: '600',
-            color: '#003B4A'
-          },
-
-          on: {
-            click: () => {
-
-              this.$router.push({
-                name: 'user-home',
-                query: {
-                  username: params.row.user.username
-                }
-              })
+            if (rank === 1) {
+              medal = '🥇'
+              color = '#A60550'
+            } else if (rank === 2) {
+              medal = '🥈'
+              color = '#987284'
+            } else if (rank === 3) {
+              medal = '🥉'
+              color = '#664D59'
             }
+
+            return h('div', {
+              style: {
+                fontWeight: 'bold',
+                fontSize: '20px',
+                color: color
+              }
+            }, medal || rank)
           }
+        },
 
-        }, params.row.user.username)
+        {
+          title: this.$i18n.t('m.User_User'),
+          align: 'center',
 
-      ])
-    }
-  },
+          render: (h, params) => {
+            return h('div', {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px'
+              }
+            }, [
 
-  {
-    title: this.$i18n.t('m.mood'),
-    align: 'center',
-    key: 'mood'
-  },
+              h('Avatar', {
+                props: {
+                  icon: 'ios-person'
+                },
+                style: {
+                  backgroundColor: '#003B4A',
+                  color: '#fff'
+                }
+              }),
 
-  {
-    title: this.$i18n.t('m.Score'),
-    align: 'center',
-    key: 'total_score'
-  },
+              h('a', {
 
-  {
-    title: this.$i18n.t('m.AC'),
-    align: 'center',
-    key: 'accepted_number'
-  },
+                style: {
+                  display: 'inline-block',
+                  maxWidth: '200px',
+                  fontWeight: '600',
+                  color: '#003B4A'
+                },
 
-  {
-    title: this.$i18n.t('m.Total'),
-    align: 'center',
-    key: 'submission_number'
-  },
+                on: {
+                  click: () => {
+                    this.$router.push({
+                      name: 'user-home',
+                      query: {
+                        username: params.row.user.username
+                      }
+                    })
+                  }
+                }
 
-  {
-    title: this.$i18n.t('m.Rating'),
-    align: 'center',
+              }, params.row.user.username)
 
-    render: (h, params) => {
+            ])
+          }
+        },
 
-      return h(
+        {
+          title: this.$i18n.t('m.mood'),
+          align: 'center',
+          key: 'mood'
+        },
+
+        {
+          title: this.$i18n.t('m.Score'),
+          align: 'center',
+          key: 'total_score'
+        },
+
+        {
+          title: this.$i18n.t('m.AC'),
+          align: 'center',
+          key: 'accepted_number'
+        },
+
+        {
+          title: this.$i18n.t('m.Total'),
+          align: 'center',
+          key: 'submission_number'
+        },
+
+        {
+          title: this.$i18n.t('m.Rating'),
+          align: 'center',
+
+          render: (h, params) => {
+            return h(
         'span',
         utils.getACRate(
           params.row.accepted_number,
           params.row.submission_number
         )
       )
-    }
-  }
-],
+          }
+        }
+      ],
 
       options: {
 
@@ -336,14 +332,12 @@ export default {
   },
 
   mounted () {
-
     this.getRankData(1)
   },
 
   methods: {
 
     getRankData (page) {
-
       let offset = (page - 1) * this.limit
 
       let bar = this.$refs.chart
@@ -355,9 +349,7 @@ export default {
       api.getUserRank(offset, this.limit, RULE_TYPE.OI)
 
         .then(res => {
-
           if (page === 1) {
-
             this.changeCharts(
               res.data.data.results.slice(0, 10)
             )
@@ -372,11 +364,9 @@ export default {
     },
 
     changeCharts (rankData) {
-
       let [usernames, scores] = [[], []]
 
       rankData.forEach(ele => {
-
         usernames.push(ele.user.username)
 
         scores.push(ele.total_score)

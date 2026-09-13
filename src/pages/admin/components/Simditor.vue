@@ -5,7 +5,12 @@
 <script>
   import Simditor from 'tar-simditor'
 
-  // Toolbar labels for the Simditor editor, selected by the app language.
+  import 'tar-simditor/styles/simditor.css'
+  import 'tar-simditor-markdown'
+  import 'tar-simditor-markdown/styles/simditor-markdown.css'
+  import './simditor-file-upload'
+
+  // Etiquetas del editor según el idioma de la aplicación.
   Simditor.i18n['es-LA'] = {
     'title': 'Título',
     'normalText': 'Texto normal',
@@ -52,17 +57,12 @@
     'markdown': 'Markdown'
   }
 
-  import 'tar-simditor/styles/simditor.css'
-  import 'tar-simditor-markdown'
-  import 'tar-simditor-markdown/styles/simditor-markdown.css'
-  import './simditor-file-upload'
-
   export default {
     name: 'Simditor',
     props: {
       toolbar: {
         type: Array,
-        //default: () => ['title', 'bold', 'italic', 'underline', 'fontScale', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'image', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
+        // default: () => ['title', 'bold', 'italic', 'underline', 'fontScale', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'image', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
         default: () => ['title', 'bold', 'italic', 'underline', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
       },
       value: {
@@ -99,7 +99,7 @@
         },
         defaultImage: '/static/images/image.png'
       })
-      
+
       // Keep the stored value as the raw `$...$` source. Math is rendered on
       // display (via the v-katex directive) and previewed through KatexEditor;
       // rendering it inside the editable body here would bake KaTeX HTML into

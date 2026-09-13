@@ -16,7 +16,7 @@ function getEntries() {
     'oj': ['./src/pages/oj/index.js'],
     'admin': ['./src/pages/admin/index.js']
   }
-  if (process.env.USE_SENTRY === '1') {
+  if (process.env.PUBLIC_SENTRY_DSN) {
     Object.keys(base).forEach(entry => {
       base[entry].push('./src/utils/sentry.js')
     })

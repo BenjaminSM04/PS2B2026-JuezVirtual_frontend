@@ -605,7 +605,7 @@
           return
         }
         if (this.problem.io_mode && this.problem.io_mode.io_mode === 'File IO') {
-          const fileNameRegex = /^[A-Za-z0-9_.\-]+$/
+          const fileNameRegex = /^[A-Za-z0-9_.-]+$/
           if (!this.problem.io_mode.input || !fileNameRegex.test(this.problem.io_mode.input)) {
             this.$error(this.$i18n.t('m.Invalid_Input_File_Name'))
             return

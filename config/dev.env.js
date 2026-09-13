@@ -1,11 +1,8 @@
-let date = require('moment')().format('YYYYMMDD')
-let commit = require('child_process').execSync('git rev-parse HEAD').toString().slice(0, 5)
-let version = `"${date}-${commit}"`
-
-console.log(`current version is ${version}`)
-
+// El SHA lo suministra CI; el desarrollo local también funciona sin Git.
+const revision = process.env.APP_REVISION || 'desarrollo'
 module.exports = {
   NODE_ENV: '"development"',
-  VERSION: version,
-  USE_SENTRY: '0'
+  VERSION: JSON.stringify(revision),
+  PUBLIC_SENTRY_DSN: JSON.stringify(process.env.PUBLIC_SENTRY_DSN || ''),
+  USE_SENTRY: process.env.PUBLIC_SENTRY_DSN ? '1' : '0'
 }

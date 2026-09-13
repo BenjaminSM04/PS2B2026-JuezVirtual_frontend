@@ -4,6 +4,7 @@
   "description": "lizardjudge front end",
   "author": "zemal <rawidn@163.com>",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "node --openssl-legacy-provider build/dev-server.js",
     "start": "npm run dev",

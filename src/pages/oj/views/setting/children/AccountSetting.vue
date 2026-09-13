@@ -162,7 +162,6 @@ export default {
   mixins: [FormMixin],
 
   data () {
-
     const oldPasswordCheck = [
       {
         required: true,
@@ -186,9 +185,7 @@ export default {
     ]
 
     const CheckAgainPassword = (rule, value, callback) => {
-
       if (value !== this.formPassword.new_password) {
-
         callback(
           new Error('Las contraseñas no coinciden')
         )
@@ -198,7 +195,6 @@ export default {
     }
 
     const CheckNewPassword = (rule, value, callback) => {
-
       // Política de contraseña fuerte (mismo set que registro/reset)
       const SPECIAL_CHARS = `!@#$%^&*()_+\\-=\\[\\]{};':",.<>/?\\\\|\`~`
       const passwordRegex = new RegExp(
@@ -211,18 +207,14 @@ export default {
       }
 
       if (this.formPassword.old_password !== '') {
-
         if (
           this.formPassword.old_password ===
           this.formPassword.new_password
         ) {
-
           callback(
             new Error('La nueva contraseña no puede ser igual a la anterior')
           )
-
         } else {
-
           this.$refs.formPassword.validateField('again_password')
         }
       }
@@ -317,7 +309,6 @@ export default {
   },
 
   mounted () {
-
     this.formEmail.old_email =
       this.$store.getters.user.email || ''
   },
@@ -325,9 +316,7 @@ export default {
   methods: {
 
     changePassword () {
-
       this.validateForm('formPassword').then(valid => {
-
         this.loading.btnPassword = true
 
         let data =
@@ -340,7 +329,6 @@ export default {
         }
 
         api.changePassword(data).then(res => {
-
           this.loading.btnPassword = false
 
           this.visible.passwordAlert = true
@@ -350,17 +338,13 @@ export default {
           )
 
           setTimeout(() => {
-
             this.visible.passwordAlert = false
 
             this.$router.push({
               name: 'logout'
             })
-
           }, 5000)
-
         }, res => {
-
           if (res.data.data === 'tfa_required') {
             this.visible.tfaRequired = true
           }
@@ -375,9 +359,7 @@ export default {
     },
 
     changeEmail () {
-
       this.validateForm('formEmail').then(valid => {
-
         this.loading.btnEmail = true
 
         let data =
@@ -388,7 +370,6 @@ export default {
         }
 
         api.changeEmail(data).then(res => {
-
           this.loading.btnEmail = false
 
           this.visible.emailAlert = true
@@ -398,9 +379,7 @@ export default {
           )
 
           this.$refs.formEmail.resetFields()
-
         }, res => {
-
           if (res.data.data === 'tfa_required') {
             this.visible.tfaRequired = true
           }

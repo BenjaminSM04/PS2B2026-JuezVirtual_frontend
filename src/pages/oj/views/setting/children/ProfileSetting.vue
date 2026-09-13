@@ -311,7 +311,6 @@ export default {
 
     checkFileType (file) {
       if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(file.name)) {
-
         this.$Notice.warning({
           title: 'Formato no válido',
           desc: 'El archivo ' + file.name + ' no es una imagen válida.'
@@ -324,9 +323,7 @@ export default {
     },
 
     checkFileSize (file) {
-
       if (file.size > 2 * 1024 * 1024) {
-
         this.$Notice.warning({
           title: 'Archivo demasiado grande',
           desc: 'La imagen no puede superar los 2MB.'
@@ -339,7 +336,6 @@ export default {
     },
 
     handleSelectFile (file) {
-
       let isOk =
         this.checkFileType(file) &&
         this.checkFileSize(file)
@@ -364,7 +360,6 @@ export default {
     },
 
     rotate (direction) {
-
       if (direction === 'left') {
         this.$refs.cropper.rotateLeft()
       } else {
@@ -373,7 +368,6 @@ export default {
     },
 
     reselect () {
-
       this.$Modal.confirm({
         title: this.$i18n.t('m.Confirmation'),
         content: this.$i18n.t('m.Discard_Changes_Confirm'),
@@ -384,7 +378,6 @@ export default {
     },
 
     finishCrop () {
-
       this.$refs.cropper.getCropData(data => {
         this.uploadImgSrc = data
         this.uploadModalVisible = true
@@ -392,9 +385,7 @@ export default {
     },
 
     uploadAvatar () {
-
       this.$refs.cropper.getCropBlob(blob => {
-
         let form = new window.FormData()
 
         let file = new window.File(
@@ -414,7 +405,6 @@ export default {
             'content-type': 'multipart/form-data'
           }
         }).then(res => {
-
           this.loadingUploadBtn = false
 
           this.$success(this.$i18n.t('m.Avatar_Updated'))
@@ -424,9 +414,7 @@ export default {
           this.avatarOption.imgSrc = ''
 
           this.$store.dispatch('getProfile')
-
         }, () => {
-
           this.loadingUploadBtn = false
 
           this.$error(this.$i18n.t('m.Avatar_Upload_Failed'))
@@ -435,9 +423,7 @@ export default {
     },
 
     updateProfile () {
-
       this.$refs.formProfile.validate((valid) => {
-
         if (!valid) {
           this.$error(this.$i18n.t('m.Fill_Fields_Correctly'))
           return
@@ -451,7 +437,6 @@ export default {
           )
 
         api.updateProfile(updateData).then(res => {
-
           this.$success(this.$i18n.t('m.Profile_Updated'))
 
           this.$store.commit(
@@ -462,9 +447,7 @@ export default {
           )
 
           this.loadingSaveBtn = false
-
         }, _ => {
-
           this.loadingSaveBtn = false
 
           this.$error(this.$i18n.t('m.Profile_Update_Failed'))

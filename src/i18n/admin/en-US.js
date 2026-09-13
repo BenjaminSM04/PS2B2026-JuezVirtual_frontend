@@ -218,7 +218,7 @@ export const m = {
   GO: 'GO',
   username: 'username',
   password: 'password',
-  //Register.vue
+  // Register.vue
   Welcome_to: 'Welcome to',
   Username_is_required: 'Username is required',
   Email_is_required: 'Email is required',

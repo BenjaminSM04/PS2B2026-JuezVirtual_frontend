@@ -165,8 +165,8 @@
         ruleRegister: {
           username: [
             {
-              required: true, 
-              message: this.$i18n.t('m.Username_is_required'), 
+              required: true,
+              message: this.$i18n.t('m.Username_is_required'),
               trigger: ['blur', 'change']
             },
             {validator: CheckUsernameFormat, trigger: ['blur', 'change']},
@@ -218,7 +218,7 @@
     },
     computed: {
       ...mapGetters(['website', 'modalStatus']),
-        passwordStrength () {
+      passwordStrength () {
         const pwd = this.formRegister.password
 
         let score = 0

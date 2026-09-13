@@ -220,7 +220,7 @@ export const m = {
   username: 'Usuario',
   password: 'Contraseña',
 
-  //Register.vue
+  // Register.vue
   Welcome_to: 'Bienvenido a',
   Username_is_required: 'El nombre de usuario es obligatorio',
   Email_is_required: 'El correo es obligatorio',
@@ -265,7 +265,7 @@ export const m = {
   Import_Success: 'Se importaron {count} problemas correctamente',
   Keywords: 'Palabras clave',
   Invalid_File_Type: 'Tipo de archivo inválido. Permitidos: {types}',
-  //crear problema
+  // crear problema
   Add_Problem: 'Agregar Problema',
   // Textos comunes
   Home_Page: 'Inicio',
