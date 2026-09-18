@@ -7,12 +7,9 @@
         </Input>
       </FormItem>
       <FormItem prop="password">
-        <Input :type="showPassword ? 'text' : 'password'" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
+        <PasswordInput v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        <span slot="append" class="password-eye-wrap" @click="showPassword = !showPassword">
-          <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
-        </span>
-        </Input>
+        </PasswordInput>
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
         <Input v-model="formLogin.tfa_code" :placeholder="$t('m.TFA_Code')">
@@ -40,15 +37,16 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import api from '@oj/api'
+  import PasswordInput from '@/components/PasswordInput.vue'
   import { FormMixin } from '@oj/components/mixins'
 
   export default {
+    components: {PasswordInput},
     mixins: [FormMixin],
     data () {
       return {
         tfaRequired: false,
         btnLoginLoading: false,
-        showPassword: false,
         formLogin: {
           username: '',
           password: '',
@@ -59,7 +57,7 @@
             {required: true, trigger: 'blur'}
           ],
           password: [
-            {required: true, trigger: 'change', min: 6, max: 20}
+            {required: true, message: this.$t('m.Password_is_required'), trigger: 'change'}
           ]
         }
       }
@@ -210,13 +208,15 @@
       padding: 0 !important;
       cursor: pointer;
 
-      .password-eye-wrap {
+      .password-toggle {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100%;
         min-width: 46px;
+        min-height: 42px;
+        color: #ffffff;
         padding: 0 14px;
         cursor: pointer;
         transition: background-color 0.2s;
@@ -226,10 +226,6 @@
         }
       }
 
-      .password-eye {
-        font-size: 18px;
-        color: #ffffff !important;
-      }
     }
   }
 

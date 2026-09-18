@@ -56,7 +56,7 @@
 
   .container {
     width: 90%;
-    min-width: 800px;
+    min-width: 0;
     margin: auto;
   }
 
@@ -114,6 +114,7 @@
 
     .panel {
       flex: auto;
+      min-width: 0;
       &::before {
         content: '';
         display: block;
@@ -133,6 +134,15 @@
     /*取消默认的伪元素*/
     width: 0;
   }
+
+  @media (max-width: 768px) {
+    .container { width: 100%; }
+    .flex-container { flex-direction: column; }
+    .flex-container .menu { flex: none; max-width: none; width: 100%; }
+    .menu /deep/ .ivu-menu { display: flex; justify-content: center; flex-wrap: wrap; }
+    .flex-container .menu .avatar-editor { display: none; }
+    .flex-container .panel::before { display: none; }
+  }
 </style>
 
 <style lang="less">
@@ -145,6 +155,14 @@
     }
     .mini-container {
       width: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .setting-main {
+      margin: 10px;
+      .setting-content { margin-left: 0; }
+      .mini-container { width: 100%; }
     }
   }
 </style>

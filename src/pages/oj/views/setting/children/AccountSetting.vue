@@ -18,10 +18,9 @@
             label="Contraseña actual"
             prop="old_password"
           >
-            <Input
+            <PasswordInput
               class="custom-input"
               v-model="formPassword.old_password"
-              type="password"
             />
           </FormItem>
 
@@ -29,10 +28,10 @@
             label="Nueva contraseña"
             prop="new_password"
           >
-            <Input
+            <PasswordInput
               class="custom-input"
               v-model="formPassword.new_password"
-              type="password"
+              autocomplete="new-password"
             />
           </FormItem>
 
@@ -40,10 +39,10 @@
             label="Confirmar contraseña"
             prop="again_password"
           >
-            <Input
+            <PasswordInput
               class="custom-input"
               v-model="formPassword.again_password"
-              type="password"
+              autocomplete="new-password"
             />
           </FormItem>
 
@@ -98,10 +97,9 @@
             label="Contraseña actual"
             prop="password"
           >
-            <Input
+            <PasswordInput
               class="custom-input"
               v-model="formEmail.password"
-              type="password"
             />
           </FormItem>
 
@@ -155,10 +153,11 @@
 
 <script>
 import api from '@oj/api'
+import PasswordInput from '@/components/PasswordInput.vue'
 import { FormMixin } from '@oj/components/mixins'
 
 export default {
-
+  components: {PasswordInput},
   mixins: [FormMixin],
 
   data () {
@@ -166,12 +165,6 @@ export default {
       {
         required: true,
         message: 'La contraseña es obligatoria',
-        trigger: 'blur'
-      },
-      {
-        min: 6,
-        max: 20,
-        message: 'La contraseña debe tener entre 6 y 20 caracteres',
         trigger: 'blur'
       }
     ]
@@ -186,7 +179,7 @@ export default {
 
     const CheckAgainPassword = (rule, value, callback) => {
       if (value !== this.formPassword.new_password) {
-        callback(
+        return callback(
           new Error('Las contraseñas no coinciden')
         )
       }
@@ -211,7 +204,7 @@ export default {
           this.formPassword.old_password ===
           this.formPassword.new_password
         ) {
-          callback(
+          return callback(
             new Error('La nueva contraseña no puede ser igual a la anterior')
           )
         } else {
@@ -257,12 +250,6 @@ export default {
           {
             required: true,
             message: 'Ingrese una nueva contraseña',
-            trigger: 'blur'
-          },
-          {
-            min: 8,
-            max: 20,
-            message: 'La contraseña debe tener entre 8 y 20 caracteres',
             trigger: 'blur'
           },
           {
@@ -330,6 +317,7 @@ export default {
 
         api.changePassword(data).then(res => {
           this.loading.btnPassword = false
+          this.$refs.formPassword.resetFields()
 
           this.visible.passwordAlert = true
 
@@ -469,5 +457,11 @@ export default {
 .ivu-form-item-error-tip {
   color: #A60550;
   font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .setting-main { padding: 12px; }
+  .profile-card { min-width: 0; flex-basis: 100%; padding: 16px; }
+  .separator { display: none; }
 }
 </style>

@@ -18,6 +18,10 @@ export default {
         })
       })
     },
+    refreshCaptcha (formName) {
+      this[formName].captcha = ''
+      this.getCaptchaSrc()
+    },
     getCaptchaSrc () {
       api.getCaptcha().then(res => {
         this.captchaSrc = res.data.data

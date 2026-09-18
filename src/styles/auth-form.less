@@ -68,6 +68,21 @@
   /deep/ .ivu-input::placeholder {
     color: fade(@oj-secondary, 50%);
   }
+
+  /deep/ .ivu-input-group-with-append .ivu-input {
+    border-radius: 0;
+  }
+
+  /deep/ .ivu-input-group-append {
+    padding: 0;
+    border: 2px solid @oj-guindo;
+    border-left: 0;
+    border-radius: 0 12px 12px 0;
+    background: @oj-guindo;
+    color: #fff;
+  }
+
+  /deep/ .password-toggle { min-width: 42px; min-height: 42px; }
 }
 
 .auth-submit-btn {
@@ -122,7 +137,7 @@
     display: flex;
     align-items: center;
 
-    img {
+    /deep/ img {
       height: 46px;
       border-radius: 10px;
       border: 2px solid @oj-secondary;

@@ -17,9 +17,7 @@
                 </Input>
               </div>
               <div class="auth-captcha__img">
-                <Tooltip content="Click to refresh" placement="top">
-                  <img :src="captchaSrc" @click="getCaptchaSrc"/>
-                </Tooltip>
+                <CaptchaButton :src="captchaSrc" @refresh="refreshCaptcha('formResetPassword')"/>
               </div>
             </div>
           </Form-item>
@@ -47,9 +45,11 @@
 <script>
   import { mapActions } from 'vuex'
   import api from '@oj/api'
+  import CaptchaButton from '@/components/CaptchaButton.vue'
   import {FormMixin} from '@oj/components/mixins'
 
   export default {
+    components: {CaptchaButton},
     mixins: [FormMixin],
     data () {
       const CheckEmailExist = (rule, value, callback) => {

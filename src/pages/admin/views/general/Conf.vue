@@ -38,7 +38,7 @@
     </Panel>
 
     <Panel :title="$t('m.SMTP_Config')">
-      <el-form label-position="left" label-width="70px" :model="smtp" :rules="smtpRules" ref="smtpForm">
+      <el-form label-position="top" :model="smtp" :rules="smtpRules" ref="smtpForm">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Server')" prop="server" required>
@@ -56,8 +56,10 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" required>
-              <el-input v-model="smtp.password" type="password" :placeholder="$t('m.SMTP_Password_Placeholder')"></el-input>
+            <el-form-item :label="$t('m.Password')" prop="password" :required="init">
+              <PasswordInput admin v-model="smtp.password" autocomplete="new-password"
+                             :placeholder="$t('m.SMTP_Password_Placeholder')"/>
+              <p v-if="smtpReady && !init" class="smtp-password-hint">{{$t('m.SMTP_Password_Keep')}}</p>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -71,7 +73,8 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-button type="primary" icon="el-icon-fa-save" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
+      <el-button type="primary" icon="el-icon-fa-save" :disabled="!smtpReady"
+                 :loading="savingSMTP" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
       <el-button type="warning" icon="el-icon-fa-envelope" @click="testSMTPConfig"
                  v-if="saved" :loading="loadingBtnTest">{{$t('m.Send_Test_Email')}}</el-button>
     </Panel>
@@ -131,8 +134,10 @@
 
 <script>
   import api from '../../api.js'
+  import PasswordInput from '@/components/PasswordInput.vue'
 
   export default {
+    components: {PasswordInput},
     name: 'Conf',
     data () {
       const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
@@ -166,6 +171,8 @@
       }
       return {
         init: false,
+        smtpReady: false,
+        savingSMTP: false,
         saved: false,
         loadingBtnTest: false,
         healthLoading: false,
@@ -196,7 +203,15 @@
             {required: true, validator: validateEmail, trigger: 'blur'}
           ],
           password: [
-            {required: true, message: this.$i18n.t('m.Password_Required'), trigger: 'blur'}
+            {
+              validator: (rule, value, callback) => {
+                if (this.init && !value) {
+                  return callback(new Error(this.$t('m.Password_Required')))
+                }
+                callback()
+              },
+              trigger: 'blur'
+            }
           ]
         },
         websiteRules: {
@@ -217,12 +232,14 @@
     mounted () {
       api.getSMTPConfig().then(res => {
         if (res.data.data) {
-          this.smtp = res.data.data
+          this.smtp = Object.assign({}, res.data.data, {password: ''})
+          this.saved = true
         } else {
           this.init = true
           this.$warning(this.$i18n.t('m.Configure_SMTP_First'))
         }
-      })
+        this.smtpReady = true
+      }).catch(() => {})
       api.getWebsiteConfig().then(res => {
         this.websiteConfig = res.data.data
       }).catch(() => {
@@ -231,22 +248,28 @@
     },
     methods: {
       saveSMTPConfig () {
+        if (!this.smtpReady || this.savingSMTP) return
         this.$refs.smtpForm.validate((valid) => {
           if (!valid) {
             this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
-          if (!this.init) {
-            api.editSMTPConfig(this.smtp).then(() => {
-              this.saved = true
-            }, () => {
-            })
-          } else {
-            api.createSMTPConfig(this.smtp).then(() => {
-              this.saved = true
-            }, () => {
-            })
+          const data = Object.assign({}, this.smtp)
+          // Omitir la clave vacía permite al backend conservar el secreto guardado.
+          if (!this.init && !data.password) {
+            delete data.password
           }
+          this.savingSMTP = true
+          const request = this.init ? api.createSMTPConfig(data) : api.editSMTPConfig(data)
+          request.then(() => {
+            this.saved = true
+            this.init = false
+            this.smtp.password = ''
+            this.savingSMTP = false
+            this.$nextTick(() => this.$refs.smtpForm.clearValidate())
+          }, () => {
+            this.savingSMTP = false
+          })
         })
       },
       testSMTPConfig () {

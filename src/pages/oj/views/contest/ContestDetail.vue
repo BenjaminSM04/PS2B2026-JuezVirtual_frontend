@@ -65,7 +65,7 @@
               </div>
               <div v-katex v-html="contest.description" class="markdown-body"></div>
               <div v-if="passwordFormVisible" class="contest-password">
-                <Input v-model="contestPassword" type="password"
+                <PasswordInput v-model="contestPassword"
                        :placeholder="$t('m.Contest_Password_Placeholder')" class="contest-password-input"
                        @on-enter="checkPassword"/>
                 <Button type="info" @click="checkPassword">{{ $t('m.Enter') }}</Button>
@@ -188,6 +188,7 @@
 <script>
   import moment from 'moment'
   import api from '@oj/api'
+  import PasswordInput from '@/components/PasswordInput.vue'
   import { mapState, mapGetters, mapActions } from 'vuex'
   import { types } from '@/store'
   import { CONTEST_STATUS_REVERSE, CONTEST_STATUS } from '@/utils/constants'
@@ -195,7 +196,7 @@
 
   export default {
     name: 'ContestDetail',
-    components: {},
+    components: {PasswordInput},
     data () {
       return {
         CONTEST_STATUS: CONTEST_STATUS,
@@ -282,7 +283,7 @@
       },
       checkPassword () {
         if (this.contestPassword === '') {
-          this.$error('Password can\'t be empty')
+          this.$error(this.$t('m.Password_is_required'))
           return
         }
         this.btnLoading = true

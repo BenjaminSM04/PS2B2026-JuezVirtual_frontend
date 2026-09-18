@@ -98,7 +98,9 @@
           </el-table-column>
           <el-table-column :label="$t('m.User_New_Password')">
             <template slot-scope="{row}">
-              {{row[1]}}
+              <PasswordInput admin :key="uploadUsersCurrentPage + '-' + row[0]"
+                             :value="row[1]" readonly autocomplete="off"
+                             :label="$t('m.User_New_Password') + ': ' + row[0]"/>
             </template>
           </el-table-column>
           <el-table-column :label="$t('m.User_Email')">
@@ -218,7 +220,7 @@
           </el-col>
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.User_New_Password')" prop="password">
-              <el-input v-model="user.password"></el-input>
+              <PasswordInput v-if="showUserDialog" admin v-model="user.password" autocomplete="new-password"/>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
@@ -282,9 +284,11 @@
   import papa from 'papaparse'
   import api from '../../api.js'
   import utils from '@/utils/utils'
+  import PasswordInput from '@/components/PasswordInput.vue'
 
   export default {
     name: 'User',
+    components: {PasswordInput},
     data () {
       const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
       const validateEmail = (rule, value, callback) => {
@@ -499,6 +503,8 @@
       },
       handleResetData () {
         this.uploadUsers = []
+        this.uploadUsersPage = []
+        this.uploadUsersCurrentPage = 1
       }
     },
     computed: {

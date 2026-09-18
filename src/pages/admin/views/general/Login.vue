@@ -10,7 +10,7 @@
       <el-input type="text" v-model="ruleForm2.account" auto-complete="off" :placeholder="$t('m.username')" @keyup.enter.native="handleLogin"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password" v-model="ruleForm2.password" auto-complete="off" :placeholder="$t('m.password')" @keyup.enter.native="handleLogin"></el-input>
+      <PasswordInput admin v-model="ruleForm2.password" :placeholder="$t('m.password')" @keyup.enter.native="handleLogin"/>
     </el-form-item>
     <el-form-item style="width:100%;">
       <el-button type="primary" style="width:100%;" @click.native.prevent="handleLogin" :loading="logining">{{$t('m.GO')}}
@@ -21,8 +21,10 @@
 
 <script>
   import api from '../../api'
+  import PasswordInput from '@/components/PasswordInput.vue'
 
   export default {
+    components: {PasswordInput},
     data () {
       return {
         logining: false,
@@ -55,7 +57,7 @@
               this.logining = false
             })
           } else {
-            this.$error('Please check the error fields')
+            this.$error(this.$t('m.Fix_Form_Errors'))
           }
         })
       }
@@ -72,6 +74,8 @@
     background-clip: padding-box;
     margin: 180px auto;
     width: 350px;
+    max-width: calc(100% - 24px);
+    box-sizing: border-box;
     padding: 35px 35px 15px 35px;
     background: #fff;
     border: 1px solid #eaeaea;
@@ -108,5 +112,9 @@
         text-align: center;
       }
     }
+  }
+
+  @media (max-width: 600px) {
+    .login-container { margin: 32px auto; padding: 24px 20px; }
   }
 </style>
