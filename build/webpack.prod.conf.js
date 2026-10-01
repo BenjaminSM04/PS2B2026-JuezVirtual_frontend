@@ -48,6 +48,8 @@ const webpackConfig = merge(baseWebpackConfig, {
       exclude: /\.min\.js$/,
       cache: true,
       parallel: true,
+      // Evita el fallo interno de UglifyES al colapsar variables del paquete vendor.
+      uglifyOptions: {compress: {collapse_vars: false}},
       sourceMap: true
     }),
 
