@@ -49,6 +49,9 @@
         </div>
       </Panel>
       <!--problem main end-->
+      <TrainingSession v-if="!$route.params.contestID && $route.name === 'problem-details' && problem.id"
+                       ref="trainingSession" :key="problem.id" :problem-id="problem.id"
+                       :user-id="user.id || null"></TrainingSession>
       <Card :padding="20" id="submit-code" dis-hover>
         <CodeMirror :value.sync="code"
                     :languages="problem.languages"
@@ -274,6 +277,7 @@
   import {FormMixin} from '@oj/components/mixins'
   import {JUDGE_STATUS, CONTEST_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
+  import TrainingSession from '@oj/components/TrainingSession.vue'
   import {pie, largePie, getItemColor} from './chartData'
   import {getDefaultTemplate} from '@/utils/defaultTemplates'
 
@@ -283,6 +287,7 @@
   export default {
     name: 'Problem',
     components: {
+      TrainingSession,
       CodeMirror,
       AnimatedNumber
     },
@@ -302,6 +307,7 @@
         language: 'C++',
         theme: 'solarized',
         submissionId: '',
+        problemContext: 0,
         submitted: false,
         result: {
           result: 9
@@ -350,12 +356,16 @@
         this.$Loading.start()
         this.contestID = this.$route.params.contestID
         this.problemID = this.$route.params.problemID
+        const routePath = this.$route.fullPath
+        const context = this.problemContext
         let func = this.$route.name === 'problem-details' ? 'getProblem' : 'getContestProblem'
         api[func](this.problemID, this.contestID).then(res => {
+          if (this.$route.fullPath !== routePath || context !== this.problemContext) return
           this.$Loading.finish()
           let problem = res.data.data
           this.changeDomTitle({title: problem.title})
           api.submissionExists(problem.id).then(res => {
+            if (this.$route.fullPath !== routePath || context !== this.problemContext) return
             this.submissionExists = res.data.data
           })
           problem.languages = problem.languages.sort()
@@ -461,7 +471,12 @@
         const checkStatus = () => {
           let id = this.submissionId
           api.getSubmission(id).then(res => {
+            // Ignorar veredictos tardíos de otro problema o de una entrega anterior.
+            if (id !== this.submissionId) return
             this.result = res.data.data
+            if (!this.contestID && this.$refs.trainingSession) {
+              this.$refs.trainingSession.registerSubmission(id, this.result.result)
+            }
             if (Object.keys(res.data.data.statistic_info).length !== 0) {
               this.submitting = false
               this.submitted = false
@@ -471,6 +486,7 @@
               this.refreshStatus = setTimeout(checkStatus, 2000)
             }
           }, res => {
+            if (id !== this.submissionId) return
             this.submitting = false
             clearTimeout(this.refreshStatus)
           })
@@ -482,6 +498,8 @@
           this.$error(this.$i18n.t('m.Code_can_not_be_empty'))
           return
         }
+        const routePath = this.$route.fullPath
+        const context = this.problemContext
         this.submissionId = ''
         this.result = {result: 9}
         this.submitting = true
@@ -495,8 +513,10 @@
           data.captcha = this.captchaCode
         }
         const submitFunc = (data, detailsVisible) => {
+          if (this.$route.fullPath !== routePath || context !== this.problemContext) return
           this.statusVisible = true
           api.submitCode(data).then(res => {
+            if (this.$route.fullPath !== routePath || context !== this.problemContext) return
             this.submissionId = res.data.data && res.data.data.submission_id
             // 定时检查状态
             this.submitting = false
@@ -511,6 +531,7 @@
             this.submitted = true
             this.checkSubmissionStatus()
           }, res => {
+            if (this.$route.fullPath !== routePath || context !== this.problemContext) return
             this.getCaptchaSrc()
             if (res.data.data.startsWith('Captcha is required')) {
               this.captchaRequired = true
@@ -550,7 +571,7 @@
       }
     },
     computed: {
-      ...mapGetters(['problemSubmitDisabled', 'contestRuleType', 'OIContestRealTimePermission', 'contestStatus']),
+      ...mapGetters(['user', 'problemSubmitDisabled', 'contestRuleType', 'OIContestRealTimePermission', 'contestStatus']),
       contest () {
         return this.$store.state.contest.contest
       },
@@ -602,6 +623,7 @@
       }
     },
     beforeRouteLeave (to, from, next) {
+      this.problemContext++
       // 防止切换组件后仍然不断请求
       clearInterval(this.refreshStatus)
 
@@ -615,6 +637,15 @@
     },
     watch: {
       '$route' () {
+        this.problemContext++
+        clearTimeout(this.refreshStatus)
+        this.submissionId = ''
+        this.submitted = false
+        this.submitting = false
+        this.statusVisible = false
+        this.submissionExists = false
+        this.result = {result: 9}
+        this.problem = {...this.problem, id: null}
         this.init()
       }
     }

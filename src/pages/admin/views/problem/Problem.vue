@@ -2,6 +2,8 @@
   <div class="problem">
 
     <Panel :title="title">
+      <TrainingConfig v-if="routeName === 'edit-problem' && mode === 'edit' && problem.id"
+                      :key="problem.id" :problem-id="problem.id"></TrainingConfig>
       <el-form ref="form" :model="problem" :rules="rules" label-position="top" label-width="70px">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -295,10 +297,12 @@
   import Accordion from '../../components/Accordion'
   import CodeMirror from '../../components/CodeMirror'
   import api from '../../api'
+  import TrainingConfig from '../../components/TrainingConfig.vue'
 
   export default {
     name: 'Problem',
     components: {
+      TrainingConfig,
       Simditor,
       Accordion,
       CodeMirror

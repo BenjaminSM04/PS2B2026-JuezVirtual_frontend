@@ -1,4 +1,16 @@
 export const m = {
+  Tutor_training: 'Training',
+  Tutor_scope: 'Start a session before submitting to record your practice attempts.',
+  Tutor_login: 'Sign in to start training.',
+  Tutor_attempt_count: 'Recorded attempts',
+  Tutor_level: 'Help level',
+  Tutor_start: 'Start training',
+  Tutor_history: 'Training history',
+  Tutor_unavailable: 'Training is unavailable for your account.',
+  Tutor_refresh: 'Recover and refresh',
+  Tutor_enable: 'Enable training',
+  Tutor_config_scope: 'Saved independently. Available only for regular problems and enabled accounts.',
+  Tutor_saved: 'Training configuration saved.',
   // 404.vue
   Go_Home: 'Go Home',
   Page_Not_Found_Title: 'Page not found',

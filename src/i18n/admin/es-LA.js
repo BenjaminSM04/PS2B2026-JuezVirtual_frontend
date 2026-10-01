@@ -1,4 +1,16 @@
 export const m = {
+  Tutor_training: 'Entrenamiento',
+  Tutor_scope: 'Inicia una sesión antes de enviar para registrar tus intentos de práctica.',
+  Tutor_login: 'Inicia sesión para comenzar el entrenamiento.',
+  Tutor_attempt_count: 'Intentos registrados',
+  Tutor_level: 'Nivel de ayuda',
+  Tutor_start: 'Iniciar entrenamiento',
+  Tutor_history: 'Historial de entrenamiento',
+  Tutor_unavailable: 'El entrenamiento no está disponible para tu cuenta.',
+  Tutor_refresh: 'Recuperar y actualizar',
+  Tutor_enable: 'Habilitar entrenamiento',
+  Tutor_config_scope: 'Se guarda de forma independiente. Solo funciona en problemas normales y para cuentas habilitadas.',
+  Tutor_saved: 'Configuración de entrenamiento guardada.',
   // SideMenu.vue
   Dashboard: 'Panel Administrativo',
   General: 'General',

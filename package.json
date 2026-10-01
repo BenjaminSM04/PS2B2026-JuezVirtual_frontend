@@ -9,7 +9,8 @@
     "start": "npm run dev",
     "build": "node --openssl-legacy-provider build/build.js",
     "build:dll": "node --openssl-legacy-provider ./node_modules/webpack/bin/webpack.js --config=build/webpack.dll.conf.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "test:tutor": "node tests/tutor-components.js && node tests/problem-context.js"
   },
   "dependencies": {
     "autoprefixer": "^7.2.6",
