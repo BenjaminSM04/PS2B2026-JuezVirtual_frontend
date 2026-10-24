@@ -24,6 +24,14 @@ export default {
   readSession: problemId => request('ai_tutor/session', 'get', {params: {problem_id: problemId}}),
   recoverSession: problemId => request('ai_tutor/session', 'post', {data: {problem_id: problemId}}),
   registerAttempt: (sessionId, submissionId) => request('ai_tutor/attempt', 'post', {data: {session_id: sessionId, submission_id: submissionId}}),
+  feedback: data => request('ai_tutor/feedback', 'post', {data}),
+  rate: (feedbackId, value) => request('ai_tutor/rating', 'post', {data: {feedback_id: feedbackId, value}}),
+  mascot: () => request('mascot', 'get'),
+  updateMascot: data => request('mascot', 'patch', {data}),
+  overview: () => request('practice/overview', 'get'),
+  versions: problemId => request('admin/ai_tutor/config/versions', 'get', {params: {problem_id: problemId}}),
+  createVersion: data => request('admin/ai_tutor/config/versions', 'post', {data}),
+  activateVersion: (problemId, versionId) => request('admin/ai_tutor/config/activate', 'post', {data: {problem_id: problemId, version_id: versionId}}),
   getConfig: problemId => request('admin/ai_tutor/config', 'get', {params: {problem_id: problemId}}),
   saveConfig: (problemId, enabled) => request('admin/ai_tutor/config', 'put', {data: {problem_id: problemId, enabled}})
 }

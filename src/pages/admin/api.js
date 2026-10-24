@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import router from './router'
 import axios from 'axios'
+import {installCsrf} from '@/utils/csrf'
+installCsrf()
 import utils from '@/utils/utils'
 
 Vue.prototype.$http = axios

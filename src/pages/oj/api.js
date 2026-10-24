@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
+import {installCsrf} from '@/utils/csrf'
+installCsrf()
 
 Vue.prototype.$http = axios
 axios.defaults.baseURL = '/api'

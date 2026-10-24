@@ -2,6 +2,7 @@
 
 import Simditor from 'tar-simditor'
 import * as $ from 'jquery'
+import {csrfHeaders} from '@/utils/csrf'
 
 var UploadFile,
   __hasProp = {}.hasOwnProperty,
@@ -62,6 +63,7 @@ UploadFile = (function (_super) {
       $.ajax({
         url: '/api/admin/upload_file',
         type: 'POST',
+        headers: csrfHeaders(),
         cache: false,
         data: formData,
         processData: false,
@@ -70,7 +72,7 @@ UploadFile = (function (_super) {
         if (!res.success) {
           alert("upload file failed")
         } else {
-          let link = '<a target="_blank" className="simditor-attach-link" href="' + res.file_path + '">' + res.file_name + '</a>'
+          const link = $('<a>').attr({target: '_blank', rel: 'noopener noreferrer', href: res.file_path}).text(res.file_name)[0].outerHTML
           _this.editor.setValue(_this.editor.getValue() + link)
         }
       }).fail(function (res) {

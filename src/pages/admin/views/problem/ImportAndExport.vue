@@ -39,7 +39,7 @@
     </panel>
 
     <panel :title="$t('m.Import_QDUOJ_Problems_Beta')">
-      <el-upload
+      <el-upload :headers="uploadCsrfHeaders()"
         ref="QDU"
         class="upv-upload"
         drag
@@ -67,7 +67,7 @@
     </panel>
 
     <panel :title="$t('m.Import_FPS_Problems_Beta')">
-      <el-upload
+      <el-upload :headers="uploadCsrfHeaders()"
         ref="FPS"
         class="upv-upload"
         drag
@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
   import api from '@admin/api'
   import utils from '@/utils/utils'
 
@@ -123,6 +124,7 @@
       this.getProblems()
     },
     methods: {
+      uploadCsrfHeaders,
       handleSelectionChange (val) {
         this.selected_problems = val
       },

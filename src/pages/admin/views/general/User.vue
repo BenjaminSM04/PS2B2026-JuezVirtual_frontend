@@ -82,7 +82,7 @@
           <i slot="reference" class="el-icon-fa-question-circle import-user-icon"></i>
         </el-popover>
       </span>
-      <el-upload v-if="!uploadUsers.length"
+      <el-upload :headers="uploadCsrfHeaders()" v-if="!uploadUsers.length"
                  action=""
                  :show-file-list="false"
                  accept=".csv"
@@ -279,6 +279,7 @@
 </template>
 
 <script>
+import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
   import papa from 'papaparse'
   import api from '../../api.js'
   import utils from '@/utils/utils'
@@ -390,6 +391,7 @@
       window.removeEventListener('resize', this.handleResize)
     },
     methods: {
+      uploadCsrfHeaders,
       handleResize () {
         this.windowWidth = window.innerWidth
       },
