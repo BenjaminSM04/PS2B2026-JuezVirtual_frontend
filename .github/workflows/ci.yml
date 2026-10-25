@@ -1,0 +1,32 @@
+name: Verifica frontend Vue 2
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider
+      SOURCE_COMMIT: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn test:tutor
+      - run: node build/audit-dependencies.js
+      - run: yarn build:dll && yarn build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-verificado
+          path: |
+            audit-result.json
+            dist/

@@ -4,6 +4,7 @@
 
 <script>
   import Simditor from 'tar-simditor'
+  import {ensureCsrf, csrfHeaders} from '@/utils/csrf'
 
   // Toolbar labels for the Simditor editor, selected by the app language.
   Simditor.i18n['es-LA'] = {
@@ -76,7 +77,8 @@
         currentValue: this.value
       }
     },
-    mounted () {
+    async mounted () {
+      await ensureCsrf()
       const editorLocale = Simditor.i18n[this.$i18n.locale] ? this.$i18n.locale : 'en-US'
 
       this.editor = new Simditor({
@@ -89,7 +91,7 @@
         fontScale: [1, 1.25, 1.5, 2], // Usamos números en lugar de strings
         upload: {
           url: '/api/admin/upload_image/',
-          params: null,
+          params: {csrfmiddlewaretoken: csrfHeaders()['X-CSRFToken']},
           fileKey: 'image',
           connectionCount: 3,
           leaveConfirm: this.$i18n.t('m.Uploading_is_in_progress')

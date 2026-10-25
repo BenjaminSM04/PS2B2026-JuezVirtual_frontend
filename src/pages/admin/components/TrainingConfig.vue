@@ -8,14 +8,17 @@
     <p v-if="message" role="status">{{ message }}</p>
     <p v-if="error" role="alert">{{ error }}</p>
     <button v-if="error" type="button" :disabled="loading" @click="load">{{ $t('m.Tutor_refresh') }}</button>
+    <PedagogyConfig :key="problemId" :problem-id="problemId"></PedagogyConfig>
   </section>
 </template>
 
 <script>
 import api from '@/utils/tutorApi'
+import PedagogyConfig from './PedagogyConfig.vue'
 
 export default {
   name: 'TrainingConfig',
+  components: {PedagogyConfig},
   props: {problemId: {type: Number, required: true}},
   data () {
     return {enabled: false, saved: false, ready: false, loading: false, error: '', message: '', epoch: 0}

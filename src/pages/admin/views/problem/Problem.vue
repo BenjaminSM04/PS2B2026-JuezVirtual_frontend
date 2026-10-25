@@ -223,7 +223,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
-              <el-upload
+              <el-upload :headers="uploadCsrfHeaders()"
                 action="/api/admin/test_case"
                 name="file"
                 :data="{spj: problem.spj}"
@@ -293,6 +293,7 @@
 </template>
 
 <script>
+import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
   import Simditor from '../../components/Simditor'
   import Accordion from '../../components/Accordion'
   import CodeMirror from '../../components/CodeMirror'
@@ -459,6 +460,7 @@
       }
     },
     methods: {
+      uploadCsrfHeaders,
       generateSlug (title) {
         if (!title) return ''
         return title

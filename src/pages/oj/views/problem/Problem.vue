@@ -200,9 +200,10 @@
             <span class="stat-summary__label">{{$t('m.AC_Rate')}}</span>
           </div>
         </div>
-        <div class="echarts">
+        <div v-if="statSubmissions > 0" class="echarts">
           <ECharts :options="pie"></ECharts>
         </div>
+        <p v-else class="empty-statistics">{{ $t('m.Practice_no_submissions') }}</p>
       </Card>
     </div>
 
@@ -425,6 +426,7 @@
         // dona principal: desglose por resultado
         this.pie.legend.data = legend
         this.pie.series[0].data = breakdown
+        this.pie.series[0].stillShowZeroSum = false
 
         // modal de detalle (largePie): mismo desglose + resumen interno AC seleccionado
         this.largePie.legend.data = legend
@@ -432,6 +434,7 @@
         let data2 = JSON.parse(JSON.stringify(acWa))
         data2[1].selected = true
         this.largePie.series[1].data = data2
+        this.largePie.series.forEach(series => { series.stillShowZeroSum = false })
       },
       handleRoute (route) {
         this.$router.push(route)
@@ -715,10 +718,14 @@
       align-items: stretch;
       &-input, &-output {
         width: 50%;
+        min-width: 0;
         flex: 1; //1 1 auto
         display: flex;
         flex-direction: column;
         //margin-right: 5%;
+      }
+      @media (max-width: 768px) {
+        &-input, &-output { width: 100%; flex: auto; }
       }
       pre {
         flex: 1; //1 1 auto
@@ -800,7 +807,7 @@
     border-radius: 16px;
     .echarts {
       height: 250px;
-      width: 210px;
+      width: 100%;
     }
     #detail {
       position: absolute;
@@ -837,6 +844,7 @@
       text-align: center;
     }
   }
+  .empty-statistics { padding: 24px 16px; text-align: center; }
 
   #pieChart-detail {
     margin: 10px auto 0;

@@ -37,7 +37,8 @@ const pie = {
     {
       name: 'Resultados',
       type: 'pie',
-      radius: ['42%', '68%'],
+      radius: ['35%', '54%'],
+      stillShowZeroSum: false,
       center: ['50%', '46%'],
       avoidLabelOverlap: true,
       itemStyle: {
@@ -50,6 +51,7 @@ const pie = {
       label: {
         normal: {
           show: true,
+          position: 'inside',
           formatter: '{b}\n{d}%',
           textStyle: {
             fontWeight: 'bold'
@@ -76,6 +78,7 @@ const largePie = {
     {
       name: 'Detail',
       type: 'pie',
+      stillShowZeroSum: false,
       radius: ['45%', '70%'],
       center: ['50%', '55%'],
       itemStyle: {
@@ -101,6 +104,7 @@ const largePie = {
     {
       name: 'Summary',
       type: 'pie',
+      stillShowZeroSum: false,
       radius: '30%',
       center: ['50%', '55%'],
       itemStyle: {

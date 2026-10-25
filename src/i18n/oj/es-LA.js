@@ -1,4 +1,6 @@
+import {esTutor} from '../tutor'
 export const m = {
+  ...esTutor,
   Tutor_training: 'Entrenamiento',
   Tutor_scope: 'Inicia una sesión antes de enviar para registrar tus intentos de práctica.',
   Tutor_login: 'Inicia sesión para comenzar el entrenamiento.',

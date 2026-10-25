@@ -1,0 +1,483 @@
+{
+  "checked_at": "2026-10-23",
+  "summary": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 2,
+      "moderate": 67,
+      "high": 21,
+      "critical": 6
+    },
+    "dependencies": 1130,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1130
+  },
+  "findings": [
+    {
+      "id": 1085685,
+      "module": "mem",
+      "version": "1.1.0",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-4xcv-9jjx-gfj3",
+      "paths": [
+        "webpack>yargs>os-locale>mem"
+      ]
+    },
+    {
+      "id": 1088811,
+      "module": "yargs-parser",
+      "version": "7.0.0",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-p9pc-299p-vxgp",
+      "paths": [
+        "webpack>yargs>yargs-parser"
+      ]
+    },
+    {
+      "id": 1098681,
+      "module": "micromatch",
+      "version": "3.1.10",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-952p-6rrq-rcjv",
+      "paths": [
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch"
+      ]
+    },
+    {
+      "id": 1113442,
+      "module": "bn.js",
+      "version": "4.12.0",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-378v-28hj-76wf",
+      "paths": [
+        "webpack>node-libs-browser>crypto-browserify>browserify-sign>elliptic>bn.js",
+        "webpack>node-libs-browser>crypto-browserify>browserify-sign>parse-asn1>asn1.js>bn.js",
+        "webpack>node-libs-browser>crypto-browserify>create-ecdh>bn.js"
+      ]
+    },
+    {
+      "id": 1147955,
+      "module": "decode-uri-component",
+      "version": "0.2.2",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-vcc3-ghjq-m6fr",
+      "paths": [
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>extglob>expand-brackets>snapdragon>source-map-resolve>decode-uri-component",
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>extglob>snapdragon>source-map-resolve>decode-uri-component",
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>snapdragon>source-map-resolve>decode-uri-component"
+      ]
+    },
+    {
+      "id": 1091716,
+      "module": "webpack-bundle-analyzer",
+      "version": "2.13.1",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-pgr8-jg6h-8gw6",
+      "paths": [
+        "webpack-bundle-analyzer"
+      ]
+    },
+    {
+      "id": 1093539,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-566m-qj78-rww5",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1093539,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-566m-qj78-rww5",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1109574,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1109574,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1117015,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1117015,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1117015,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ]
+    },
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ]
+    },
+    {
+      "id": 1130709,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1130709,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1130709,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ]
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ]
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "css-loader>postcss"
+      ]
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ]
+    },
+    {
+      "id": 1241232,
+      "module": "postcss-selector-parser",
+      "version": "2.2.3",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+      "paths": [
+        "vue-loader>postcss-selector-parser"
+      ]
+    },
+    {
+      "id": 1096729,
+      "module": "webpack-dev-middleware",
+      "version": "1.12.2",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-wr3j-pwj9-hqq6",
+      "paths": [
+        "webpack-dev-middleware"
+      ]
+    },
+    {
+      "id": 1240027,
+      "module": "webpack-dev-middleware",
+      "version": "1.12.2",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-g84c-rxfj-3j2c",
+      "paths": [
+        "webpack-dev-middleware"
+      ]
+    },
+    {
+      "id": 1097685,
+      "module": "ajv",
+      "version": "4.11.8",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-v88g-cgmw-v5xw",
+      "paths": [
+        "eslint>table>ajv"
+      ]
+    },
+    {
+      "id": 1097685,
+      "module": "ajv",
+      "version": "5.5.2",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-v88g-cgmw-v5xw",
+      "paths": [
+        "extract-text-webpack-plugin>schema-utils>ajv"
+      ]
+    },
+    {
+      "id": 1113714,
+      "module": "ajv",
+      "version": "4.11.8",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+      "paths": [
+        "eslint>table>ajv"
+      ]
+    },
+    {
+      "id": 1113714,
+      "module": "ajv",
+      "version": "5.5.2",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+      "paths": [
+        "extract-text-webpack-plugin>schema-utils>ajv"
+      ]
+    },
+    {
+      "id": 1113714,
+      "module": "ajv",
+      "version": "6.12.6",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+      "paths": [
+        "file-loader>schema-utils>ajv",
+        "tar-simditor-markdown>tar-simditor>to-markdown>jsdom>request>har-validator>ajv",
+        "tar-simditor>to-markdown>jsdom>request>har-validator>ajv",
+        "webpack>ajv"
+      ]
+    },
+    {
+      "id": 1100238,
+      "module": "vue",
+      "version": "2.7.16",
+      "severity": "low",
+      "url": "https://github.com/advisories/GHSA-5j4c-8p2g-v4jx",
+      "paths": [
+        "vue"
+      ]
+    },
+    {
+      "id": 1101086,
+      "module": "zrender",
+      "version": "3.7.4",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fhv8-fx5f-7fxf",
+      "paths": [
+        "echarts>zrender",
+        "vue-echarts>echarts>zrender"
+      ]
+    },
+    {
+      "id": 1122144,
+      "module": "echarts",
+      "version": "3.8.5",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fgmj-fm8m-jvvx",
+      "paths": [
+        "echarts",
+        "vue-echarts>echarts"
+      ]
+    },
+    {
+      "id": 1113441,
+      "module": "bn.js",
+      "version": "5.2.1",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-378v-28hj-76wf",
+      "paths": [
+        "webpack>node-libs-browser>crypto-browserify>browserify-sign>bn.js",
+        "webpack>node-libs-browser>crypto-browserify>browserify-sign>browserify-rsa>bn.js"
+      ]
+    },
+    {
+      "id": 1096727,
+      "module": "request",
+      "version": "2.88.2",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-p8p7-x288-28g6",
+      "paths": [
+        "tar-simditor-markdown>tar-simditor>to-markdown>jsdom>request",
+        "tar-simditor>to-markdown>jsdom>request"
+      ]
+    },
+    {
+      "id": 1097682,
+      "module": "tough-cookie",
+      "version": "2.5.0",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-72xf-g2v4-qvf3",
+      "paths": [
+        "tar-simditor-markdown>tar-simditor>to-markdown>jsdom>request>tough-cookie",
+        "tar-simditor>to-markdown>jsdom>request>tough-cookie",
+        "tar-simditor>to-markdown>jsdom>tough-cookie"
+      ]
+    },
+    {
+      "id": 1105440,
+      "module": "html-minifier",
+      "version": "3.5.21",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-pfq8-rq6v-vf5m",
+      "paths": [
+        "html-webpack-plugin>html-minifier"
+      ]
+    },
+    {
+      "id": 1111772,
+      "module": "vue-template-compiler",
+      "version": "2.7.16",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-g3ch-rx76-35fx",
+      "paths": [
+        "vue-template-compiler"
+      ]
+    },
+    {
+      "id": 1112030,
+      "module": "elliptic",
+      "version": "6.6.1",
+      "severity": "low",
+      "url": "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+      "paths": [
+        "webpack>node-libs-browser>crypto-browserify>browserify-sign>elliptic"
+      ]
+    },
+    {
+      "id": 1117412,
+      "module": "babel-traverse",
+      "version": "6.26.0",
+      "severity": "critical",
+      "url": "https://github.com/advisories/GHSA-67hx-6x53-jw92",
+      "paths": [
+        "babel-core>babel-helpers>babel-template>babel-traverse",
+        "babel-core>babel-template>babel-traverse",
+        "babel-eslint>babel-traverse",
+        "babel-preset-env>babel-plugin-transform-async-to-generator>babel-helper-remap-async-to-generator>babel-helper-function-name>babel-template>babel-traverse",
+        "babel-preset-stage-2>babel-preset-stage-3>babel-plugin-transform-async-to-generator>babel-helper-remap-async-to-generator>babel-helper-function-name>babel-template>babel-traverse",
+        "babel-register>babel-core>babel-helpers>babel-template>babel-traverse"
+      ]
+    },
+    {
+      "id": 1119441,
+      "module": "uuid",
+      "version": "3.4.0",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+      "paths": [
+        "tar-simditor-markdown>tar-simditor>to-markdown>jsdom>request>uuid",
+        "tar-simditor>to-markdown>jsdom>request>uuid"
+      ]
+    }
+  ]
+}

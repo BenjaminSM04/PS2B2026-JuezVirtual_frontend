@@ -40,6 +40,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
+      cssProcessor: require('./css-processor'),
       cssProcessorOptions: {
         safe: true
       }
@@ -47,7 +48,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new UglifyJSPlugin({
       exclude: /\.min\.js$/,
       cache: true,
-      parallel: true,
+      parallel: Math.min(2, os.cpus().length),
       // Evita el fallo interno de UglifyES al colapsar variables del paquete vendor.
       uglifyOptions: {compress: {collapse_vars: false}},
       sourceMap: true

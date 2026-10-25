@@ -9,6 +9,7 @@
         {{ $t('m.Tutor_attempt_count') }}: {{ session.attempt_count }}.
         {{ $t('m.Tutor_level') }}: {{ session.highest_help_level }}.
       </p>
+      <TutorPanel v-if="session" :key="session.id" :session="session" @changed="refreshSession"></TutorPanel>
       <button v-if="!session" type="button" :disabled="loading" @click="start">{{ $t('m.Tutor_start') }}</button>
       <ol v-if="session && session.attempts.length" :aria-label="$t('m.Tutor_history')">
         <li v-for="attempt in session.attempts" :key="attempt.id">
@@ -24,6 +25,7 @@
 
 <script>
 import api from '@/utils/tutorApi'
+import TutorPanel from '../views/problem/components/TutorPanel.vue'
 
 const finalResults = [-2, -1, 0, 1, 2, 3, 4, 5, 8]
 const verdicts = {
@@ -40,6 +42,7 @@ const verdicts = {
 
 export default {
   name: 'TrainingSession',
+  components: {TutorPanel},
   props: {
     problemId: {type: Number, required: true},
     userId: {type: Number, default: null}
@@ -58,6 +61,13 @@ export default {
     userId () { this.load() }
   },
   methods: {
+    async refreshSession () {
+      const epoch = this.epoch
+      try {
+        const session = await api.readSession(this.problemId)
+        if (epoch === this.epoch) this.session = session
+      } catch (error) { if (epoch === this.epoch) this.error = error.message }
+    },
     verdictLabel (result) {
       return this.$t('m.' + verdicts[result])
     },
