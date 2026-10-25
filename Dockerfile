@@ -2,6 +2,7 @@
 FROM node:22-bookworm-slim@sha256:83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5 AS dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
+COPY build/patch-legacy-dependencies.js ./build/
 RUN test "$(yarn --version)" = "1.22.22"
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
     yarn install --frozen-lockfile --non-interactive
@@ -13,7 +14,7 @@ ARG PUBLIC_SENTRY_DSN=""
 ENV NODE_ENV=production APP_REVISION=${APP_REVISION} PUBLIC_SENTRY_DSN=${PUBLIC_SENTRY_DSN}
 
 FROM source AS ci
-RUN yarn lint
+RUN yarn lint && yarn test:tutor && node build/audit-dependencies.js
 
 FROM source AS builder
 RUN yarn build:dll && yarn build && node build/version.js

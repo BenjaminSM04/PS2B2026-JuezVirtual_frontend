@@ -4,13 +4,9 @@ import storage from '@/utils/storage'
 import { STORAGE_KEY } from '@/utils/constants'
 // ivew UI
 import ivenUS from 'iview/dist/locale/en-US'
-import ivzhCN from 'iview/dist/locale/zh-CN'
-import ivzhTW from 'iview/dist/locale/zh-TW'
 import ivesES from 'iview/dist/locale/es-ES'
 // element UI
 import elenUS from 'element-ui/lib/locale/lang/en'
-import elzhCN from 'element-ui/lib/locale/lang/zh-CN'
-import elzhTW from 'element-ui/lib/locale/lang/zh-TW'
 import elesES from 'element-ui/lib/locale/lang/es'
 
 Vue.use(VueI18n)

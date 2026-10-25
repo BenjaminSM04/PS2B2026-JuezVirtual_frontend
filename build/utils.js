@@ -16,7 +16,8 @@ exports.cssLoaders = function (options) {
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      minimize: process.env.NODE_ENV === 'production',
+      // La minificación se realiza una sola vez con el procesador CSS actualizado.
+      minimize: false,
       sourceMap: options.sourceMap
     }
   }

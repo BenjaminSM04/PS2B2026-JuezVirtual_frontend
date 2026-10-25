@@ -1,61 +1,19 @@
 <template>
-  <textarea ref="editor"></textarea>
+  <div class="rich-text-editor"><textarea ref="editor"></textarea></div>
 </template>
 
 <script>
   import Simditor from 'tar-simditor'
+import {ensureCsrf, csrfHeaders} from '@/utils/csrf'
 
-  import 'tar-simditor/styles/simditor.css'
-  import 'tar-simditor-markdown'
-  import 'tar-simditor-markdown/styles/simditor-markdown.css'
-  import './simditor-file-upload'
+import {editorSpanish} from './editor-locale'
 
-  // Etiquetas del editor según el idioma de la aplicación.
-  Simditor.i18n['es-LA'] = {
-    'title': 'Título',
-    'normalText': 'Texto normal',
-    'bold': 'Negrita',
-    'italic': 'Cursiva',
-    'underline': 'Subrayado',
-    'strikethrough': 'Tachado',
-    'fontScale': 'Tamaño de fuente',
-    'color': 'Color de texto',
-    'ol': 'Lista numerada',
-    'ul': 'Lista de viñetas',
-    'blockquote': 'Cita',
-    'code': 'Código',
-    'table': 'Tabla',
-    'image': 'Imagen',
-    'link': 'Enlace',
-    'hr': 'Línea horizontal',
-    'indent': 'Aumentar sangría',
-    'outdent': 'Disminuir sangría',
-    'alignment': 'Alineación',
-    'markdown': 'Markdown'
-  }
+import 'tar-simditor/styles/simditor.css'
+import 'tar-simditor-markdown'
+import 'tar-simditor-markdown/styles/simditor-markdown.css'
+import './simditor-file-upload'
 
-  Simditor.i18n['en-US'] = {
-    'title': 'Title',
-    'normalText': 'Normal text',
-    'bold': 'Bold',
-    'italic': 'Italic',
-    'underline': 'Underline',
-    'strikethrough': 'Strikethrough',
-    'fontScale': 'Font size',
-    'color': 'Text color',
-    'ol': 'Numbered list',
-    'ul': 'Bullet list',
-    'blockquote': 'Quote',
-    'code': 'Code',
-    'table': 'Table',
-    'image': 'Image',
-    'link': 'Link',
-    'hr': 'Horizontal line',
-    'indent': 'Increase indent',
-    'outdent': 'Decrease indent',
-    'alignment': 'Alignment',
-    'markdown': 'Markdown'
-  }
+Simditor.i18n['es-LA'] = Object.assign({}, Simditor.i18n['en-US'], editorSpanish)
 
   export default {
     name: 'Simditor',
@@ -76,8 +34,12 @@
         currentValue: this.value
       }
     },
-    mounted () {
+    async mounted () {
+      await ensureCsrf()
+      if (this._isDestroyed) return
       const editorLocale = Simditor.i18n[this.$i18n.locale] ? this.$i18n.locale : 'en-US'
+      // simple-module consulta la propiedad estática, no la opción de instancia.
+      Simditor.locale = editorLocale
 
       this.editor = new Simditor({
         textarea: this.$refs.editor,
@@ -89,7 +51,7 @@
         fontScale: [1, 1.25, 1.5, 2], // Usamos números en lugar de strings
         upload: {
           url: '/api/admin/upload_image/',
-          params: null,
+          params: {csrfmiddlewaretoken: csrfHeaders()['X-CSRFToken']},
           fileKey: 'image',
           connectionCount: 3,
           leaveConfirm: this.$i18n.t('m.Uploading_is_in_progress')
@@ -113,11 +75,14 @@
 
       this.editor.setValue(this.value)
     },
+    beforeDestroy () {
+      if (this.editor) this.editor.destroy()
+    },
     watch: {
       'value' (val) {
         if (this.currentValue !== val) {
           this.currentValue = val
-          this.editor.setValue(val)
+          if (this.editor) this.editor.setValue(val)
         }
       },
       'currentValue' (newVal, oldVal) {

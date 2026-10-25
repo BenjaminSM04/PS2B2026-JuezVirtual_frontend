@@ -96,7 +96,7 @@
           </el-input>
         </el-form-item>
         <el-form-item :label="$t('m.Announcement_Content')" prop="content" required>
-          <Simditor v-model="announcement.content"></Simditor>
+          <Simditor :key="$i18n.locale" v-model="announcement.content"></Simditor>
         </el-form-item>
         <div class="visible-box">
           <span>{{$t('m.Announcement_visible')}}</span>
@@ -214,7 +214,6 @@
       },
       // 提交编辑
       // 默认传入MouseEvent
-      // 删除公告
       deleteAnnouncement (announcementId) {
         this.$confirm(this.$i18n.t('m.Delete_Announcement_Confirm'), this.$i18n.t('m.Warning'), {
           confirmButtonText: this.$i18n.t('m.Delete'),

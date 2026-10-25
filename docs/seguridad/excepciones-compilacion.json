@@ -1,0 +1,162 @@
+{
+  "reviewed_at": "2026-10-23",
+  "exceptions": [
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "css-loader>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1124252,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "6.0.23",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "autoprefixer>postcss",
+        "css-loader>icss-utils>postcss",
+        "css-loader>postcss-modules-extract-imports>postcss",
+        "css-loader>postcss-modules-local-by-default>postcss",
+        "css-loader>postcss-modules-scope>postcss",
+        "css-loader>postcss-modules-values>postcss",
+        "vue-loader>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "5.2.18",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "css-loader>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1139510,
+      "module": "postcss",
+      "version": "8.4.33",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "paths": [
+        "vue>@vue/compiler-sfc>postcss"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_AUTO_MAP_FILES",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1096729,
+      "module": "webpack-dev-middleware",
+      "version": "1.12.2",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-wr3j-pwj9-hqq6",
+      "paths": [
+        "webpack-dev-middleware"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_CONTAINED_OUTPUT",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1240027,
+      "module": "webpack-dev-middleware",
+      "version": "1.12.2",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-g84c-rxfj-3j2c",
+      "paths": [
+        "webpack-dev-middleware"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_CONTAINED_OUTPUT",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1105440,
+      "module": "html-minifier",
+      "version": "3.5.21",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-pfq8-rq6v-vf5m",
+      "paths": [
+        "html-webpack-plugin>html-minifier"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_CUSTOM_FRAGMENTS",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1117412,
+      "module": "babel-traverse",
+      "version": "6.26.0",
+      "severity": "critical",
+      "url": "https://github.com/advisories/GHSA-67hx-6x53-jw92",
+      "paths": [
+        "babel-core>babel-helpers>babel-template>babel-traverse",
+        "babel-core>babel-template>babel-traverse",
+        "babel-eslint>babel-traverse",
+        "babel-preset-env>babel-plugin-transform-async-to-generator>babel-helper-remap-async-to-generator>babel-helper-function-name>babel-template>babel-traverse",
+        "babel-preset-stage-2>babel-preset-stage-3>babel-plugin-transform-async-to-generator>babel-helper-remap-async-to-generator>babel-helper-function-name>babel-template>babel-traverse",
+        "babel-register>babel-core>babel-helpers>babel-template>babel-traverse"
+      ],
+      "expires": "2026-11-22",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_NO_STATIC_CALLS",
+      "test": "tests/build-security.js"
+    }
+  ]
+}

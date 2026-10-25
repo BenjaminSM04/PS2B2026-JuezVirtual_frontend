@@ -38,7 +38,9 @@
     </Panel>
 
     <Panel :title="$t('m.SMTP_Config')">
-      <el-form label-position="top" :model="smtp" :rules="smtpRules" ref="smtpForm">
+      <p>{{$t('m.SMTP_Resend_Help')}}</p>
+      <el-button size="small" @click="useResend">{{$t('m.SMTP_Use_Resend')}}</el-button>
+      <el-form label-position="left" label-width="70px" :model="smtp" :rules="smtpRules" ref="smtpForm">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Server')" prop="server" required>
@@ -51,30 +53,32 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.SMTP_Username')" label-width="130px">
+              <el-input v-model="smtp.username" :placeholder="$t('m.SMTP_Username_Help')" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Email')" prop="email" required>
               <el-input v-model="smtp.email" placeholder="email@example.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Password')" prop="password" :required="init">
-              <PasswordInput admin v-model="smtp.password" autocomplete="new-password"
-                             :placeholder="$t('m.SMTP_Password_Placeholder')"/>
-              <p v-if="smtpReady && !init" class="smtp-password-hint">{{$t('m.SMTP_Password_Keep')}}</p>
+            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" :required="init">
+              <PasswordInput admin v-model="smtp.password" :placeholder="$t('m.SMTP_Keep_Password')" autocomplete="new-password"></PasswordInput>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="TLS">
-              <el-switch
-                v-model="smtp.tls"
-                active-color="#A60550"
-                  inactive-color="#987284">
-              </el-switch>
+            <el-form-item :label="$t('m.SMTP_Encryption')" label-width="130px">
+              <el-select v-model="smtpEncryption">
+                <el-option label="SSL/TLS" value="ssl"></el-option>
+                <el-option label="STARTTLS" value="starttls"></el-option>
+                <el-option :label="$t('m.SMTP_No_Encryption')" value="none"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <el-button type="primary" icon="el-icon-fa-save" :disabled="!smtpReady"
-                 :loading="savingSMTP" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
+      <el-button type="primary" icon="el-icon-fa-save" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
       <el-button type="warning" icon="el-icon-fa-envelope" @click="testSMTPConfig"
                  v-if="saved" :loading="loadingBtnTest">{{$t('m.Send_Test_Email')}}</el-button>
     </Panel>
@@ -137,8 +141,8 @@
   import PasswordInput from '@/components/PasswordInput.vue'
 
   export default {
-    components: {PasswordInput},
     name: 'Conf',
+    components: {PasswordInput},
     data () {
       const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
       const validateEmail = (rule, value, callback) => {
@@ -171,8 +175,6 @@
       }
       return {
         init: false,
-        smtpReady: false,
-        savingSMTP: false,
         saved: false,
         loadingBtnTest: false,
         healthLoading: false,
@@ -189,6 +191,8 @@
           port: '',
           password: '',
           email: '',
+          username: '',
+          ssl: false,
           tls: true
         },
         websiteConfig: {},
@@ -203,15 +207,7 @@
             {required: true, validator: validateEmail, trigger: 'blur'}
           ],
           password: [
-            {
-              validator: (rule, value, callback) => {
-                if (this.init && !value) {
-                  return callback(new Error(this.$t('m.Password_Required')))
-                }
-                callback()
-              },
-              trigger: 'blur'
-            }
+            {validator: (rule, value, callback) => callback(this.init && !value ? new Error(this.$t('m.Password_Required')) : undefined), trigger: 'blur'}
           ]
         },
         websiteRules: {
@@ -229,17 +225,25 @@
         }
       }
     },
+    computed: {
+      smtpEncryption: {
+        get () { return this.smtp.ssl ? 'ssl' : this.smtp.tls ? 'starttls' : 'none' },
+        set (value) {
+          this.$set(this.smtp, 'ssl', value === 'ssl')
+          this.$set(this.smtp, 'tls', value === 'starttls')
+        }
+      }
+    },
     mounted () {
       api.getSMTPConfig().then(res => {
         if (res.data.data) {
-          this.smtp = Object.assign({}, res.data.data, {password: ''})
+          this.smtp = Object.assign({}, this.smtp, res.data.data, {password: ''})
           this.saved = true
         } else {
           this.init = true
           this.$warning(this.$i18n.t('m.Configure_SMTP_First'))
         }
-        this.smtpReady = true
-      }).catch(() => {})
+      })
       api.getWebsiteConfig().then(res => {
         this.websiteConfig = res.data.data
       }).catch(() => {
@@ -247,29 +251,36 @@
       this.refreshHealth()
     },
     methods: {
+      useResend () {
+        this.smtp.server = 'smtp.resend.com'
+        this.smtp.port = 465
+        this.$set(this.smtp, 'username', 'resend')
+        this.smtpEncryption = 'ssl'
+      },
       saveSMTPConfig () {
-        if (!this.smtpReady || this.savingSMTP) return
         this.$refs.smtpForm.validate((valid) => {
           if (!valid) {
             this.$error(this.$i18n.t('m.Fix_Form_Errors'))
             return
           }
-          const data = Object.assign({}, this.smtp)
-          // Omitir la clave vacía permite al backend conservar el secreto guardado.
-          if (!this.init && !data.password) {
-            delete data.password
+          if (!this.init) {
+            const data = Object.assign({}, this.smtp)
+            if (!data.password) delete data.password
+            api.editSMTPConfig(data).then(() => {
+              this.saved = true
+              this.smtp.password = ''
+              this.refreshHealth()
+            }, () => {
+            })
+          } else {
+            api.createSMTPConfig(this.smtp).then(() => {
+              this.saved = true
+              this.init = false
+              this.smtp.password = ''
+              this.refreshHealth()
+            }, () => {
+            })
           }
-          this.savingSMTP = true
-          const request = this.init ? api.createSMTPConfig(data) : api.editSMTPConfig(data)
-          request.then(() => {
-            this.saved = true
-            this.init = false
-            this.smtp.password = ''
-            this.savingSMTP = false
-            this.$nextTick(() => this.$refs.smtpForm.clearValidate())
-          }, () => {
-            this.savingSMTP = false
-          })
         })
       },
       testSMTPConfig () {
@@ -412,10 +423,23 @@
 @media (max-width: 768px) {
   .conf-view .el-form-item__label {
     font-size: 16px;
+    float: none;
+    display: block;
+    width: 100% !important;
+    text-align: left;
   }
   .conf-view .el-form-item__content {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100%;
   }
+  .conf-view .title {
+    font-size: 20px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    overflow-wrap: anywhere;
+  }
+  .conf-view .el-select { width: 100%; }
+  .conf-view .el-button { margin: 4px 0; max-width: 100%; }
   .conf-view .el-input__inner {
     max-width: none;
   }

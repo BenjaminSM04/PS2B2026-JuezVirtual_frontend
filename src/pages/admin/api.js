@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import router from './router'
 import axios from 'axios'
+import {installCsrf} from '@/utils/csrf'
 import utils from '@/utils/utils'
+installCsrf()
 
 Vue.prototype.$http = axios
 axios.defaults.baseURL = '/api'
@@ -9,6 +11,12 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
 
 export default {
+  getTextTestCases (problemId) {
+    return ajax('admin/test_case/text', 'get', {params: {problem_id: problemId}})
+  },
+  createTextTestCases (cases) {
+    return ajax('admin/test_case/text', 'post', {data: {cases}})
+  },
   // 登录
   login (username, password) {
     return ajax('login', 'post', {

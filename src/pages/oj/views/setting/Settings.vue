@@ -24,6 +24,7 @@
           </Menu>
         </div>
         <div class="panel">
+          <PersonalPractice v-if="user.id" :user-id="user.id"></PersonalPractice>
           <transition name="fadeInUp">
             <router-view></router-view>
           </transition>
@@ -34,16 +35,18 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import PersonalPractice from '@oj/components/PersonalPractice.vue'
 
   export default {
     name: 'profile',
+    components: {PersonalPractice},
     methods: {
       goRoute (routePath) {
         this.$router.push(routePath)
       }
     },
     computed: {
-      ...mapGetters(['profile']),
+      ...mapGetters(['profile', 'user']),
       activeName () {
         return this.$route.path
       }
@@ -114,7 +117,6 @@
 
     .panel {
       flex: auto;
-      min-width: 0;
       &::before {
         content: '';
         display: block;
@@ -134,15 +136,6 @@
     /*取消默认的伪元素*/
     width: 0;
   }
-
-  @media (max-width: 768px) {
-    .container { width: 100%; }
-    .flex-container { flex-direction: column; }
-    .flex-container .menu { flex: none; max-width: none; width: 100%; }
-    .menu /deep/ .ivu-menu { display: flex; justify-content: center; flex-wrap: wrap; }
-    .flex-container .menu .avatar-editor { display: none; }
-    .flex-container .panel::before { display: none; }
-  }
 </style>
 
 <style lang="less">
@@ -157,12 +150,12 @@
       width: 500px;
     }
   }
-
   @media (max-width: 768px) {
-    .setting-main {
-      margin: 10px;
-      .setting-content { margin-left: 0; }
-      .mini-container { width: 100%; }
-    }
+    .container .flex-container { display: block; }
+    .container .flex-container .menu { max-width: none; }
+    .container .panel { min-width: 0; }
+    .setting-main { margin: 10px; }
+    .setting-main .mini-container { width: 100%; }
+    .setting-main .setting-content { margin-left: 0; }
   }
 </style>
