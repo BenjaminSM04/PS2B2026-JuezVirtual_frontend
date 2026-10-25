@@ -6,7 +6,7 @@
                       :key="problem.id" :problem-id="problem.id"></TrainingConfig>
       <el-form ref="form" :model="problem" :rules="rules" label-position="top" label-width="70px">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item prop="_id" :label="$t('m.Display_ID')"
                           :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'">
               <el-input :placeholder="$t('m.Display_ID')"
@@ -14,7 +14,7 @@
                         :readonly="mode === 'add'"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="18">
+          <el-col :xs="24" :sm="18">
             <el-form-item prop="title" :label="$t('m.Title')" required>
               <el-input :placeholder="$t('m.Title')" v-model="problem.title"></el-input>
             </el-form-item>
@@ -40,7 +40,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)' " required>
               <el-input-number 
                 v-model="problem.time_limit" 
@@ -51,7 +51,7 @@
               </el-input-number>            
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)' " required>
               <el-input-number 
                 v-model.number="problem.memory_limit" 
@@ -62,7 +62,7 @@
               </el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Difficulty')">
               <el-select class="difficulty-select" size="small" :placeholder="$t('m.Difficulty')" v-model="problem.difficulty">
                 <el-option :label="$t('m.Low')" value="Low"></el-option>
@@ -73,7 +73,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.Visible')">
               <el-switch
                 v-model="problem.visible"
@@ -82,7 +82,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.ShareSubmission')">
               <el-switch
                 v-model="problem.share_submission"
@@ -91,7 +91,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Tag')" :error="error.tags" required>
               <span class="tags">
                 <el-tag
@@ -117,7 +117,7 @@
               <el-button class="button-new-tag" v-else size="small" @click="inputVisible = true">+ {{$t('m.New_Tag')}}</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Languages')" :error="error.languages" required>
               <el-checkbox-group v-model="problem.languages">
                 <el-tooltip class="spj-radio" v-for="lang in allLanguage.languages" :key="'spj'+lang.name" effect="dark"
@@ -129,7 +129,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" v-if="routeName === 'create-problem' || routeName === 'edit-problem'">
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Share_Mode')">
               <el-select class="share-mode-select" v-model="problem.share_mode" :placeholder="$t('m.Share_Mode')">
                 <el-option :label="$t('m.Share_Mode_Private')" value="Private"></el-option>
@@ -146,7 +146,7 @@
                 {{$t('m.Delete')}}
               </el-button>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :xs="24" :sm="12">
                   <el-form-item :label="$t('m.Input_Samples')" required>
                     <el-input
                       :rows="5"
@@ -156,7 +156,7 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :xs="24" :sm="12">
                   <el-form-item :label="$t('m.Output_Samples')" required>
                     <el-input
                       :rows="5"
@@ -213,7 +213,7 @@
           </Accordion>
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.Type')">
               <el-radio-group v-model="problem.rule_type" :disabled="disableRuleType">
                 <el-radio label="ACM">ACM</el-radio>
@@ -221,7 +221,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
               <el-upload :headers="uploadCsrfHeaders()"
                 action="/api/admin/test_case"
@@ -235,7 +235,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item :label="$t('m.IOMode')">
               <el-radio-group v-model="problem.io_mode.io_mode">
                 <el-radio label="Standard IO">{{$t('m.IO_Standard')}}</el-radio>
@@ -244,12 +244,12 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="4" v-if="problem.io_mode.io_mode == 'File IO'">
+          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
             <el-form-item :label="$t('m.InputFileName')" required>
               <el-input type="text" v-model="problem.io_mode.input"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4" v-if="problem.io_mode.io_mode == 'File IO'">
+          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
             <el-form-item :label="$t('m.OutputFileName')" required>
               <el-input type="text" v-model="problem.io_mode.output"></el-input>
             </el-form-item>

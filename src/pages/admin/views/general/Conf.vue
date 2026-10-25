@@ -421,10 +421,23 @@
 @media (max-width: 768px) {
   .conf-view .el-form-item__label {
     font-size: 16px;
+    float: none;
+    display: block;
+    width: 100% !important;
+    text-align: left;
   }
   .conf-view .el-form-item__content {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100%;
   }
+  .conf-view .title {
+    font-size: 20px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    overflow-wrap: anywhere;
+  }
+  .conf-view .el-select { width: 100%; }
+  .conf-view .el-button { margin: 4px 0; max-width: 100%; }
   .conf-view .el-input__inner {
     max-width: none;
   }
