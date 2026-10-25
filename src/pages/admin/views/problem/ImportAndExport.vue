@@ -98,114 +98,114 @@
 
 <script>
 import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
-  import api from '@admin/api'
-  import utils from '@/utils/utils'
+import api from '@admin/api'
+import utils from '@/utils/utils'
 
-  const QDUOJ_TYPES = ['.zip']
-  const FPS_TYPES = ['.xml', '.zip']
+const QDUOJ_TYPES = ['.zip']
+const FPS_TYPES = ['.xml', '.zip']
 
-  export default {
-    name: 'import_and_export',
-    data () {
-      return {
-        fileList1: [],
-        fileList2: [],
-        page: 1,
-        limit: 10,
-        total: 0,
-        loadingProblems: false,
-        loadingImporting: false,
-        keyword: '',
-        problems: [],
-        selected_problems: []
+export default {
+  name: 'import_and_export',
+  data () {
+    return {
+      fileList1: [],
+      fileList2: [],
+      page: 1,
+      limit: 10,
+      total: 0,
+      loadingProblems: false,
+      loadingImporting: false,
+      keyword: '',
+      problems: [],
+      selected_problems: []
+    }
+  },
+  mounted () {
+    this.getProblems()
+  },
+  methods: {
+    uploadCsrfHeaders,
+    handleSelectionChange (val) {
+      this.selected_problems = val
+    },
+    getProblems (page = 1) {
+      let params = {
+        keyword: this.keyword,
+        offset: (page - 1) * this.limit,
+        limit: this.limit
       }
+      this.loadingProblems = true
+      api.getProblemList(params).then(res => {
+        this.problems = res.data.data.results
+        this.total = res.data.data.total
+        this.loadingProblems = false
+      })
     },
-    mounted () {
-      this.getProblems()
-    },
-    methods: {
-      uploadCsrfHeaders,
-      handleSelectionChange (val) {
-        this.selected_problems = val
-      },
-      getProblems (page = 1) {
-        let params = {
-          keyword: this.keyword,
-          offset: (page - 1) * this.limit,
-          limit: this.limit
-        }
-        this.loadingProblems = true
-        api.getProblemList(params).then(res => {
-          this.problems = res.data.data.results
-          this.total = res.data.data.total
-          this.loadingProblems = false
-        })
-      },
-      exportProblems () {
-        let params = []
-        for (let p of this.selected_problems) {
-          params.push('problem_id=' + p.id)
-        }
-        let url = '/admin/export_problem?' + params.join('&')
-        utils.downloadFile(url)
-      },
-      submitUpload (ref) {
-        this.$refs[ref].submit()
-      },
-      validateExtension (file, allowed) {
-        const name = (file.name || '').toLowerCase()
-        return allowed.some(ext => name.endsWith(ext))
-      },
-      onFile1Change (file, fileList) {
-        if (!this.validateExtension(file, QDUOJ_TYPES)) {
-          this.$error(this.$t('m.Invalid_File_Type', {types: QDUOJ_TYPES.join(', ')}))
-          this.fileList1 = []
-          this.$refs.QDU.clearFiles()
-          return
-        }
-        this.fileList1 = fileList.slice(-1)
-      },
-      onFile2Change (file, fileList) {
-        if (!this.validateExtension(file, FPS_TYPES)) {
-          this.$error(this.$t('m.Invalid_File_Type', {types: FPS_TYPES.join(', ')}))
-          this.fileList2 = []
-          this.$refs.FPS.clearFiles()
-          return
-        }
-        this.fileList2 = fileList.slice(-1)
-      },
-      beforeUploadZip (file) {
-        if (!this.validateExtension(file, QDUOJ_TYPES)) {
-          this.$error(this.$t('m.Invalid_File_Type', {types: QDUOJ_TYPES.join(', ')}))
-          return false
-        }
-        return true
-      },
-      beforeUploadFps (file) {
-        if (!this.validateExtension(file, FPS_TYPES)) {
-          this.$error(this.$t('m.Invalid_File_Type', {types: FPS_TYPES.join(', ')}))
-          return false
-        }
-        return true
-      },
-      uploadSucceeded (response) {
-        if (response.error) {
-          this.$error(response.data)
-        } else {
-          this.$success(this.$t('m.Import_Success', {count: response.data.import_count}))
-          this.getProblems()
-        }
-      },
-      uploadFailed () {
-        this.$error(this.$t('m.Upload_Failed'))
+    exportProblems () {
+      let params = []
+      for (let p of this.selected_problems) {
+        params.push('problem_id=' + p.id)
       }
+      let url = '/admin/export_problem?' + params.join('&')
+      utils.downloadFile(url)
     },
-    watch: {
-      'keyword' () {
+    submitUpload (ref) {
+      this.$refs[ref].submit()
+    },
+    validateExtension (file, allowed) {
+      const name = (file.name || '').toLowerCase()
+      return allowed.some(ext => name.endsWith(ext))
+    },
+    onFile1Change (file, fileList) {
+      if (!this.validateExtension(file, QDUOJ_TYPES)) {
+        this.$error(this.$t('m.Invalid_File_Type', {types: QDUOJ_TYPES.join(', ')}))
+        this.fileList1 = []
+        this.$refs.QDU.clearFiles()
+        return
+      }
+      this.fileList1 = fileList.slice(-1)
+    },
+    onFile2Change (file, fileList) {
+      if (!this.validateExtension(file, FPS_TYPES)) {
+        this.$error(this.$t('m.Invalid_File_Type', {types: FPS_TYPES.join(', ')}))
+        this.fileList2 = []
+        this.$refs.FPS.clearFiles()
+        return
+      }
+      this.fileList2 = fileList.slice(-1)
+    },
+    beforeUploadZip (file) {
+      if (!this.validateExtension(file, QDUOJ_TYPES)) {
+        this.$error(this.$t('m.Invalid_File_Type', {types: QDUOJ_TYPES.join(', ')}))
+        return false
+      }
+      return true
+    },
+    beforeUploadFps (file) {
+      if (!this.validateExtension(file, FPS_TYPES)) {
+        this.$error(this.$t('m.Invalid_File_Type', {types: FPS_TYPES.join(', ')}))
+        return false
+      }
+      return true
+    },
+    uploadSucceeded (response) {
+      if (response.error) {
+        this.$error(response.data)
+      } else {
+        this.$success(this.$t('m.Import_Success', {count: response.data.import_count}))
         this.getProblems()
       }
+    },
+    uploadFailed () {
+      this.$error(this.$t('m.Upload_Failed'))
+    }
+  },
+  watch: {
+    'keyword' () {
+      this.getProblems()
     }
   }
+}
 </script>
 
 <style lang="less" scoped>

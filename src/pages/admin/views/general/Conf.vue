@@ -38,6 +38,8 @@
     </Panel>
 
     <Panel :title="$t('m.SMTP_Config')">
+      <p>{{$t('m.SMTP_Resend_Help')}}</p>
+      <el-button size="small" @click="useResend">{{$t('m.SMTP_Use_Resend')}}</el-button>
       <el-form label-position="left" label-width="70px" :model="smtp" :rules="smtpRules" ref="smtpForm">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12">
@@ -51,22 +53,27 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('m.SMTP_Username')" label-width="130px">
+              <el-input v-model="smtp.username" :placeholder="$t('m.SMTP_Username_Help')" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('m.Email')" prop="email" required>
               <el-input v-model="smtp.email" placeholder="email@example.com"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" required>
-              <el-input v-model="smtp.password" type="password" :placeholder="$t('m.SMTP_Password_Placeholder')"></el-input>
+            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" :required="init">
+              <el-input v-model="smtp.password" type="password" :placeholder="$t('m.SMTP_Keep_Password')" autocomplete="new-password"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="TLS">
-              <el-switch
-                v-model="smtp.tls"
-                active-color="#A60550"
-                  inactive-color="#987284">
-              </el-switch>
+            <el-form-item :label="$t('m.SMTP_Encryption')" label-width="130px">
+              <el-select v-model="smtpEncryption">
+                <el-option label="SSL/TLS" value="ssl"></el-option>
+                <el-option label="STARTTLS" value="starttls"></el-option>
+                <el-option :label="$t('m.SMTP_No_Encryption')" value="none"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -182,6 +189,8 @@
           port: '',
           password: '',
           email: '',
+          username: '',
+          ssl: false,
           tls: true
         },
         websiteConfig: {},
@@ -196,7 +205,7 @@
             {required: true, validator: validateEmail, trigger: 'blur'}
           ],
           password: [
-            {required: true, message: this.$i18n.t('m.Password_Required'), trigger: 'blur'}
+            {validator: (rule, value, callback) => callback(this.init && !value ? new Error(this.$t('m.Password_Required')) : undefined), trigger: 'blur'}
           ]
         },
         websiteRules: {
@@ -214,10 +223,20 @@
         }
       }
     },
+    computed: {
+      smtpEncryption: {
+        get () { return this.smtp.ssl ? 'ssl' : this.smtp.tls ? 'starttls' : 'none' },
+        set (value) {
+          this.$set(this.smtp, 'ssl', value === 'ssl')
+          this.$set(this.smtp, 'tls', value === 'starttls')
+        }
+      }
+    },
     mounted () {
       api.getSMTPConfig().then(res => {
         if (res.data.data) {
-          this.smtp = res.data.data
+          this.smtp = Object.assign({}, this.smtp, res.data.data, {password: ''})
+          this.saved = true
         } else {
           this.init = true
           this.$warning(this.$i18n.t('m.Configure_SMTP_First'))
@@ -230,6 +249,12 @@
       this.refreshHealth()
     },
     methods: {
+      useResend () {
+        this.smtp.server = 'smtp.resend.com'
+        this.smtp.port = 465
+        this.$set(this.smtp, 'username', 'resend')
+        this.smtpEncryption = 'ssl'
+      },
       saveSMTPConfig () {
         this.$refs.smtpForm.validate((valid) => {
           if (!valid) {
@@ -237,13 +262,20 @@
             return
           }
           if (!this.init) {
-            api.editSMTPConfig(this.smtp).then(() => {
+            const data = Object.assign({}, this.smtp)
+            if (!data.password) delete data.password
+            api.editSMTPConfig(data).then(() => {
               this.saved = true
+              this.smtp.password = ''
+              this.refreshHealth()
             }, () => {
             })
           } else {
             api.createSMTPConfig(this.smtp).then(() => {
               this.saved = true
+              this.init = false
+              this.smtp.password = ''
+              this.refreshHealth()
             }, () => {
             })
           }
@@ -389,10 +421,23 @@
 @media (max-width: 768px) {
   .conf-view .el-form-item__label {
     font-size: 16px;
+    float: none;
+    display: block;
+    width: 100% !important;
+    text-align: left;
   }
   .conf-view .el-form-item__content {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100%;
   }
+  .conf-view .title {
+    font-size: 20px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    overflow-wrap: anywhere;
+  }
+  .conf-view .el-select { width: 100%; }
+  .conf-view .el-button { margin: 4px 0; max-width: 100%; }
   .conf-view .el-input__inner {
     max-width: none;
   }

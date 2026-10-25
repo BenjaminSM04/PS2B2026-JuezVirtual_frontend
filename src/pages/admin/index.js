@@ -47,7 +47,7 @@ Vue.prototype.$warning = (msg) => {
 
 Vue.prototype.$success = (msg) => {
   if (!msg) {
-    Vue.prototype.$message({'message': '´Exito', 'type': 'success'})
+    Vue.prototype.$message({'message': i18n.t('m.Success'), 'type': 'success'})
   } else {
     Vue.prototype.$message({'message': msg, 'type': 'success'})
   }

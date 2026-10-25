@@ -148,9 +148,9 @@
             title: this.$i18n.t('m.Level'),
             render: (h, params) => {
               let t = params.row.difficulty
-              let color = '#6D6E71' //blue
-              if (t === 'Low') color = '#4CAF50' //green
-              else if (t === 'High') color = '#7B1E3A' //yellow
+              let color = '#6D6E71' // blue
+              if (t === 'Low') color = '#4CAF50' // green
+              else if (t === 'High') color = '#7B1E3A' // yellow
               return h('Tag', {
                 props: {
                   color: color

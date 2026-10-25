@@ -1,5 +1,22 @@
 import {enTutor} from '../tutor'
 export const m = {
+  Load_Text_Cases: 'Load saved cases',
+  Discard_Text_Cases: 'Discard modified text and load saved cases?',
+  Apply_Text_Before_Save: 'Apply changes to text cases before saving the problem.',
+  SMTP_Resend_Help: 'Resend: use a sender from your verified domain. The password is your API key and is never displayed again.',
+  SMTP_Use_Resend: 'Use Resend',
+  SMTP_Username: 'SMTP username',
+  SMTP_Username_Help: 'Empty: use sender email',
+  SMTP_Keep_Password: 'Empty keeps the saved password',
+  SMTP_Encryption: 'Encryption',
+  SMTP_No_Encryption: 'None (trusted network only)',
+  Text_Cases: 'Text test cases',
+  Text_Cases_Help: 'Enter private judge input/output, separate from public statement samples. Maximum 100 cases and 1 MiB total. Use ZIP for larger files or special judges. Apply cases, then save the problem.',
+  Add_Case: 'Add case',
+  Remove_Case: 'Remove case',
+  Apply_Text_Cases: 'Apply text cases',
+  Replace_Cases_Confirm: 'A new set will replace current cases when the problem is saved. Previous files are preserved. Continue?',
+  Text_Cases_Applied: 'Cases prepared. Save the problem to use them.',
   ...enTutor,
   Tutor_training: 'Training',
   Tutor_scope: 'Start a session before submitting to record your practice attempts.',
@@ -232,7 +249,7 @@ export const m = {
   GO: 'GO',
   username: 'username',
   password: 'password',
-  //Register.vue
+  // Register.vue
   Welcome_to: 'Welcome to',
   Username_is_required: 'Username is required',
   Email_is_required: 'Email is required',

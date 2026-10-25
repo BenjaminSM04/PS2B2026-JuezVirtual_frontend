@@ -1,5 +1,22 @@
 import {esTutor} from '../tutor'
 export const m = {
+  Load_Text_Cases: 'Cargar casos guardados',
+  Discard_Text_Cases: '¿Descartar el texto modificado y cargar los casos guardados?',
+  Apply_Text_Before_Save: 'Aplica los cambios de los casos de texto antes de guardar el problema.',
+  SMTP_Resend_Help: 'Resend: usa un remitente de tu dominio verificado. La contraseña es tu API key; no se muestra al volver a abrir esta página.',
+  SMTP_Use_Resend: 'Usar Resend',
+  SMTP_Username: 'Usuario SMTP',
+  SMTP_Username_Help: 'Vacío: usar el correo remitente',
+  SMTP_Keep_Password: 'Vacío conserva la clave guardada',
+  SMTP_Encryption: 'Cifrado',
+  SMTP_No_Encryption: 'Sin cifrado (solo red de confianza)',
+  Text_Cases: 'Casos de prueba en texto',
+  Text_Cases_Help: 'Escribe entradas y salidas privadas para el juez. No son los ejemplos públicos del enunciado. Máximo 100 casos y 1 MiB en total; para archivos mayores o juez especial usa ZIP. Aplica los casos y después guarda el problema.',
+  Add_Case: 'Añadir caso',
+  Remove_Case: 'Quitar caso',
+  Apply_Text_Cases: 'Aplicar casos de texto',
+  Replace_Cases_Confirm: 'Se preparará un conjunto nuevo para reemplazar los casos actuales al guardar el problema. Los archivos anteriores se conservan. ¿Continuar?',
+  Text_Cases_Applied: 'Casos preparados. Guarda el problema para utilizarlos.',
   ...esTutor,
   Tutor_training: 'Entrenamiento',
   Tutor_scope: 'Inicia una sesión antes de enviar para registrar tus intentos de práctica.',
@@ -234,7 +251,7 @@ export const m = {
   username: 'Usuario',
   password: 'Contraseña',
 
-  //Register.vue
+  // Register.vue
   Welcome_to: 'Bienvenido a',
   Username_is_required: 'El nombre de usuario es obligatorio',
   Email_is_required: 'El correo es obligatorio',
@@ -279,7 +296,7 @@ export const m = {
   Import_Success: 'Se importaron {count} problemas correctamente',
   Keywords: 'Palabras clave',
   Invalid_File_Type: 'Tipo de archivo inválido. Permitidos: {types}',
-  //crear problema
+  // crear problema
   Add_Problem: 'Agregar Problema',
   // Textos comunes
   Home_Page: 'Inicio',

@@ -6,7 +6,7 @@
                       :key="problem.id" :problem-id="problem.id"></TrainingConfig>
       <el-form ref="form" :model="problem" :rules="rules" label-position="top" label-width="70px">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item prop="_id" :label="$t('m.Display_ID')"
                           :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'">
               <el-input :placeholder="$t('m.Display_ID')"
@@ -14,7 +14,7 @@
                         :readonly="mode === 'add'"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="18">
+          <el-col :xs="24" :sm="18">
             <el-form-item prop="title" :label="$t('m.Title')" required>
               <el-input :placeholder="$t('m.Title')" v-model="problem.title"></el-input>
             </el-form-item>
@@ -23,24 +23,24 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item prop="description" :label="$t('m.Description')" required>
-              <Simditor v-model="problem.description"></Simditor>
+              <Simditor :key="$i18n.locale" v-model="problem.description"></Simditor>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item prop="input_description" :label="$t('m.Input_Description')" required>
-              <Simditor v-model="problem.input_description"></Simditor>
+              <Simditor :key="$i18n.locale" v-model="problem.input_description"></Simditor>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item prop="output_description" :label="$t('m.Output_Description')" required>
-              <Simditor v-model="problem.output_description"></Simditor>
+              <Simditor :key="$i18n.locale" v-model="problem.output_description"></Simditor>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)' " required>
               <el-input-number 
                 v-model="problem.time_limit" 
@@ -51,7 +51,7 @@
               </el-input-number>            
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)' " required>
               <el-input-number 
                 v-model.number="problem.memory_limit" 
@@ -62,7 +62,7 @@
               </el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Difficulty')">
               <el-select class="difficulty-select" size="small" :placeholder="$t('m.Difficulty')" v-model="problem.difficulty">
                 <el-option :label="$t('m.Low')" value="Low"></el-option>
@@ -73,7 +73,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.Visible')">
               <el-switch
                 v-model="problem.visible"
@@ -82,7 +82,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.ShareSubmission')">
               <el-switch
                 v-model="problem.share_submission"
@@ -91,7 +91,7 @@
               </el-switch>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Tag')" :error="error.tags" required>
               <span class="tags">
                 <el-tag
@@ -117,7 +117,7 @@
               <el-button class="button-new-tag" v-else size="small" @click="inputVisible = true">+ {{$t('m.New_Tag')}}</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Languages')" :error="error.languages" required>
               <el-checkbox-group v-model="problem.languages">
                 <el-tooltip class="spj-radio" v-for="lang in allLanguage.languages" :key="'spj'+lang.name" effect="dark"
@@ -129,7 +129,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" v-if="routeName === 'create-problem' || routeName === 'edit-problem'">
-          <el-col :span="8">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('m.Share_Mode')">
               <el-select class="share-mode-select" v-model="problem.share_mode" :placeholder="$t('m.Share_Mode')">
                 <el-option :label="$t('m.Share_Mode_Private')" value="Private"></el-option>
@@ -146,7 +146,7 @@
                 {{$t('m.Delete')}}
               </el-button>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :xs="24" :sm="12">
                   <el-form-item :label="$t('m.Input_Samples')" required>
                     <el-input
                       :rows="5"
@@ -156,7 +156,7 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :xs="24" :sm="12">
                   <el-form-item :label="$t('m.Output_Samples')" required>
                     <el-input
                       :rows="5"
@@ -175,7 +175,7 @@
           </button>
         </div>
         <el-form-item style="margin-top: 20px" :label="$t('m.Hint')">
-          <Simditor v-model="problem.hint" placeholder=""></Simditor>
+          <Simditor :key="$i18n.locale" v-model="problem.hint" placeholder=""></Simditor>
         </el-form-item>
         <el-form-item :label="$t('m.Code_Template')">
           <el-row>
@@ -213,7 +213,7 @@
           </Accordion>
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xs="24" :sm="4">
             <el-form-item :label="$t('m.Type')">
               <el-radio-group v-model="problem.rule_type" :disabled="disableRuleType">
                 <el-radio label="ACM">ACM</el-radio>
@@ -221,7 +221,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
               <el-upload :headers="uploadCsrfHeaders()"
                 action="/api/admin/test_case"
@@ -235,7 +235,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <el-form-item :label="$t('m.IOMode')">
               <el-radio-group v-model="problem.io_mode.io_mode">
                 <el-radio label="Standard IO">{{$t('m.IO_Standard')}}</el-radio>
@@ -244,17 +244,40 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="4" v-if="problem.io_mode.io_mode == 'File IO'">
+          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
             <el-form-item :label="$t('m.InputFileName')" required>
               <el-input type="text" v-model="problem.io_mode.input"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4" v-if="problem.io_mode.io_mode == 'File IO'">
+          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
             <el-form-item :label="$t('m.OutputFileName')" required>
               <el-input type="text" v-model="problem.io_mode.output"></el-input>
             </el-form-item>
           </el-col>
 
+          <el-col :span="24" v-if="!problem.spj" class="text-test-cases">
+            <h3>{{$t('m.Text_Cases')}}</h3>
+            <p>{{$t('m.Text_Cases_Help')}}</p>
+            <el-button v-if="mode === 'edit'" size="small" @click="loadTextCases">{{$t('m.Load_Text_Cases')}}</el-button>
+            <div v-for="(item, index) in textCases" :key="index" class="text-case">
+              <h4>{{$t('m.TestCase')}} {{index + 1}}</h4>
+              <el-row :gutter="16">
+                <el-col :xs="24" :sm="12">
+                  <el-form-item :label="$t('m.Input')">
+                    <el-input type="textarea" :rows="4" v-model="item.input" :aria-label="$t('m.Input') + ' ' + (index + 1)"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="12">
+                  <el-form-item :label="$t('m.Output')">
+                    <el-input type="textarea" :rows="4" v-model="item.output" :aria-label="$t('m.Output') + ' ' + (index + 1)"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-button size="small" :disabled="textCases.length === 1" @click="textCases.splice(index, 1)">{{$t('m.Remove_Case')}}</el-button>
+            </div>
+            <el-button size="small" :disabled="textCases.length >= 100" @click="textCases.push({input: '', output: ''})">{{$t('m.Add_Case')}}</el-button>
+            <el-button type="primary" :loading="savingTextCases" @click="applyTextCases">{{$t('m.Apply_Text_Cases')}}</el-button>
+          </el-col>
           <el-col :span="24">
             <el-table
               :data="problem.test_case_score"
@@ -294,176 +317,213 @@
 
 <script>
 import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
-  import Simditor from '../../components/Simditor'
-  import Accordion from '../../components/Accordion'
-  import CodeMirror from '../../components/CodeMirror'
-  import api from '../../api'
-  import TrainingConfig from '../../components/TrainingConfig.vue'
+import Simditor from '../../components/Simditor'
+import Accordion from '../../components/Accordion'
+import CodeMirror from '../../components/CodeMirror'
+import api from '../../api'
+import TrainingConfig from '../../components/TrainingConfig.vue'
 
-  export default {
-    name: 'Problem',
-    components: {
-      TrainingConfig,
-      Simditor,
-      Accordion,
-      CodeMirror
-    },
-    data () {
-      return {
-        rules: {
-          _id: {required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur'},
-          title: {required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur'},
-          input_description: {required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur'},
-          output_description: {required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur'},
-          time_limit: [
+export default {
+  name: 'Problem',
+  components: {
+    TrainingConfig,
+    Simditor,
+    Accordion,
+    CodeMirror
+  },
+  data () {
+    return {
+      rules: {
+        _id: {required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur'},
+        title: {required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur'},
+        input_description: {required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur'},
+        output_description: {required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur'},
+        time_limit: [
             {type: 'integer', required: true, message: this.$i18n.t('m.Time_Limit_Required'), trigger: 'blur'},
             {type: 'integer', min: 100, max: 60000, message: this.$i18n.t('m.Time_Limit_Range'), trigger: 'blur'}
-          ],
-          memory_limit: [
+        ],
+        memory_limit: [
             {required: true, message: this.$i18n.t('m.Memory_Limit_Required'), trigger: 'blur'},
             {type: 'integer', min: 32, max: 4096, message: this.$i18n.t('m.Memory_Limit_Range'), trigger: 'blur'}
-          ]
-        },
-        loadingCompile: false,
-        mode: '',
-        contest: {},
-        problem: {
-          languages: [],
-          io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
-        },
-        reProblem: {
-          languages: [],
-          io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
-        },
-        testCaseUploaded: false,
-        allLanguage: {},
-        inputVisible: false,
-        tagInput: '',
-        template: {},
+        ]
+      },
+      loadingCompile: false,
+      mode: '',
+      contest: {},
+      problem: {
+        languages: [],
+        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
+      },
+      reProblem: {
+        languages: [],
+        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
+      },
+      testCaseUploaded: false,
+      textCases: [{input: '', output: ''}],
+      appliedTextCases: JSON.stringify([{input: '', output: ''}]),
+      savingTextCases: false,
+      allLanguage: {},
+      inputVisible: false,
+      tagInput: '',
+      template: {},
+      title: '',
+      spjMode: '',
+      disableRuleType: false,
+      routeName: '',
+      error: {
+        tags: '',
+        spj: '',
+        languages: '',
+        testCase: ''
+      }
+    }
+  },
+  mounted () {
+    this.routeName = this.$route.name
+    if (this.routeName === 'edit-problem' || this.routeName === 'edit-contest-problem') {
+      this.mode = 'edit'
+    } else {
+      this.mode = 'add'
+    }
+    api.getLanguages().then(res => {
+      this.problem = this.reProblem = {
+        _id: '',
         title: '',
-        spjMode: '',
-        disableRuleType: false,
-        routeName: '',
-        error: {
-          tags: '',
-          spj: '',
-          languages: '',
-          testCase: ''
-        }
+        description: '',
+        input_description: '',
+        output_description: '',
+        time_limit: 1000,
+        memory_limit: 256,
+        difficulty: 'Low',
+        visible: true,
+        share_submission: false,
+        share_mode: 'Shared',
+        tags: [],
+        languages: [],
+        template: {},
+        samples: [{input: '', output: ''}],
+        spj: false,
+        spj_language: '',
+        spj_code: '',
+        spj_compile_ok: false,
+        test_case_id: '',
+        test_case_score: [],
+        rule_type: 'ACM',
+        hint: '',
+        source: '',
+        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
       }
-    },
-    mounted () {
-      this.routeName = this.$route.name
-      if (this.routeName === 'edit-problem' || this.routeName === 'edit-contest-problem') {
-        this.mode = 'edit'
-      } else {
-        this.mode = 'add'
+      let contestID = this.$route.params.contestId
+      if (contestID) {
+        this.problem.contest_id = this.reProblem.contest_id = contestID
+        this.disableRuleType = true
+        api.getContest(contestID).then(res => {
+          this.problem.rule_type = this.reProblem.rule_type = res.data.data.rule_type
+          this.contest = res.data.data
+        })
       }
-      api.getLanguages().then(res => {
-        this.problem = this.reProblem = {
-          _id: '',
-          title: '',
-          description: '',
-          input_description: '',
-          output_description: '',
-          time_limit: 1000,
-          memory_limit: 256,
-          difficulty: 'Low',
-          visible: true,
-          share_submission: false,
-          share_mode: 'Shared',
-          tags: [],
-          languages: [],
-          template: {},
-          samples: [{input: '', output: ''}],
-          spj: false,
-          spj_language: '',
-          spj_code: '',
-          spj_compile_ok: false,
-          test_case_id: '',
-          test_case_score: [],
-          rule_type: 'ACM',
-          hint: '',
-          source: '',
-          io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
-        }
-        let contestID = this.$route.params.contestId
-        if (contestID) {
-          this.problem.contest_id = this.reProblem.contest_id = contestID
-          this.disableRuleType = true
-          api.getContest(contestID).then(res => {
-            this.problem.rule_type = this.reProblem.rule_type = res.data.data.rule_type
-            this.contest = res.data.data
-          })
-        }
 
-        this.problem.spj_language = 'C'
+      this.problem.spj_language = 'C'
 
-        let allLanguage = res.data.data
-        this.allLanguage = allLanguage
+      let allLanguage = res.data.data
+      this.allLanguage = allLanguage
 
         // get problem after getting languages list to avoid find undefined value in `watch problem.languages`
-        if (this.mode === 'edit') {
-          this.title = this.$i18n.t('m.Edit_Problem')
-          let funcName = {'edit-problem': 'getProblem', 'edit-contest-problem': 'getContestProblem'}[this.routeName]
-          api[funcName](this.$route.params.problemId).then(problemRes => {
-            let data = problemRes.data.data
-            if (!data.spj_code) {
-              data.spj_code = ''
-            }
-            data.spj_language = data.spj_language || 'C'
-            this.problem = data
-            this.testCaseUploaded = true
-          })
-        } else {
-          this.title = this.$i18n.t('m.Add_Problem')
-          for (let item of allLanguage.languages) {
-            this.problem.languages.push(item.name)
+      if (this.mode === 'edit') {
+        this.title = this.$i18n.t('m.Edit_Problem')
+        let funcName = {'edit-problem': 'getProblem', 'edit-contest-problem': 'getContestProblem'}[this.routeName]
+        api[funcName](this.$route.params.problemId).then(problemRes => {
+          let data = problemRes.data.data
+          if (!data.spj_code) {
+            data.spj_code = ''
           }
-        }
-      })
-    },
-    watch: {
-      '$route' () {
-        this.$refs.form.resetFields()
-        this.problem = this.reProblem
-      },
-      'problem.languages' (newVal) {
-        let data = {}
-        // use deep copy to avoid infinite loop
-        let languages = JSON.parse(JSON.stringify(newVal)).sort()
-        for (let item of languages) {
-          if (this.template[item] === undefined) {
-            let langConfig = this.allLanguage.languages.find(lang => {
-              return lang.name === item
-            })
-            if (this.problem.template[item] === undefined) {
-              data[item] = {checked: false, code: langConfig.config.template, mode: langConfig.content_type}
-            } else {
-              data[item] = {checked: true, code: this.problem.template[item], mode: langConfig.content_type}
-            }
-          } else {
-            data[item] = this.template[item]
-          }
-        }
-        this.template = data
-      },
-      'problem.spj_language' (newVal) {
-        this.spjMode = this.allLanguage.spj_languages.find(item => {
-          return item.name === this.problem.spj_language
-        }).content_type
-      },
-      'problem.title' (newTitle) {
-        if (this.mode === 'add') {
-          this.problem._id = this.generateSlug(newTitle)
+          data.spj_language = data.spj_language || 'C'
+          this.problem = data
+          this.testCaseUploaded = true
+        })
+      } else {
+        this.title = this.$i18n.t('m.Add_Problem')
+        for (let item of allLanguage.languages) {
+          this.problem.languages.push(item.name)
         }
       }
+    })
+  },
+  watch: {
+    '$route' () {
+      this.$refs.form.resetFields()
+      this.problem = this.reProblem
     },
-    methods: {
-      uploadCsrfHeaders,
-      generateSlug (title) {
-        if (!title) return ''
-        return title
+    'problem.languages' (newVal) {
+      let data = {}
+        // use deep copy to avoid infinite loop
+      let languages = JSON.parse(JSON.stringify(newVal)).sort()
+      for (let item of languages) {
+        if (this.template[item] === undefined) {
+          let langConfig = this.allLanguage.languages.find(lang => {
+            return lang.name === item
+          })
+          if (this.problem.template[item] === undefined) {
+            data[item] = {checked: false, code: langConfig.config.template, mode: langConfig.content_type}
+          } else {
+            data[item] = {checked: true, code: this.problem.template[item], mode: langConfig.content_type}
+          }
+        } else {
+          data[item] = this.template[item]
+        }
+      }
+      this.template = data
+    },
+    'problem.spj_language' (newVal) {
+      this.spjMode = this.allLanguage.spj_languages.find(item => {
+        return item.name === this.problem.spj_language
+      }).content_type
+    },
+    'problem.title' (newTitle) {
+      if (this.mode === 'add') {
+        this.problem._id = this.generateSlug(newTitle)
+      }
+    }
+  },
+  methods: {
+    uploadCsrfHeaders,
+    async loadTextCases () {
+      try {
+        if (JSON.stringify(this.textCases) !== this.appliedTextCases) {
+          await this.$confirm(this.$t('m.Discard_Text_Cases'), this.$t('m.Warning'), {
+            confirmButtonText: this.$t('m.Yes'), cancelButtonText: this.$t('m.Cancel')
+          })
+        }
+        const response = await api.getTextTestCases(this.problem.id)
+        this.textCases = response.data.data.cases
+        this.appliedTextCases = JSON.stringify(this.textCases)
+      } catch (_) {
+          // Cancelar o fallar no descarta lo escrito.
+      }
+    },
+    async applyTextCases () {
+      if (this.testCaseUploaded) {
+        try {
+          await this.$confirm(this.$t('m.Replace_Cases_Confirm'), this.$t('m.Warning'), {
+            confirmButtonText: this.$t('m.Yes'), cancelButtonText: this.$t('m.Cancel'), type: 'warning'
+          })
+        } catch (_) { return }
+      }
+      this.savingTextCases = true
+      try {
+        const response = await api.createTextTestCases(this.textCases)
+        this.uploadSucceeded(response.data)
+        this.appliedTextCases = JSON.stringify(this.textCases)
+        this.$success(this.$t('m.Text_Cases_Applied'))
+      } catch (_) {
+          // La capa HTTP ya muestra el error; conserva el texto para corregirlo.
+      } finally {
+        this.savingTextCases = false
+      }
+    },
+    generateSlug (title) {
+      if (!title) return ''
+      return title
           .toString()
           .toLowerCase()
           .normalize('NFD')
@@ -471,197 +531,201 @@ import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-+|-+$/g, '')
           .substring(0, 32)
-      },
-      switchSpj () {
-        if (this.testCaseUploaded) {
-          this.$confirm(this.$i18n.t('m.Change_Judge_Method_Confirm'), this.$i18n.t('m.Warning'), {
-            confirmButtonText: this.$i18n.t('m.Yes'),
-            cancelButtonText: this.$i18n.t('m.Cancel'),
-            type: 'warning'
-          }).then(() => {
-            this.problem.spj = !this.problem.spj
-            this.resetTestCase()
-          }).catch(() => {
-          })
-        } else {
+    },
+    switchSpj () {
+      if (this.testCaseUploaded) {
+        this.$confirm(this.$i18n.t('m.Change_Judge_Method_Confirm'), this.$i18n.t('m.Warning'), {
+          confirmButtonText: this.$i18n.t('m.Yes'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
+          type: 'warning'
+        }).then(() => {
           this.problem.spj = !this.problem.spj
-        }
-      },
-      querySearch (queryString, cb) {
-        api.getProblemTagList({ keyword: queryString }).then(res => {
-          let tagList = []
-          for (let tag of res.data.data) {
-            tagList.push({value: tag.name})
-          }
-          cb(tagList)
+          this.resetTestCase()
         }).catch(() => {
         })
-      },
-      resetTestCase () {
-        this.testCaseUploaded = false
-        this.problem.test_case_score = []
-        this.problem.test_case_id = ''
-      },
-      addTag () {
-        let inputValue = this.tagInput
-        if (inputValue) {
-          this.problem.tags.push(inputValue)
+      } else {
+        this.problem.spj = !this.problem.spj
+      }
+    },
+    querySearch (queryString, cb) {
+      api.getProblemTagList({ keyword: queryString }).then(res => {
+        let tagList = []
+        for (let tag of res.data.data) {
+          tagList.push({value: tag.name})
         }
-        this.inputVisible = false
-        this.tagInput = ''
-      },
-      closeTag (tag) {
-        this.problem.tags.splice(this.problem.tags.indexOf(tag), 1)
-      },
-      addSample () {
-        this.problem.samples.push({input: '', output: ''})
-      },
-      deleteSample (index) {
-        this.problem.samples.splice(index, 1)
-      },
-      uploadSucceeded (response) {
-        if (response.error) {
-          this.$error(response.data)
-          return
+        cb(tagList)
+      }).catch(() => {
+      })
+    },
+    resetTestCase () {
+      this.testCaseUploaded = false
+      this.problem.test_case_score = []
+      this.problem.test_case_id = ''
+    },
+    addTag () {
+      let inputValue = this.tagInput
+      if (inputValue) {
+        this.problem.tags.push(inputValue)
+      }
+      this.inputVisible = false
+      this.tagInput = ''
+    },
+    closeTag (tag) {
+      this.problem.tags.splice(this.problem.tags.indexOf(tag), 1)
+    },
+    addSample () {
+      this.problem.samples.push({input: '', output: ''})
+    },
+    deleteSample (index) {
+      this.problem.samples.splice(index, 1)
+    },
+    uploadSucceeded (response) {
+      if (response.error) {
+        this.$error(response.data)
+        return
+      }
+      let fileList = response.data.info
+      for (let file of fileList) {
+        file.score = (100 / fileList.length).toFixed(0)
+        if (!file.output_name && this.problem.spj) {
+          file.output_name = '-'
         }
-        let fileList = response.data.info
-        for (let file of fileList) {
-          file.score = (100 / fileList.length).toFixed(0)
-          if (!file.output_name && this.problem.spj) {
-            file.output_name = '-'
-          }
-        }
-        this.problem.test_case_score = fileList
-        this.testCaseUploaded = true
-        this.problem.test_case_id = response.data.id
-      },
-      uploadFailed () {
-        this.$error(this.$i18n.t('m.Upload_Failed'))
-      },
-      compileSPJ () {
-        let data = {
-          id: this.problem.id,
-          spj_code: this.problem.spj_code,
-          spj_language: this.problem.spj_language
-        }
-        this.loadingCompile = true
-        api.compileSPJ(data).then(res => {
-          this.loadingCompile = false
-          this.problem.spj_compile_ok = true
-          this.error.spj = ''
-        }, err => {
-          this.loadingCompile = false
-          this.problem.spj_compile_ok = false
-          const h = this.$createElement
-          this.$msgbox({
-            title: this.$i18n.t('m.Compile_Error'),
-            type: 'error',
-            message: h('pre', err.data.data),
-            showCancelButton: false,
-            closeOnClickModal: false,
-            customClass: 'dialog-compile-error'
-          })
+      }
+      this.problem.test_case_score = fileList
+      this.testCaseUploaded = true
+      this.problem.test_case_id = response.data.id
+    },
+    uploadFailed () {
+      this.$error(this.$i18n.t('m.Upload_Failed'))
+    },
+    compileSPJ () {
+      let data = {
+        id: this.problem.id,
+        spj_code: this.problem.spj_code,
+        spj_language: this.problem.spj_language
+      }
+      this.loadingCompile = true
+      api.compileSPJ(data).then(res => {
+        this.loadingCompile = false
+        this.problem.spj_compile_ok = true
+        this.error.spj = ''
+      }, err => {
+        this.loadingCompile = false
+        this.problem.spj_compile_ok = false
+        const h = this.$createElement
+        this.$msgbox({
+          title: this.$i18n.t('m.Compile_Error'),
+          type: 'error',
+          message: h('pre', err.data.data),
+          showCancelButton: false,
+          closeOnClickModal: false,
+          customClass: 'dialog-compile-error'
         })
-      },
-      submit () {
-        this.$refs.form.validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
-          this._doSubmit()
-        })
-      },
-      _doSubmit () {
-        if (!this.problem.samples.length) {
-          this.$error(this.$i18n.t('m.Sample_Required'))
+      })
+    },
+    submit () {
+      if (!this.problem.spj && (this.savingTextCases || JSON.stringify(this.textCases) !== this.appliedTextCases)) {
+        this.$error(this.$t('m.Apply_Text_Before_Save'))
+        return
+      }
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          this.$error(this.$i18n.t('m.Fix_Form_Errors'))
           return
         }
-        for (let sample of this.problem.samples) {
-          if (!sample.input || !sample.output) {
-            this.$error(this.$i18n.t('m.Sample_IO_Required'))
-            return
-          }
-        }
-        if (!this.problem.tags.length) {
-          this.error.tags = this.$i18n.t('m.Add_One_Tag')
-          this.$error(this.error.tags)
+        this._doSubmit()
+      })
+    },
+    _doSubmit () {
+      if (!this.problem.samples.length) {
+        this.$error(this.$i18n.t('m.Sample_Required'))
+        return
+      }
+      for (let sample of this.problem.samples) {
+        if (!sample.input || !sample.output) {
+          this.$error(this.$i18n.t('m.Sample_IO_Required'))
           return
         }
-        if (this.problem.spj) {
-          if (!this.problem.spj_code) {
-            this.error.spj = this.$i18n.t('m.SPJ_Code_Required')
-            this.$error(this.error.spj)
-          } else if (!this.problem.spj_compile_ok) {
-            this.error.spj = this.$i18n.t('m.SPJ_Not_Compiled')
-          }
-          if (this.error.spj) {
-            this.$error(this.error.spj)
-            return
-          }
+      }
+      if (!this.problem.tags.length) {
+        this.error.tags = this.$i18n.t('m.Add_One_Tag')
+        this.$error(this.error.tags)
+        return
+      }
+      if (this.problem.spj) {
+        if (!this.problem.spj_code) {
+          this.error.spj = this.$i18n.t('m.SPJ_Code_Required')
+          this.$error(this.error.spj)
+        } else if (!this.problem.spj_compile_ok) {
+          this.error.spj = this.$i18n.t('m.SPJ_Not_Compiled')
         }
-        if (!this.problem.languages.length) {
-          this.error.languages = this.$i18n.t('m.Choose_One_Language')
-          this.$error(this.error.languages)
+        if (this.error.spj) {
+          this.$error(this.error.spj)
           return
         }
-        if (!this.testCaseUploaded) {
-          this.error.testCase = this.$i18n.t('m.Test_Case_Not_Uploaded')
-          this.$error(this.error.testCase)
+      }
+      if (!this.problem.languages.length) {
+        this.error.languages = this.$i18n.t('m.Choose_One_Language')
+        this.$error(this.error.languages)
+        return
+      }
+      if (!this.testCaseUploaded) {
+        this.error.testCase = this.$i18n.t('m.Test_Case_Not_Uploaded')
+        this.$error(this.error.testCase)
+        return
+      }
+      if (this.problem.io_mode && this.problem.io_mode.io_mode === 'File IO') {
+        const fileNameRegex = /^[A-Za-z0-9_.-]+$/
+        if (!this.problem.io_mode.input || !fileNameRegex.test(this.problem.io_mode.input)) {
+          this.$error(this.$i18n.t('m.Invalid_Input_File_Name'))
           return
         }
-        if (this.problem.io_mode && this.problem.io_mode.io_mode === 'File IO') {
-          const fileNameRegex = /^[A-Za-z0-9_.\-]+$/
-          if (!this.problem.io_mode.input || !fileNameRegex.test(this.problem.io_mode.input)) {
-            this.$error(this.$i18n.t('m.Invalid_Input_File_Name'))
-            return
-          }
-          if (!this.problem.io_mode.output || !fileNameRegex.test(this.problem.io_mode.output)) {
-            this.$error(this.$i18n.t('m.Invalid_Output_File_Name'))
-            return
-          }
+        if (!this.problem.io_mode.output || !fileNameRegex.test(this.problem.io_mode.output)) {
+          this.$error(this.$i18n.t('m.Invalid_Output_File_Name'))
+          return
         }
-        if (this.problem.rule_type === 'OI') {
-          for (let item of this.problem.test_case_score) {
-            try {
-              if (parseInt(item.score) <= 0) {
-                this.$error(this.$i18n.t('m.Invalid_Test_Case_Score'))
-                return
-              }
-            } catch (e) {
-              this.$error(this.$i18n.t('m.Test_Case_Score_Integer'))
+      }
+      if (this.problem.rule_type === 'OI') {
+        for (let item of this.problem.test_case_score) {
+          try {
+            if (parseInt(item.score) <= 0) {
+              this.$error(this.$i18n.t('m.Invalid_Test_Case_Score'))
               return
             }
+          } catch (e) {
+            this.$error(this.$i18n.t('m.Test_Case_Score_Integer'))
+            return
           }
         }
-        this.problem.languages = this.problem.languages.sort()
-        this.problem.template = {}
-        for (let k in this.template) {
-          if (this.template[k].checked) {
-            this.problem.template[k] = this.template[k].code
-          }
-        }
-        let funcName = {
-          'create-problem': 'createProblem',
-          'edit-problem': 'editProblem',
-          'create-contest-problem': 'createContestProblem',
-          'edit-contest-problem': 'editContestProblem'
-        }[this.routeName]
-        // edit contest problem 时, contest_id会被后来的请求覆盖掉
-        if (funcName === 'editContestProblem') {
-          this.problem.contest_id = this.contest.id
-        }
-        api[funcName](this.problem).then(res => {
-          if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
-            this.$router.push({name: 'contest-problem-list', params: {contestId: this.$route.params.contestId}})
-          } else {
-            this.$router.push({name: 'problem-list'})
-          }
-        }).catch(() => {
-        })
       }
+      this.problem.languages = this.problem.languages.sort()
+      this.problem.template = {}
+      for (let k in this.template) {
+        if (this.template[k].checked) {
+          this.problem.template[k] = this.template[k].code
+        }
+      }
+      let funcName = {
+        'create-problem': 'createProblem',
+        'edit-problem': 'editProblem',
+        'create-contest-problem': 'createContestProblem',
+        'edit-contest-problem': 'editContestProblem'
+      }[this.routeName]
+        // edit contest problem 时, contest_id会被后来的请求覆盖掉
+      if (funcName === 'editContestProblem') {
+        this.problem.contest_id = this.contest.id
+      }
+      api[funcName](this.problem).then(res => {
+        if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
+          this.$router.push({name: 'contest-problem-list', params: {contestId: this.$route.params.contestId}})
+        } else {
+          this.$router.push({name: 'problem-list'})
+        }
+      }).catch(() => {
+      })
     }
   }
+}
 </script>
 
 <style lang="less" scoped>

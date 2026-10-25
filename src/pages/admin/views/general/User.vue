@@ -280,259 +280,259 @@
 
 <script>
 import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
-  import papa from 'papaparse'
-  import api from '../../api.js'
-  import utils from '@/utils/utils'
+import papa from 'papaparse'
+import api from '../../api.js'
+import utils from '@/utils/utils'
 
-  export default {
-    name: 'User',
-    data () {
-      const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
-      const validateEmail = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$i18n.t('m.Email_Required')))
-        } else if (!emailRegex.test(value)) {
-          callback(new Error(this.$i18n.t('m.Email_Invalid')))
-        } else {
-          callback()
-        }
-      }
-      const validateOptionalPassword = (rule, value, callback) => {
-        // Vacío = sin cambio de contraseña (campo opcional en edición admin).
-        // Si hay valor, debe cumplir la política del backend: >=8, una mayúscula y un dígito.
-        if (value && (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value))) {
-          callback(new Error(this.$i18n.t('m.Password_Admin_Policy')))
-        } else {
-          callback()
-        }
-      }
-      const validateNumberTo = (rule, value, callback) => {
-        if (value === null || value === undefined || value === '') {
-          callback(new Error(this.$i18n.t('m.End_Number_Required')))
-        } else if (!Number.isInteger(value)) {
-          callback(new Error(this.$i18n.t('m.Must_Be_Integer')))
-        } else if (value < this.formGenerateUser.number_from) {
-          callback(new Error(this.$i18n.t('m.End_Number_GTE_Start')))
-        } else {
-          callback()
-        }
-      }
-      const validatePasswordLength = (rule, value, callback) => {
-        const num = Number(value)
-        if (!Number.isInteger(num) || num < 6 || num > 16) {
-          callback(new Error(this.$i18n.t('m.Password_Length_Range')))
-        } else {
-          callback()
-        }
-      }
-      return {
-        windowWidth: window.innerWidth,
-        pageSize: 10,
-        total: 0,
-        userList: [],
-        uploadUsers: [],
-        uploadUsersPage: [],
-        uploadUsersCurrentPage: 1,
-        uploadUsersPageSize: 15,
-        keyword: '',
-        showUserDialog: false,
-        user: {},
-        loadingTable: false,
-        loadingGenerate: false,
-        currentPage: 0,
-        selectedUsers: [],
-        formGenerateUser: {
-          prefix: '',
-          suffix: '',
-          number_from: 0,
-          number_to: 0,
-          password_length: 8
-        },
-        userRules: {
-          username: [
-            {required: true, message: this.$i18n.t('m.Username_Required'), trigger: 'blur'},
-            {min: 1, max: 32, message: this.$i18n.t('m.Username_Length'), trigger: 'blur'}
-          ],
-          real_name: [
-            {required: true, message: this.$i18n.t('m.Real_Name_Required'), trigger: 'blur'},
-            {max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur'}
-          ],
-          email: [
-            {required: true, validator: validateEmail, trigger: 'blur'}
-          ],
-          password: [
-            {validator: validateOptionalPassword, trigger: 'blur'}
-          ]
-        },
-        generateRules: {
-          prefix: [
-            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
-          ],
-          suffix: [
-            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
-          ],
-          number_from: [
-            {required: true, message: this.$i18n.t('m.Start_Number_Required'), type: 'number', trigger: 'blur'}
-          ],
-          number_to: [
-            {required: true, validator: validateNumberTo, trigger: 'blur'}
-          ],
-          password_length: [
-            {required: true, validator: validatePasswordLength, trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    mounted () {
-      this.getUserList(1)
-      window.addEventListener('resize', this.handleResize)
-    },
-    beforeDestroy () {
-      window.removeEventListener('resize', this.handleResize)
-    },
-    methods: {
-      uploadCsrfHeaders,
-      handleResize () {
-        this.windowWidth = window.innerWidth
-      },
-      // 切换页码回调
-      currentChange (page) {
-        this.currentPage = page
-        this.getUserList(page)
-      },
-      // 提交修改用户的信息
-      saveUser () {
-        this.$refs.userForm.validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
-          api.editUser(this.user).then(res => {
-            this.getUserList(this.currentPage)
-          }).then(() => {
-            this.showUserDialog = false
-          }).catch(() => {
-          })
-        })
-      },
-      // 打开用户对话框
-      openUserDialog (id) {
-        this.showUserDialog = true
-        api.getUser(id).then(res => {
-          this.user = res.data.data
-          this.user.password = ''
-          this.user.real_tfa = this.user.two_factor_auth
-        })
-      },
-      // 获取用户列表
-      getUserList (page) {
-        this.loadingTable = true
-        api.getUserList((page - 1) * this.pageSize, this.pageSize, this.keyword).then(res => {
-          this.loadingTable = false
-          this.total = res.data.data.total
-          this.userList = res.data.data.results
-        }, res => {
-          this.loadingTable = false
-        })
-      },
-      deleteUsers (ids) {
-        this.$confirm(this.$i18n.t('m.Delete_User_Confirm'), this.$i18n.t('m.Confirmation'), {
-          type: 'warning'
-        }).then(() => {
-          api.deleteUsers(ids.join(',')).then(res => {
-      this.$success(this.$t('m.Succeeded'))
-      this.getUserList(this.currentPage)
-    }).catch(() => {
-      this.getUserList(this.currentPage)
-          })
-        }, () => {
-        })
-      },
-      handleSelectionChange (val) {
-        this.selectedUsers = val
-      },
-      generateUser () {
-        this.$refs['formGenerateUser'].validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
-          this.loadingGenerate = true
-          let data = Object.assign({}, this.formGenerateUser)
-          api.generateUser(data).then(res => {
-            this.loadingGenerate = false
-            let url = '/admin/generate_user?file_id=' + res.data.data.file_id
-            utils.downloadFile(url).then(() => {
-              this.$alert(this.$i18n.t('m.Generate_User_Success'), this.$i18n.t('m.Notification'), {
-                confirmButtonText: 'OK'
-              })
-            })
-            this.getUserList(1)
-          }).catch(() => {
-            this.loadingGenerate = false
-          })
-        })
-      },
-      handleUsersCSV (file) {
-        papa.parse(file, {
-          complete: (results) => {
-            let data = results.data.filter(user => {
-              return user[0] && user[1] && user[2] && user[3]
-            })
-            let delta = results.data.length - data.length
-            if (delta > 0) {
-              this.$warning(this.$i18n.t('m.Users_Filtered', {count: delta}))
-            }
-            this.uploadUsersCurrentPage = 1
-            this.uploadUsers = data
-            this.uploadUsersPage = data.slice(0, this.uploadUsersPageSize)
-          },
-          error: (error) => {
-            this.$error(error)
-          }
-        })
-      },
-      handleUsersUpload () {
-        api.importUsers(this.uploadUsers).then(res => {
-          this.getUserList(1)
-          this.handleResetData()
-        }).catch(() => {
-        })
-      },
-      handleResetData () {
-        this.uploadUsers = []
-      }
-    },
-    computed: {
-      isMobile () {
-        return this.windowWidth < 768
-      },
-      selectedUserIDs () {
-        let ids = []
-        for (let user of this.selectedUsers) {
-          ids.push(user.id)
-        }
-        return ids
-      }
-    },
-    watch: {
-      'keyword' () {
-        this.currentChange(1)
-      },
-      'user.admin_type' () {
-        if (this.user.admin_type === 'Super Admin') {
-          this.user.problem_permission = 'All'
-        } else if (this.user.admin_type === 'Teacher') {
-          this.user.problem_permission = 'Own'
-        } else if (this.user.admin_type === 'Regular User') {
-          this.user.problem_permission = 'None'
-        }
-      },
-      'uploadUsersCurrentPage' (page) {
-        this.uploadUsersPage = this.uploadUsers.slice((page - 1) * this.uploadUsersPageSize, page * this.uploadUsersPageSize)
+export default {
+  name: 'User',
+  data () {
+    const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
+    const validateEmail = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error(this.$i18n.t('m.Email_Required')))
+      } else if (!emailRegex.test(value)) {
+        callback(new Error(this.$i18n.t('m.Email_Invalid')))
+      } else {
+        callback()
       }
     }
+    const validateOptionalPassword = (rule, value, callback) => {
+        // Vacío = sin cambio de contraseña (campo opcional en edición admin).
+        // Si hay valor, debe cumplir la política del backend: >=8, una mayúscula y un dígito.
+      if (value && (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value))) {
+        callback(new Error(this.$i18n.t('m.Password_Admin_Policy')))
+      } else {
+        callback()
+      }
+    }
+    const validateNumberTo = (rule, value, callback) => {
+      if (value === null || value === undefined || value === '') {
+        callback(new Error(this.$i18n.t('m.End_Number_Required')))
+      } else if (!Number.isInteger(value)) {
+        callback(new Error(this.$i18n.t('m.Must_Be_Integer')))
+      } else if (value < this.formGenerateUser.number_from) {
+        callback(new Error(this.$i18n.t('m.End_Number_GTE_Start')))
+      } else {
+        callback()
+      }
+    }
+    const validatePasswordLength = (rule, value, callback) => {
+      const num = Number(value)
+      if (!Number.isInteger(num) || num < 6 || num > 16) {
+        callback(new Error(this.$i18n.t('m.Password_Length_Range')))
+      } else {
+        callback()
+      }
+    }
+    return {
+      windowWidth: window.innerWidth,
+      pageSize: 10,
+      total: 0,
+      userList: [],
+      uploadUsers: [],
+      uploadUsersPage: [],
+      uploadUsersCurrentPage: 1,
+      uploadUsersPageSize: 15,
+      keyword: '',
+      showUserDialog: false,
+      user: {},
+      loadingTable: false,
+      loadingGenerate: false,
+      currentPage: 0,
+      selectedUsers: [],
+      formGenerateUser: {
+        prefix: '',
+        suffix: '',
+        number_from: 0,
+        number_to: 0,
+        password_length: 8
+      },
+      userRules: {
+        username: [
+            {required: true, message: this.$i18n.t('m.Username_Required'), trigger: 'blur'},
+            {min: 1, max: 32, message: this.$i18n.t('m.Username_Length'), trigger: 'blur'}
+        ],
+        real_name: [
+            {required: true, message: this.$i18n.t('m.Real_Name_Required'), trigger: 'blur'},
+            {max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur'}
+        ],
+        email: [
+            {required: true, validator: validateEmail, trigger: 'blur'}
+        ],
+        password: [
+            {validator: validateOptionalPassword, trigger: 'blur'}
+        ]
+      },
+      generateRules: {
+        prefix: [
+            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
+        ],
+        suffix: [
+            {max: 16, message: this.$i18n.t('m.Max_16_Chars'), trigger: 'blur'}
+        ],
+        number_from: [
+            {required: true, message: this.$i18n.t('m.Start_Number_Required'), type: 'number', trigger: 'blur'}
+        ],
+        number_to: [
+            {required: true, validator: validateNumberTo, trigger: 'blur'}
+        ],
+        password_length: [
+            {required: true, validator: validatePasswordLength, trigger: 'blur'}
+        ]
+      }
+    }
+  },
+  mounted () {
+    this.getUserList(1)
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  methods: {
+    uploadCsrfHeaders,
+    handleResize () {
+      this.windowWidth = window.innerWidth
+    },
+      // 切换页码回调
+    currentChange (page) {
+      this.currentPage = page
+      this.getUserList(page)
+    },
+      // 提交修改用户的信息
+    saveUser () {
+      this.$refs.userForm.validate((valid) => {
+        if (!valid) {
+          this.$error(this.$i18n.t('m.Fix_Form_Errors'))
+          return
+        }
+        api.editUser(this.user).then(res => {
+          this.getUserList(this.currentPage)
+        }).then(() => {
+          this.showUserDialog = false
+        }).catch(() => {
+        })
+      })
+    },
+      // 打开用户对话框
+    openUserDialog (id) {
+      this.showUserDialog = true
+      api.getUser(id).then(res => {
+        this.user = res.data.data
+        this.user.password = ''
+        this.user.real_tfa = this.user.two_factor_auth
+      })
+    },
+      // 获取用户列表
+    getUserList (page) {
+      this.loadingTable = true
+      api.getUserList((page - 1) * this.pageSize, this.pageSize, this.keyword).then(res => {
+        this.loadingTable = false
+        this.total = res.data.data.total
+        this.userList = res.data.data.results
+      }, res => {
+        this.loadingTable = false
+      })
+    },
+    deleteUsers (ids) {
+      this.$confirm(this.$i18n.t('m.Delete_User_Confirm'), this.$i18n.t('m.Confirmation'), {
+        type: 'warning'
+      }).then(() => {
+        api.deleteUsers(ids.join(',')).then(res => {
+          this.$success(this.$t('m.Succeeded'))
+          this.getUserList(this.currentPage)
+        }).catch(() => {
+          this.getUserList(this.currentPage)
+        })
+      }, () => {
+      })
+    },
+    handleSelectionChange (val) {
+      this.selectedUsers = val
+    },
+    generateUser () {
+      this.$refs['formGenerateUser'].validate((valid) => {
+        if (!valid) {
+          this.$error(this.$i18n.t('m.Fix_Form_Errors'))
+          return
+        }
+        this.loadingGenerate = true
+        let data = Object.assign({}, this.formGenerateUser)
+        api.generateUser(data).then(res => {
+          this.loadingGenerate = false
+          let url = '/admin/generate_user?file_id=' + res.data.data.file_id
+          utils.downloadFile(url).then(() => {
+            this.$alert(this.$i18n.t('m.Generate_User_Success'), this.$i18n.t('m.Notification'), {
+              confirmButtonText: 'OK'
+            })
+          })
+          this.getUserList(1)
+        }).catch(() => {
+          this.loadingGenerate = false
+        })
+      })
+    },
+    handleUsersCSV (file) {
+      papa.parse(file, {
+        complete: (results) => {
+          let data = results.data.filter(user => {
+            return user[0] && user[1] && user[2] && user[3]
+          })
+          let delta = results.data.length - data.length
+          if (delta > 0) {
+            this.$warning(this.$i18n.t('m.Users_Filtered', {count: delta}))
+          }
+          this.uploadUsersCurrentPage = 1
+          this.uploadUsers = data
+          this.uploadUsersPage = data.slice(0, this.uploadUsersPageSize)
+        },
+        error: (error) => {
+          this.$error(error)
+        }
+      })
+    },
+    handleUsersUpload () {
+      api.importUsers(this.uploadUsers).then(res => {
+        this.getUserList(1)
+        this.handleResetData()
+      }).catch(() => {
+      })
+    },
+    handleResetData () {
+      this.uploadUsers = []
+    }
+  },
+  computed: {
+    isMobile () {
+      return this.windowWidth < 768
+    },
+    selectedUserIDs () {
+      let ids = []
+      for (let user of this.selectedUsers) {
+        ids.push(user.id)
+      }
+      return ids
+    }
+  },
+  watch: {
+    'keyword' () {
+      this.currentChange(1)
+    },
+    'user.admin_type' () {
+      if (this.user.admin_type === 'Super Admin') {
+        this.user.problem_permission = 'All'
+      } else if (this.user.admin_type === 'Teacher') {
+        this.user.problem_permission = 'Own'
+      } else if (this.user.admin_type === 'Regular User') {
+        this.user.problem_permission = 'None'
+      }
+    },
+    'uploadUsersCurrentPage' (page) {
+      this.uploadUsersPage = this.uploadUsers.slice((page - 1) * this.uploadUsersPageSize, page * this.uploadUsersPageSize)
+    }
   }
+}
 </script>
 
 <style scoped lang="less">

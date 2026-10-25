@@ -4,66 +4,23 @@
 
 <script>
   import Simditor from 'tar-simditor'
-  import {ensureCsrf, csrfHeaders} from '@/utils/csrf'
+import {ensureCsrf, csrfHeaders} from '@/utils/csrf'
 
-  // Toolbar labels for the Simditor editor, selected by the app language.
-  Simditor.i18n['es-LA'] = {
-    'title': 'Título',
-    'normalText': 'Texto normal',
-    'bold': 'Negrita',
-    'italic': 'Cursiva',
-    'underline': 'Subrayado',
-    'strikethrough': 'Tachado',
-    'fontScale': 'Tamaño de fuente',
-    'color': 'Color de texto',
-    'ol': 'Lista numerada',
-    'ul': 'Lista de viñetas',
-    'blockquote': 'Cita',
-    'code': 'Código',
-    'table': 'Tabla',
-    'image': 'Imagen',
-    'link': 'Enlace',
-    'hr': 'Línea horizontal',
-    'indent': 'Aumentar sangría',
-    'outdent': 'Disminuir sangría',
-    'alignment': 'Alineación',
-    'markdown': 'Markdown'
-  }
+import {editorSpanish} from './editor-locale'
 
-  Simditor.i18n['en-US'] = {
-    'title': 'Title',
-    'normalText': 'Normal text',
-    'bold': 'Bold',
-    'italic': 'Italic',
-    'underline': 'Underline',
-    'strikethrough': 'Strikethrough',
-    'fontScale': 'Font size',
-    'color': 'Text color',
-    'ol': 'Numbered list',
-    'ul': 'Bullet list',
-    'blockquote': 'Quote',
-    'code': 'Code',
-    'table': 'Table',
-    'image': 'Image',
-    'link': 'Link',
-    'hr': 'Horizontal line',
-    'indent': 'Increase indent',
-    'outdent': 'Decrease indent',
-    'alignment': 'Alignment',
-    'markdown': 'Markdown'
-  }
+import 'tar-simditor/styles/simditor.css'
+import 'tar-simditor-markdown'
+import 'tar-simditor-markdown/styles/simditor-markdown.css'
+import './simditor-file-upload'
 
-  import 'tar-simditor/styles/simditor.css'
-  import 'tar-simditor-markdown'
-  import 'tar-simditor-markdown/styles/simditor-markdown.css'
-  import './simditor-file-upload'
+Simditor.i18n['es-LA'] = Object.assign({}, Simditor.i18n['en-US'], editorSpanish)
 
   export default {
     name: 'Simditor',
     props: {
       toolbar: {
         type: Array,
-        //default: () => ['title', 'bold', 'italic', 'underline', 'fontScale', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'image', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
+        // default: () => ['title', 'bold', 'italic', 'underline', 'fontScale', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'image', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
         default: () => ['title', 'bold', 'italic', 'underline', 'color', 'ol', 'ul', '|', 'blockquote', 'code', 'link', 'table', 'uploadfile', 'hr', '|', 'indent', 'outdent', 'alignment', '|', 'markdown']
       },
       value: {
@@ -79,7 +36,10 @@
     },
     async mounted () {
       await ensureCsrf()
+      if (this._isDestroyed) return
       const editorLocale = Simditor.i18n[this.$i18n.locale] ? this.$i18n.locale : 'en-US'
+      // simple-module consulta la propiedad estática, no la opción de instancia.
+      Simditor.locale = editorLocale
 
       this.editor = new Simditor({
         textarea: this.$refs.editor,
@@ -101,7 +61,7 @@
         },
         defaultImage: '/static/images/image.png'
       })
-      
+
       // Keep the stored value as the raw `$...$` source. Math is rendered on
       // display (via the v-katex directive) and previewed through KatexEditor;
       // rendering it inside the editable body here would bake KaTeX HTML into
@@ -115,11 +75,14 @@
 
       this.editor.setValue(this.value)
     },
+    beforeDestroy () {
+      if (this.editor) this.editor.destroy()
+    },
     watch: {
       'value' (val) {
         if (this.currentValue !== val) {
           this.currentValue = val
-          this.editor.setValue(val)
+          if (this.editor) this.editor.setValue(val)
         }
       },
       'currentValue' (newVal, oldVal) {
