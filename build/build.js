@@ -32,6 +32,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       process.exit(1)
     }
 
+    require('./version').writeVersion()
     console.log(chalk.cyan('  Congratulations, the project built complete without error\n'))
     console.log(chalk.yellow(
       ' You can now check the onlinejudge in http://YouIP/'

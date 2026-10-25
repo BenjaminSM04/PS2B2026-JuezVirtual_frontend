@@ -153,42 +153,10 @@
             <span class="dashboard-card__eyebrow">{{$t('m.System_Updates')}}</span>
             <h2 class="dashboard-card__title">{{$t('m.Release_Notes')}}</h2>
           </div>
-          <el-popover placement="left" trigger="hover">
-            <i slot="reference" class="el-icon-fa-question-circle dashboard-card__help"></i>
-            <p>{{$t('m.Upgrade_Message')}}</p>
-            <p>
-              Reference:
-              <a href="http://docs.onlinejudge.me/#/onlinejudge/guide/upgrade" target="_blank">
-                http://docs.onlinejudge.me/#/onlinejudge/guide/upgrade
-              </a>
-            </p>
-          </el-popover>
+
         </div>
 
-        <div class="notes-card" v-loading="loadingReleases">
-          <div v-if="releases.length" class="notes-card__list">
-            <article v-for="(release, index) in releases" :key="'release-' + index" class="release-note">
-              <div class="release-note__header">
-                <div>
-                  <h3>{{release.title}}</h3>
-                  <p>{{$t('m.Release_Level')}}: {{release.level}}</p>
-                </div>
-                <el-tag v-if="release.new_version" size="mini" type="success">
-                  {{$t('m.New_Version')}}
-                </el-tag>
-              </div>
-
-              <ul class="release-note__details">
-                <li v-for="detail in release.details" :key="detail" v-html="detail"></li>
-              </ul>
-            </article>
-          </div>
-
-          <div v-else class="notes-card__empty">
-            <i class="el-icon-fa-sticky-note-o"></i>
-            <p>{{$t('m.No_Release_Notes')}}</p>
-          </div>
-        </div>
+        <ReleaseNotes></ReleaseNotes>
       </section>
 
       <section v-if="isTeacher" class="dashboard-card dashboard-card--contests">
@@ -231,12 +199,14 @@
   import browserDetector from 'browser-detect'
   import api from '@admin/api'
   import { CONTEST_STATUS } from '@/utils/constants'
+  import ReleaseNotes from '@/components/ReleaseNotes.vue'
   import AnimatedNumber from '@/components/AnimatedNumber.vue'
 
   export default {
     name: 'dashboard',
     components: {
-      AnimatedNumber
+      AnimatedNumber,
+      ReleaseNotes
     },
     data () {
       return {
@@ -248,8 +218,6 @@
           env: {}
         },
         session: {},
-        loadingReleases: true,
-        releases: [],
         avatarLoadError: false,
         loadingTeacher: false,
         teacherMetrics: {
@@ -277,23 +245,6 @@
         api.getDashboardInfo().then(resp => {
           this.infoData = resp.data.data
         }, () => {
-        })
-        api.getReleaseNotes().then(resp => {
-          this.loadingReleases = false
-          let data = resp.data.data
-          if (!data) {
-            return
-          }
-          let currentVersion = data.local_version
-          let updates = data.update || []
-          updates.forEach(release => {
-            if (release.version > currentVersion) {
-              release.new_version = true
-            }
-          })
-          this.releases = updates
-        }, () => {
-          this.loadingReleases = false
         })
       },
       loadTeacherMetrics () {
@@ -398,29 +349,9 @@
       },
       systemItems () {
         return [
-          {
-            key: 'judge',
-            label: this.$t('m.DashBoardJudge_Server'),
-            value: this.infoData.judge_server_count
-          },
-          {
-            key: 'https',
-            label: this.$t('m.HTTPS_Status'),
-            value: this.https ? this.$t('m.Enabled') : this.$t('m.Disabled'),
-            tagType: this.https ? 'success' : 'danger'
-          },
-          {
-            key: 'forceHttps',
-            label: this.$t('m.Force_HTTPS'),
-            value: this.forceHttps ? this.$t('m.Enabled') : this.$t('m.Disabled'),
-            tagType: this.forceHttps ? 'success' : 'danger'
-          },
-          {
-            key: 'cdn',
-            label: this.$t('m.CDN_HOST'),
-            value: this.cdn || this.$t('m.Not_Used'),
-            tagType: this.cdn ? 'success' : 'warning'
-          }
+          {key: 'version', label: this.$t('m.V2_App_Version'), value: process.env.APP_VERSION},
+          {key: 'judge', label: this.$t('m.DashBoardJudge_Server'), value: this.infoData.judge_server_count},
+          {key: 'https', label: this.$t('m.V2_Connection'), value: this.https ? 'HTTPS' : this.$t('m.V2_Local_Connection'), tagType: this.https ? 'success' : 'info'}
         ]
       },
       showAvatar () {

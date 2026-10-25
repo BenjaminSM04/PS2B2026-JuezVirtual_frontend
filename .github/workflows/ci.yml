@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 20
     env:
       NODE_OPTIONS: --openssl-legacy-provider
-      SOURCE_COMMIT: ${{ github.sha }}
+      APP_REVISION: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

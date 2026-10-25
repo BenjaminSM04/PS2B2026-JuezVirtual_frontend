@@ -1,9 +1,9 @@
 <template>
   <Card :padding="padding" :shadow="shadow" :dis-hover="disHover" :bordered="bordered">
-    <div slot="title" class="panel-title">
+    <div v-if="$slots.title" slot="title" class="panel-title">
       <slot name="title"></slot>
     </div>
-    <div slot="extra" class="panel-extra">
+    <div v-if="$slots.extra" slot="extra" class="panel-extra">
       <slot name="extra"></slot>
     </div>
     <div class="panel-body">

@@ -1,10 +1,6 @@
 <template>
   <div class="admin-sidemenu">
-    <div class="admin-sidemenu__brand">
-      <div class="admin-sidemenu__logo">
-        <img src="../../../assets/Logo2.png" alt="LizardJudge"/>
-      </div>
-    </div>
+    <div class="admin-sidemenu__brand"><router-link to="/" aria-label="LizardJudge"><BrandMark compact></BrandMark></router-link></div>
 
     <el-menu
       class="admin-sidemenu__menu"
@@ -55,10 +51,12 @@
 </template>
 
 <script>
+  import BrandMark from '@/components/BrandMark.vue'
   import { mapGetters } from 'vuex'
 
   export default {
     name: 'SideMenu',
+    components: {BrandMark},
     computed: {
       ...mapGetters(['user', 'isSuperAdmin', 'isTeacherRole', 'hasProblemPermission']),
       currentPath () {

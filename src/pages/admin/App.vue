@@ -1,11 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" class="admin-app">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   import '@/styles/lizard-theme.less'
+  import '@/styles/experience-v2.less'
   export default {
     name: 'app'
   }

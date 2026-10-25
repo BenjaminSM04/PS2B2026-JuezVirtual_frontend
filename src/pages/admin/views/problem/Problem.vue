@@ -1,17 +1,60 @@
 <template>
   <div class="problem">
-
     <Panel :title="title">
-      <TrainingConfig v-if="routeName === 'edit-problem' && mode === 'edit' && problem.id"
-                      :key="problem.id" :problem-id="problem.id"></TrainingConfig>
-      <el-form ref="form" :model="problem" :rules="rules" label-position="top" label-width="70px">
+      <p v-if="problem.title" class="v2-editor-context">{{ problem._id }} &middot; {{ problem.title }}</p>
+      <div class="v2-editor-nav" role="tablist" :aria-label="$t('m.Problem')" @keydown="handleEditorTabKey">
+        <button
+          id="editor-tab-statement"
+          type="button"
+          role="tab"
+          :aria-selected="String(activeEditorTab === 'statement')"
+          :tabindex="activeEditorTab === 'statement' ? 0 : -1"
+          aria-controls="problem-statement"
+          @click="activeEditorTab = 'statement'"
+        >
+          {{ $t('m.V2_Statement') }}
+        </button>
+        <button
+          id="editor-tab-evaluation"
+          type="button"
+          role="tab"
+          :aria-selected="String(activeEditorTab === 'evaluation')"
+          :tabindex="activeEditorTab === 'evaluation' ? 0 : -1"
+          aria-controls="problem-evaluation"
+          @click="activeEditorTab = 'evaluation'"
+        >
+          {{ $t('m.V2_Evaluation') }}
+        </button>
+        <button
+          id="editor-tab-tutor"
+          type="button"
+          role="tab"
+          :aria-selected="String(activeEditorTab === 'tutor')"
+          :tabindex="activeEditorTab === 'tutor' ? 0 : -1"
+          aria-controls="problem-tutor"
+          :disabled="!canConfigureTutor"
+          :title="canConfigureTutor ? '' : $t('m.V2_Tutor_Create')"
+          @click="activeEditorTab = 'tutor'"
+        >
+          {{ $t('m.V2_Tutor') }}
+        </button>
+      </div>
+      <el-form
+        v-show="activeEditorTab !== 'tutor'"
+        ref="form"
+        :model="problem"
+        :rules="rules"
+        label-position="top"
+        label-width="70px"
+      >
         <el-row :gutter="20">
           <el-col :xs="24" :sm="6">
-            <el-form-item prop="_id" :label="$t('m.Display_ID')"
-                          :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'">
-              <el-input :placeholder="$t('m.Display_ID')"
-                        v-model="problem._id"
-                        :readonly="mode === 'add'"></el-input>
+            <el-form-item
+              prop="_id"
+              :label="$t('m.Display_ID')"
+              :required="this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem'"
+            >
+              <el-input :placeholder="$t('m.Display_ID')" v-model="problem._id" :readonly="mode === 'add'"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="18">
@@ -20,303 +63,365 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item prop="description" :label="$t('m.Description')" required>
-              <Simditor :key="$i18n.locale" v-model="problem.description"></Simditor>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item prop="input_description" :label="$t('m.Input_Description')" required>
-              <Simditor :key="$i18n.locale" v-model="problem.input_description"></Simditor>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item prop="output_description" :label="$t('m.Output_Description')" required>
-              <Simditor :key="$i18n.locale" v-model="problem.output_description"></Simditor>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8">
-            <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)' " required>
-              <el-input-number 
-                v-model="problem.time_limit" 
-                :min="100" 
-                :step="100"
-                :placeholder="$t('m.Time_Limit')"
-                style="width: 100%;">
-              </el-input-number>            
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)' " required>
-              <el-input-number 
-                v-model.number="problem.memory_limit" 
-                :min="32" 
-                :step="1"
-                :placeholder="$t('m.Memory_limit')"
-                style="width: 100%;">
-              </el-input-number>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Difficulty')">
-              <el-select class="difficulty-select" size="small" :placeholder="$t('m.Difficulty')" v-model="problem.difficulty">
-                <el-option :label="$t('m.Low')" value="Low"></el-option>
-                <el-option :label="$t('m.Mid')" value="Mid"></el-option>
-                <el-option :label="$t('m.High')" value="High"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="4">
-            <el-form-item :label="$t('m.Visible')">
-              <el-switch
-                v-model="problem.visible"
-                active-text=""
-                inactive-text="">
-              </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="4">
-            <el-form-item :label="$t('m.ShareSubmission')">
-              <el-switch
-                v-model="problem.share_submission"
-                active-text=""
-                inactive-text="">
-              </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Tag')" :error="error.tags" required>
-              <span class="tags">
-                <el-tag
-                  v-for="tag in problem.tags"
-                  :closable="true"
-                  :close-transition="false"
-                  :key="tag"
-                  type="success"
-                  @close="closeTag(tag)"
-                >{{tag}}</el-tag>
-              </span>
-              <el-autocomplete
-                v-if="inputVisible"
-                size="mini"
-                class="input-new-tag"
-                popper-class="problem-tag-poper"
-                v-model="tagInput"
-                :trigger-on-focus="false"
-                @keyup.enter.native="addTag"
-                @select="addTag"
-                :fetch-suggestions="querySearch">
-              </el-autocomplete>
-              <el-button class="button-new-tag" v-else size="small" @click="inputVisible = true">+ {{$t('m.New_Tag')}}</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Languages')" :error="error.languages" required>
-              <el-checkbox-group v-model="problem.languages">
-                <el-tooltip class="spj-radio" v-for="lang in allLanguage.languages" :key="'spj'+lang.name" effect="dark"
-                            :content="lang.description" placement="top-start">
-                  <el-checkbox :label="lang.name"></el-checkbox>
-                </el-tooltip>
-              </el-checkbox-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="routeName === 'create-problem' || routeName === 'edit-problem'">
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Share_Mode')">
-              <el-select class="share-mode-select" v-model="problem.share_mode" :placeholder="$t('m.Share_Mode')">
-                <el-option :label="$t('m.Share_Mode_Private')" value="Private"></el-option>
-                <el-option :label="$t('m.Share_Mode_Shared')" value="Shared"></el-option>
-              </el-select>
-              <span class="share-mode-hint">{{ problem.share_mode === 'Shared' ? $t('m.Share_Mode_Shared_Hint') : $t('m.Share_Mode_Private_Hint') }}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <div>
-          <el-form-item v-for="(sample, index) in problem.samples" :key="'sample'+index">
-            <Accordion :title="$t('m.Sample') + ' ' + (index + 1)">
-              <el-button type="warning" size="small" icon="el-icon-delete" slot="header" @click="deleteSample(index)">
-                {{$t('m.Delete')}}
-              </el-button>
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="12">
-                  <el-form-item :label="$t('m.Input_Samples')" required>
-                    <el-input
-                      :rows="5"
-                      type="textarea"
-                      :placeholder="$t('m.Input_Samples')"
-                      v-model="sample.input">
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="24" :sm="12">
-                  <el-form-item :label="$t('m.Output_Samples')" required>
-                    <el-input
-                      :rows="5"
-                      type="textarea"
-                      :placeholder="$t('m.Output_Samples')"
-                      v-model="sample.output">
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </Accordion>
-          </el-form-item>
-        </div>
-        <div class="add-sample-btn">
-          <button type="button" class="add-samples" @click="addSample()"><i class="el-icon-plus"></i>{{$t('m.Add_Sample')}}
-          </button>
-        </div>
-        <el-form-item style="margin-top: 20px" :label="$t('m.Hint')">
-          <Simditor :key="$i18n.locale" v-model="problem.hint" placeholder=""></Simditor>
-        </el-form-item>
-        <el-form-item :label="$t('m.Code_Template')">
-          <el-row>
-            <el-col :span="24" v-for="(v, k) in template" :key="'template'+k">
-              <el-form-item>
-                <el-checkbox v-model="v.checked">{{ k }}</el-checkbox>
-                <div v-if="v.checked">
-                  <code-mirror v-model="v.code" :mode="v.mode"></code-mirror>
-                </div>
+        <section
+          v-show="activeEditorTab === 'statement'"
+          id="problem-statement"
+          role="tabpanel"
+          aria-labelledby="editor-tab-statement"
+        >
+          <p class="settings-hint">{{ $t('m.V2_Statement_Help') }}</p>
+
+          <el-row :gutter="20">
+            <el-col :span="24">
+              <el-form-item prop="description" :label="$t('m.Description')" required>
+                <Simditor :key="$i18n.locale" v-model="problem.description"></Simditor>
               </el-form-item>
             </el-col>
           </el-row>
-        </el-form-item>
-        <el-form-item :label="$t('m.Special_Judge')" :error="error.spj">
-          <el-col :span="24">
-            <el-checkbox v-model="problem.spj" @click.native.prevent="switchSpj()">{{$t('m.Use_Special_Judge')}}</el-checkbox>
-          </el-col>
-        </el-form-item>
-        <el-form-item v-if="problem.spj">
-          <Accordion :title="$t('m.Special_Judge_Code')">
-            <template slot="header">
-              <span>{{$t('m.SPJ_language')}}</span>
-              <el-radio-group v-model="problem.spj_language">
-                <el-tooltip class="spj-radio" v-for="lang in allLanguage.spj_languages" :key="lang.name" effect="dark"
-                            :content="lang.description" placement="top-start">
-                  <el-radio :label="lang.name">{{ lang.name }}</el-radio>
-                </el-tooltip>
-              </el-radio-group>
-              <el-button type="primary" size="small" icon="el-icon-fa-random" @click="compileSPJ"
-                         :loading="loadingCompile">
-                {{$t('m.Compile')}}
-              </el-button>
-            </template>
-            <code-mirror v-model="problem.spj_code" :mode="spjMode"></code-mirror>
-          </Accordion>
-        </el-form-item>
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="4">
-            <el-form-item :label="$t('m.Type')">
-              <el-radio-group v-model="problem.rule_type" :disabled="disableRuleType">
-                <el-radio label="ACM">ACM</el-radio>
-                <el-radio label="OI">OI</el-radio>
-              </el-radio-group>
+          <el-row :gutter="20">
+            <el-col :span="24">
+              <el-form-item prop="input_description" :label="$t('m.Input_Description')" required>
+                <Simditor :key="$i18n.locale" v-model="problem.input_description"></Simditor>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item prop="output_description" :label="$t('m.Output_Description')" required>
+                <Simditor :key="$i18n.locale" v-model="problem.output_description"></Simditor>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div>
+            <el-form-item v-for="(sample, index) in problem.samples" :key="'sample' + index">
+              <Accordion :title="$t('m.Sample') + ' ' + (index + 1)">
+                <el-button type="warning" size="small" icon="el-icon-delete" slot="header" @click="deleteSample(index)">
+                  {{ $t('m.Delete') }}
+                </el-button>
+                <el-row :gutter="20">
+                  <el-col :xs="24" :sm="12">
+                    <el-form-item :label="$t('m.Input_Samples')" required>
+                      <el-input :rows="5" type="textarea" :placeholder="$t('m.Input_Samples')" v-model="sample.input">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="12">
+                    <el-form-item :label="$t('m.Output_Samples')" required>
+                      <el-input :rows="5" type="textarea" :placeholder="$t('m.Output_Samples')" v-model="sample.output">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </Accordion>
             </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="6">
-            <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
-              <el-upload :headers="uploadCsrfHeaders()"
-                action="/api/admin/test_case"
-                name="file"
-                :data="{spj: problem.spj}"
-                :show-file-list="true"
-                :on-success="uploadSucceeded"
-                :on-error="uploadFailed">
-                <el-button size="small" type="primary" icon="el-icon-fa-upload">{{$t('m.Choose_File')}}</el-button>
-              </el-upload>
-            </el-form-item>
-          </el-col>
+          </div>
+          <div class="add-sample-btn">
+            <button type="button" class="add-samples" @click="addSample()">
+              <i class="el-icon-plus"></i>{{ $t('m.Add_Sample') }}
+            </button>
+          </div>
+          <el-form-item style="margin-top: 20px" :label="$t('m.Hint')">
+            <Simditor :key="$i18n.locale" v-model="problem.hint" placeholder=""></Simditor>
+          </el-form-item>
+          <el-form-item :label="$t('m.Source')">
+            <el-input :placeholder="$t('m.Source')" v-model="problem.source"></el-input>
+          </el-form-item>
+        </section>
+        <section
+          v-show="activeEditorTab === 'evaluation'"
+          id="problem-evaluation"
+          role="tabpanel"
+          aria-labelledby="editor-tab-evaluation"
+        >
+          <p class="settings-hint">{{ $t('m.V2_Evaluation_Help') }}</p>
+          <el-row :gutter="20">
+            <el-col :xs="24" :sm="8">
+              <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)'" required>
+                <el-input-number
+                  v-model="problem.time_limit"
+                  :min="100"
+                  :step="100"
+                  :placeholder="$t('m.Time_Limit')"
+                  style="width: 100%"
+                >
+                </el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="8">
+              <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)'" required>
+                <el-input-number
+                  v-model.number="problem.memory_limit"
+                  :min="32"
+                  :step="1"
+                  :placeholder="$t('m.Memory_limit')"
+                  style="width: 100%"
+                >
+                </el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="8">
+              <el-form-item :label="$t('m.Difficulty')">
+                <el-select
+                  class="difficulty-select"
+                  size="small"
+                  :placeholder="$t('m.Difficulty')"
+                  v-model="problem.difficulty"
+                >
+                  <el-option :label="$t('m.Low')" value="Low"></el-option>
+                  <el-option :label="$t('m.Mid')" value="Mid"></el-option>
+                  <el-option :label="$t('m.High')" value="High"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :xs="24" :sm="4">
+              <el-form-item :label="$t('m.Visible')">
+                <el-switch v-model="problem.visible" active-text="" inactive-text=""> </el-switch>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="4">
+              <el-form-item :label="$t('m.ShareSubmission')">
+                <el-switch v-model="problem.share_submission" active-text="" inactive-text=""> </el-switch>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="8">
+              <el-form-item :label="$t('m.Tag')" :error="error.tags" required>
+                <span class="tags">
+                  <el-tag
+                    v-for="tag in problem.tags"
+                    :closable="true"
+                    :close-transition="false"
+                    :key="tag"
+                    type="success"
+                    @close="closeTag(tag)"
+                    >{{ tag }}</el-tag
+                  >
+                </span>
+                <el-autocomplete
+                  v-if="inputVisible"
+                  size="mini"
+                  class="input-new-tag"
+                  popper-class="problem-tag-poper"
+                  v-model="tagInput"
+                  :trigger-on-focus="false"
+                  @keyup.enter.native="addTag"
+                  @select="addTag"
+                  :fetch-suggestions="querySearch"
+                >
+                </el-autocomplete>
+                <el-button class="button-new-tag" v-else size="small" @click="inputVisible = true"
+                  >+ {{ $t('m.New_Tag') }}</el-button
+                >
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="8">
+              <el-form-item :label="$t('m.Languages')" :error="error.languages" required>
+                <el-checkbox-group v-model="problem.languages">
+                  <el-tooltip
+                    class="spj-radio"
+                    v-for="lang in allLanguage.languages"
+                    :key="'spj' + lang.name"
+                    effect="dark"
+                    :content="lang.description"
+                    placement="top-start"
+                  >
+                    <el-checkbox :label="lang.name"></el-checkbox>
+                  </el-tooltip>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" v-if="routeName === 'create-problem' || routeName === 'edit-problem'">
+            <el-col :xs="24" :sm="8">
+              <el-form-item :label="$t('m.Share_Mode')">
+                <el-select class="share-mode-select" v-model="problem.share_mode" :placeholder="$t('m.Share_Mode')">
+                  <el-option :label="$t('m.Share_Mode_Private')" value="Private"></el-option>
+                  <el-option :label="$t('m.Share_Mode_Shared')" value="Shared"></el-option>
+                </el-select>
+                <span class="share-mode-hint">{{
+                  problem.share_mode === 'Shared' ? $t('m.Share_Mode_Shared_Hint') : $t('m.Share_Mode_Private_Hint')
+                }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item :label="$t('m.Code_Template')">
+            <el-row>
+              <el-col :span="24" v-for="(v, k) in template" :key="'template' + k">
+                <el-form-item>
+                  <el-checkbox v-model="v.checked">{{ k }}</el-checkbox>
+                  <div v-if="v.checked">
+                    <code-mirror v-model="v.code" :mode="v.mode"></code-mirror>
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item :label="$t('m.Special_Judge')" :error="error.spj">
+            <el-col :span="24">
+              <el-checkbox v-model="problem.spj" @click.native.prevent="switchSpj()">{{
+                $t('m.Use_Special_Judge')
+              }}</el-checkbox>
+            </el-col>
+          </el-form-item>
+          <el-form-item v-if="problem.spj">
+            <Accordion :title="$t('m.Special_Judge_Code')">
+              <template slot="header">
+                <span>{{ $t('m.SPJ_language') }}</span>
+                <el-radio-group v-model="problem.spj_language">
+                  <el-tooltip
+                    class="spj-radio"
+                    v-for="lang in allLanguage.spj_languages"
+                    :key="lang.name"
+                    effect="dark"
+                    :content="lang.description"
+                    placement="top-start"
+                  >
+                    <el-radio :label="lang.name">{{ lang.name }}</el-radio>
+                  </el-tooltip>
+                </el-radio-group>
+                <el-button
+                  type="primary"
+                  size="small"
+                  icon="el-icon-fa-random"
+                  @click="compileSPJ"
+                  :loading="loadingCompile"
+                >
+                  {{ $t('m.Compile') }}
+                </el-button>
+              </template>
+              <code-mirror v-model="problem.spj_code" :mode="spjMode"></code-mirror>
+            </Accordion>
+          </el-form-item>
+          <el-row :gutter="20">
+            <el-col :xs="24" :sm="4">
+              <el-form-item :label="$t('m.Type')">
+                <el-radio-group v-model="problem.rule_type" :disabled="disableRuleType">
+                  <el-radio label="ACM">ACM</el-radio>
+                  <el-radio label="OI">OI</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="6">
+              <el-form-item :label="$t('m.TestCase')" :error="error.testCase">
+                <el-upload
+                  :headers="uploadCsrfHeaders()"
+                  action="/api/admin/test_case"
+                  name="file"
+                  :data="{ spj: problem.spj }"
+                  :show-file-list="true"
+                  :on-success="uploadSucceeded"
+                  :on-error="uploadFailed"
+                >
+                  <el-button size="small" type="primary" icon="el-icon-fa-upload">{{ $t('m.Choose_File') }}</el-button>
+                </el-upload>
+              </el-form-item>
+            </el-col>
 
-          <el-col :xs="24" :sm="6">
-            <el-form-item :label="$t('m.IOMode')">
-              <el-radio-group v-model="problem.io_mode.io_mode">
-                <el-radio label="Standard IO">{{$t('m.IO_Standard')}}</el-radio>
-                <el-radio label="File IO">{{$t('m.IO_File')}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
+            <el-col :xs="24" :sm="6">
+              <el-form-item :label="$t('m.IOMode')">
+                <el-radio-group v-model="problem.io_mode.io_mode">
+                  <el-radio label="Standard IO">{{ $t('m.IO_Standard') }}</el-radio>
+                  <el-radio label="File IO">{{ $t('m.IO_File') }}</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
 
-          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
-            <el-form-item :label="$t('m.InputFileName')" required>
-              <el-input type="text" v-model="problem.io_mode.input"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
-            <el-form-item :label="$t('m.OutputFileName')" required>
-              <el-input type="text" v-model="problem.io_mode.output"></el-input>
-            </el-form-item>
-          </el-col>
+            <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
+              <el-form-item :label="$t('m.InputFileName')" required>
+                <el-input type="text" v-model="problem.io_mode.input"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="4" v-if="problem.io_mode.io_mode == 'File IO'">
+              <el-form-item :label="$t('m.OutputFileName')" required>
+                <el-input type="text" v-model="problem.io_mode.output"></el-input>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24" v-if="!problem.spj" class="text-test-cases">
-            <h3>{{$t('m.Text_Cases')}}</h3>
-            <p>{{$t('m.Text_Cases_Help')}}</p>
-            <el-button v-if="mode === 'edit'" size="small" @click="loadTextCases">{{$t('m.Load_Text_Cases')}}</el-button>
-            <div v-for="(item, index) in textCases" :key="index" class="text-case">
-              <h4>{{$t('m.TestCase')}} {{index + 1}}</h4>
-              <el-row :gutter="16">
-                <el-col :xs="24" :sm="12">
-                  <el-form-item :label="$t('m.Input')">
-                    <el-input type="textarea" :rows="4" v-model="item.input" :aria-label="$t('m.Input') + ' ' + (index + 1)"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="24" :sm="12">
-                  <el-form-item :label="$t('m.Output')">
-                    <el-input type="textarea" :rows="4" v-model="item.output" :aria-label="$t('m.Output') + ' ' + (index + 1)"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-button size="small" :disabled="textCases.length === 1" @click="textCases.splice(index, 1)">{{$t('m.Remove_Case')}}</el-button>
-            </div>
-            <el-button size="small" :disabled="textCases.length >= 100" @click="textCases.push({input: '', output: ''})">{{$t('m.Add_Case')}}</el-button>
-            <el-button type="primary" :loading="savingTextCases" @click="applyTextCases">{{$t('m.Apply_Text_Cases')}}</el-button>
-          </el-col>
-          <el-col :span="24">
-            <el-table
-              :data="problem.test_case_score"
-              style="width: 100%">
-              <el-table-column
-                prop="input_name"
-                :label="$t('m.Input')">
-              </el-table-column>
-              <el-table-column
-                prop="output_name"
-                :label="$t('m.Output')">
-              </el-table-column>
-              <el-table-column
-                prop="score"
-                :label="$t('m.Score')">
-                <template slot-scope="scope">
-                  <el-input
-                    size="small"
-                    :placeholder="$t('m.Score')"
-                    v-model="scope.row.score"
-                    :disabled="problem.rule_type !== 'OI'">
-                  </el-input>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-col>
-        </el-row>
-
-        <el-form-item :label="$t('m.Source')">
-          <el-input :placeholder="$t('m.Source')" v-model="problem.source"></el-input>
-        </el-form-item>
-        <save @click.native="submit()"></save>
+            <el-col :span="24" v-if="!problem.spj" class="text-test-cases">
+              <h3>{{ $t('m.Text_Cases') }}</h3>
+              <p>{{ $t('m.Text_Cases_Help') }}</p>
+              <el-button v-if="mode === 'edit'" size="small" @click="loadTextCases">{{
+                $t('m.Load_Text_Cases')
+              }}</el-button>
+              <div v-for="(item, index) in textCases" :key="index" class="text-case">
+                <h4>{{ $t('m.TestCase') }} {{ index + 1 }}</h4>
+                <el-row :gutter="16">
+                  <el-col :xs="24" :sm="12">
+                    <el-form-item :label="$t('m.Input')">
+                      <el-input
+                        type="textarea"
+                        :rows="4"
+                        v-model="item.input"
+                        :aria-label="$t('m.Input') + ' ' + (index + 1)"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="12">
+                    <el-form-item :label="$t('m.Output')">
+                      <el-input
+                        type="textarea"
+                        :rows="4"
+                        v-model="item.output"
+                        :aria-label="$t('m.Output') + ' ' + (index + 1)"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-button size="small" :disabled="textCases.length === 1" @click="textCases.splice(index, 1)">{{
+                  $t('m.Remove_Case')
+                }}</el-button>
+              </div>
+              <el-button
+                size="small"
+                :disabled="textCases.length >= 100"
+                @click="textCases.push({ input: '', output: '' })"
+                >{{ $t('m.Add_Case') }}</el-button
+              >
+              <el-button type="primary" :loading="savingTextCases" @click="applyTextCases">{{
+                $t('m.Apply_Text_Cases')
+              }}</el-button>
+            </el-col>
+            <el-col :span="24">
+              <el-table :data="problem.test_case_score" style="width: 100%">
+                <el-table-column prop="input_name" :label="$t('m.Input')"> </el-table-column>
+                <el-table-column prop="output_name" :label="$t('m.Output')"> </el-table-column>
+                <el-table-column prop="score" :label="$t('m.Score')">
+                  <template slot-scope="scope">
+                    <el-input
+                      size="small"
+                      :placeholder="$t('m.Score')"
+                      v-model="scope.row.score"
+                      :disabled="problem.rule_type !== 'OI'"
+                    >
+                    </el-input>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+        </section>
+        <div class="v2-problem-savebar">
+          <span>{{ $t('m.V2_Editor_Save') }}</span
+          ><save @click.native="submit()"></save>
+        </div>
       </el-form>
+      <section
+        v-show="activeEditorTab === 'tutor'"
+        id="problem-tutor"
+        role="tabpanel"
+        aria-labelledby="editor-tab-tutor"
+      >
+        <TrainingConfig
+          v-if="routeName === 'edit-problem' && mode === 'edit' && problem.id"
+          :key="problem.id"
+          :problem-id="problem.id"
+        ></TrainingConfig>
+      </section>
     </Panel>
   </div>
 </template>
 
 <script>
-import {csrfHeaders as uploadCsrfHeaders} from '@/utils/csrf'
+import { csrfHeaders as uploadCsrfHeaders } from '@/utils/csrf'
 import Simditor from '../../components/Simditor'
 import Accordion from '../../components/Accordion'
 import CodeMirror from '../../components/CodeMirror'
@@ -333,18 +438,19 @@ export default {
   },
   data () {
     return {
+      activeEditorTab: 'statement',
       rules: {
-        _id: {required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur'},
-        title: {required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur'},
-        input_description: {required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur'},
-        output_description: {required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur'},
+        _id: { required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur' },
+        title: { required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur' },
+        input_description: { required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur' },
+        output_description: { required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur' },
         time_limit: [
-            {type: 'integer', required: true, message: this.$i18n.t('m.Time_Limit_Required'), trigger: 'blur'},
-            {type: 'integer', min: 100, max: 60000, message: this.$i18n.t('m.Time_Limit_Range'), trigger: 'blur'}
+          { type: 'integer', required: true, message: this.$i18n.t('m.Time_Limit_Required'), trigger: 'blur' },
+          { type: 'integer', min: 100, max: 60000, message: this.$i18n.t('m.Time_Limit_Range'), trigger: 'blur' }
         ],
         memory_limit: [
-            {required: true, message: this.$i18n.t('m.Memory_Limit_Required'), trigger: 'blur'},
-            {type: 'integer', min: 32, max: 4096, message: this.$i18n.t('m.Memory_Limit_Range'), trigger: 'blur'}
+          { required: true, message: this.$i18n.t('m.Memory_Limit_Required'), trigger: 'blur' },
+          { type: 'integer', min: 32, max: 4096, message: this.$i18n.t('m.Memory_Limit_Range'), trigger: 'blur' }
         ]
       },
       loadingCompile: false,
@@ -352,15 +458,15 @@ export default {
       contest: {},
       problem: {
         languages: [],
-        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
+        io_mode: { io_mode: 'Standard IO', input: 'input.txt', output: 'output.txt' }
       },
       reProblem: {
         languages: [],
-        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
+        io_mode: { io_mode: 'Standard IO', input: 'input.txt', output: 'output.txt' }
       },
       testCaseUploaded: false,
-      textCases: [{input: '', output: ''}],
-      appliedTextCases: JSON.stringify([{input: '', output: ''}]),
+      textCases: [{ input: '', output: '' }],
+      appliedTextCases: JSON.stringify([{ input: '', output: '' }]),
       savingTextCases: false,
       allLanguage: {},
       inputVisible: false,
@@ -385,7 +491,7 @@ export default {
     } else {
       this.mode = 'add'
     }
-    api.getLanguages().then(res => {
+    api.getLanguages().then((res) => {
       this.problem = this.reProblem = {
         _id: '',
         title: '',
@@ -401,7 +507,7 @@ export default {
         tags: [],
         languages: [],
         template: {},
-        samples: [{input: '', output: ''}],
+        samples: [{ input: '', output: '' }],
         spj: false,
         spj_language: '',
         spj_code: '',
@@ -411,13 +517,13 @@ export default {
         rule_type: 'ACM',
         hint: '',
         source: '',
-        io_mode: {'io_mode': 'Standard IO', 'input': 'input.txt', 'output': 'output.txt'}
+        io_mode: { io_mode: 'Standard IO', input: 'input.txt', output: 'output.txt' }
       }
       let contestID = this.$route.params.contestId
       if (contestID) {
         this.problem.contest_id = this.reProblem.contest_id = contestID
         this.disableRuleType = true
-        api.getContest(contestID).then(res => {
+        api.getContest(contestID).then((res) => {
           this.problem.rule_type = this.reProblem.rule_type = res.data.data.rule_type
           this.contest = res.data.data
         })
@@ -428,11 +534,11 @@ export default {
       let allLanguage = res.data.data
       this.allLanguage = allLanguage
 
-        // get problem after getting languages list to avoid find undefined value in `watch problem.languages`
+      // get problem after getting languages list to avoid find undefined value in `watch problem.languages`
       if (this.mode === 'edit') {
         this.title = this.$i18n.t('m.Edit_Problem')
-        let funcName = {'edit-problem': 'getProblem', 'edit-contest-problem': 'getContestProblem'}[this.routeName]
-        api[funcName](this.$route.params.problemId).then(problemRes => {
+        let funcName = { 'edit-problem': 'getProblem', 'edit-contest-problem': 'getContestProblem' }[this.routeName]
+        api[funcName](this.$route.params.problemId).then((problemRes) => {
           let data = problemRes.data.data
           if (!data.spj_code) {
             data.spj_code = ''
@@ -450,23 +556,23 @@ export default {
     })
   },
   watch: {
-    '$route' () {
+    $route () {
       this.$refs.form.resetFields()
       this.problem = this.reProblem
     },
     'problem.languages' (newVal) {
       let data = {}
-        // use deep copy to avoid infinite loop
+      // use deep copy to avoid infinite loop
       let languages = JSON.parse(JSON.stringify(newVal)).sort()
       for (let item of languages) {
         if (this.template[item] === undefined) {
-          let langConfig = this.allLanguage.languages.find(lang => {
+          let langConfig = this.allLanguage.languages.find((lang) => {
             return lang.name === item
           })
           if (this.problem.template[item] === undefined) {
-            data[item] = {checked: false, code: langConfig.config.template, mode: langConfig.content_type}
+            data[item] = { checked: false, code: langConfig.config.template, mode: langConfig.content_type }
           } else {
-            data[item] = {checked: true, code: this.problem.template[item], mode: langConfig.content_type}
+            data[item] = { checked: true, code: this.problem.template[item], mode: langConfig.content_type }
           }
         } else {
           data[item] = this.template[item]
@@ -475,7 +581,7 @@ export default {
       this.template = data
     },
     'problem.spj_language' (newVal) {
-      this.spjMode = this.allLanguage.spj_languages.find(item => {
+      this.spjMode = this.allLanguage.spj_languages.find((item) => {
         return item.name === this.problem.spj_language
       }).content_type
     },
@@ -485,13 +591,36 @@ export default {
       }
     }
   },
+  computed: {
+    canConfigureTutor () {
+      return this.routeName === 'edit-problem' && this.mode === 'edit' && Boolean(this.problem.id)
+    }
+  },
   methods: {
+    handleEditorTabKey (event) {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+      event.preventDefault()
+      const tabs = this.canConfigureTutor ? ['statement', 'evaluation', 'tutor'] : ['statement', 'evaluation']
+      let index = tabs.indexOf(this.activeEditorTab)
+      index =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+          ? tabs.length - 1
+          : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length
+      this.activeEditorTab = tabs[index]
+      this.$nextTick(() => this.$el.querySelector('#editor-tab-' + this.activeEditorTab).focus())
+    },
     uploadCsrfHeaders,
     async loadTextCases () {
       try {
-        if (JSON.stringify(this.textCases) !== this.appliedTextCases || this.textCases.some(item => item.input || item.output)) {
+        if (
+          JSON.stringify(this.textCases) !== this.appliedTextCases ||
+          this.textCases.some((item) => item.input || item.output)
+        ) {
           await this.$confirm(this.$t('m.Discard_Text_Cases'), this.$t('m.Warning'), {
-            confirmButtonText: this.$t('m.Yes'), cancelButtonText: this.$t('m.Cancel')
+            confirmButtonText: this.$t('m.Yes'),
+            cancelButtonText: this.$t('m.Cancel')
           })
         }
         const response = await api.getTextTestCases(this.problem.id)
@@ -499,16 +628,20 @@ export default {
         // Cargar prepara un borrador: no afirma que sea el conjunto ya seleccionado.
         this.appliedTextCases = null
       } catch (_) {
-          // Cancelar o fallar no descarta lo escrito.
+        // Cancelar o fallar no descarta lo escrito.
       }
     },
     async applyTextCases () {
       if (this.testCaseUploaded) {
         try {
           await this.$confirm(this.$t('m.Replace_Cases_Confirm'), this.$t('m.Warning'), {
-            confirmButtonText: this.$t('m.Yes'), cancelButtonText: this.$t('m.Cancel'), type: 'warning'
+            confirmButtonText: this.$t('m.Yes'),
+            cancelButtonText: this.$t('m.Cancel'),
+            type: 'warning'
           })
-        } catch (_) { return }
+        } catch (_) {
+          return
+        }
       }
       this.savingTextCases = true
       try {
@@ -518,7 +651,7 @@ export default {
         this.appliedTextCases = snapshot
         this.$success(this.$t('m.Text_Cases_Applied'))
       } catch (_) {
-          // La capa HTTP ya muestra el error; conserva el texto para corregirlo.
+        // La capa HTTP ya muestra el error; conserva el texto para corregirlo.
       } finally {
         this.savingTextCases = false
       }
@@ -526,13 +659,13 @@ export default {
     generateSlug (title) {
       if (!title) return ''
       return title
-          .toString()
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '')
-          .substring(0, 32)
+        .toString()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .substring(0, 32)
     },
     switchSpj () {
       if (this.testCaseUploaded) {
@@ -540,24 +673,27 @@ export default {
           confirmButtonText: this.$i18n.t('m.Yes'),
           cancelButtonText: this.$i18n.t('m.Cancel'),
           type: 'warning'
-        }).then(() => {
-          this.problem.spj = !this.problem.spj
-          this.resetTestCase()
-        }).catch(() => {
         })
+          .then(() => {
+            this.problem.spj = !this.problem.spj
+            this.resetTestCase()
+          })
+          .catch(() => {})
       } else {
         this.problem.spj = !this.problem.spj
       }
     },
     querySearch (queryString, cb) {
-      api.getProblemTagList({ keyword: queryString }).then(res => {
-        let tagList = []
-        for (let tag of res.data.data) {
-          tagList.push({value: tag.name})
-        }
-        cb(tagList)
-      }).catch(() => {
-      })
+      api
+        .getProblemTagList({ keyword: queryString })
+        .then((res) => {
+          let tagList = []
+          for (let tag of res.data.data) {
+            tagList.push({ value: tag.name })
+          }
+          cb(tagList)
+        })
+        .catch(() => {})
     },
     resetTestCase () {
       this.testCaseUploaded = false
@@ -576,7 +712,7 @@ export default {
       this.problem.tags.splice(this.problem.tags.indexOf(tag), 1)
     },
     addSample () {
-      this.problem.samples.push({input: '', output: ''})
+      this.problem.samples.push({ input: '', output: '' })
     },
     deleteSample (index) {
       this.problem.samples.splice(index, 1)
@@ -607,31 +743,36 @@ export default {
         spj_language: this.problem.spj_language
       }
       this.loadingCompile = true
-      api.compileSPJ(data).then(res => {
-        this.loadingCompile = false
-        this.problem.spj_compile_ok = true
-        this.error.spj = ''
-      }, err => {
-        this.loadingCompile = false
-        this.problem.spj_compile_ok = false
-        const h = this.$createElement
-        this.$msgbox({
-          title: this.$i18n.t('m.Compile_Error'),
-          type: 'error',
-          message: h('pre', err.data.data),
-          showCancelButton: false,
-          closeOnClickModal: false,
-          customClass: 'dialog-compile-error'
-        })
-      })
+      api.compileSPJ(data).then(
+        (res) => {
+          this.loadingCompile = false
+          this.problem.spj_compile_ok = true
+          this.error.spj = ''
+        },
+        (err) => {
+          this.loadingCompile = false
+          this.problem.spj_compile_ok = false
+          const h = this.$createElement
+          this.$msgbox({
+            title: this.$i18n.t('m.Compile_Error'),
+            type: 'error',
+            message: h('pre', err.data.data),
+            showCancelButton: false,
+            closeOnClickModal: false,
+            customClass: 'dialog-compile-error'
+          })
+        }
+      )
     },
     submit () {
       if (!this.problem.spj && (this.savingTextCases || JSON.stringify(this.textCases) !== this.appliedTextCases)) {
+        this.activeEditorTab = 'evaluation'
         this.$error(this.$t('m.Apply_Text_Before_Save'))
         return
       }
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate((valid, fields) => {
         if (!valid) {
+          this.activeEditorTab = fields && (fields.time_limit || fields.memory_limit) ? 'evaluation' : 'statement'
           this.$error(this.$i18n.t('m.Fix_Form_Errors'))
           return
         }
@@ -640,21 +781,25 @@ export default {
     },
     _doSubmit () {
       if (!this.problem.samples.length) {
+        this.activeEditorTab = 'statement'
         this.$error(this.$i18n.t('m.Sample_Required'))
         return
       }
       for (let sample of this.problem.samples) {
         if (!sample.input || !sample.output) {
+          this.activeEditorTab = 'statement'
           this.$error(this.$i18n.t('m.Sample_IO_Required'))
           return
         }
       }
       if (!this.problem.tags.length) {
+        this.activeEditorTab = 'evaluation'
         this.error.tags = this.$i18n.t('m.Add_One_Tag')
         this.$error(this.error.tags)
         return
       }
       if (this.problem.spj) {
+        this.activeEditorTab = 'evaluation'
         if (!this.problem.spj_code) {
           this.error.spj = this.$i18n.t('m.SPJ_Code_Required')
           this.$error(this.error.spj)
@@ -667,11 +812,13 @@ export default {
         }
       }
       if (!this.problem.languages.length) {
+        this.activeEditorTab = 'evaluation'
         this.error.languages = this.$i18n.t('m.Choose_One_Language')
         this.$error(this.error.languages)
         return
       }
       if (!this.testCaseUploaded) {
+        this.activeEditorTab = 'evaluation'
         this.error.testCase = this.$i18n.t('m.Test_Case_Not_Uploaded')
         this.$error(this.error.testCase)
         return
@@ -713,90 +860,89 @@ export default {
         'create-contest-problem': 'createContestProblem',
         'edit-contest-problem': 'editContestProblem'
       }[this.routeName]
-        // edit contest problem 时, contest_id会被后来的请求覆盖掉
+      // edit contest problem 时, contest_id会被后来的请求覆盖掉
       if (funcName === 'editContestProblem') {
         this.problem.contest_id = this.contest.id
       }
-      api[funcName](this.problem).then(res => {
-        if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
-          this.$router.push({name: 'contest-problem-list', params: {contestId: this.$route.params.contestId}})
-        } else {
-          this.$router.push({name: 'problem-list'})
-        }
-      }).catch(() => {
-      })
+      api[funcName](this.problem)
+        .then((res) => {
+          if (this.routeName === 'create-contest-problem' || this.routeName === 'edit-contest-problem') {
+            this.$router.push({ name: 'contest-problem-list', params: { contestId: this.$route.params.contestId } })
+          } else {
+            this.$router.push({ name: 'problem-list' })
+          }
+        })
+        .catch(() => {})
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .problem {
-    .difficulty-select {
-      width: 120px;
-    }
-    .share-mode-select {
-      width: 160px;
-    }
-    .share-mode-hint {
-      margin-left: 12px;
-      color: #999;
-      font-size: 12px;
-    }
-    .spj-radio {
-      margin-left: 10px;
-      &:last-child {
-        margin-right: 20px;
-      }
-    }
-    .input-new-tag {
-      width: 78px;
-    }
-    .button-new-tag {
-      height: 24px;
-      line-height: 22px;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-    .tags {
-      .el-tag {
-        margin-right: 10px;
-      }
-    }
-    .accordion {
-      margin-bottom: 10px;
-    }
-    .add-samples {
-      width: 100%;
-      background-color: #fff;
-      border: 1px dashed #aaa;
-      outline: none;
-      cursor: pointer;
-      color: #666;
-      height: 35px;
-      font-size: 14px;
-      &:hover {
-        background-color: #f9fafc;
-      }
-      i {
-        margin-right: 10px;
-      }
-    }
-    .add-sample-btn {
-      margin-bottom: 10px;
-    }
-
+.problem {
+  .difficulty-select {
+    width: 120px;
   }
+  .share-mode-select {
+    width: 160px;
+  }
+  .share-mode-hint {
+    margin-left: 12px;
+    color: #999;
+    font-size: 12px;
+  }
+  .spj-radio {
+    margin-left: 10px;
+    &:last-child {
+      margin-right: 20px;
+    }
+  }
+  .input-new-tag {
+    width: 78px;
+  }
+  .button-new-tag {
+    height: 24px;
+    line-height: 22px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .tags {
+    .el-tag {
+      margin-right: 10px;
+    }
+  }
+  .accordion {
+    margin-bottom: 10px;
+  }
+  .add-samples {
+    width: 100%;
+    background-color: #fff;
+    border: 1px dashed #aaa;
+    outline: none;
+    cursor: pointer;
+    color: #666;
+    height: 35px;
+    font-size: 14px;
+    &:hover {
+      background-color: #f9fafc;
+    }
+    i {
+      margin-right: 10px;
+    }
+  }
+  .add-sample-btn {
+    margin-bottom: 10px;
+  }
+}
 </style>
 
 <style>
-  .problem-tag-poper {
-    width: 200px !important;
-  }
-  .dialog-compile-error {
-    width: auto;
-    max-width: 80%;
-    overflow-x: auto;
-  }
+.problem-tag-poper {
+  width: 200px !important;
+}
+.dialog-compile-error {
+  width: auto;
+  max-width: 80%;
+  overflow-x: auto;
+}
 </style>
-

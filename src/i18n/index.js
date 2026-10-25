@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import storage from '@/utils/storage'
+import v2 from './v2'
 import { STORAGE_KEY } from '@/utils/constants'
 // ivew UI
 import ivenUS from 'iview/dist/locale/en-US'
@@ -26,8 +27,12 @@ for (let lang of languages) {
   let locale = lang.value
   let m = require(`./oj/${locale}`).m
   Object.assign(m, require(`./admin/${locale}`).m)
+  Object.assign(m, v2[locale])
   let ui = Object.assign(lang.iv, lang.el)
   messages[locale] = Object.assign({m: m}, ui)
+  if (locale === 'es-LA') {
+    messages[locale].i.page.page = '/ página'
+  }
 }
 // Resolver el locale inicial: si lo guardado ya no está disponible
 // (p. ej. un usuario que había elegido zh-CN antes de deshabilitarlo), caer a es-LA.
@@ -41,10 +46,12 @@ const i18n = new VueI18n({
   fallbackLocale: 'en-US',
   messages: messages
 })
+if (typeof document !== 'undefined') document.documentElement.lang = initialLocale === 'es-LA' ? 'es' : 'en'
 
 // Change the active locale and persist it so it survives reloads.
 export function setLanguage (locale) {
   i18n.locale = locale
+  if (typeof document !== 'undefined') document.documentElement.lang = locale === 'es-LA' ? 'es' : 'en'
   storage.set(STORAGE_KEY.LANGUAGE, locale)
 }
 
