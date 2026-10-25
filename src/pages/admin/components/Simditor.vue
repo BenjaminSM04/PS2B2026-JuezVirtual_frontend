@@ -1,5 +1,5 @@
 <template>
-  <textarea ref="editor"></textarea>
+  <div class="rich-text-editor"><textarea ref="editor"></textarea></div>
 </template>
 
 <script>
