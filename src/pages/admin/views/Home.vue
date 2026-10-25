@@ -37,6 +37,7 @@
                                 :command="lang.value">{{ lang.label }}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <ThemeToggle :floating="false"></ThemeToggle>
           <el-dropdown @command="handleCommand">
             <span class="admin-shell__profile-trigger">
               <span class="admin-shell__profile-name">{{user.username}}</span>
@@ -74,6 +75,7 @@
   import SideMenu from '../components/SideMenu.vue'
   import ScreenFull from '@admin/components/ScreenFull.vue'
   import KatexEditor from '@admin/components/KatexEditor.vue'
+  import ThemeToggle from '@/components/ThemeToggle.vue'
   import api from '../api'
   import { languages, setLanguage } from '@/i18n'
 
@@ -89,6 +91,7 @@
     components: {
       SideMenu,
       KatexEditor,
+      ThemeToggle,
       ScreenFull
     },
     beforeRouteEnter (to, from, next) {
