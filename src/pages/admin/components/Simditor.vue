@@ -36,6 +36,7 @@ Simditor.i18n['es-LA'] = Object.assign({}, Simditor.i18n['en-US'], editorSpanish
     },
     async mounted () {
       await ensureCsrf()
+      if (this._isDestroyed) return
       const editorLocale = Simditor.i18n[this.$i18n.locale] ? this.$i18n.locale : 'en-US'
       // simple-module consulta la propiedad estática, no la opción de instancia.
       Simditor.locale = editorLocale

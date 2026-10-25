@@ -96,7 +96,7 @@
           </el-input>
         </el-form-item>
         <el-form-item :label="$t('m.Announcement_Content')" prop="content" required>
-          <Simditor v-model="announcement.content"></Simditor>
+          <Simditor :key="$i18n.locale" v-model="announcement.content"></Simditor>
         </el-form-item>
         <div class="visible-box">
           <span>{{$t('m.Announcement_visible')}}</span>

@@ -44,7 +44,7 @@
                 </span>
               </template>
 
-              <Simditor v-model="contest.description"></Simditor>
+              <Simditor :key="$i18n.locale" v-model="contest.description"></Simditor>
             </el-form-item>
           </el-col>
           <el-col :span="8">
