@@ -489,14 +489,15 @@ export default {
     uploadCsrfHeaders,
     async loadTextCases () {
       try {
-        if (JSON.stringify(this.textCases) !== this.appliedTextCases) {
+        if (JSON.stringify(this.textCases) !== this.appliedTextCases || this.textCases.some(item => item.input || item.output)) {
           await this.$confirm(this.$t('m.Discard_Text_Cases'), this.$t('m.Warning'), {
             confirmButtonText: this.$t('m.Yes'), cancelButtonText: this.$t('m.Cancel')
           })
         }
         const response = await api.getTextTestCases(this.problem.id)
         this.textCases = response.data.data.cases
-        this.appliedTextCases = JSON.stringify(this.textCases)
+        // Cargar prepara un borrador: no afirma que sea el conjunto ya seleccionado.
+        this.appliedTextCases = null
       } catch (_) {
           // Cancelar o fallar no descarta lo escrito.
       }
@@ -511,9 +512,10 @@ export default {
       }
       this.savingTextCases = true
       try {
-        const response = await api.createTextTestCases(this.textCases)
+        const snapshot = JSON.stringify(this.textCases)
+        const response = await api.createTextTestCases(JSON.parse(snapshot))
         this.uploadSucceeded(response.data)
-        this.appliedTextCases = JSON.stringify(this.textCases)
+        this.appliedTextCases = snapshot
         this.$success(this.$t('m.Text_Cases_Applied'))
       } catch (_) {
           // La capa HTTP ya muestra el error; conserva el texto para corregirlo.
