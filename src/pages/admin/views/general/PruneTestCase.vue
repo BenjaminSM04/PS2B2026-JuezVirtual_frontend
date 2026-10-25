@@ -92,7 +92,6 @@ export default {
   name: 'prune-test-case',
 
   data () {
-
     return {
 
       data: [],
@@ -102,27 +101,20 @@ export default {
   },
 
   mounted () {
-
     this.init()
-
   },
 
   methods: {
 
     init () {
-
       api.getInvalidTestCaseList().then(resp => {
-
         this.data = resp.data.data
-
       }, () => {
 
       })
-
     },
 
     confirmDelete (id) {
-
       const isAll = !id
 
       this.$confirm(
@@ -142,27 +134,21 @@ export default {
         }
 
       ).then(() => {
-
         this.deleteTestCase(id)
-
       }).catch(() => {
-
         this.$message({
           type: 'info',
           message: this.$i18n.t('m.Delete_Cancelled')
         })
-
       })
     },
 
     deleteTestCase (id) {
-
       if (!id) {
         this.loading = true
       }
 
       api.pruneTestCase(id).then(() => {
-
         this.loading = false
 
         this.$message({
@@ -173,9 +159,7 @@ export default {
         })
 
         this.init()
-
       })
-
     }
 
   },
@@ -183,15 +167,12 @@ export default {
   filters: {
 
     timestampFormat (value) {
-
       return moment.unix(value).format('YYYY-M-D HH:mm:ss')
-
     }
 
   }
 
 }
-
 </script>
 
 <style>

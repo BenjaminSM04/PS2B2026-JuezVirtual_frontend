@@ -85,8 +85,7 @@ export default {
           this.$set(this.response, 'rating', value)
           this.$emit('changed')
         }
-      } catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     }
   }
 }

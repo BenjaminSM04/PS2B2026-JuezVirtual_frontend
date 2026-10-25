@@ -179,7 +179,7 @@
         if (!this.isMobile) {
           this.mobileMenuOpen = false
         }
-      },
+      }
     },
     computed: {
       ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole', 'isTeacherRole']),

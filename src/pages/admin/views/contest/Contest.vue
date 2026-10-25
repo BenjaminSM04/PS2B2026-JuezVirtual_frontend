@@ -389,7 +389,6 @@ export default {
   methods: {
     saveContest () {
       this.$refs.contestForm.validate((valid) => {
-
         if (!valid) {
           this.$error(this.$i18n.t('m.Fix_Form_Errors'))
           return
@@ -440,13 +439,11 @@ export default {
 
   mounted () {
     if (this.$route.name === 'edit-contest') {
-
       this.title = this.$i18n.t('m.Edit_Contest')
       this.disableRuleType = true
 
       api.getContest(this.$route.params.contestId)
         .then(res => {
-
           let data = res.data.data
 
           let ranges = []
@@ -466,7 +463,6 @@ export default {
           data.allowed_ip_ranges = ranges
 
           this.contest = data
-
         }).catch(() => {})
     }
   }

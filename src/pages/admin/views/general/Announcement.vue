@@ -214,28 +214,6 @@
       },
       // 提交编辑
       // 默认传入MouseEvent
-      submitAnnouncement (data = undefined) {
-        let funcName = ''
-        if (!data.title) {
-          data = {
-            id: this.currentAnnouncementId,
-            title: this.announcement.title,
-            content: this.announcement.content,
-            visible: this.announcement.visible
-          }
-        }
-        if (this.contestID) {
-          data.contest_id = this.contestID
-          funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
-        } else {
-          funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
-        }
-        api[funcName](data).then(res => {
-          this.showEditAnnouncementDialog = false
-          this.init()
-        }).catch()
-      },
-      // 删除公告
       deleteAnnouncement (announcementId) {
         this.$confirm(this.$i18n.t('m.Delete_Announcement_Confirm'), this.$i18n.t('m.Warning'), {
           confirmButtonText: this.$i18n.t('m.Delete'),
@@ -258,7 +236,7 @@
         this.showEditAnnouncementDialog = true
         if (id !== null) {
           this.currentAnnouncementId = id
-          this.announcementDialogTitle = this.$t("m.Edit_Announcement")
+          this.announcementDialogTitle = this.$t('m.Edit_Announcement')
           this.announcementList.find(item => {
             if (item.id === this.currentAnnouncementId) {
               this.announcement.title = item.title
@@ -268,7 +246,7 @@
             }
           })
         } else {
-          this.announcementDialogTitle = this.$t("m.Create_Announcement")
+          this.announcementDialogTitle = this.$t('m.Create_Announcement')
           this.announcement.title = ''
           this.announcement.visible = true
           this.announcement.content = ''
@@ -276,58 +254,58 @@
         }
       },
       handleVisibleSwitch (row) {
-      this.mode = 'edit'
-      this.submitAnnouncement({
-        id: row.id,
-        title: row.title,
-        content: row.content,
-        visible: row.visible
-      })
-    },
+        this.mode = 'edit'
+        this.submitAnnouncement({
+          id: row.id,
+          title: row.title,
+          content: row.content,
+          visible: row.visible
+        })
+      },
 
-    submitAnnouncement (data = undefined) {
-      const fromDialog = !data || !data.title
-      const proceed = () => {
-        let funcName = ''
-        let payload = data
-        if (fromDialog) {
-          payload = {
-            id: this.currentAnnouncementId,
-            title: this.announcement.title,
-            content: this.announcement.content,
-            visible: this.announcement.visible
+      submitAnnouncement (data = undefined) {
+        const fromDialog = !data || !data.title
+        const proceed = () => {
+          let funcName = ''
+          let payload = data
+          if (fromDialog) {
+            payload = {
+              id: this.currentAnnouncementId,
+              title: this.announcement.title,
+              content: this.announcement.content,
+              visible: this.announcement.visible
+            }
           }
+
+          if (this.contestID) {
+            payload.contest_id = this.contestID
+            funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
+          } else {
+            funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
+          }
+
+          api[funcName](payload).then(res => {
+            this.$success(this.$t('m.Succeeded'))
+            this.showEditAnnouncementDialog = false
+            this.init()
+          }).catch(() => {
+            this.init()
+          })
         }
 
-        if (this.contestID) {
-          payload.contest_id = this.contestID
-          funcName = this.mode === 'edit' ? 'updateContestAnnouncement' : 'createContestAnnouncement'
+        if (fromDialog && this.$refs.announcementForm) {
+          this.$refs.announcementForm.validate((valid) => {
+            if (!valid) {
+              this.$error(this.$i18n.t('m.Fix_Form_Errors'))
+              return
+            }
+            proceed()
+          })
         } else {
-          funcName = this.mode === 'edit' ? 'updateAnnouncement' : 'createAnnouncement'
-        }
-
-        api[funcName](payload).then(res => {
-          this.$success(this.$t('m.Succeeded'))
-          this.showEditAnnouncementDialog = false
-          this.init()
-        }).catch(() => {
-          this.init()
-        })
-      }
-
-      if (fromDialog && this.$refs.announcementForm) {
-        this.$refs.announcementForm.validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
           proceed()
-        })
-      } else {
-        proceed()
+        }
       }
     },
-  },
     watch: {
       $route () {
         this.init()

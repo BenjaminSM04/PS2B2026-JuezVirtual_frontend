@@ -21,10 +21,13 @@
 <script>
 import api from '@/utils/tutorApi'
 export default {
-  name: 'PedagogyConfig', props: {problemId: {type: Number, required: true}},
+  name: 'PedagogyConfig',
+  props: {problemId: {type: Number, required: true}},
   data () { return {versions: [], selected: '', concepts: [{name: '', explanation: ''}], hints: {concept: '', location: '', strategy: ''}, busy: false, error: '', message: '', epoch: 0} },
   computed: {selectedDraft () { return this.versions.find(item => item.id === this.selected && item.status === 'draft') }},
-  created () { this.load() }, beforeDestroy () { this.epoch++ }, watch: {problemId () { this.load() }},
+  created () { this.load() },
+  beforeDestroy () { this.epoch++ },
+  watch: {problemId () { this.load() }},
   methods: {
     async load () {
       const epoch = ++this.epoch
@@ -33,9 +36,7 @@ export default {
       this.concepts = [{name: '', explanation: ''}]
       this.hints = {concept: '', location: '', strategy: ''}
       this.busy = true
-      try { const versions = await api.versions(this.problemId); if (epoch === this.epoch) this.versions = versions }
-      catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      try { const versions = await api.versions(this.problemId); if (epoch === this.epoch) this.versions = versions } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     },
     selectVersion () {
       const version = this.versions.find(item => item.id === this.selected)
@@ -55,8 +56,7 @@ export default {
         this.versions.push(version)
         this.selected = version.id
         this.message = this.$t('m.Tutor_draft_saved')
-      } catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     },
     async activate () {
       const epoch = this.epoch
@@ -70,8 +70,7 @@ export default {
           this.versions = versions
           this.message = this.$t('m.Tutor_activated')
         }
-      } catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     }
   }
 }

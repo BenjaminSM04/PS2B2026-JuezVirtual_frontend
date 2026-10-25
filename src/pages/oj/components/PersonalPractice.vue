@@ -38,13 +38,16 @@
 <script>
 import api from '@/utils/tutorApi'
 export default {
-  name: 'PersonalPractice', props: {userId: {type: Number, default: null}},
+  name: 'PersonalPractice',
+  props: {userId: {type: Number, default: null}},
   data () { return {state: null, overview: null, error: '', busy: false, epoch: 0} },
   computed: {
     color () { return ({green: '#4b9957', blue: '#317aaa', amber: '#ad741a', violet: '#8650ab'})[this.state.appearance.color] },
     stageLabel () { return this.$t('m.Mascot_' + this.state.stage) }
   },
-  created () { this.load() }, beforeDestroy () { this.epoch++ }, watch: {userId () { this.load() }},
+  created () { this.load() },
+  beforeDestroy () { this.epoch++ },
+  watch: {userId () { this.load() }},
   methods: {
     async load () {
       const epoch = ++this.epoch
@@ -55,15 +58,12 @@ export default {
       try {
         const data = await Promise.all([api.mascot(), api.overview()])
         if (epoch === this.epoch) { this.state = data[0]; this.overview = data[1] }
-      } catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     },
     async update (data) {
       const epoch = this.epoch
       this.busy = true
-      try { const state = await api.updateMascot(data); if (epoch === this.epoch) this.state = state }
-      catch (error) { if (epoch === this.epoch) this.error = error.message }
-      finally { if (epoch === this.epoch) this.busy = false }
+      try { const state = await api.updateMascot(data); if (epoch === this.epoch) this.state = state } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     }
   }
 }
