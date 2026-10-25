@@ -372,7 +372,7 @@ export default {
 .taglist-title {
   margin-left: -10px;
   margin-bottom: -10px;
-  color: #7b1e3a;
+  color: var(--lj-text);
 }
 
 .tag-btn {

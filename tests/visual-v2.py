@@ -73,18 +73,18 @@ def main():
                     if clipped:
                         overflows.append({"route": route, "theme": theme, "buttons": clipped})
                     if label == "problemas" and width == 1440:
-                        ratios = page.locator(".ivu-table th .ivu-table-cell").evaluate_all("""elements => {
+                        ratios = page.locator(".ivu-table th .ivu-table-cell,.taglist-title").evaluate_all("""elements => {
                           const lum = text => {
                             const c=text.match(/[\\d.]+/g).slice(0,3).map(Number).map(x=>x/255).map(x=>x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));
                             return c[0]*.2126+c[1]*.7152+c[2]*.0722;
                           };
                           return elements.filter(e=>e.getBoundingClientRect().width).map(e=>{
-                            const a=lum(getComputedStyle(e).color),b=lum(getComputedStyle(e.closest('th')).backgroundColor);
+                            const a=lum(getComputedStyle(e).color),b=lum(getComputedStyle(e.closest('th,.ivu-card')).backgroundColor);
                             return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
                           });
                         }""")
                         assert ratios and min(ratios) >= 4.5, {"theme": theme, "ratios": ratios}
-                        contrasts.append({"theme": theme, "table_header_minimum": min(ratios)})
+                        contrasts.append({"theme": theme, "catalog_heading_minimum": min(ratios)})
                     routes.append({"route": route, "theme": theme, "width": width})
                     if width in (320, 1440) and label in ("inicio", "problemas", "correo", "editor", "tablero", "versiones"):
                         page.screenshot(path=str(args.output / f"{label}-{theme}-{width}.png"), full_page=True)
