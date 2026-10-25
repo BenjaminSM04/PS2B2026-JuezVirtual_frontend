@@ -258,13 +258,31 @@ def main():
         reduced_page = reduced.new_page()
         reduced_page.goto(root, wait_until="networkidle")
         assert reduced_page.locator(".v2-hero__art").evaluate("e=>getComputedStyle(e).animationName") == "none"
+
+        # Acceso real desde la interfaz: el menú debe desaparecer antes de abrir el modal.
+        anonymous = browser.new_context(viewport={"width": 375, "height": 900})
+        access = anonymous.new_page()
+        access.goto(root, wait_until="networkidle")
+        access.get_by_role("button", name="Abrir navegación", exact=True).click()
+        access.locator(".btn-menu .nav-btn").first.click()
+        expect(access.locator("#portal-navigation")).not_to_be_visible()
+        modal = access.locator(".auth-modal .ivu-modal-content")
+        expect(modal).to_be_visible()
+        access.screenshot(path=str(args.output / "acceso-estudiante-final-375.png"), full_page=True, animations="disabled")
+        modal.locator('input[type="text"]').first.fill("estudiante-demo")
+        modal.locator('input[type="password"]').fill(state["student_password"])
+        with access.expect_response(lambda r: "/api/login" in r.url and r.request.method == "POST") as authenticated:
+            modal.locator(".auth-submit-btn").click()
+        assert not authenticated.value.json()["error"]
+        expect(modal).not_to_be_visible()
+        assert anonymous.request.get(root + "/api/profile").json()["data"]["user"]["username"] == "estudiante-demo"
         browser.close()
 
     result = {"routes_checked": len(routes), "page_errors": errors, "translation_warnings": warnings,
               "overflows": overflows, "smtp_external_messages": 0, "smtp_delivery_mocked": True,
               "smtp_admin_saved": True, "private_cases_preserved": True, "verdicts": verdicts,
               "release_notes_repo_backed": True, "release_retry_and_text_safety": True, "reduced_motion": True,
-              "contrast": contrasts}
+              "contrast": contrasts, "mobile_login_via_ui": True}
     (args.output / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     assert not errors and not overflows, result
     print(json.dumps(result))

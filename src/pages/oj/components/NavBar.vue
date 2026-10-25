@@ -177,6 +177,7 @@ export default {
       this.mobileMenuOpen = false
     },
     handleBtnClick (mode) {
+      this.mobileMenuOpen = false
       this.changeModalStatus({
         visible: true,
         mode: mode
@@ -226,7 +227,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 900;
   background: var(--lj-surface);
   border-bottom: 1px solid var(--lj-border);
   box-shadow: 0 4px 24px rgba(25, 64, 50, 0.035);

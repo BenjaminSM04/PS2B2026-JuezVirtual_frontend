@@ -43,6 +43,26 @@ button, input, textarea, select { font: inherit; }
 .v2-skip-link:focus { top: 12px; }
 .release-feed__intro { border-bottom: 1px solid var(--lj-border); padding-bottom: 18px; margin-bottom: 22px; }
 .v2-retry { border: 1px solid var(--lj-border); border-radius: 9px; background: var(--lj-surface); color: var(--lj-green); padding: 8px 13px; margin-top: 10px; cursor: pointer; }
+html .auth-modal .ivu-modal { top: 32px !important; width: 440px !important; max-width: calc(100vw - 32px); margin: 0 auto; padding-bottom: 32px; }
+html .auth-modal .ivu-modal-content { border: 1px solid var(--lj-border); border-radius: 20px; color: var(--lj-text); background: var(--lj-surface); box-shadow: 0 20px 80px rgba(15,35,27,.16); }
+html .auth-modal .ivu-modal-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--lj-border); }
+html .auth-modal .ivu-modal-body { padding: 22px 24px 24px; }
+html .auth-modal .auth-modal-header { margin: 0; padding: 0; }
+html .auth-modal .auth-modal-title { font-size: 21px; line-height: 1.3; }
+html .auth-modal .auth-modal-subtitle { font-size: 11px; line-height: 1.6; }
+html .auth-modal .auth-form .ivu-input-group-prepend,
+html .auth-modal .auth-form .ivu-input-group-append { background: var(--lj-soft) !important; color: var(--lj-muted); border: 1px solid var(--lj-border) !important; min-width: 40px; padding: 0 10px !important; }
+html .auth-modal .auth-form .ivu-input-group-prepend { border-right: 0 !important; border-radius: 9px 0 0 9px; }
+html .auth-modal .auth-form .ivu-input-group-append { border-left: 0 !important; border-radius: 0 9px 9px 0; padding: 0 !important; }
+html .auth-modal .auth-form .ivu-input { background: var(--lj-surface); color: var(--lj-text); border: 1px solid var(--lj-border) !important; border-left: 0 !important; height: 42px; font-size: 14px; box-shadow: none !important; }
+html .auth-modal .auth-form .ivu-input-group-with-append .ivu-input { border-right: 0 !important; border-radius: 0; }
+html .auth-modal .auth-form .ivu-input-group-with-prepend:not(.ivu-input-group-with-append) .ivu-input { border-right: 1px solid var(--lj-border) !important; border-radius: 0 9px 9px 0; }
+html .auth-modal .auth-form .ivu-input-group-prepend i { font-size: 16px; font-weight: 400; }
+html .auth-modal .auth-form .password-toggle { color: var(--lj-muted) !important; background: transparent; padding: 0; width: 40px; min-width: 40px; height: 40px; min-height: 40px; }
+html .auth-modal .auth-form .footer { margin-top: 24px; }
+html .auth-modal .auth-form .auth-submit-btn { background: #852344; border-color: #852344; min-height: 42px; font-size: 14px; border-radius: 9px; }
+html .auth-modal .auth-form .auth-links { flex-wrap: wrap; gap: 12px; }
+html .auth-modal .auth-form .auth-link { color: var(--lj-green); font-size: 12px; line-height: 1.6; }
 .problem-card { transition: background .18s ease; }
 .problem-card:hover { background: var(--lj-mint); }
 .brand-mark__icon { transition: transform .22s ease; }

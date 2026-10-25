@@ -24,6 +24,10 @@ menta y rosa pastel para el contexto de Univalle.
 
 ## Notas y versión desde el repositorio
 
+El acceso del portal cierra el menú móvil antes de abrir su formulario. La capa
+del diálogo queda sobre la cabecera; la regresión inicia sesión desde un móvil
+con credenciales ficticias, además de comprobar los flujos administrativos.
+
 `build/version.js` lee `VERSION` y `CHANGELOG.md` del checkout y genera
 `dist/version.json` y `dist/release-notes.json` en cada compilación. La interfaz
 consulta ese manifiesto en la raíz del sitio con un cliente HTTP que no hereda
