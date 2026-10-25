@@ -15,6 +15,8 @@ Cambios integrados:
 - Diseño de administración verificado en anchos de 375 y 1280 píxeles.
 - Selector de tema integrado en la barra de administración para evitar que tape
   formularios o diagnóstico de correo al desplazarse en móvil.
+- Fondos y textos del modo oscuro compatibles con los estilos privados de
+  paneles, formularios, navegación y tarjetas del tablero.
 
 Lint, pruebas del frontend, auditoría definida por el proyecto y compilación
 aprobaron. Chromium probó la pareja de imágenes privadas con datos ficticios y

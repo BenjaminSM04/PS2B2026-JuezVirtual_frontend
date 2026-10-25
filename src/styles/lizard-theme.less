@@ -5,6 +5,41 @@ a { color: #8b2346; }
 .ivu-btn-primary, .el-button--primary { background: #852344; border-color: #852344; }
 :focus-visible { outline: 3px solid #397bc2; outline-offset: 3px; }
 html[data-lizard-theme='dark'] {
+  .admin-shell { background: var(--lj-bg); color: var(--lj-text); }
+  .admin-shell .admin-shell__header,
+  .admin-shell .admin-sidemenu,
+  .admin-shell .dashboard-stat,
+  .admin-shell .dashboard-card,
+  .admin-shell .release-note {
+    background: var(--lj-surface); color: var(--lj-text); border-color: var(--lj-border);
+  }
+  /* Las vistas privadas tienen fondos importantes: el tema debe cubrirlos también. */
+  .admin-shell .panel { background: var(--lj-surface) !important; color: var(--lj-text); }
+  .admin-shell .panel .title { color: var(--lj-text) !important; }
+  .admin-shell .el-form-item__label,
+  .admin-shell .el-input__inner,
+  .admin-shell .el-textarea__inner,
+  .admin-shell .email-health__label,
+  .admin-shell .email-health__detail,
+  .admin-shell .dashboard-stat__value,
+  .admin-shell .dashboard-stat__label,
+  .admin-shell .profile-card__name,
+  .admin-shell .profile-card__role,
+  .admin-shell .session-card__label,
+  .admin-shell .session-card__value,
+  .admin-shell .release-note__details,
+  .admin-shell .release-note__header p,
+  .admin-shell .overview-item__label,
+  .admin-shell .overview-item__value { color: var(--lj-text); }
+  .admin-shell .session-card__item,
+  .admin-shell .overview-item { background: var(--lj-bg); border-color: var(--lj-border); }
+  .admin-shell .admin-sidemenu .el-menu-item,
+  .admin-shell .admin-sidemenu .el-submenu__title,
+  .admin-shell .admin-sidemenu .el-menu-item i,
+  .admin-shell .admin-sidemenu .el-submenu__title i { color: var(--lj-text); }
+  .admin-shell .admin-sidemenu .el-menu-item:hover,
+  .admin-shell .admin-sidemenu .el-submenu__title:hover,
+  .admin-shell .admin-sidemenu .el-menu-item.is-active { background: var(--lj-bg); color: var(--lj-primary); }
   a { color: #edb7ca; }
   body, .ivu-card, .ivu-card-head, .ivu-modal-content, .ivu-menu, .ivu-table, .ivu-table td,
   .ivu-table th, .ivu-select-dropdown, .ivu-input, .el-dialog, .el-input__inner, .el-textarea__inner,
