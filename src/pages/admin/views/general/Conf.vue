@@ -1,450 +1,472 @@
 <template>
   <div class="view conf-view">
-    <Panel :title="$t('m.Email_Diagnostics')">
-      <div class="email-health">
-        <div class="email-health__row">
-          <span class="email-health__label">{{$t('m.SMTP_Configured')}}</span>
-          <el-tag :type="health.smtp_configured ? 'success' : 'danger'" size="small">
-            {{ health.smtp_configured ? $t('m.OK') : $t('m.Missing') }}
-          </el-tag>
-          <span v-if="!health.smtp_configured && health.smtp_missing_keys && health.smtp_missing_keys.length"
-                class="email-health__detail">
-            ({{ health.smtp_missing_keys.join(', ') }})
-          </span>
+    <div class="v2-page-heading">
+      <span class="v2-eyebrow"><i class="el-icon-lock" aria-hidden="true"></i> {{ $t('m.V2_Privacy') }}</span>
+      <p>{{ $t('m.V2_Settings_Description') }}</p>
+    </div>
+    <el-tabs v-model="activeTab">
+      <el-tab-pane :label="$t('m.V2_Email_Tab')" name="email">
+        <div class="settings-layout">
+          <Panel :title="$t('m.SMTP_Config')">
+            <p class="v2-description">{{ $t('m.V2_Email_Description') }}</p>
+            <div class="v2-actions">
+              <el-button size="small" @click="useResend">{{ $t('m.SMTP_Use_Resend') }}</el-button
+              ><span class="settings-save-state" aria-live="polite">{{
+                $t(!saved ? 'm.V2_Needs_Config' : smtpDirty ? 'm.V2_Unsaved' : 'm.V2_Saved')
+              }}</span>
+            </div>
+            <p v-if="smtp.server === 'smtp.resend.com'" class="settings-callout" style="margin-top: 18px">
+              {{ $t('m.V2_Resend_Domain') }}
+            </p>
+            <el-form
+              ref="smtpForm"
+              :model="smtp"
+              :rules="smtpRules"
+              label-position="top"
+              :disabled="!smtpLoaded"
+              @submit.native.prevent
+            >
+              <el-row :gutter="20">
+                <el-col :xs="24" :sm="16"
+                  ><el-form-item :label="$t('m.Server')" prop="server" required
+                    ><el-input
+                      v-model="smtp.server"
+                      placeholder="smtp.example.com"
+                      autocomplete="off"
+                    ></el-input></el-form-item
+                ></el-col>
+                <el-col :xs="24" :sm="8"
+                  ><el-form-item :label="$t('m.Port')" prop="port" required
+                    ><el-input
+                      type="number"
+                      v-model.number="smtp.port"
+                      :placeholder="$t('m.SMTP_Port_Placeholder')"
+                      :min="1"
+                      :max="65535"
+                    ></el-input></el-form-item
+                ></el-col>
+                <el-col :xs="24" :sm="12"
+                  ><el-form-item :label="$t('m.SMTP_Username')"
+                    ><el-input
+                      v-model="smtp.username"
+                      :placeholder="$t('m.SMTP_Username_Help')"
+                      autocomplete="off"
+                    ></el-input></el-form-item
+                ></el-col>
+                <el-col :xs="24" :sm="12"
+                  ><el-form-item :label="$t('m.SMTP_Encryption')"
+                    ><el-select v-model="smtpEncryption" style="width: 100%"
+                      ><el-option label="SSL/TLS" value="ssl"></el-option
+                      ><el-option label="STARTTLS" value="starttls"></el-option
+                      ><el-option
+                        :label="$t('m.SMTP_No_Encryption')"
+                        value="none"
+                      ></el-option></el-select></el-form-item
+                ></el-col>
+                <el-col :span="24"
+                  ><el-form-item :label="$t('m.Password')" prop="password" :required="init"
+                    ><PasswordInput
+                      admin
+                      v-model="smtp.password"
+                      :placeholder="init ? $t('m.Password') : $t('m.SMTP_Keep_Password')"
+                      autocomplete="new-password"
+                  /></el-form-item>
+                  <p class="settings-hint">{{ $t('m.V2_Credential_Help') }}</p></el-col
+                >
+                <el-col :xs="24" :sm="12"
+                  ><el-form-item :label="$t('m.V2_Sender_Name')"
+                    ><el-input
+                      v-model="smtp.sender_name"
+                      :placeholder="$t('m.V2_Sender_Name_Help')"
+                      :maxlength="128"
+                    ></el-input></el-form-item
+                ></el-col>
+                <el-col :xs="24" :sm="12"
+                  ><el-form-item :label="$t('m.Email')" prop="email" required
+                    ><el-input
+                      v-model="smtp.email"
+                      placeholder="email@example.com"
+                      type="email"
+                      autocomplete="off"
+                    ></el-input></el-form-item
+                ></el-col>
+              </el-row>
+            </el-form>
+            <el-button
+              v-if="smtpLoaded"
+              type="primary"
+              icon="el-icon-fa-save"
+              :loading="smtpSaving"
+              @click="saveSMTPConfig"
+              >{{ $t('m.Save') }}</el-button
+            >
+            <el-button v-else icon="el-icon-refresh" @click="loadSMTP">{{ $t('m.V2_Retry') }}</el-button>
+            <section class="settings-test">
+              <h3>{{ $t('m.V2_Email_Test_Title') }}</h3>
+              <p class="settings-hint">{{ $t('m.V2_Email_Test_Help') }}</p>
+              <label for="smtp-test-recipient" class="v2-eyebrow">{{ $t('m.V2_Test_Recipient') }}</label>
+              <div class="settings-test__actions">
+                <el-input
+                  id="smtp-test-recipient"
+                  v-model="testRecipient"
+                  type="email"
+                  :disabled="loadingBtnTest"
+                  :placeholder="$t('m.V2_Test_Recipient_Placeholder')"
+                ></el-input
+                ><el-button
+                  type="primary"
+                  icon="el-icon-fa-envelope"
+                  :loading="loadingBtnTest"
+                  :disabled="!saved || smtpDirty || smtpSaving || !smtpLoaded"
+                  @click="testSMTPConfig"
+                  >{{ $t('m.Send_Test_Email') }}</el-button
+                >
+              </div>
+              <p v-if="!saved || smtpDirty" class="settings-hint">{{ $t('m.V2_Save_Before_Test') }}</p>
+              <p v-if="testSuccess" class="settings-callout" role="status">{{ $t('m.V2_Test_Sent') }}</p>
+            </section>
+          </Panel>
+          <aside>
+            <Panel :title="$t('m.V2_Connection_Title')">
+              <div class="settings-status">
+                <div class="settings-status__item">
+                  <span>{{ $t('m.SMTP_Configured') }}</span
+                  ><span class="v2-chip" :class="{ 'v2-chip--mint': health.smtp_configured }">{{
+                    $t(health.smtp_configured ? 'm.V2_Ready' : 'm.V2_Needs_Config')
+                  }}</span>
+                </div>
+                <div class="settings-status__item">
+                  <span>{{ $t('m.Redis_Reachable') }}</span
+                  ><span>{{ $t(health.redis_reachable ? 'm.OK' : 'm.Down') }}</span>
+                </div>
+                <div class="settings-status__item">
+                  <span>{{ $t('m.Dramatiq_Worker') }}</span
+                  ><span>{{ $t(health.dramatiq_worker_alive ? 'm.Alive' : 'm.No_Worker') }}</span>
+                </div>
+              </div>
+              <p class="settings-hint">{{ $t('m.V2_Connection_Help') }}</p>
+              <el-button size="small" icon="el-icon-refresh" @click="refreshHealth" :loading="healthLoading">{{
+                $t('m.Refresh')
+              }}</el-button>
+            </Panel>
+            <div v-if="!health.website_base_url_ok" class="settings-callout settings-callout--rose">
+              {{ $t('m.V2_Diagnostic_Warning') }}<br /><el-button type="text" @click="activeTab = 'website'"
+                >{{ $t('m.V2_Website_Tab') }} &rarr;</el-button
+              >
+            </div>
+          </aside>
         </div>
-        <div class="email-health__row">
-          <span class="email-health__label">{{$t('m.Website_Base_Url')}}</span>
-          <el-tag :type="health.website_base_url_ok ? 'success' : 'warning'" size="small">
-            {{ health.website_base_url_ok ? $t('m.OK') : $t('m.Default_Localhost') }}
-          </el-tag>
-          <span class="email-health__detail">{{ health.website_base_url }}</span>
-        </div>
-        <div class="email-health__row">
-          <span class="email-health__label">{{$t('m.Redis_Reachable')}}</span>
-          <el-tag :type="health.redis_reachable ? 'success' : 'danger'" size="small">
-            {{ health.redis_reachable ? $t('m.OK') : $t('m.Down') }}
-          </el-tag>
-        </div>
-        <div class="email-health__row">
-          <span class="email-health__label">{{$t('m.Dramatiq_Worker')}}</span>
-          <el-tag :type="health.dramatiq_worker_alive ? 'success' : 'warning'" size="small">
-            {{ health.dramatiq_worker_alive ? $t('m.Alive') : $t('m.No_Worker') }}
-          </el-tag>
-        </div>
-        <el-button size="small" icon="el-icon-refresh" @click="refreshHealth" :loading="healthLoading">
-          {{$t('m.Refresh')}}
-        </el-button>
-      </div>
-    </Panel>
-
-    <Panel :title="$t('m.SMTP_Config')">
-      <p>{{$t('m.SMTP_Resend_Help')}}</p>
-      <el-button size="small" @click="useResend">{{$t('m.SMTP_Use_Resend')}}</el-button>
-      <el-form label-position="left" label-width="70px" :model="smtp" :rules="smtpRules" ref="smtpForm">
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Server')" prop="server" required>
-              <el-input v-model="smtp.server" placeholder="smtp.example.com"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Port')" prop="port" required>
-              <el-input type="number" v-model.number="smtp.port" :placeholder="$t('m.SMTP_Port_Placeholder')"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.SMTP_Username')" label-width="130px">
-              <el-input v-model="smtp.username" :placeholder="$t('m.SMTP_Username_Help')" autocomplete="off"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Email')" prop="email" required>
-              <el-input v-model="smtp.email" placeholder="email@example.com"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12">
-            <el-form-item :label="$t('m.Password')" prop="password" label-width="90px" :required="init">
-              <PasswordInput admin v-model="smtp.password" :placeholder="$t('m.SMTP_Keep_Password')" autocomplete="new-password"></PasswordInput>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="$t('m.SMTP_Encryption')" label-width="130px">
-              <el-select v-model="smtpEncryption">
-                <el-option label="SSL/TLS" value="ssl"></el-option>
-                <el-option label="STARTTLS" value="starttls"></el-option>
-                <el-option :label="$t('m.SMTP_No_Encryption')" value="none"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <el-button type="primary" icon="el-icon-fa-save" @click="saveSMTPConfig">{{$t('m.Save')}}</el-button>
-      <el-button type="warning" icon="el-icon-fa-envelope" @click="testSMTPConfig"
-                 v-if="saved" :loading="loadingBtnTest">{{$t('m.Send_Test_Email')}}</el-button>
-    </Panel>
-
-    <Panel :title="$t('m.Website_Config')">
-      <el-form label-position="left" label-width="100px" ref="websiteForm" :model="websiteConfig" :rules="websiteRules">
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Base_Url')" prop="website_base_url" required>
-              <el-input v-model="websiteConfig.website_base_url" placeholder="https://example.com"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Name')" prop="website_name" required>
-              <el-input v-model="websiteConfig.website_name" placeholder="Juez Virtual"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8">
-            <el-form-item :label="$t('m.Shortcut')" prop="website_name_shortcut" required>
-              <el-input v-model="websiteConfig.website_name_shortcut" placeholder="oj"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item :label="$t('m.Footer')" prop="website_footer">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="websiteConfig.website_footer"
-                        :placeholder="$t('m.Website_Footer_Placeholder')"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-col :xs="24" :sm="12">
-              <el-form-item :label="$t('m.Allow_Register')" label-width="200px">
-                <el-switch
-                  v-model="websiteConfig.allow_register"
-                  active-color="#A60550"
-                  inactive-color="#987284">
-                </el-switch>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12">
-              <el-form-item 
-                  :label="$t('m.Submission_List_Show_All')" 
-                  label-width="260px">
-                <el-switch
-                  v-model="websiteConfig.submission_list_show_all"
-                  active-color="#A60550"
-                  inactive-color="#987284">
-                </el-switch>
-              </el-form-item>
-            </el-col>
-          </el-col>
-        </el-row>
-      </el-form>
-      <save @click.native="saveWebsiteConfig"></save>
-    </Panel>
+      </el-tab-pane>
+      <el-tab-pane :label="$t('m.V2_Website_Tab')" name="website">
+        <Panel :title="$t('m.Website_Config')">
+          <p class="settings-hint">{{ $t('m.V2_Site_Description') }}</p>
+          <el-form
+            ref="websiteForm"
+            :model="websiteConfig"
+            :rules="websiteRules"
+            label-position="top"
+            @submit.native.prevent
+          >
+            <el-row :gutter="20">
+              <el-col :span="24"
+                ><el-form-item :label="$t('m.Base_Url')" prop="website_base_url" required
+                  ><el-input
+                    v-model="websiteConfig.website_base_url"
+                    placeholder="https://lj.isilp.com"
+                  ></el-input></el-form-item
+              ></el-col>
+              <el-col :xs="24" :sm="12"
+                ><el-form-item :label="$t('m.Name')" prop="website_name" required
+                  ><el-input v-model="websiteConfig.website_name"></el-input></el-form-item
+              ></el-col>
+              <el-col :xs="24" :sm="12"
+                ><el-form-item :label="$t('m.Shortcut')" prop="website_name_shortcut" required
+                  ><el-input v-model="websiteConfig.website_name_shortcut"></el-input></el-form-item
+              ></el-col>
+              <el-col :span="24"
+                ><el-form-item :label="$t('m.Footer')" prop="website_footer"
+                  ><el-input
+                    type="textarea"
+                    :autosize="{ minRows: 3, maxRows: 6 }"
+                    v-model="websiteConfig.website_footer"
+                  ></el-input></el-form-item
+              ></el-col>
+              <el-col :xs="24" :sm="12"
+                ><el-form-item :label="$t('m.Allow_Register')"
+                  ><el-switch v-model="websiteConfig.allow_register"></el-switch></el-form-item
+              ></el-col>
+              <el-col :xs="24" :sm="12"
+                ><el-form-item :label="$t('m.Submission_List_Show_All')"
+                  ><el-switch v-model="websiteConfig.submission_list_show_all"></el-switch></el-form-item
+              ></el-col>
+            </el-row>
+          </el-form>
+          <el-button type="primary" icon="el-icon-fa-save" :loading="websiteSaving" @click="saveWebsiteConfig">{{
+            $t('m.Save')
+          }}</el-button>
+        </Panel>
+      </el-tab-pane>
+      <el-tab-pane :label="$t('m.V2_Diagnostics_Tab')" name="diagnostics">
+        <Panel :title="$t('m.Email_Diagnostics')">
+          <p class="settings-hint">{{ $t('m.V2_Diagnostic_Help') }}</p>
+          <div class="settings-status">
+            <div class="settings-status__item">
+              <span>{{ $t('m.Website_Base_Url') }}</span
+              ><span>{{ health.website_base_url }}</span>
+            </div>
+            <div class="settings-status__item">
+              <span>{{ $t('m.SMTP_Configured') }}</span
+              ><span>{{ $t(health.smtp_configured ? 'm.OK' : 'm.Missing') }}</span>
+            </div>
+            <div class="settings-status__item">
+              <span>{{ $t('m.Redis_Reachable') }}</span
+              ><span>{{ $t(health.redis_reachable ? 'm.OK' : 'm.Down') }}</span>
+            </div>
+            <div class="settings-status__item">
+              <span>{{ $t('m.Dramatiq_Worker') }}</span
+              ><span>{{ $t(health.dramatiq_worker_alive ? 'm.Alive' : 'm.No_Worker') }}</span>
+            </div>
+          </div>
+          <el-button size="small" icon="el-icon-refresh" @click="refreshHealth" :loading="healthLoading">{{
+            $t('m.Refresh')
+          }}</el-button>
+        </Panel>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-  import api from '../../api.js'
-  import PasswordInput from '@/components/PasswordInput.vue'
+import api from '../../api.js'
+import PasswordInput from '@/components/PasswordInput.vue'
 
-  export default {
-    name: 'Conf',
-    components: {PasswordInput},
-    data () {
-      const emailRegex = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
-      const validateEmail = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$i18n.t('m.Email_Required')))
-        } else if (!emailRegex.test(value)) {
-          callback(new Error(this.$i18n.t('m.Email_Invalid')))
-        } else {
-          callback()
-        }
-      }
-      const validatePort = (rule, value, callback) => {
-        const num = Number(value)
-        if (value === '' || value === null || value === undefined) {
-          callback(new Error(this.$i18n.t('m.Port_Required')))
-        } else if (!Number.isInteger(num) || num < 1 || num > 65535) {
-          callback(new Error(this.$i18n.t('m.Port_Invalid')))
-        } else {
-          callback()
-        }
-      }
-      const validateUrl = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error(this.$i18n.t('m.Base_Url_Required')))
-        } else if (!/^https?:\/\/.+/.test(value)) {
-          callback(new Error(this.$i18n.t('m.Url_Invalid')))
-        } else {
-          callback()
-        }
-      }
-      return {
-        init: false,
-        saved: false,
-        loadingBtnTest: false,
-        healthLoading: false,
-        health: {
-          smtp_configured: false,
-          smtp_missing_keys: [],
-          website_base_url: '',
-          website_base_url_ok: false,
-          redis_reachable: false,
-          dramatiq_worker_alive: false
-        },
-        smtp: {
-          server: '',
-          port: '',
-          password: '',
-          email: '',
-          username: '',
-          ssl: false,
-          tls: true
-        },
-        websiteConfig: {},
-        smtpRules: {
-          server: [
-            {required: true, message: this.$i18n.t('m.SMTP_Server_Required'), trigger: 'blur'}
-          ],
-          port: [
-            {required: true, validator: validatePort, trigger: 'blur'}
-          ],
-          email: [
-            {required: true, validator: validateEmail, trigger: 'blur'}
-          ],
-          password: [
-            {validator: (rule, value, callback) => callback(this.init && !value ? new Error(this.$t('m.Password_Required')) : undefined), trigger: 'blur'}
-          ]
-        },
-        websiteRules: {
-          website_base_url: [
-            {required: true, validator: validateUrl, trigger: 'blur'}
-          ],
-          website_name: [
-            {required: true, message: this.$i18n.t('m.Website_Name_Required'), trigger: 'blur'},
-            {max: 128, message: this.$i18n.t('m.Max_128_Chars'), trigger: 'blur'}
-          ],
-          website_name_shortcut: [
-            {required: true, message: this.$i18n.t('m.Shortcut_Required'), trigger: 'blur'},
-            {max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur'}
-          ]
-        }
-      }
-    },
-    computed: {
-      smtpEncryption: {
-        get () { return this.smtp.ssl ? 'ssl' : this.smtp.tls ? 'starttls' : 'none' },
-        set (value) {
-          this.$set(this.smtp, 'ssl', value === 'ssl')
-          this.$set(this.smtp, 'tls', value === 'starttls')
-        }
-      }
-    },
-    mounted () {
-      api.getSMTPConfig().then(res => {
-        if (res.data.data) {
-          this.smtp = Object.assign({}, this.smtp, res.data.data, {password: ''})
-          this.saved = true
-        } else {
-          this.init = true
-          this.$warning(this.$i18n.t('m.Configure_SMTP_First'))
-        }
-      })
-      api.getWebsiteConfig().then(res => {
-        this.websiteConfig = res.data.data
-      }).catch(() => {
-      })
-      this.refreshHealth()
-    },
-    methods: {
-      useResend () {
-        this.smtp.server = 'smtp.resend.com'
-        this.smtp.port = 465
-        this.$set(this.smtp, 'username', 'resend')
-        this.smtpEncryption = 'ssl'
-      },
-      saveSMTPConfig () {
-        this.$refs.smtpForm.validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
-          if (!this.init) {
-            const data = Object.assign({}, this.smtp)
-            if (!data.password) delete data.password
-            api.editSMTPConfig(data).then(() => {
-              this.saved = true
-              this.smtp.password = ''
-              this.refreshHealth()
-            }, () => {
-            })
-          } else {
-            api.createSMTPConfig(this.smtp).then(() => {
-              this.saved = true
-              this.init = false
-              this.smtp.password = ''
-              this.refreshHealth()
-            }, () => {
-            })
-          }
-        })
-      },
-      testSMTPConfig () {
-        this.$prompt(this.$i18n.t('m.Input_Email'), this.$i18n.t('m.SMTP_Test'), {
-          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: this.$i18n.t('m.Email_Invalid')
-        }).then(({value}) => {
-          this.loadingBtnTest = true
-          api.testSMTPConfig(value).then(() => {
-            this.loadingBtnTest = false
-          }, () => {
-            this.loadingBtnTest = false
-          })
-        }).catch(() => {
-        })
-      },
-      saveWebsiteConfig () {
-        this.$refs.websiteForm.validate((valid) => {
-          if (!valid) {
-            this.$error(this.$i18n.t('m.Fix_Form_Errors'))
-            return
-          }
-          api.editWebsiteConfig(this.websiteConfig).then(() => {
-          }).catch(() => {
-          })
-        })
-      },
-      refreshHealth () {
-        this.healthLoading = true
-        api.getEmailHealth().then(res => {
-          this.health = res.data.data
-          this.healthLoading = false
-        }, () => {
-          this.healthLoading = false
-        })
+function signature (data) {
+  return JSON.stringify([
+    data.server,
+    Number(data.port),
+    data.username || '',
+    data.email,
+    data.sender_name || '',
+    Boolean(data.ssl),
+    Boolean(data.tls)
+  ])
+}
+
+export default {
+  name: 'Conf',
+  components: { PasswordInput },
+  data () {
+    const emailRegex =
+      /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/
+    const validateEmail = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error(this.$i18n.t('m.Email_Required')))
+      } else if (!emailRegex.test(value)) {
+        callback(new Error(this.$i18n.t('m.Email_Invalid')))
+      } else {
+        callback()
       }
     }
+    const validatePort = (rule, value, callback) => {
+      const num = Number(value)
+      if (value === '' || value === null || value === undefined) {
+        callback(new Error(this.$i18n.t('m.Port_Required')))
+      } else if (!Number.isInteger(num) || num < 1 || num > 65535) {
+        callback(new Error(this.$i18n.t('m.Port_Invalid')))
+      } else {
+        callback()
+      }
+    }
+    const validateUrl = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error(this.$i18n.t('m.Base_Url_Required')))
+      } else if (!/^https?:\/\/.+/.test(value)) {
+        callback(new Error(this.$i18n.t('m.Url_Invalid')))
+      } else {
+        callback()
+      }
+    }
+    return {
+      activeTab: 'email',
+      smtpSaving: false,
+      smtpLoaded: false,
+      websiteSaving: false,
+      testRecipient: '',
+      testSuccess: false,
+      savedSMTPSignature: '',
+      init: false,
+      saved: false,
+      loadingBtnTest: false,
+      healthLoading: false,
+      health: {
+        smtp_configured: false,
+        smtp_missing_keys: [],
+        website_base_url: '',
+        website_base_url_ok: false,
+        redis_reachable: false,
+        dramatiq_worker_alive: false
+      },
+      smtp: {
+        server: '',
+        port: '',
+        password: '',
+        email: '',
+        username: '',
+        sender_name: '',
+        ssl: false,
+        tls: true
+      },
+      websiteConfig: {},
+      smtpRules: {
+        server: [{ required: true, message: this.$i18n.t('m.SMTP_Server_Required'), trigger: 'blur' }],
+        port: [{ required: true, validator: validatePort, trigger: 'blur' }],
+        email: [{ required: true, validator: validateEmail, trigger: 'blur' }],
+        password: [
+          {
+            validator: (rule, value, callback) =>
+              callback(this.init && !value ? new Error(this.$t('m.Password_Required')) : undefined),
+            trigger: 'blur'
+          }
+        ]
+      },
+      websiteRules: {
+        website_base_url: [{ required: true, validator: validateUrl, trigger: 'blur' }],
+        website_name: [
+          { required: true, message: this.$i18n.t('m.Website_Name_Required'), trigger: 'blur' },
+          { max: 128, message: this.$i18n.t('m.Max_128_Chars'), trigger: 'blur' }
+        ],
+        website_name_shortcut: [
+          { required: true, message: this.$i18n.t('m.Shortcut_Required'), trigger: 'blur' },
+          { max: 32, message: this.$i18n.t('m.Max_32_Chars'), trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  computed: {
+    smtpDirty () {
+      return signature(this.smtp) !== this.savedSMTPSignature || Boolean(this.smtp.password)
+    },
+    smtpEncryption: {
+      get () {
+        return this.smtp.ssl ? 'ssl' : this.smtp.tls ? 'starttls' : 'none'
+      },
+      set (value) {
+        this.$set(this.smtp, 'ssl', value === 'ssl')
+        this.$set(this.smtp, 'tls', value === 'starttls')
+      }
+    }
+  },
+  mounted () {
+    this.loadSMTP()
+    api
+      .getWebsiteConfig()
+      .then((res) => {
+        this.websiteConfig = res.data.data
+      })
+      .catch(() => {})
+    this.refreshHealth()
+  },
+  methods: {
+    loadSMTP () {
+      this.smtpLoaded = false
+      return api
+        .getSMTPConfig()
+        .then((res) => {
+          if (res.data.data) {
+            this.smtp = Object.assign({}, this.smtp, res.data.data, { password: '' })
+            this.saved = true
+          } else {
+            this.init = true
+          }
+          this.savedSMTPSignature = signature(this.smtp)
+          this.smtpLoaded = true
+        })
+        .catch(() => {})
+    },
+    useResend () {
+      this.smtp.server = 'smtp.resend.com'
+      this.smtp.port = 465
+      this.$set(this.smtp, 'username', 'resend')
+      this.smtpEncryption = 'ssl'
+    },
+    saveSMTPConfig () {
+      if (this.smtpSaving || !this.smtpLoaded) return
+      this.$refs.smtpForm.validate((valid) => {
+        if (!valid) {
+          this.$error(this.$t('m.Fix_Form_Errors'))
+          return
+        }
+        const data = Object.assign({}, this.smtp)
+        if (!data.password) delete data.password
+        this.smtpSaving = true
+        const request = this.init ? api.createSMTPConfig(data) : api.editSMTPConfig(data)
+        request
+          .then(() => {
+            this.saved = true
+            this.init = false
+            this.savedSMTPSignature = signature(data)
+            if (this.smtp.password === (data.password || '')) this.smtp.password = ''
+            this.$success(this.$t('m.V2_Saved'))
+            this.refreshHealth()
+          })
+          .catch(() => {})
+          .then(() => {
+            this.smtpSaving = false
+          })
+      })
+    },
+    testSMTPConfig () {
+      if (!this.saved || this.smtpDirty || this.smtpSaving || this.loadingBtnTest) return
+      const recipient = this.testRecipient.trim()
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient)) {
+        this.$error(this.$t('m.Email_Invalid'))
+        return
+      }
+      this.loadingBtnTest = true
+      this.testSuccess = false
+      api
+        .testSMTPConfig(recipient)
+        .then(() => {
+          this.testSuccess = true
+          this.$success(this.$t('m.V2_Test_Sent'))
+        })
+        .catch(() => {})
+        .then(() => {
+          this.loadingBtnTest = false
+        })
+    },
+    saveWebsiteConfig () {
+      if (this.websiteSaving) return
+      this.$refs.websiteForm.validate((valid) => {
+        if (!valid) {
+          this.$error(this.$t('m.Fix_Form_Errors'))
+          return
+        }
+        this.websiteSaving = true
+        api
+          .editWebsiteConfig(Object.assign({}, this.websiteConfig))
+          .then(() => {
+            this.$success(this.$t('m.V2_Saved'))
+            this.refreshHealth()
+          })
+          .catch(() => {})
+          .then(() => {
+            this.websiteSaving = false
+          })
+      })
+    },
+    refreshHealth () {
+      this.healthLoading = true
+      api.getEmailHealth().then(
+        (res) => {
+          this.health = res.data.data
+          this.healthLoading = false
+        },
+        () => {
+          this.healthLoading = false
+        }
+      )
+    }
   }
+}
 </script>
-
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap");
-
-/* Estilos namespaced bajo .conf-view para que NO se filtren a otras pestañas
- * del admin (antes eran globales vía .view/.panel y colisionaban entre vistas). */
-.conf-view {
-  font-family: 'Funnel Display', sans-serif;
-}
-
-.conf-view .panel {
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  border: none !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-  overflow: hidden;
-  padding: 0 10px !important;
-  font-family: 'Funnel Display', sans-serif;
-}
-
-.email-health__row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 6px 0;
-}
-
-.email-health__label {
-  min-width: 180px;
-  font-weight: 600;
-  color: #18322f;
-}
-
-.email-health__detail {
-  color: #65807b;
-  font-size: 12px;
-}
-
-.conf-view .title {
-  color: #090808 !important;
-  font-size: 25px !important;
-  font-weight: bold !important;
-}
-
-.conf-view .el-form-item__label {
-  font-size: 18px;
-  color: black;
-  font-weight: 400;
-}
-
-.conf-view .el-form-item__label:before {
-  display: none !important;
-}
-
-.conf-view .el-input__inner {
-  border: 2px solid #987284;
-  border-radius: 10px;
-  height: 40px;
-  font-size: 15px;
-  padding: 0 12px;
-  max-width: 500px;
-}
-
-.conf-view .el-input__inner::placeholder {
-  color: #ADADAD;
-  font-weight: bold;
-  font-family: 'Funnel Display', sans-serif;
-}
-
-.conf-view .el-form-item__content {
-  margin-left: 120px;
-}
-
-.conf-view .el-button {
-  background-color: #003B4A;
-  color: #ffffff;
-  font-size: 16px;
-  font-family: 'Funnel Display', sans-serif;
-  font-weight: bold;
-  border-color: #003B4A;
-  border-radius: 10px;
-  min-width: 140px;
-  height: 37.98px;
-  padding: 0 16px;
-  line-height: 37.98px;
-}
-
-.conf-view .el-button:hover {
-  background-color: #245965;
-  border-color: #245965;
-}
-
-.conf-view .el-textarea__inner {
-  border: 2px solid #987284;
-  border-radius: 10px;
-  color: #303133;
-}
-
-/* En móvil: etiquetas apiladas sobre el campo y sin indentación forzada. */
-@media (max-width: 768px) {
-  .conf-view .el-form-item__label {
-    font-size: 16px;
-    float: none;
-    display: block;
-    width: 100% !important;
-    text-align: left;
-  }
-  .conf-view .el-form-item__content {
-    margin-left: 0 !important;
-    width: 100%;
-  }
-  .conf-view .title {
-    font-size: 20px !important;
-    height: auto !important;
-    line-height: 1.4 !important;
-    overflow-wrap: anywhere;
-  }
-  .conf-view .el-select { width: 100%; }
-  .conf-view .el-button { margin: 4px 0; max-width: 100%; }
-  .conf-view .el-input__inner {
-    max-width: none;
-  }
-  .email-health__label {
-    min-width: 0;
-  }
-}
-</style>

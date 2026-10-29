@@ -22,7 +22,7 @@
             </div>
           </li>
         </ul>
-        <Pagination v-if="!isContest"
+        <Pagination v-if="!isContest && total > limit"
                     key="page"
                     :total="total"
                     :page-size="limit"

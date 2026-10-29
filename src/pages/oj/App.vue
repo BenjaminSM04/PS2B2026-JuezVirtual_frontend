@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="oj-app">
+    <a href="#main-content" class="v2-skip-link">{{$t('m.V2_Skip_Content')}}</a>
     <NavBar></NavBar>
-    <div class="content-app">
+    <main id="main-content" class="content-app" tabindex="-1">
       <transition name="fadeInUp" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -9,29 +10,29 @@
         <p>
           &copy; 2026 <b>LizardJudge Univalle</b> | Universidad Privada del Valle - La Paz
         </p>
+        <router-link to="/changelog">{{$t('m.Release_Notes')}} · v{{appVersion}}</router-link>
       
       </div>
-    </div>
+    </main>
     <BackTop></BackTop>
-    <ThemeToggle></ThemeToggle>
   </div>
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex'
   import NavBar from '@oj/components/NavBar.vue'
-  import ThemeToggle from '@/components/ThemeToggle.vue'
   import '@/styles/lizard-theme.less'
+  import '@/styles/experience-v2.less'
 
   export default {
     name: 'app',
     components: {
-      ThemeToggle,
       NavBar
     },
     data () {
       return {
-        version: process.env.VERSION
+        version: process.env.VERSION,
+        appVersion: process.env.APP_VERSION
       }
     },
     created () {
