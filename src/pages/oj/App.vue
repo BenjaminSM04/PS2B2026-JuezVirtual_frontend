@@ -13,16 +13,20 @@
       </div>
     </div>
     <BackTop></BackTop>
+    <ThemeToggle></ThemeToggle>
   </div>
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex'
   import NavBar from '@oj/components/NavBar.vue'
+  import ThemeToggle from '@/components/ThemeToggle.vue'
+  import '@/styles/lizard-theme.less'
 
   export default {
     name: 'app',
     components: {
+      ThemeToggle,
       NavBar
     },
     data () {

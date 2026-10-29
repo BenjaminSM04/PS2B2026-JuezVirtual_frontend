@@ -65,8 +65,9 @@
         font-size: 16px;
         font-weight: 600;
         letter-spacing: 0.02em;
-        height: 56px;
-        line-height: 36px;
+        min-height: 56px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
         padding: 10px 20px;
         border-bottom: 1px solid #f0f2f5;
       }

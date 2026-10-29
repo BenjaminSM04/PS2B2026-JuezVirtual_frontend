@@ -10,7 +10,7 @@ const opn = require('opn')
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
-const proxyMiddleware = require('http-proxy-middleware')
+const proxyMiddleware = require('http-proxy-middleware').createProxyMiddleware
 const webpackConfig = require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
@@ -22,6 +22,13 @@ const autoOpenBrowser = !!config.dev.autoOpenBrowser
 const proxyTable = config.dev.proxyTable
 
 const app = express()
+// El servidor de desarrollo no acepta rutas que intenten escapar del directorio público.
+app.use((req, res, next) => {
+  let value = req.url
+  try { for (let i = 0; i < 3; i++) value = decodeURIComponent(value) } catch (_) { return res.sendStatus(400) }
+  if (value.replace(/\\/g, '/').split('/').some(part => part === '..') || value.includes('\0')) return res.sendStatus(400)
+  next()
+})
 const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -99,7 +106,7 @@ devMiddleware.waitUntilValid(() => {
     if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
       //opn(uri)
     }
-    server = app.listen(port)
+    server = app.listen(port, '127.0.0.1')
     _resolve()
   })
 })

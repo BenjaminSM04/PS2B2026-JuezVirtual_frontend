@@ -5,9 +5,9 @@
 </template>
 
 <script>
+  import '@/styles/lizard-theme.less'
   export default {
-    name: 'app',
-    components: {}
+    name: 'app'
   }
 </script>
 
@@ -18,7 +18,7 @@
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
-    background-color: #324157;
+    background-color: var(--lj-bg, #f5f2f4);
   }
 
   #app {

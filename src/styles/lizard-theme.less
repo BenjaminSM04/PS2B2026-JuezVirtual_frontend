@@ -1,0 +1,62 @@
+:root { --lj-bg: #f5f2f4; --lj-surface: #fff; --lj-text: #29232b; --lj-border: #ccb8c1; --lj-primary: #852344; }
+html[data-lizard-theme='dark'] { --lj-bg: #18151d; --lj-surface: #29232f; --lj-text: #f0e8ee; --lj-border: #675564; --lj-primary: #e2a3ba; color-scheme: dark; }
+html, body { background: var(--lj-bg); color: var(--lj-text); }
+a { color: #8b2346; }
+.ivu-btn-primary, .el-button--primary { background: #852344; border-color: #852344; }
+:focus-visible { outline: 3px solid #397bc2; outline-offset: 3px; }
+html[data-lizard-theme='dark'] {
+  .admin-shell { background: var(--lj-bg); color: var(--lj-text); }
+  .admin-shell .admin-shell__header,
+  .admin-shell .admin-sidemenu,
+  .admin-shell .dashboard-stat,
+  .admin-shell .dashboard-card,
+  .admin-shell .release-note {
+    background: var(--lj-surface); color: var(--lj-text); border-color: var(--lj-border);
+  }
+  /* Las vistas privadas tienen fondos importantes: el tema debe cubrirlos también. */
+  .admin-shell .panel { background: var(--lj-surface) !important; color: var(--lj-text); }
+  .admin-shell .panel .title { color: var(--lj-text) !important; }
+  .admin-shell .el-form-item__label,
+  .admin-shell .el-input__inner,
+  .admin-shell .el-textarea__inner,
+  .admin-shell .email-health__label,
+  .admin-shell .email-health__detail,
+  .admin-shell .dashboard-stat__value,
+  .admin-shell .dashboard-stat__label,
+  .admin-shell .profile-card__name,
+  .admin-shell .profile-card__role,
+  .admin-shell .session-card__label,
+  .admin-shell .session-card__value,
+  .admin-shell .release-note__details,
+  .admin-shell .release-note__header p,
+  .admin-shell .overview-item__label,
+  .admin-shell .overview-item__value { color: var(--lj-text); }
+  .admin-shell .session-card__item,
+  .admin-shell .overview-item { background: var(--lj-bg); border-color: var(--lj-border); }
+  .admin-shell .admin-sidemenu .el-menu-item,
+  .admin-shell .admin-sidemenu .el-submenu__title,
+  .admin-shell .admin-sidemenu .el-menu-item i,
+  .admin-shell .admin-sidemenu .el-submenu__title i { color: var(--lj-text); }
+  .admin-shell .admin-sidemenu .el-menu-item:hover,
+  .admin-shell .admin-sidemenu .el-submenu__title:hover,
+  .admin-shell .admin-sidemenu .el-menu-item.is-active { background: var(--lj-bg); color: var(--lj-primary); }
+  a { color: #edb7ca; }
+  body, .ivu-card, .ivu-card-head, .ivu-modal-content, .ivu-menu, .ivu-table, .ivu-table td,
+  .ivu-table th, .ivu-select-dropdown, .ivu-input, .el-dialog, .el-input__inner, .el-textarea__inner,
+  .el-table, .el-table td, .el-table th, .panel, .training-config, .training-session, .welcome-section, #header, .navbar {
+    background: var(--lj-surface); color: var(--lj-text); border-color: var(--lj-border);
+  }
+  .ivu-card-head p, .ivu-card-head-inner, .title, .el-form-item__label, h1, h2, h3, h4 { color: var(--lj-text); }
+  .ivu-menu-item-active { color: #edb7ca; }
+  #problem-content p.content, #info ul li p:last-child, .detail-meta b, .stat-summary__value { color: var(--lj-text); }
+  #problem-content p.title, #problem-content p.title span, #info ul li p:first-child { color: var(--lj-primary); }
+  #info ul li p:first-child, .detail-meta span { color: var(--lj-primary); }
+  .markdown-body, .simditor .simditor-body, .simditor .simditor-wrapper { background: var(--lj-surface); color: var(--lj-text); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+@media (max-width: 640px) {
+  .content-app { padding-left: 8px; padding-right: 8px; }
+  .problem-panel > .ivu-card-body { padding: 20px 16px !important; }
+  #problem-content p.title { font-size: 18px; word-break: normal; }
+  #problem-content p.content { margin-left: 0; margin-right: 0; }
+}

@@ -5,6 +5,7 @@
       <h1>{{$t('m.Welcome_To')}} LizardJudge Univalle</h1>
       <p>{{$t('m.Home_Tagline')}}</p>
     </div>
+    <PersonalPractice v-if="user.id" :user-id="user.id"></PersonalPractice>
 
   <Row type="flex" justify="space-around">
     <Col :span="22">
@@ -51,11 +52,14 @@
   import Announcements from './Announcements.vue'
   import api from '@oj/api'
   import time from '@/utils/time'
+  import {mapGetters} from 'vuex'
+  import PersonalPractice from '@oj/components/PersonalPractice.vue'
   import { CONTEST_STATUS } from '@/utils/constants'
 
   export default {
     name: 'home',
     components: {
+      PersonalPractice,
       Announcements
     },
     data () {
@@ -64,6 +68,7 @@
         index: 0
       }
     },
+    computed: {...mapGetters(['user'])},
     mounted () {
       let params = {status: CONTEST_STATUS.NOT_START}
       api.getContestList(0, 5, params).then(res => {
