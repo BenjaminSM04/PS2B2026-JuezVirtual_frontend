@@ -99,7 +99,15 @@ async function main () {
   await vm.save()
   assert.deepStrictEqual(calls.find(c => c.method === 'put').data, {problem_id: 1, enabled: true})
   assert.strictEqual(vm.enabled, true)
+  assert.strictEqual(vm.missingVersion, false, 'Sin versiones cargadas no se adelanta el aviso')
+  vm.versions = [{id: 3, status: 'draft'}]
+  assert.strictEqual(vm.missingVersion, true, 'Encendido sin versión activa debe avisar al docente')
+  vm.versions = [{id: 3, status: 'retired'}, {id: 4, status: 'active'}]
+  assert.strictEqual(vm.missingVersion, false)
+  vm.versions = []
+  vm.saved = false
+  assert.strictEqual(vm.missingVersion, false, 'Apagado no requiere versión')
   vm.$destroy()
-  console.log('6 pruebas de componentes del tutor: OK')
+  console.log('7 pruebas de componentes del tutor: OK')
 }
 main().catch(error => { console.error(error); process.exitCode = 1 })
