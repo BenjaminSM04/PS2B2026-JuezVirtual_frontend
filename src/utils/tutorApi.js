@@ -41,6 +41,6 @@ export default {
   activateVersion: (problemId, versionId) => request('admin/ai_tutor/config/activate', 'post', {data: {problem_id: problemId, version_id: versionId}}),
   getConfig: problemId => request('admin/ai_tutor/config', 'get', {params: {problem_id: problemId}}),
   saveConfig: (problemId, enabled) => request('admin/ai_tutor/config', 'put', {data: {problem_id: problemId, enabled}}),
-  // La IA puede tardar hasta 30 s: el tope de red evita un estado de carga eterno.
-  suggest: problemId => request('admin/ai_tutor/config/suggest', 'post', {data: {problem_id: problemId}, timeout: 45000})
+  // La IA puede tardar hasta 90 s en CPU (el backend corta a los 100 s): el tope de red evita un estado de carga eterno.
+  suggest: problemId => request('admin/ai_tutor/config/suggest', 'post', {data: {problem_id: problemId}, timeout: 120000})
 }

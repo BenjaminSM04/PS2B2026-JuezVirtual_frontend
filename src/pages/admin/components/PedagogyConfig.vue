@@ -6,7 +6,7 @@
     <p v-if="message" role="status">{{ message }}</p>
     <div class="ai-suggest" :aria-busy="suggesting">
       <button type="button" class="ai-suggest__button" :disabled="busy" @click="suggest">{{ suggesting ? $t('m.Tutor_ai_working') : $t('m.Tutor_ai_suggest') }}</button>
-      <p class="ai-suggest__hint">{{ suggesting ? $t('m.Tutor_ai_wait') : $t('m.Tutor_ai_hint') }}</p>
+      <p class="ai-suggest__hint">{{ suggesting ? $t('m.Tutor_ai_wait') + ' ' + $t('m.Tutor_ai_elapsed', {seconds: elapsed}) : $t('m.Tutor_ai_hint') }}</p>
     </div>
     <label>{{ $t('m.Tutor_versions') }}
       <select v-model="selected" @change="selectVersion"><option value="">{{ $t('m.Tutor_new_version') }}</option><option v-for="version in versions" :key="version.id" :value="version.id">{{ version.version }} · {{ version.status }}</option></select>
@@ -27,7 +27,7 @@ import api from '@/utils/tutorApi'
 export default {
   name: 'PedagogyConfig',
   props: {problemId: {type: Number, required: true}},
-  data () { return {versions: [], selected: '', concepts: [{name: '', explanation: ''}], hints: {concept: '', location: '', strategy: ''}, busy: false, suggesting: false, error: '', message: '', epoch: 0} },
+  data () { return {versions: [], selected: '', concepts: [{name: '', explanation: ''}], hints: {concept: '', location: '', strategy: ''}, busy: false, suggesting: false, elapsed: 0, error: '', message: '', epoch: 0} },
   computed: {
     selectedDraft () { return this.versions.find(item => item.id === this.selected && item.status === 'draft') },
     // Hay texto escrito (o cargado de una versión) que una propuesta nueva reemplazaría.
@@ -36,7 +36,7 @@ export default {
     }
   },
   created () { this.load() },
-  beforeDestroy () { this.epoch++ },
+  beforeDestroy () { this.epoch++; this.stopClock() },
   watch: {problemId () { this.load() }},
   methods: {
     async load () {
@@ -47,6 +47,7 @@ export default {
       this.hints = {concept: '', location: '', strategy: ''}
       this.busy = true
       this.suggesting = false
+      this.stopClock()
       try { const versions = await api.versions(this.problemId); if (epoch === this.epoch) this.publish(versions) } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
     },
     publish (versions) {
@@ -71,6 +72,7 @@ export default {
       }
       this.busy = true
       this.suggesting = true
+      this.startClock()
       this.error = ''
       this.message = ''
       try {
@@ -83,8 +85,20 @@ export default {
       } catch (error) {
         if (epoch === this.epoch) this.error = this.suggestError(error)
       } finally {
-        if (epoch === this.epoch) { this.busy = false; this.suggesting = false }
+        if (epoch === this.epoch) { this.busy = false; this.suggesting = false; this.stopClock() }
       }
+    },
+    // Segundos transcurridos desde que se pidió la propuesta; se calculan con la hora para no atrasarse si el navegador frena la pestaña.
+    startClock () {
+      this.stopClock()
+      const started = Date.now()
+      this.elapsed = 0
+      this.timer = setInterval(() => { this.elapsed = Math.floor((Date.now() - started) / 1000) }, 1000)
+    },
+    stopClock () {
+      if (!this.timer) return
+      clearInterval(this.timer)
+      this.timer = null
     },
     // Respeta los mismos límites que el formulario: maxlength no recorta lo asignado por código.
     readProposal (data) {

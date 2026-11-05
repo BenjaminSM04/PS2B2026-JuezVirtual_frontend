@@ -23,6 +23,7 @@ RUN yarn build:dll && yarn build && node build/version.js
 FROM nginxinc/nginx-unprivileged:stable-alpine@sha256:442753882674b49ae2c1de83ed67896131c0777f56df5005e356e62bc3f7e7ce AS runtime
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY deploy/api-proxy.conf /etc/nginx/api-proxy.conf
 ARG APP_REVISION=desarrollo
 LABEL org.opencontainers.image.source="https://github.com/incubadoradesarrollo-source/F-LIZARD-JUDGE" \
       org.opencontainers.image.revision="${APP_REVISION}"
