@@ -241,6 +241,17 @@ html .el-dropdown-menu .el-dropdown-menu__item:hover { background: var(--lj-mint
 #app.admin-app .el-button.el-button--primary { background: #852344 !important; border-color: #852344 !important; color: #fff !important; }
 #app.admin-app .el-button.el-button--primary:hover { background: #6e1b38 !important; border-color: #6e1b38 !important; }
 #app.admin-app .el-table .el-button { width: auto !important; min-width: 32px; }
+// Los botones de icono de las tablas miden lo mismo en todas las vistas; con el relleno de arriba
+// ocupaban 46 px y la última acción caía sola en una segunda fila.
+#app.admin-app .botones-gestion .el-button { width: 34px !important; min-width: 34px; height: 34px !important; min-height: 0; padding: 0 !important; }
+// Los avisos de confirmación se montan en body: style.less dejaba «Aceptar» igual que «Cancelar» (blanco).
+.el-message-box__btns .el-button--primary { background: #852344 !important; border-color: #852344 !important; color: #fff !important; }
+// Element fija #f5f7fa en la fila bajo el puntero: en el tema oscuro quedaba blanca con texto claro.
+.admin-app .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell,
+.admin-app .el-table__body tr.hover-row > td.el-table__cell,
+.admin-app .el-table__body tr.current-row > td.el-table__cell { background-color: var(--lj-soft); }
+.admin-app .el-pagination .el-pager li.active { color: var(--lj-primary); font-weight: 700; }
+.admin-app .el-pagination .el-pager li:hover, .admin-app .el-pagination button:hover:not(:disabled) { color: var(--lj-primary); }
 .admin-app .panel-options { gap: 10px; padding: 0; }
 .admin-app .dashboard-stat, .admin-app .dashboard-card { border: 1px solid var(--lj-border); border-radius: var(--lj-radius); background: var(--lj-surface); box-shadow: var(--lj-shadow); }
 .admin-app .dashboard-stat { min-height: 100px; padding: 18px; grid-template-columns: 58px minmax(0, 1fr); gap: 16px; }
@@ -357,6 +368,7 @@ html .el-dropdown-menu .el-dropdown-menu__item:hover { background: var(--lj-mint
   .settings-layout > aside { display: block; }
   .settings-test__actions > .el-button { width: 100%; }
   .admin-app .panel-options > .page { overflow-x: auto; }
+  .admin-app .el-table .cell { padding-left: 8px; padding-right: 8px; }
   .v2-page-heading h1, .v2-page-heading h2 { font-size: 27px; }
   .v2-login { display: block; margin: 16px; }
   .v2-login__intro { padding: 24px; gap: 25px; }

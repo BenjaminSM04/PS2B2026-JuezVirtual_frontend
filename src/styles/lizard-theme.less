@@ -73,6 +73,12 @@ html[data-lizard-theme='dark'] {
   .admin-shell .el-select .el-input.is-disabled .el-input__inner,
   .admin-shell .el-input.is-disabled .el-input__inner { background: var(--lj-soft); color: var(--lj-muted); border-color: var(--lj-border); }
   .el-dialog__title { color: var(--lj-text); }
+  /* Confirmaciones y avisos con campo se montan en body, fuera de .admin-shell. */
+  .el-message-box { background: var(--lj-surface); border-color: var(--lj-border); }
+  .el-message-box__title, .el-message-box__message, .el-message-box__message p { color: var(--lj-text); }
+  .el-message-box__headerbtn .el-message-box__close { color: var(--lj-muted); }
+  .el-message-box .el-input__inner { background: var(--lj-bg); color: var(--lj-text); border-color: var(--lj-border); }
+  .el-message-box__btns .el-button--default:not(.el-button--primary) { background: var(--lj-surface) !important; color: var(--lj-text) !important; border-color: var(--lj-border) !important; }
   .simditor .simditor-toolbar { background: var(--lj-soft); border-color: var(--lj-border); }
   .simditor .simditor-toolbar > ul > li > .toolbar-item { color: var(--lj-text); }
 }

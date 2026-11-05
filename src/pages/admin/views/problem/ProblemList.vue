@@ -1,9 +1,6 @@
 <template>
   <div class="view">
-    <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
-        {{ contestId ? $i18n.t('m.Contest_Problem_List') : $i18n.t('m.Problem_List') }}
-      </span>
+    <Panel :title="contestId ? $i18n.t('m.Contest_Problem_List') : $i18n.t('m.Problem_List')">
       <div class="table-toolbar">
         <el-input
           class="table-toolbar__search"
@@ -30,14 +27,30 @@
         @row-dblclick="handleDblclick"
         style="width: 100%"
         :header-cell-style="{color: '#000000', fontWeight: 'bold'}">
+        <el-table-column v-if="isMobile" type="expand" width="36">
+          <template slot-scope="{row}">
+            <p>ID: {{row.id}}</p>
+            <div v-if="canModify(row)" class="botones-gestion">
+              <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(row.id)"></icon-btn>
+              <icon-btn v-if="contestId" :name="$t('m.Make_Public')" icon="clone"
+                        @click.native="makeContestProblemPublic(row.id)"></icon-btn>
+              <icon-btn icon="download" :name="$t('m.Download_TestCase')"
+                        @click.native="downloadTestCase(row.id)"></icon-btn>
+              <icon-btn icon="trash" :name="$t('m.Delete_Problem')"
+                        @click.native="deleteProblem(row.id)"></icon-btn>
+            </div>
+            <span v-else class="readonly-hint">{{$t('m.No_Permission_Edit')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           width="100"
           prop="id"
           label="ID"
           align="center">
         </el-table-column>
         <el-table-column
-          width="150"
+          :width="isMobile ? 104 : 150"
           :label="$t('m.Display_ID')"
           align="center">
           <template slot-scope="{row}">
@@ -51,7 +64,7 @@
         <el-table-column
           prop="title"
           :label="$t('m.Title')"
-          min-width="180"
+          :min-width="isMobile ? 100 : 180"
           align="center">
           <template slot-scope="{row}">
             <span v-show="!row.isEditing">{{row.title}}</span>
@@ -68,7 +81,7 @@
           align="center">
         </el-table-column>
         <el-table-column
-          v-if="routeName === 'problem-list'"
+          v-if="routeName === 'problem-list' && !isMobile"
           :label="$t('m.Owner')"
           width="130"
           align="center">
@@ -89,7 +102,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="100"
+          :width="isMobile ? 70 : 100"
           prop="visible"
           :label="$t('m.Visible')"
           align="center">
@@ -105,8 +118,9 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           :label="$t('m.Option')"
-          width="180"
+          width="190"
           align="center">
           <div slot-scope="scope" class="botones-gestion">
             <template v-if="canModify(scope.row)">
@@ -134,14 +148,15 @@
           class="page"
           layout="prev, pager, next"
           @current-change="currentChange"
+          :current-page="currentPage"
           :page-size="pageSize"
           :total="total"
           >
         </el-pagination>
       </div>
     </Panel>
-    <el-dialog :title="$t('m.Sure_to_update_the_problem')" 
-               width="20%"
+    <el-dialog :title="$t('m.Sure_to_update_the_problem')"
+               width="440px"
                :visible.sync="InlineEditDialogVisible"
                @close-on-click-modal="false">
       <div>
@@ -281,9 +296,11 @@
           type: 'warning'
         }).then(() => {
           let funcName = this.routeName === 'problem-list' ? 'deleteProblem' : 'deleteContestProblem'
-          api[funcName](id).then(() => [
-            this.getProblemList(this.currentPage - 1)
-          ]).catch(() => {
+          api[funcName](id).then(() => {
+            // Si era el último de una página posterior, se vuelve a la anterior.
+            if (this.problemList.length === 1 && this.currentPage > 1) this.currentPage--
+            this.getProblemList(this.currentPage)
+          }).catch(() => {
           })
         }, () => {
         })
@@ -337,65 +354,15 @@
         this.getProblemList(this.currentPage)
       },
       'keyword' () {
-        this.currentChange()
+        this.currentChange(1)
       }
     }
   }
 </script>
 
 <style scoped lang="less">
-.title-input {
-    margin-bottom: 20px;
-  }
-
-  .visible-box {
-    margin-top: 10px;
-    width: 205px;
-    float: left;
-  }
-
-  .panel {
-    background: #ffffff !important;
-    border-radius: 20px !important; 
-    border: none !important; 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
-    overflow: hidden; 
-    padding: 0 10px !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  }
-  /* Personalización de los botones existentes en el sistema */
-  .el-button--primary {
-    background-color: #003B4A !important;
-    border-color: #003B4A !important;
-    border-radius: 10px !important;
-    height: 40px !important; 
-    padding: 0 20px !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px !important;
-    font-weight: 600;
-    font-size: 14px;
-    &:hover {
-      background-color: #245965 !important;
-    }
-  }
-  /*Cambiar el color del número de página ACTIVO (El que está seleccionado) */
-/deep/ .el-pagination .el-pager li.active {
-  color: #003B4A !important; /* Tu tono guindo */
-  font-weight: bold;
-}
-
-/*Cambiar el color de los números INACTIVOS cuando pasas el mouse por encima (Hover) */
-/deep/ .el-pagination .el-pager li:hover {
-  color: #82a69a !important; /* Un guindo un poco más claro para el efecto visual */
-}
-
-/*Cambiar el color de las flechas de navegación (< y >) cuando pasas el mouse por encima */
-/deep/ .el-pagination button:hover {
-  color: #003B4A !important;
-}
-
+// Sin reglas globales de .panel, .el-button--primary ni paginación: se heredan del tema compartido
+// (src/styles) para que los dos temas y el ancho móvil se comporten igual que el resto del panel.
 .table-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -414,17 +381,7 @@
 }
 
 .readonly-hint {
-  color: #999;
+  color: var(--lj-muted, #999);
   font-size: 12px;
-}
-
-@media (max-width: 768px) {
-  .panel {
-    padding: 0 4px !important;
-  }
-
-  .table-toolbar__search {
-    min-width: 0;
-  }
 }
 </style>
