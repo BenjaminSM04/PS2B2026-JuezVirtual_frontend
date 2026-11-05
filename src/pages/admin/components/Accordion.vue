@@ -32,7 +32,8 @@
 
 <style lang="less" scoped>
 .accordion{
-  border: 1px solid #eaeefb;
+  border: 1px solid var(--lj-border, #eaeefb);
+  color: var(--lj-text, inherit);
   header{
     position: relative;
     h2{
@@ -47,26 +48,26 @@
     }
   }
   .body{
-    background-color: #f9fafc;
-    border-top: 1px solid #eaeefb;
+    background-color: var(--lj-soft, #f9fafc);
+    border-top: 1px solid var(--lj-border, #eaeefb);
     clear: both;
     overflow: hidden;
     padding: 15px 10px;
   }
   footer{
-    border-top: 1px solid #eaeefb;
+    border-top: 1px solid var(--lj-border, #eaeefb);
     height: 36px;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: var(--lj-surface, #fff);
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     text-align: center;
     margin-top: -1px;
-    color: #d3dce6;
+    color: var(--lj-muted, #d3dce6);
     cursor: pointer;
     transition: .2s;
     &:hover{
-      background-color: #f9fafc;
+      background-color: var(--lj-soft, #f9fafc);
     }
     .rotate{
       transform: rotate(180deg);

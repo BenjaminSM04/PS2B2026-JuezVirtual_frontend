@@ -187,6 +187,8 @@ export const m = {
   Make_Public: 'Hacer Público',
   Download_TestCase: 'Descargar Casos de Prueba',
   Delete_Problem: 'Eliminar Problema',
+  Delete_Contest: 'Eliminar concurso',
+  Delete_Contest_Confirm: '¿Seguro que deseas eliminar el concurso «{title}»? También se eliminarán sus problemas y anuncios. Si ya tiene envíos, el sistema no permitirá eliminarlo.',
   Sure_to_update_the_problem: '¿Seguro que deseas actualizar el problema?',
   Add_Contest_Problem: 'Agregar Problema al Concurso',
   // Contest.vue

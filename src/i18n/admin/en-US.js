@@ -186,6 +186,8 @@ export const m = {
   Make_Public: 'Make Public',
   Download_TestCase: 'Download Test Cases',
   Delete_Problem: 'Delete Problem',
+  Delete_Contest: 'Delete contest',
+  Delete_Contest_Confirm: 'Are you sure you want to delete the contest “{title}”? Its problems and announcements will also be deleted. If it already has submissions, the system will not allow it to be deleted.',
   Sure_to_update_the_problem: 'Are you sure you want to update the problem?',
   Add_Contest_Problem: 'Add Contest Problem',
   // Contest.vue

@@ -18,13 +18,31 @@
         style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
+            <p v-if="isMobile">{{$t('m.ID')}}: {{props.row.id}}</p>
+            <p v-if="isMobile">{{$t('m.Status')}}:
+              <el-tag :type="props.row.status === '-1' ? 'danger' : props.row.status === '0' ? 'success' : 'primary'">
+                {{ props.row.status | contestStatus}}
+              </el-tag>
+            </p>
             <p>{{$t('m.Start_Time')}}: {{props.row.start_time | localtime }}</p>
             <p>{{$t('m.End_Time')}}: {{props.row.end_time | localtime }}</p>
             <p>{{$t('m.Create_Time')}}: {{props.row.create_time | localtime}}</p>
             <p>{{$t('m.Author')}}: {{props.row.created_by.username}}</p>
+            <!-- En móvil las acciones van aquí: la columna fija de opciones dejaba sin espacio al título. -->
+            <div v-if="isMobile" class="botones-gestion">
+              <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(props.row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Problem')" icon="list-ol" @click.native="goContestProblemList(props.row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Announcement')" icon="info-circle"
+                        @click.native="goContestAnnouncement(props.row.id)"></icon-btn>
+              <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
+                        @click.native="openDownloadOptions(props.row.id)"></icon-btn>
+              <icon-btn icon="trash" :name="$t('m.Delete_Contest')"
+                        @click.native="deleteContest(props.row)"></icon-btn>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           prop="id"
           width="80"
           :label="$t('m.ID')">
@@ -32,7 +50,7 @@
         <el-table-column
           prop="title"
           :label="$t('m.Title')"
-          min-width="160">
+          :min-width="isMobile ? 120 : 160">
         </el-table-column>
         <el-table-column
           v-if="!isMobile"
@@ -53,6 +71,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           :label="$t('m.Status')"
           width="130">
           <template slot-scope="scope">
@@ -63,7 +82,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="100"
+          :width="isMobile ? 70 : 100"
           :label="$t('m.Visible')">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.visible"
@@ -76,8 +95,9 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="!isMobile"
           fixed="right"
-          width="180"
+          width="230"
           :label="$t('m.Option')">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
@@ -86,6 +106,8 @@
                       @click.native="goContestAnnouncement(scope.row.id)"></icon-btn>
             <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
                       @click.native="openDownloadOptions(scope.row.id)"></icon-btn>
+            <icon-btn icon="trash" :name="$t('m.Delete_Contest')"
+                      @click.native="deleteContest(scope.row)"></icon-btn>
           </div>
         </el-table-column>
       </el-table>
@@ -94,6 +116,7 @@
           class="page"
           layout="prev, pager, next"
           @current-change="currentChange"
+          :current-page="currentPage"
           :page-size="pageSize"
           :total="total">
         </el-pagination>
@@ -187,6 +210,18 @@
       },
       handleVisibleSwitch (row) {
         api.editContest(row)
+      },
+      deleteContest (row) {
+        this.$confirm(this.$t('m.Delete_Contest_Confirm', {title: row.title}), this.$t('m.Delete_Contest'), {
+          type: 'warning'
+        }).then(() => {
+          // El mensaje del servidor (p. ej. contest-has-submissions) ya lo muestra api.js.
+          return api.deleteContest(row.id).then(() => {
+            // Si era el último de una página posterior, se vuelve a la anterior.
+            if (this.contestList.length === 1 && this.currentPage > 1) this.currentPage--
+          }).catch(() => {}).then(() => this.getContestList(this.currentPage))
+        }, () => {
+        })
       }
     },
     watch: {
