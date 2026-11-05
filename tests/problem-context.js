@@ -17,7 +17,7 @@ const sandbox = {
   exports: {}, ...Vuex,
   types: {}, CodeMirror: {}, AnimatedNumber: {}, storage: {}, FormMixin: {},
   JUDGE_STATUS: {}, CONTEST_STATUS: {}, buildProblemCodeKey: () => '',
-  TrainingSession: {}, pie: {}, largePie: {}, getItemColor: () => '', getDefaultTemplate: () => '',
+  TrainingSession: {}, VerdictBuddy: {}, pie: {}, largePie: {}, getItemColor: () => '', getDefaultTemplate: () => '',
   clearTimeout, setTimeout,
   api: {submitCode: () => new Promise(resolve => { resolveSubmit = resolve })}
 }
