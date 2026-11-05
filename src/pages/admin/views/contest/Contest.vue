@@ -524,6 +524,10 @@ export default {
   font-family: 'Funnel Display', sans-serif;
 }
 
+.contest-view .el-input--prefix .el-input__inner {
+  padding-left: 32px;
+}
+
 .contest-view .el-input__inner:focus {
   border-color: #003B4A !important;
   box-shadow: 0 0 8px rgba(0, 59, 74, 0.20);
