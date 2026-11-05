@@ -48,4 +48,10 @@ for (const entry of state.filter(item => item.marker === 'LIZARD_NO_AUTO_MAP_FIL
   } finally { fs.existsSync = exists; PreviousMap.prototype.loadMap = original }
   assert.strictEqual(typeof observed, 'undefined')
 }
-console.log('Backports de Babel, HTML, rutas y mapas CSS: OK')
+const decodeUri = require('decode-uri-component')
+assert.strictEqual(decodeUri('caf%C3%A9+%20ok'), 'café  ok')
+assert.strictEqual(decodeUri('%E0%A4%A'), '��%A')
+const decodeStarted = Date.now()
+decodeUri('%E0'.repeat(20000) + '%')
+assert(Date.now() - decodeStarted < 3000, 'El respaldo de decodificación es lineal')
+console.log('Backports de Babel, HTML, rutas, mapas CSS y URI: OK')
