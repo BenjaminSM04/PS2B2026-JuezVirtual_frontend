@@ -115,7 +115,7 @@
     "cross-spawn": "7.0.6",
     "ejs": "3.1.10",
     "elliptic": "6.6.1",
-    "follow-redirects": "1.16.1",
+    "follow-redirects": "1.16.2",
     "form-data": "4.0.6",
     "is-svg": "4.4.0",
     "js-yaml": "3.15.2",
