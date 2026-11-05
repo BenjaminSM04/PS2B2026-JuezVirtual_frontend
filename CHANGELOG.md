@@ -3,6 +3,15 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.1.2] - 2026-11-05
+
+### Administración
+- Los diálogos (editar usuario y demás) vuelven a aparecer por encima de la capa oscura y aceptan clics.
+- Menú lateral con texto e iconos alineados, la página actual resaltada y nombres largos completos.
+- Etiquetas de formularios sin palabras cortadas e interruptores grises cuando están apagados.
+- Icono de pantalla completa a su tamaño y campos de fecha sin el reloj encima del texto.
+- Tema oscuro: títulos de panel, buscador, paginación, botones secundarios, editor y avisos legibles.
+
 ## [2.1.1] - 2026-11-05
 
 ### Tutor

@@ -2,7 +2,10 @@
   <div class="admin-sidemenu">
     <div class="admin-sidemenu__brand"><router-link to="/" aria-label="LizardJudge"><BrandMark compact></BrandMark></router-link></div>
 
+    <!-- Se vuelve a montar al conocer los permisos: Element pierde el registro de los
+         elementos recreados y no marcaría la página activa. -->
     <el-menu
+      :key="menuKey"
       class="admin-sidemenu__menu"
       :router="true"
       :default-active="currentPath"
@@ -61,6 +64,9 @@
       ...mapGetters(['user', 'isSuperAdmin', 'isTeacherRole', 'hasProblemPermission']),
       currentPath () {
         return this.$route.path
+      },
+      menuKey () {
+        return [this.user.admin_type, this.user.problem_permission].join(':')
       },
       defaultOpeneds () {
         const path = this.$route.path
@@ -130,17 +136,19 @@
 
   /deep/ .admin-sidemenu__menu .el-menu-item,
   /deep/ .admin-sidemenu__menu .el-submenu__title {
-    height: 48px;
-    line-height: 48px;
+    height: auto;
+    min-height: 46px;
+    line-height: 20px;
+    padding-top: 13px;
+    padding-bottom: 13px;
     margin-bottom: 6px;
     border-radius: 14px;
     color: #1a3e39;
     font-size: 14px;
     font-weight: 700;
     transition: all 0.2s ease;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   /deep/ .admin-sidemenu__menu .el-menu-item i,
@@ -165,12 +173,12 @@
 
   /deep/ .admin-sidemenu__menu .el-menu-item.is-active {
     background: #e6f5ee;
-    color: #4f8f84;
+    color: #1f6d5f;
     box-shadow: inset 0 0 0 1px rgba(111, 185, 160, 0.18);
   }
 
   /deep/ .admin-sidemenu__menu .el-menu-item.is-active i {
-    color: #4f8f84;
+    color: #1f6d5f;
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu {
@@ -184,8 +192,10 @@
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu .el-menu-item {
-    height: 38px;
-    line-height: 38px;
+    min-height: 38px;
+    line-height: 20px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     margin-bottom: 4px;
     padding-left: 24px !important;
     padding-right: 14px;
@@ -201,7 +211,7 @@
   }
 
   /deep/ .admin-sidemenu__menu .el-submenu__icon-arrow {
-    margin-top: -5px;
+    margin-top: -7px;
     right: 12px;
     color: #7f9792;
   }

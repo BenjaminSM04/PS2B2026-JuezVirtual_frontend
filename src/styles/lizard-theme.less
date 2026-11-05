@@ -52,6 +52,29 @@ html[data-lizard-theme='dark'] {
   #problem-content p.title, #problem-content p.title span, #info ul li p:first-child { color: var(--lj-primary); }
   #info ul li p:first-child, .detail-meta span { color: var(--lj-primary); }
   .markdown-body, .simditor .simditor-body, .simditor .simditor-wrapper { background: var(--lj-surface); color: var(--lj-text); }
+  .admin-shell .panel > header .title,
+  .admin-shell .panel > header .title * { color: var(--lj-text) !important; }
+  .admin-shell .table-toolbar,
+  .admin-shell .generate-preview { background: var(--lj-soft); }
+  .admin-shell .generate-preview__label { color: var(--lj-muted); }
+  .admin-shell .generate-preview__list,
+  .admin-shell .generate-preview__list code { background: var(--lj-surface); color: var(--lj-text); border-color: var(--lj-border); }
+  .admin-shell .el-pagination button,
+  .admin-shell .el-pager li { background: var(--lj-surface); color: var(--lj-text); }
+  .admin-shell .el-pager li.active { color: var(--lj-primary); }
+  /* admin/style.less fija los botones con !important para el tema claro. */
+  .admin-shell .el-button--default,
+  .admin-shell .add-samples { background: var(--lj-surface) !important; color: var(--lj-text) !important; border-color: var(--lj-border) !important; }
+  .admin-shell .el-button--default:hover,
+  .admin-shell .add-samples:hover { background: var(--lj-soft) !important; }
+  .admin-shell .el-button--text { color: var(--lj-primary) !important; }
+  .admin-shell .botones-gestion .el-button,
+  .admin-shell .botones-gestion .el-button.is-plain { background-color: var(--lj-mint) !important; border-color: var(--lj-border) !important; color: var(--lj-green) !important; }
+  .admin-shell .el-select .el-input.is-disabled .el-input__inner,
+  .admin-shell .el-input.is-disabled .el-input__inner { background: var(--lj-soft); color: var(--lj-muted); border-color: var(--lj-border); }
+  .el-dialog__title { color: var(--lj-text); }
+  .simditor .simditor-toolbar { background: var(--lj-soft); border-color: var(--lj-border); }
+  .simditor .simditor-toolbar > ul > li > .toolbar-item { color: var(--lj-text); }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
 @media (max-width: 640px) {
