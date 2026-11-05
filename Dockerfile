@@ -3,6 +3,7 @@ FROM node:22-bookworm-slim@sha256:83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3e
 WORKDIR /app
 COPY package.json yarn.lock ./
 COPY build/patch-legacy-dependencies.js ./build/
+COPY build/backports ./build/backports/
 RUN test "$(yarn --version)" = "1.22.22"
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
     yarn install --frozen-lockfile --non-interactive
