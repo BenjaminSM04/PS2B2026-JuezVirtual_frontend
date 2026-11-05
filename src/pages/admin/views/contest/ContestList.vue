@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="180"
+          width="230"
           :label="$t('m.Option')">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
@@ -86,6 +86,8 @@
                       @click.native="goContestAnnouncement(scope.row.id)"></icon-btn>
             <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
                       @click.native="openDownloadOptions(scope.row.id)"></icon-btn>
+            <icon-btn icon="trash" :name="$t('m.Delete_Contest')"
+                      @click.native="deleteContest(scope.row)"></icon-btn>
           </div>
         </el-table-column>
       </el-table>
@@ -94,6 +96,7 @@
           class="page"
           layout="prev, pager, next"
           @current-change="currentChange"
+          :current-page="currentPage"
           :page-size="pageSize"
           :total="total">
         </el-pagination>
@@ -187,6 +190,18 @@
       },
       handleVisibleSwitch (row) {
         api.editContest(row)
+      },
+      deleteContest (row) {
+        this.$confirm(this.$t('m.Delete_Contest_Confirm', {title: row.title}), this.$t('m.Delete_Contest'), {
+          type: 'warning'
+        }).then(() => {
+          // El mensaje del servidor (p. ej. contest-has-submissions) ya lo muestra api.js.
+          return api.deleteContest(row.id).then(() => {
+            // Si era el último de una página posterior, se vuelve a la anterior.
+            if (this.contestList.length === 1 && this.currentPage > 1) this.currentPage--
+          }).catch(() => {}).then(() => this.getContestList(this.currentPage))
+        }, () => {
+        })
       }
     },
     watch: {
