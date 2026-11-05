@@ -1,7 +1,7 @@
 <template>
   <section v-if="error || (availability && availability.enabled)" class="training-session" :aria-busy="loading">
     <h3>{{ $t('m.Tutor_training') }}</h3>
-    <p>{{ $t('m.Tutor_scope') }}</p>
+    <p v-if="!userId || (availability && availability.can_start)">{{ $t('m.Tutor_scope') }}</p>
     <p v-if="error" role="alert">{{ error }}</p>
     <p v-if="!userId">{{ $t('m.Tutor_login') }}</p>
     <template v-else-if="availability && availability.can_start">

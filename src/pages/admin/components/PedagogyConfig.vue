@@ -36,7 +36,11 @@ export default {
       this.concepts = [{name: '', explanation: ''}]
       this.hints = {concept: '', location: '', strategy: ''}
       this.busy = true
-      try { const versions = await api.versions(this.problemId); if (epoch === this.epoch) this.versions = versions } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
+      try { const versions = await api.versions(this.problemId); if (epoch === this.epoch) this.publish(versions) } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }
+    },
+    publish (versions) {
+      this.versions = versions
+      this.$emit('versions', versions)
     },
     selectVersion () {
       const version = this.versions.find(item => item.id === this.selected)
@@ -67,7 +71,7 @@ export default {
         if (epoch !== this.epoch) return
         const versions = await api.versions(problemId)
         if (epoch === this.epoch) {
-          this.versions = versions
+          this.publish(versions)
           this.message = this.$t('m.Tutor_activated')
         }
       } catch (error) { if (epoch === this.epoch) this.error = error.message } finally { if (epoch === this.epoch) this.busy = false }

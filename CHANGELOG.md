@@ -3,6 +3,13 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.1.1] - 2026-11-05
+
+### Tutor
+- El problema con entrenamiento encendido pero sin conceptos ni pistas activos ya no dice que tu cuenta no está habilitada: explica que el docente aún debe activarlos.
+- La edición de problemas avisa al docente cuando falta activar una versión pedagógica.
+- El aviso de entrenamiento indica pulsar «Iniciar entrenamiento» en lugar de «iniciar sesión».
+
 ## [2.1.0] - 2026-11-05
 
 ### Experiencia

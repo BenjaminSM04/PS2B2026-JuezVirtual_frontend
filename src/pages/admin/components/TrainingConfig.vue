@@ -7,8 +7,9 @@
     <p>{{ $t('m.Tutor_config_scope') }}</p>
     <p v-if="message" role="status">{{ message }}</p>
     <p v-if="error" role="alert">{{ error }}</p>
+    <p v-if="missingVersion" class="missing-version" role="status">{{ $t('m.Tutor_needs_version') }}</p>
     <button v-if="error" type="button" :disabled="loading" @click="load">{{ $t('m.Tutor_refresh') }}</button>
-    <PedagogyConfig :key="problemId" :problem-id="problemId"></PedagogyConfig>
+    <PedagogyConfig :key="problemId" :problem-id="problemId" @versions="versions = $event"></PedagogyConfig>
   </section>
 </template>
 
@@ -21,7 +22,13 @@ export default {
   components: {PedagogyConfig},
   props: {problemId: {type: Number, required: true}},
   data () {
-    return {enabled: false, saved: false, ready: false, loading: false, error: '', message: '', epoch: 0}
+    return {enabled: false, saved: false, ready: false, loading: false, error: '', message: '', epoch: 0, versions: null}
+  },
+  computed: {
+    // El interruptor solo no basta: los estudiantes necesitan una versión pedagógica activa.
+    missingVersion () {
+      return this.saved && Array.isArray(this.versions) && !this.versions.some(item => item.status === 'active')
+    }
   },
   created () { this.load() },
   beforeDestroy () { this.epoch++ },
@@ -74,5 +81,6 @@ export default {
 .training-config label { cursor: pointer; font-weight: 600; }
 .training-config input { margin-right: 8px; accent-color: #267653; }
 .training-config p { margin: 8px 0 0; }
+.training-config .missing-version { padding: 8px 12px; color: #6b4300; background: #fff6e0; border-left: 4px solid #c98a00; }
 .training-config button { margin-top: 8px; padding: 6px 12px; }
 </style>
