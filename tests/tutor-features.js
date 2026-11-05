@@ -22,7 +22,7 @@ require.extensions['.js'] = (module, file) => {
 }
 let calls = [], handler
 axios.defaults.adapter = config => {
-  const call = {url: config.url, method: config.method, data: config.data && JSON.parse(config.data), params: config.params}
+  const call = {url: config.url, method: config.method, data: config.data && JSON.parse(config.data), params: config.params, timeout: config.timeout}
   calls.push(call)
   // Un manejador puede devolver {envelope} para simular el formato {error, data} del proyecto.
   return Promise.resolve().then(() => handler(call)).then(data => ({data: data && data.envelope ? data.envelope : {error: null, data}, status: 200, config, headers: {}}))
@@ -115,6 +115,7 @@ async function main () {
   assert.strictEqual(vm.error, '')
   assert.strictEqual(vm.busy || vm.suggesting, false, 'La carga termina')
   assert.strictEqual(posts().length, 1, 'La propuesta no crea ni activa versiones')
+  assert.strictEqual(calls[0].timeout, 120000, 'El tope de red supera los 100 s del backend para que la respuesta o su error lleguen')
   vm.$destroy()
 
   vm = await fresh()
@@ -143,7 +144,7 @@ async function main () {
     ['otro error', () => { throw failWith(500, {error: 'error', data: 'Fallo interno del servidor'}) }, 'Fallo interno del servidor'],
     ['incompleta', () => ({schema_version: '1.0', concepts: ['Solo uno'], hint_policy: {hints: {concept: 'a'}}}), 'm.Tutor_ai_incomplete'],
     ['vacía', () => null, 'm.Tutor_ai_incomplete'],
-    ['tiempo agotado', () => { throw Object.assign(new Error('timeout of 45000ms exceeded'), {code: 'ECONNABORTED'}) }, 'm.Tutor_ai_timeout']
+    ['tiempo agotado', () => { throw Object.assign(new Error('timeout of 120000ms exceeded'), {code: 'ECONNABORTED'}) }, 'm.Tutor_ai_timeout']
   ]) {
     vm = await fresh()
     vm.concepts = [{name: 'Intacto', explanation: 'x'}]
@@ -198,6 +199,68 @@ async function main () {
   late(proposal())
   await abandoned
   assert.strictEqual(vm.concepts[0].name, '', 'Una propuesta tardía no llega a una vista destruida')
+
+  // El contador de segundos avanza mientras la IA genera y se detiene al terminar, al cambiar de problema y al salir.
+  const realSet = global.setInterval
+  const realClear = global.clearInterval
+  const realNow = Date.now
+  let intervals = [], cleared = [], now = 1000000
+  global.setInterval = (callback, delay) => { intervals.push({callback, delay}); return intervals.length }
+  global.clearInterval = id => { cleared.push(id) }
+  Date.now = () => now
+  try {
+    vm = await fresh()
+    assert.strictEqual(vm.elapsed, 0)
+    handler = () => new Promise(resolve => { late = resolve })
+    const timed = vm.suggest()
+    await tick()
+    assert.strictEqual(intervals.length, 1, 'Un solo contador por propuesta')
+    assert.strictEqual(intervals[0].delay, 1000)
+    now += 3400
+    intervals[0].callback()
+    assert.strictEqual(vm.elapsed, 3, 'Muestra los segundos transcurridos')
+    now += 61000
+    intervals[0].callback()
+    assert.strictEqual(vm.elapsed, 64)
+    assert.deepStrictEqual(cleared, [], 'Sigue contando mientras espera')
+    late(proposal())
+    await timed
+    assert.deepStrictEqual(cleared, [1], 'El contador se detiene al recibir la propuesta')
+    vm.$destroy()
+    assert.deepStrictEqual(cleared, [1], 'Destruir la vista sin contador activo no limpia nada más')
+
+    vm = await fresh()
+    handler = () => { throw new Error('Sin respuesta') }
+    await vm.suggest()
+    assert.deepStrictEqual(cleared, [1, 2], 'El contador se detiene también si falla')
+    vm.$destroy()
+
+    vm = await fresh()
+    handler = () => new Promise(resolve => { late = resolve })
+    const changed = vm.suggest()
+    await tick()
+    handler = () => []
+    vm.problemId = 8
+    await tick()
+    assert.deepStrictEqual(cleared, [1, 2, 3], 'Cambiar de problema detiene el contador')
+    late(proposal())
+    await changed
+    assert.deepStrictEqual(cleared, [1, 2, 3], 'Una propuesta tardía no vuelve a detenerlo')
+    vm.$destroy()
+
+    vm = await fresh()
+    handler = () => new Promise(resolve => { late = resolve })
+    const left = vm.suggest()
+    await tick()
+    vm.$destroy()
+    assert.deepStrictEqual(cleared, [1, 2, 3, 4], 'Salir de la vista detiene el contador')
+    late(proposal())
+    await left
+  } finally {
+    global.setInterval = realSet
+    global.clearInterval = realClear
+    Date.now = realNow
+  }
   console.log('Pruebas del tutor, edición pedagógica y propuesta con IA: OK')
 }
 main().catch(error => { console.error(error); process.exitCode = 1 })

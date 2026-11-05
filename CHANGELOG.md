@@ -3,6 +3,13 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.2.1] - 2026-11-05
+
+### Tutor
+- «Proponer con IA» espera hasta 120 s la respuesta en lugar de 45 s: el servidor genera la propuesta en unos 60 a 90 s.
+- Mientras se genera, el aviso dice «Generando la propuesta… puede tardar hasta 90 s.» y muestra los segundos transcurridos.
+- La ruta de la propuesta tiene su propio límite de espera en el proxy (115 s); el resto de la API mantiene 60 s.
+
 ## [2.2.0] - 2026-11-05
 
 ### Tutor
