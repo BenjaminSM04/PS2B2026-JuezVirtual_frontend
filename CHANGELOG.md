@@ -3,6 +3,18 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.2.0] - 2026-11-05
+
+### Tutor
+- Nuevo botón «Proponer con IA» en la pestaña Tutor del problema: rellena conceptos, explicaciones y las tres pistas para que el docente las revise, las edite y las guarde como borrador. No guarda ni activa nada por sí solo y pide confirmación antes de reemplazar lo ya escrito.
+
+### Administración
+- Los concursos se pueden eliminar desde la lista, con confirmación; si ya tienen envíos se muestra el motivo y no se borra.
+- Al agregar problemas a un concurso la interfaz ya no se desordena: botones de acción de una sola fila, filas bajo el puntero legibles en el tema oscuro, página activa visible y confirmaciones con el tema oscuro.
+- Las listas de concursos y de problemas del concurso, y el diálogo «Agregar desde problema público», caben en el celular sin esconder el título; las acciones pasan a la fila expandible.
+- El diálogo para agregar problemas muestra el nombre del problema, exige un ID de visualización, no deja el indicador de carga atascado si falla la consulta y usa la regla (ACM/OI) del concurso actual.
+- Al eliminar un problema se recarga la página actual de la lista en lugar de pedir una página inexistente.
+
 ## [2.1.2] - 2026-11-05
 
 ### Administración
