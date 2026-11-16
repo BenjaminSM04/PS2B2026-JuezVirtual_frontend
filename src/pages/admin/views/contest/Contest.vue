@@ -110,10 +110,10 @@
                 </span>
               </template>
 
-              <el-input
+              <PasswordInput admin autocomplete="new-password"
                 v-model="contest.password"
                 :placeholder="$t('m.Contest_Password')">
-              </el-input>
+              </PasswordInput>
 
             </el-form-item>
           </el-col>
@@ -253,11 +253,13 @@
 <script>
 import api from '../../api.js'
 import Simditor from '../../components/Simditor.vue'
+import PasswordInput from '@/components/PasswordInput.vue'
 
 export default {
   name: 'CreateContest',
 
   components: {
+    PasswordInput,
     Simditor
   },
 
@@ -520,6 +522,10 @@ export default {
   padding: 0 12px;
   transition: all 0.25s ease;
   font-family: 'Funnel Display', sans-serif;
+}
+
+.contest-view .el-input--prefix .el-input__inner {
+  padding-left: 32px;
 }
 
 .contest-view .el-input__inner:focus {

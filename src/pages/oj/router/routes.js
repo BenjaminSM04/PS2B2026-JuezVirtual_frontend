@@ -19,8 +19,10 @@ import {
 
 import * as Contest from '@oj/views/contest'
 import * as Setting from '@oj/views/setting'
+import ReleaseHistory from '@oj/views/general/ReleaseHistory.vue'
 
 export default [
+  {name: 'release-history', path: '/changelog', meta: {title: 'Release Notes'}, component: ReleaseHistory},
   {
     name: 'home',
     path: '/',

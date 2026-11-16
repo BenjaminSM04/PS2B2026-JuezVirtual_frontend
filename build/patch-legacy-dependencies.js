@@ -11,6 +11,7 @@ const patchedHashes = {
   'html-minifier/src/htmlminifier.js': '5b5dd382e245b9780aed12fac42bc0b44ffcd65ea7f20e035bd0fd54ee1d5e43',
   'tar-simditor-markdown': '7ded3c9e4323d9cb74675b0ce5221ce9d3beca4d7c32b3dfe12544777e692943',
   'webpack-dev-middleware/lib/GetFilenameFromUrl.js': 'e120e401047640537bd476d11897677e22f10756a61b6caaca684de7e13b5f4f',
+  'decode-uri-component': '4538e459e8b061b49dde4375997b30ba2a687cdec82a36fcca164b9c2116de9d',
   'postcss@5.2.18': '2cf90ea010e69071cff2db4f37f78880a84683951ab3ca80c81177b876679524',
   'postcss@6.0.23': '2fbb986adc3ffb059b5e2b4e6c0f9c8aa7677bd6bc04cb95ffa3069c6538e5ad',
   'postcss@8.4.33': 'c61ba9314bd58ce7f21a07ec1081b84b75ea15eab17f1b7f56e2a830bc40b934'
@@ -49,6 +50,8 @@ patch('webpack-dev-middleware/lib/GetFilenameFromUrl.js', '7b623039fe4c2f07810de
   var full = path.resolve(filename);
   if (full !== root && full.indexOf(root + path.sep) !== 0) return false;
   return full;`))
+patch('decode-uri-component', '3b8ba0a765e1089d11bba9a919d0d8789ecd9a6833ea078d8d9114e1db093863', 'LIZARD_LINEAR_URI_DECODE',
+  require('./backports/decode-uri-component'))
 
 const mapHashes = {
   '5.2.18': '972b07bfb5150203bdfed8e500a2663f80f6e27f9abd63e9a0d3380d556d8274',

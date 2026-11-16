@@ -1,10 +1,19 @@
 <template>
 <div class="home-container">
-  <div class="welcome-section">
-      <Icon type="university" size="42" />
-      <h1>{{$t('m.Welcome_To')}} LizardJudge Univalle</h1>
-      <p>{{$t('m.Home_Tagline')}}</p>
+  <section class="v2-hero">
+    <div class="v2-hero__copy">
+      <span v-if="user.id" class="v2-hero__greeting">{{$t('m.V2_Greeting', {name: user.username})}}</span>
+      <span class="v2-eyebrow">{{$t('m.V2_Hero_Eyebrow')}}</span>
+      <h1>{{$t('m.V2_Hero_Title')}}</h1>
+      <p>{{$t('m.V2_Hero_Description')}}</p>
+      <div class="v2-actions">
+        <router-link to="/problem" class="v2-primary-link">{{$t('m.V2_Explore')}} <Icon type="arrow-right-c"></Icon></router-link>
+        <button v-if="user.id" class="v2-secondary-link" type="button" @click="goToPractice">{{$t('m.V2_Practice_Link')}}</button>
+        <router-link v-else to="/about" class="v2-secondary-link">{{$t('m.V2_About')}}</router-link>
+      </div>
     </div>
+    <img src="@/assets/logo-v2.png" class="v2-hero__art" alt="" width="240" height="240"/>
+  </section>
     <PersonalPractice v-if="user.id" :user-id="user.id"></PersonalPractice>
 
   <Row type="flex" justify="space-around">
@@ -76,6 +85,10 @@
       })
     },
     methods: {
+      goToPractice () {
+        const section = this.$el.querySelector('.personal-practice')
+        if (section) section.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'})
+      },
       getDuration (startTime, endTime) {
         return time.duration(startTime, endTime)
       },

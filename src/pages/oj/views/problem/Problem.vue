@@ -68,6 +68,7 @@
                 <Tag type="dot" :color="submissionStatus.color" @click.native="handleRoute('/status/'+submissionId)">
                   {{$t('m.' + submissionStatus.text.replace(/ /g, "_"))}}
                 </Tag>
+                <VerdictBuddy v-if="!contestID" :result="result.result" :user-id="user.id || null"></VerdictBuddy>
               </template>
               <template v-else-if="this.contestID && !OIContestRealTimePermission">
                 <Alert type="success" show-icon>{{$t('m.Submitted_successfully')}}</Alert>
@@ -279,6 +280,7 @@
   import {JUDGE_STATUS, CONTEST_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
   import TrainingSession from '@oj/components/TrainingSession.vue'
+  import VerdictBuddy from '@oj/components/VerdictBuddy.vue'
   import {pie, largePie, getItemColor} from './chartData'
   import {getDefaultTemplate} from '@/utils/defaultTemplates'
 
@@ -289,6 +291,7 @@
     name: 'Problem',
     components: {
       TrainingSession,
+      VerdictBuddy,
       CodeMirror,
       AnimatedNumber
     },

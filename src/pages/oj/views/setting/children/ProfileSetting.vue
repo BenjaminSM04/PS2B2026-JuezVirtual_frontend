@@ -386,26 +386,22 @@ export default {
 
     uploadAvatar () {
       this.$refs.cropper.getCropBlob(blob => {
+        if (!blob || !blob.size) {
+          this.$error(this.$i18n.t('m.Avatar_Upload_Failed'))
+          return
+        }
+
         let form = new window.FormData()
-
-        let file = new window.File(
-          [blob],
-          'avatar.' + this.avatarOption.outputType
-        )
-
-        form.append('image', file)
+        form.append('image', blob, 'avatar.' + this.avatarOption.outputType)
 
         this.loadingUploadBtn = true
 
-        this.$http({
-          method: 'post',
-          url: 'upload_avatar',
-          data: form,
-          headers: {
-            'content-type': 'multipart/form-data'
-          }
-        }).then(res => {
+        this.$http.post('upload_avatar', form).then(res => {
           this.loadingUploadBtn = false
+          if (res.data.error) {
+            this.$error(this.$i18n.t('m.Avatar_Upload_Failed'))
+            return
+          }
 
           this.$success(this.$i18n.t('m.Avatar_Updated'))
 

@@ -5,14 +5,14 @@
       <div class="auth-form">
         <Form :model="formResetPassword" ref="formResetPassword" :rules="ruleResetPassword">
           <Form-item prop="password">
-            <Input type="password" v-model="formResetPassword.password" :placeholder="$t('m.RPassword')" size="large">
+            <PasswordInput v-model="formResetPassword.password" autocomplete="new-password" :placeholder="$t('m.RPassword')" size="large">
             <Icon type="ios-locked-outline" slot="prepend"></Icon>
-            </Input>
+            </PasswordInput>
           </Form-item>
           <Form-item prop="passwordAgain">
-            <Input type="password" v-model="formResetPassword.passwordAgain" :placeholder="$t('m.RPassword_Again')" size="large">
+            <PasswordInput v-model="formResetPassword.passwordAgain" autocomplete="new-password" :placeholder="$t('m.RPassword_Again')" size="large">
             <Icon type="ios-locked-outline" slot="prepend"></Icon>
-            </Input>
+            </PasswordInput>
           </Form-item>
           <Form-item prop="captcha">
             <div class="auth-captcha">
@@ -22,9 +22,7 @@
                 </Input>
               </div>
               <div class="auth-captcha__img">
-                <Tooltip content="Click to refresh" placement="top">
-                  <img :src="captchaSrc" @click="getCaptchaSrc"/>
-                </Tooltip>
+                <CaptchaButton :src="captchaSrc" @refresh="refreshCaptcha('formResetPassword')"/>
               </div>
             </div>
           </Form-item>
@@ -53,8 +51,11 @@
   import { mapActions } from 'vuex'
   import {FormMixin} from '@oj/components/mixins'
   import api from '@oj/api'
+  import PasswordInput from '@/components/PasswordInput.vue'
+  import CaptchaButton from '@/components/CaptchaButton.vue'
 
   export default {
+    components: {PasswordInput, CaptchaButton},
     name: 'reset-password',
     mixins: [FormMixin],
     data () {
@@ -78,7 +79,7 @@
 
       const CheckAgainPassword = (rule, value, callback) => {
         if (value !== this.formResetPassword.password) {
-          callback(new Error(this.$i18n.t('m.password_does_not_match')))
+          return callback(new Error(this.$i18n.t('m.Password_does_not_match')))
         }
         callback()
       }

@@ -1,7 +1,8 @@
-<template><button class="theme-toggle" type="button" :aria-pressed="dark" @click="toggle">{{ $t(dark ? 'm.Theme_light' : 'm.Theme_dark') }}</button></template>
+<template><button class="theme-toggle" :class="{'theme-toggle--floating': floating}" type="button" :aria-pressed="dark" @click="toggle">{{ $t(dark ? 'm.Theme_light' : 'm.Theme_dark') }}</button></template>
 <script>
 export default {
   name: 'ThemeToggle',
+  props: {floating: {type: Boolean, default: true}},
   data () { return {dark: false} },
   mounted () {
     this.dark = localStorage.getItem('lizard-theme') === 'dark' || (!localStorage.getItem('lizard-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -13,4 +14,7 @@ export default {
   }
 }
 </script>
-<style scoped>.theme-toggle { position: fixed; right: 16px; bottom: 18px; z-index: 100; background: var(--lj-surface, white); color: var(--lj-text, #63213a); border: 1px solid #8b2346; padding: 10px 14px; border-radius: 20px; cursor: pointer; }</style>
+<style scoped>
+.theme-toggle { background: var(--lj-surface, white); color: var(--lj-text, #63213a); border: 1px solid #8b2346; padding: 10px 14px; border-radius: 20px; cursor: pointer; }
+.theme-toggle--floating { position: fixed; right: 16px; bottom: 18px; z-index: 100; }
+</style>

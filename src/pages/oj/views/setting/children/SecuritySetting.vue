@@ -93,8 +93,15 @@
     },
     mounted () {
       this.getSessions()
-      if (!this.TFAOpened) {
-        this.getAuthImg()
+    },
+    watch: {
+      'user.id': {
+        immediate: true,
+        handler (id) {
+          if (id && !this.TFAOpened) {
+            this.getAuthImg()
+          }
+        }
       }
     },
     methods: {
@@ -104,6 +111,8 @@
         api.twoFactorAuth('get').then(res => {
           this.loadingQRcode = false
           this.qrcodeSrc = res.data.data
+        }, () => {
+          this.loadingQRcode = false
         })
       },
       getSessions () {

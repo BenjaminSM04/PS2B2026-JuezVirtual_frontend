@@ -1,16 +1,14 @@
 <template>
-  <div id="app">
+  <div id="app" class="admin-app">
     <router-view></router-view>
-    <ThemeToggle></ThemeToggle>
   </div>
 </template>
 
 <script>
-  import ThemeToggle from '@/components/ThemeToggle.vue'
   import '@/styles/lizard-theme.less'
+  import '@/styles/experience-v2.less'
   export default {
-    name: 'app',
-    components: {ThemeToggle}
+    name: 'app'
   }
 </script>
 

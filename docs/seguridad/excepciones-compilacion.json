@@ -1,5 +1,5 @@
 {
-  "reviewed_at": "2026-10-23",
+  "reviewed_at": "2026-11-05",
   "exceptions": [
     {
       "id": 1124252,
@@ -156,6 +156,22 @@
       "expires": "2026-11-22",
       "owner": "BenjaminSM04",
       "backport": "LIZARD_NO_STATIC_CALLS",
+      "test": "tests/build-security.js"
+    },
+    {
+      "id": 1243857,
+      "module": "decode-uri-component",
+      "version": "0.2.2",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-qr28-fpjm-wq7f",
+      "paths": [
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>extglob>expand-brackets>snapdragon>source-map-resolve>decode-uri-component",
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>extglob>snapdragon>source-map-resolve>decode-uri-component",
+        "webpack>watchpack>watchpack-chokidar2>chokidar>anymatch>micromatch>snapdragon>source-map-resolve>decode-uri-component"
+      ],
+      "expires": "2026-12-05",
+      "owner": "BenjaminSM04",
+      "backport": "LIZARD_LINEAR_URI_DECODE",
       "test": "tests/build-security.js"
     }
   ]

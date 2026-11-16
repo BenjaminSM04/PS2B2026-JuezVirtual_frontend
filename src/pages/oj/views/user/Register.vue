@@ -17,12 +17,9 @@
         </Input>
       </FormItem>
       <FormItem prop="password">
-        <Input :type="showPassword ? 'text' : 'password'" v-model="formRegister.password" :placeholder="$t('m.Password')" size="large" @on-enter="handleRegister">
+        <PasswordInput v-model="formRegister.password" autocomplete="new-password" :placeholder="$t('m.Password')" size="large" @on-enter="handleRegister">
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
-          <span slot="append" class="password-eye-wrap" @click="showPassword = !showPassword">
-            <Icon :type="showPassword ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
-          </span>
-        </Input>
+        </PasswordInput>
         <div class="password-strength" v-if="formRegister.password"> <!-- Nuevo -->
           <div
             class="strength-bar"
@@ -32,12 +29,9 @@
         </div> <!-- Hasta acá -->
       </FormItem>
       <FormItem prop="passwordAgain">
-        <Input :type="showPasswordAgain ? 'text' : 'password'" v-model="formRegister.passwordAgain" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
+        <PasswordInput v-model="formRegister.passwordAgain" autocomplete="new-password" :placeholder="$t('m.Password_Again')" size="large" @on-enter="handleRegister">
           <Icon type="ios-locked-outline" slot="prepend"></Icon>
-          <span slot="append" class="password-eye-wrap" @click="showPasswordAgain = !showPasswordAgain">
-            <Icon :type="showPasswordAgain ? 'ios-eye' : 'ios-eye-outline'" class="password-eye"></Icon>
-          </span>
-        </Input>
+        </PasswordInput>
       </FormItem>
       <FormItem prop="captcha">
         <div class="oj-captcha" >
@@ -47,9 +41,7 @@
             </Input>
           </div>
           <div class="oj-captcha-img">
-            <Tooltip :content="$t('m.Click_to_refresh_captcha')" placement="top">
-              <img :src="captchaSrc" @click="getCaptchaSrc"/>
-            </Tooltip>
+            <CaptchaButton :src="captchaSrc" @refresh="refreshCaptcha('formRegister')"/>
           </div>
         </div>
       </FormItem>
@@ -75,9 +67,12 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import api from '@oj/api'
+  import PasswordInput from '@/components/PasswordInput.vue'
+  import CaptchaButton from '@/components/CaptchaButton.vue'
   import { FormMixin } from '@oj/components/mixins'
 
   export default {
+    components: {PasswordInput, CaptchaButton},
     mixins: [FormMixin],
     mounted () {
       this.getCaptchaSrc()
@@ -152,8 +147,6 @@
 
       return {
         btnRegisterLoading: false,
-        showPassword: false,
-        showPasswordAgain: false,
         formRegister: {
           username: '',
           password: '',
@@ -334,13 +327,15 @@
       padding: 0 !important;
       cursor: pointer;
 
-      .password-eye-wrap {
+      .password-toggle {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100%;
         min-width: 46px;
+        min-height: 42px;
+        color: #ffffff;
         padding: 0 14px;
         cursor: pointer;
         transition: background-color 0.2s;
@@ -350,10 +345,6 @@
         }
       }
 
-      .password-eye {
-        font-size: 18px;
-        color: #ffffff !important;
-      }
     }
 
     .oj-captcha-img {

@@ -19,7 +19,7 @@
 
         <el-table-column type="expand">
           <template slot-scope="props">
-            <p style="font-weight: bold; color: black;">
+            <p style="font-weight: bold; color: var(--lj-text, black);">
               {{$t('m.IP')}}:
               <el-tag class="tag-green bold">
                 {{ props.row.ip }}

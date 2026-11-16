@@ -7,15 +7,22 @@ const client = axios.create({
   xsrfCookieName: 'csrftoken'
 })
 
+// El código del backend (p. ej. tutor-suggest-unavailable) o de axios (timeout) viaja en error.code.
+function failure (message, code) {
+  const error = new Error(message)
+  if (code) error.code = code
+  return error
+}
+
 function request (url, method, options = {}) {
   return client({url, method, ...options}).then(response => {
     if (response.data.error !== null) {
-      throw new Error(response.data.data || 'No se pudo completar la operación de entrenamiento.')
+      throw failure(response.data.data || 'No se pudo completar la operación de entrenamiento.', response.data.error)
     }
     return response.data.data
-  }).catch(error => {
+  }, error => {
     const data = error.response && error.response.data
-    throw new Error((data && data.data) || error.message || 'No se pudo conectar con el entrenamiento.')
+    throw failure((data && data.data) || error.message || 'No se pudo conectar con el entrenamiento.', (data && data.error) || error.code)
   })
 }
 
@@ -33,5 +40,7 @@ export default {
   createVersion: data => request('admin/ai_tutor/config/versions', 'post', {data}),
   activateVersion: (problemId, versionId) => request('admin/ai_tutor/config/activate', 'post', {data: {problem_id: problemId, version_id: versionId}}),
   getConfig: problemId => request('admin/ai_tutor/config', 'get', {params: {problem_id: problemId}}),
-  saveConfig: (problemId, enabled) => request('admin/ai_tutor/config', 'put', {data: {problem_id: problemId, enabled}})
+  saveConfig: (problemId, enabled) => request('admin/ai_tutor/config', 'put', {data: {problem_id: problemId, enabled}}),
+  // La IA puede tardar hasta 90 s en CPU (el backend corta a los 100 s): el tope de red evita un estado de carga eterno.
+  suggest: problemId => request('admin/ai_tutor/config/suggest', 'post', {data: {problem_id: problemId}, timeout: 120000})
 }

@@ -1,16 +1,17 @@
 {
   "name": "lizardjudge",
-  "version": "2.7.6",
+  "version": "2.2.1",
   "description": "lizardjudge front end",
   "author": "zemal <rawidn@163.com>",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "node --openssl-legacy-provider build/dev-server.js",
     "start": "npm run dev",
     "build": "node --openssl-legacy-provider build/build.js",
     "build:dll": "node --openssl-legacy-provider ./node_modules/webpack/bin/webpack.js --config=build/webpack.dll.conf.js",
     "lint": "eslint --ext .js,.vue src",
-    "test:tutor": "node tests/tutor-components.js && node tests/problem-context.js && node tests/tutor-features.js && node tests/build-security.js",
+    "test:tutor": "node tests/tutor-components.js && node tests/problem-context.js && node tests/tutor-features.js && node tests/build-security.js && node tests/release-notes.js",
     "postinstall": "node build/patch-legacy-dependencies.js",
     "test:security": "node tests/build-security.js"
   },
@@ -114,7 +115,7 @@
     "cross-spawn": "7.0.6",
     "ejs": "3.1.10",
     "elliptic": "6.6.1",
-    "follow-redirects": "1.16.1",
+    "follow-redirects": "1.16.2",
     "form-data": "4.0.6",
     "is-svg": "4.4.0",
     "js-yaml": "3.15.2",

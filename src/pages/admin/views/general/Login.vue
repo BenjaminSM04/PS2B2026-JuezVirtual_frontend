@@ -1,28 +1,32 @@
 <template>
-  <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px"
+  <div class="v2-login">
+    <aside class="v2-login__intro"><BrandMark></BrandMark><div><h1>{{$t('m.V2_Admin_Intro')}}</h1><p>{{$t('m.V2_Admin_Intro_Description')}}</p></div><span class="v2-eyebrow">Universidad Privada del Valle</span></aside>
+  <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="top"
            class="demo-ruleForm login-container">
-    <div class="login-brand">
-      <img src="../../../../assets/Logo2.png" alt="LizardJudge" class="login-logo"/>
-      <h2>LizardJudge Univalle</h2>
-    </div>
+    <span class="v2-eyebrow">{{$t('m.V2_Admin_Access')}}</span>
     <h3 class="title">{{$t('m.Welcome_to_Login')}}</h3>
-    <el-form-item prop="account">
+    <el-form-item prop="account" :label="$t('m.username')">
       <el-input type="text" v-model="ruleForm2.account" auto-complete="off" :placeholder="$t('m.username')" @keyup.enter.native="handleLogin"></el-input>
     </el-form-item>
-    <el-form-item prop="password">
-      <el-input type="password" v-model="ruleForm2.password" auto-complete="off" :placeholder="$t('m.password')" @keyup.enter.native="handleLogin"></el-input>
+    <el-form-item prop="password" :label="$t('m.password')">
+      <PasswordInput admin v-model="ruleForm2.password" :placeholder="$t('m.password')" @keyup.enter.native="handleLogin"/>
     </el-form-item>
     <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:100%;" @click.native.prevent="handleLogin" :loading="logining">{{$t('m.GO')}}
+      <el-button type="primary" style="width:100%;" @click.native.prevent="handleLogin" :loading="logining">{{$t('m.V2_Admin_Login')}}
       </el-button>
     </el-form-item>
+    <a href="/" class="v2-login__back">{{$t('m.V2_Back_Portal')}}</a>
   </el-form>
+  </div>
 </template>
 
 <script>
+  import BrandMark from '@/components/BrandMark.vue'
   import api from '../../api'
+  import PasswordInput from '@/components/PasswordInput.vue'
 
   export default {
+    components: {PasswordInput, BrandMark},
     data () {
       return {
         logining: false,
@@ -55,7 +59,7 @@
               this.logining = false
             })
           } else {
-            this.$error('Please check the error fields')
+            this.$error(this.$t('m.Fix_Form_Errors'))
           }
         })
       }
@@ -72,6 +76,8 @@
     background-clip: padding-box;
     margin: 180px auto;
     width: 350px;
+    max-width: calc(100% - 24px);
+    box-sizing: border-box;
     padding: 35px 35px 15px 35px;
     background: #fff;
     border: 1px solid #eaeaea;
@@ -108,5 +114,9 @@
         text-align: center;
       }
     }
+  }
+
+  @media (max-width: 600px) {
+    .login-container { margin: 32px auto; padding: 24px 20px; }
   }
 </style>
