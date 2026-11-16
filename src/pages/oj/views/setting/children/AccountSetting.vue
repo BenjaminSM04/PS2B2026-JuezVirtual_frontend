@@ -108,7 +108,7 @@
           >
             <Input
               class="custom-input"
-              v-model="formEmail.old_email"
+              :value="$store.getters.user.email || ''"
               disabled
             />
           </FormItem>
@@ -238,7 +238,6 @@ export default {
       formEmail: {
         tfa_code: '',
         password: '',
-        old_email: '',
         new_email: ''
       },
 
@@ -293,11 +292,6 @@ export default {
         tfa_code: tfaCheck
       }
     }
-  },
-
-  mounted () {
-    this.formEmail.old_email =
-      this.$store.getters.user.email || ''
   },
 
   methods: {
@@ -367,6 +361,7 @@ export default {
           )
 
           this.$refs.formEmail.resetFields()
+          this.$store.dispatch('getProfile')
         }, res => {
           if (res.data.data === 'tfa_required') {
             this.visible.tfaRequired = true
