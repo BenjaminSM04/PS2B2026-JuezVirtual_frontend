@@ -3,6 +3,12 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.2.3] - 2026-11-27
+
+### Experiencia
+- El avatar vuelve a cambiarse: el recortador no se dibujaba (el paquete precompilado de vue-cropper quedaba sin función de dibujo tras el build), el recorte salía vacío y la imagen no llegaba al servidor, así que al recargar volvía el avatar predeterminado. Ahora el componente se compila desde su fuente y la imagen se guarda y se mantiene tras recargar, cerrar sesión y redesplegar.
+- El botón «Subir imagen» del diálogo del avatar muestra su texto en blanco.
+
 ## [2.2.2] - 2026-11-27
 
 ### Experiencia

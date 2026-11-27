@@ -217,7 +217,9 @@
 <script>
 import api from '@oj/api'
 import utils from '@/utils/utils'
-import {VueCropper} from 'vue-cropper'
+// El dist minificado de vue-cropper 0.6.5 llega con `render` como objeto tras nuestro build
+// (el recortador no se dibujaba y el avatar no se subía); se compila desde su fuente .vue.
+import VueCropper from 'vue-cropper/src/vue-cropper.vue'
 import {types} from '@/store'
 import {languages} from '@/i18n'
 
@@ -550,6 +552,7 @@ export default {
 .save-btn {
   background: #003B4A !important;
   border-color: #003B4A !important;
+  color: #fff !important;
   border-radius: 10px;
   padding: 10px 25px;
   font-weight: bold;
