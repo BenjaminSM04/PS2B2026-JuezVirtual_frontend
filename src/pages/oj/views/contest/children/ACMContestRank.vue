@@ -49,7 +49,7 @@
     <div v-show="showChart" class="echarts" :class="{'echarts--presentation': presentationMode}">
       <ECharts :options="options" ref="chart" auto-resize></ECharts>
     </div>
-    <Table v-show="!presentationMode" ref="tableRank" :columns="columns" :data="dataRank" disabled-hover height="600"></Table>
+    <Table v-show="!presentationMode" ref="tableRank" :columns="columns" :data="dataRank" disabled-hover :height="dataRank.length > 10 ? 600 : null"></Table>
     <Pagination v-show="!presentationMode"
                 :total="total"
                 :page-size.sync="limit"

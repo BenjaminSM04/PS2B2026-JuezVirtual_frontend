@@ -31,13 +31,16 @@ const pie = {
     left: 'center',
     bottom: '4',
     orient: 'horizontal',
+    // Gris medio: legible en tema claro y oscuro (el lienzo no hereda CSS).
+    textStyle: {color: '#8a9a93'},
     data: ['AC', 'WA']
   },
   series: [
     {
       name: 'Resultados',
       type: 'pie',
-      radius: ['35%', '54%'],
+      // Anillo más grueso para que las etiquetas internas no se corten.
+      radius: ['30%', '60%'],
       stillShowZeroSum: false,
       center: ['50%', '46%'],
       avoidLabelOverlap: true,
@@ -54,7 +57,8 @@ const pie = {
           position: 'inside',
           formatter: '{b}\n{d}%',
           textStyle: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontSize: 11
           }
         }
       }
@@ -71,6 +75,7 @@ const largePie = {
       'horizontal',
     itemGap:
       20,
+    textStyle: {color: '#8a9a93'},
     data:
       ['AC', 'RE', 'WA', 'TLE', 'PAC', 'MLE']
   },

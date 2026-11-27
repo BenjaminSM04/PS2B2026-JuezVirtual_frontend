@@ -1,7 +1,7 @@
 <template>
   <div class="announcement view">
     <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
+      <span slot="title" style="color: var(--lj-green); font-weight: bold;">
         {{ $t('m.General_Announcement') }}
       </span>
       <div class="list">

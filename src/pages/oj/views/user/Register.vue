@@ -155,31 +155,33 @@
           real_name: '',
           captcha: ''
         },
+        // iView 2 descarta las reglas con trigger en arreglo al validar el formulario completo
+        // (indexOf('') sobre un arreglo da -1); con 'blur' se aplican al salir del campo y al enviar.
         ruleRegister: {
           username: [
             {
               required: true,
               message: this.$i18n.t('m.Username_is_required'),
-              trigger: ['blur', 'change']
+              trigger: 'blur'
             },
-            {validator: CheckUsernameFormat, trigger: ['blur', 'change']},
-            {validator: CheckUsernameNotExist, trigger: ['blur', 'change']}
+            {validator: CheckUsernameFormat, trigger: 'blur'},
+            {validator: CheckUsernameNotExist, trigger: 'blur'}
           ],
           email: [
-            {required: true, message: this.$i18n.t('m.Email_is_required'), trigger: ['blur', 'change']},
-            {validator: CheckEmailFormat, trigger: ['blur', 'change']},
-            {validator: CheckEmailNotExist, trigger: ['blur', 'change']}
+            {required: true, message: this.$i18n.t('m.Email_is_required'), trigger: 'blur'},
+            {validator: CheckEmailFormat, trigger: 'blur'},
+            {validator: CheckEmailNotExist, trigger: 'blur'}
           ],
           password: [
-            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: ['blur', 'change']},
-            {validator: CheckPassword, trigger: ['blur', 'change']}
+            {required: true, message: this.$i18n.t('m.Password_is_required'), trigger: 'blur'},
+            {validator: CheckPassword, trigger: 'blur'}
           ],
           passwordAgain: [
-            { required: true, message: this.$t('m.Please_enter_the_password_again'), trigger: ['blur', 'change'] },
+            { required: true, message: this.$t('m.Please_enter_the_password_again'), trigger: 'blur' },
     { validator: CheckAgainPassword, trigger: 'change' }
           ],
           captcha: [
-            {required: true, message: this.$i18n.t('m.Captcha_is_required'), trigger: ['blur', 'change'], min: 1, max: 10}
+            {required: true, message: this.$i18n.t('m.Captcha_is_required'), trigger: 'blur', min: 1, max: 10}
           ]
         }
       }

@@ -309,7 +309,8 @@
         submitting: false,
         code: '',
         language: 'C++',
-        theme: 'solarized',
+        // En tema oscuro el editor arranca con un tema oscuro (el usuario puede cambiarlo).
+        theme: document.documentElement.getAttribute('data-lizard-theme') === 'dark' ? 'material' : 'solarized',
         submissionId: '',
         problemContext: 0,
         submitted: false,
@@ -835,9 +836,9 @@
       font-size: 20px;
       font-weight: 700;
       line-height: 1.1;
-      color: #17233d;
+      color: var(--lj-text);
       &--ac {
-        color: #19be6b;
+        color: var(--lj-success);
       }
     }
     &__label {

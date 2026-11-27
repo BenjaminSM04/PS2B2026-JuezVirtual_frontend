@@ -4,7 +4,7 @@
     <Panel id="contest-card" shadow>
       <div slot="title" class="contest-panel-title">
         <Icon type="trophy"/>
-        {{query.rule_type === '' ? this.$i18n.t('m.All') : query.rule_type}} {{$t('m.Contests')}}
+        {{query.rule_type === '' ? $t('m.Contest_List_All') : $t('m.Contest_List_Rule', {rule: query.rule_type})}}
       </div>
       <div slot="extra">
         <ul class="filter">
@@ -226,13 +226,15 @@
       padding: 20px;
     }
     #contest-list {
+      // Las tarjetas quedan dentro del panel en lugar de sobresalir por sus bordes.
+      padding: 0 20px 4px;
       > li {
         padding: 20px;
         margin-bottom: 18px;
         list-style: none;
         border-left: 6px solid @oj-guindo;
         border-radius: 12px;
-        background: white;
+        background: var(--lj-surface);
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         transition: 0.3s;
         cursor: pointer;
@@ -242,7 +244,7 @@
           box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 
           .contest-main .title .entry {
-            color: @oj-guindo-dark;
+            color: var(--lj-primary);
             text-decoration: underline;
           }
         }
@@ -256,7 +258,7 @@
           .title {
             font-size: 18px;
             .entry {
-              color: @oj-guindo;
+              color: var(--lj-primary);
               font-weight: bold;
               transition: color 0.2s;
             }
@@ -274,7 +276,7 @@
   }
 
   .contest-panel-title {
-    color: @oj-guindo;
+    color: var(--lj-primary);
     font-weight: bold;
     font-size: 22px;
     letter-spacing: 0.5px;

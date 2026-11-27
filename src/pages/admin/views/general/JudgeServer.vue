@@ -1,13 +1,13 @@
 <template>
   <div class="view">
     <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
+      <span slot="title" style="color: var(--lj-green); font-weight: bold;">
         {{ $t('m.Judge_Server_Token') }}
       </span>
       <code>{{ token }}</code>
     </Panel>
     <Panel style="margin-bottom: 25px;">
-      <span slot="title" style="color: #82a69a; font-weight: bold;">
+      <span slot="title" style="color: var(--lj-green); font-weight: bold;">
         {{ $t('m.Judge_Server_Info') }}
       </span>
       <el-table

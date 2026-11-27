@@ -383,7 +383,7 @@ export default {
 
 .setting-main {
   padding: 25px;
-  background: #f4f7f8;
+  background: transparent;
 }
 
 .flex-container {
@@ -400,18 +400,19 @@ export default {
 }
 
 .profile-card {
-  background: white;
+  background: var(--lj-surface);
+  border: 1px solid var(--lj-border);
   border-radius: 16px;
   padding: 25px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  box-shadow: var(--lj-shadow);
 }
 
 .section-title {
   font-size: 22px;
   font-weight: bold;
-  color: #003B4A;
+  color: var(--lj-text);
   margin-bottom: 25px;
-  border-left: 5px solid #A60550;
+  border-left: 5px solid var(--lj-primary);
   padding-left: 12px;
 }
 
@@ -435,8 +436,8 @@ export default {
 }
 
 .save-btn:hover {
-  background: #A60550 !important;
-  border-color: #A60550 !important;
+  background: #852344 !important;
+  border-color: #852344 !important;
 }
 
 .separator {

@@ -21,7 +21,7 @@
             <p v-if="isMobile">{{$t('m.ID')}}: {{props.row.id}}</p>
             <p v-if="isMobile">{{$t('m.Status')}}:
               <el-tag :type="props.row.status === '-1' ? 'danger' : props.row.status === '0' ? 'success' : 'primary'">
-                {{ props.row.status | contestStatus}}
+                {{ contestStatus(props.row.status) }}
               </el-tag>
             </p>
             <p>{{$t('m.Start_Time')}}: {{props.row.start_time | localtime }}</p>
@@ -31,7 +31,7 @@
             <!-- En móvil las acciones van aquí: la columna fija de opciones dejaba sin espacio al título. -->
             <div v-if="isMobile" class="botones-gestion">
               <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(props.row.id)"></icon-btn>
-              <icon-btn :name="$t('m.Problem')" icon="list-ol" @click.native="goContestProblemList(props.row.id)"></icon-btn>
+              <icon-btn :name="$t('m.Problems')" icon="list-ol" @click.native="goContestProblemList(props.row.id)"></icon-btn>
               <icon-btn :name="$t('m.Announcement')" icon="info-circle"
                         @click.native="goContestAnnouncement(props.row.id)"></icon-btn>
               <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
@@ -66,7 +66,7 @@
           width="180">
           <template slot-scope="scope">
             <el-tag :type="scope.row.contest_type === 'Public' ? 'success' : 'primary'">
-              {{ scope.row.contest_type}}
+              {{ $t('m.' + scope.row.contest_type.replace(/ /g, '_')) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -77,7 +77,7 @@
           <template slot-scope="scope">
             <el-tag
               :type="scope.row.status === '-1' ? 'danger' : scope.row.status === '0' ? 'success' : 'primary'">
-              {{ scope.row.status | contestStatus}}
+              {{ contestStatus(scope.row.status) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -101,7 +101,7 @@
           :label="$t('m.Option')">
           <div slot-scope="scope" class="botones-gestion">
             <icon-btn :name="$t('m.Edit')" icon="edit" @click.native="goEdit(scope.row.id)"></icon-btn>
-            <icon-btn :name="$t('m.Problem')" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
+            <icon-btn :name="$t('m.Problems')" icon="list-ol" @click.native="goContestProblemList(scope.row.id)"></icon-btn>
             <icon-btn :name="$t('m.Announcement')" icon="info-circle"
                       @click.native="goContestAnnouncement(scope.row.id)"></icon-btn>
             <icon-btn icon="download" :name="$t('m.Download_Accepted_Submissions')"
@@ -166,12 +166,10 @@
         return this.windowWidth < 768
       }
     },
-    filters: {
-      contestStatus (value) {
-        return CONTEST_STATUS_REVERSE[value].name
-      }
-    },
     methods: {
+      contestStatus (value) {
+        return this.$t('m.' + CONTEST_STATUS_REVERSE[value].name.replace(/ /g, '_'))
+      },
       handleResize () {
         this.windowWidth = window.innerWidth
       },

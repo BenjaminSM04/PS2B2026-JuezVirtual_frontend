@@ -2,12 +2,12 @@
   <div class="flex-container">
     <div id="main">
       <Panel shadow>
-        <div slot="title" style="font-weight: bold; color: #7B1E3A;">{{title}}</div>
+        <div slot="title" style="font-weight: bold; color: var(--lj-primary);">{{title}}</div>
         <div slot="extra">
           <ul class="filter">
             <li>
               <Dropdown @on-click="handleResultChange">
-                <span style="color: #7B1E3A; font-weight: bold">{{status}}
+                <span style="color: var(--lj-primary); font-weight: bold">{{status}}
                   <Icon type="arrow-down-b"></Icon>
                 </span>
                 <Dropdown-menu slot="list">
@@ -78,7 +78,7 @@
                 return h('span', {
                   class: 'id-link',
                   style: {
-                    color: '#7b1e3a',
+                    color: 'var(--lj-primary)',
                     cursor: 'pointer'
                   },
                   on: {
@@ -110,7 +110,7 @@
               return h('span',
                 {
                   style: {
-                    color: '#7b1e3a',
+                    color: 'var(--lj-primary)',
                     cursor: 'pointer'
                   },
                   on: {
@@ -265,8 +265,8 @@
                 loading: params.row.loading
               },
               style: {
-                backgroundColor: '#82a69a',
-                border: '1px solid #82a69a',
+                backgroundColor: '#245e50',
+                border: '1px solid #245e50',
                 fontWeight: 'bold',
                 borderRadius: '8px'
               },
@@ -388,42 +388,24 @@
     color: black !important;
   }
 
-  /* Cambia el color de fondo y texto del encabezado "Opción" */
-  /deep/ .ivu-table-fixed-right thead th {
-    background-color: #7B1E3A !important;
-    color: #ffffff !important; /* Texto blanco para que resalte */
-    border:none !important;
-  }
-
-  /* texto "Opción" esté en negritas */
-  /deep/ .ivu-table-fixed-right thead th span {
-    font-weight: bold;
-  }
-
-  /deep/ .ivu-table-header th {
-    border-top:2px solid #7B1E3A !important;
-    background-color: #7B1E3A !important; /* Color ciruela */
-    color: white !important;
-  }
-
-
+  /* Los encabezados usan el estilo compartido de tablas (fondo suave, texto legible). */
 
   /* Efecto al pasar el mouse sobre el nombre */
   /deep/ .ivu-table-cell a {
-    color: #7B1E3A !important; /* Cambia a guindo al pasar el mouse */
+    color: var(--lj-primary) !important;
     text-decoration: none;
     font-weight: bold;
   }
 
   /deep/ .ivu-table-cell a:hover {
-    color: #82a69a !important; 
+    color: var(--lj-green) !important;
     text-decoration: none;
     font-weight: bold;
   }
 
 /* Efecto para el ID cuando el mouse está encima */
   /deep/.id-link:hover {
-    color: #82a69a !important; 
+    color: var(--lj-green) !important;
   }
 
   /* Efecto para el btn rejuzgar cuando el mouse está encima */

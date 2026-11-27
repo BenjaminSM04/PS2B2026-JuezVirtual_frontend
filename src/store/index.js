@@ -4,6 +4,7 @@ import user from './modules/user'
 import contest from './modules/contest'
 import api from '@oj/api'
 import types from './types'
+import i18n from '@/i18n'
 
 Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
@@ -54,7 +55,10 @@ const rootActions = {
     if (payload && payload.title) {
       window.document.title = state.website.website_name_shortcut + ' | ' + payload.title
     } else {
-      window.document.title = state.website.website_name_shortcut + ' | ' + state.route.meta.title
+      // Los títulos de ruta están en inglés; se traducen si hay clave en el idioma activo.
+      const title = state.route.meta.title || ''
+      const key = 'm.Route_' + title.replace(/ /g, '_')
+      window.document.title = state.website.website_name_shortcut + ' | ' + (i18n.te(key) ? i18n.t(key) : title)
     }
   }
 }

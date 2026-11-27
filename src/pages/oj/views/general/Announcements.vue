@@ -174,7 +174,7 @@
   }
 
   .announcement-title {
-  color: @oj-guindo !important;
+  color: var(--lj-primary) !important;
   font-weight: bold;
   font-size: 22px;
   letter-spacing: 0.5px;

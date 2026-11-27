@@ -2,6 +2,8 @@ import moment from 'moment'
 import types from '../types'
 import api from '@oj/api'
 import { CONTEST_STATUS, USER_TYPE, CONTEST_TYPE } from '@/utils/constants'
+import i18n from '@/i18n'
+import time from '@/utils/time'
 
 const state = {
   now: moment(),
@@ -81,7 +83,7 @@ const getters = {
       let duration = moment.duration(getters.contestStartTime.diff(state.now, 'seconds'), 'seconds')
       // time is too long
       if (duration.weeks() > 0) {
-        return 'Start At ' + duration.humanize()
+        return i18n.t('m.Contest_Starts_In', {time: time.humanize(duration.asSeconds())})
       }
       let texts = [String(Math.floor(duration.asHours())).padStart(2, '0'),
         String(duration.minutes()).padStart(2, '0'),
@@ -97,7 +99,7 @@ const getters = {
       // return '-' + texts.join(':')
       return texts.join(':')
     } else {
-      return 'Ended'
+      return i18n.t('m.Ended')
     }
   }
 }

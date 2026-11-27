@@ -30,16 +30,16 @@
         <Button v-if="submission.shared"
                 type="warning" size="large" @click="shareSubmission(false)" @mouseover.native="isHover = true" 
               @mouseleave.native="isHover = false"
-              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
-                      borderColor: isHover ? '#987284' : '#a60550',
+              :style="{backgroundColor: isHover ? '#6e1b38' : '#852344', 
+                      borderColor: isHover ? '#6e1b38' : '#852344',
                       fontWeight: 'bold'}">
           {{$t('m.UnShare')}}
         </Button>
         <Button v-else
                 type="primary" size="large" @click="shareSubmission(true)" @mouseover.native="isHover = true" 
               @mouseleave.native="isHover = false"
-              :style="{backgroundColor: isHover ? '#987284' : '#a60550', 
-                      borderColor: isHover ? '#987284' : '#a60550',
+              :style="{backgroundColor: isHover ? '#6e1b38' : '#852344', 
+                      borderColor: isHover ? '#6e1b38' : '#852344',
                       fontWeight: 'bold'}">
           {{$t('m.Share')}}
         </Button>
@@ -218,7 +218,7 @@
 
   pre {
     border: none;
-    border-left: 8px solid #A60550 !important; 
+    border-left: 8px solid #852344 !important;
     background-color: #82a69a;
     padding: 20px;
     margin: 20px 0;
@@ -226,14 +226,6 @@
     font-size: 14px;
     line-height: 1.5;
     overflow: auto;
-  }
-
-  /* Estilo para los encabezados de la tabla */
-  /deep/ .ivu-table-header th {
-    background-color: #A60550 !important;
-    color: white !important;
-    text-transform: uppercase;
-    font-weight: bold;
   }
 
 </style>
