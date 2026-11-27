@@ -430,6 +430,7 @@ export default {
 .save-btn {
   background: #003B4A !important;
   border-color: #003B4A !important;
+  color: #fff !important;
   border-radius: 10px;
   padding: 10px 25px;
   font-weight: bold;

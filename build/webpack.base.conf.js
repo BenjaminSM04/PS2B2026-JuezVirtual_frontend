@@ -93,6 +93,12 @@ module.exports = {
         include: [resolve('src'), resolve('test'), resolve('node_modules/vue-echarts')]
       },
       {
+        // El avatar usa la fuente .vue de vue-cropper (su dist minificado no funciona con este build).
+        test: /\.js$/,
+        include: [resolve('node_modules/vue-cropper/src')],
+        use: ['babel-loader?cacheDirectory=true', path.join(__dirname, 'optional-catch-loader.js')]
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
