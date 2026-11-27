@@ -547,7 +547,7 @@
 }
 
 .stat-card {
-  background: #ffffff;
+  background: var(--lj-surface);
   border-radius: 14px;
   padding: 18px 16px;
   text-align: center;
@@ -570,13 +570,13 @@
   .stat-value {
     font-size: 28px;
     font-weight: 700;
-    color: #2c3e50;
+    color: var(--lj-text);
     line-height: 1.1;
   }
 
   .stat-label {
     font-size: 13px;
-    color: #6D6E71;
+    color: var(--lj-muted);
     margin-top: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -678,12 +678,12 @@
     }
 
     &:hover {
-      background-color: #fafbfc;
+      background-color: var(--lj-soft);
     }
 
     .ann-title {
       font-weight: 600;
-      color: #2c3e50;
+      color: var(--lj-text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -691,7 +691,7 @@
 
     .ann-date {
       font-size: 12px;
-      color: #95a5a6;
+      color: var(--lj-muted);
       margin-top: 4px;
     }
   }

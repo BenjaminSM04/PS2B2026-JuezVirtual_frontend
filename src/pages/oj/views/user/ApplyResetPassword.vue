@@ -75,11 +75,12 @@
         },
         ruleResetPassword: {
           email: [
-            {required: true, type: 'email', trigger: 'blur'},
+            {required: true, message: this.$t('m.Email_is_required'), trigger: 'blur'},
+            {type: 'email', message: this.$t('m.Invalid_email_format'), trigger: 'blur'},
             {validator: CheckEmailExist, trigger: 'blur'}
           ],
           captcha: [
-            {required: true, trigger: 'blur', min: 1, max: 10}
+            {required: true, message: this.$t('m.Captcha_is_required'), trigger: 'blur', min: 1, max: 10}
           ]
         }
       }

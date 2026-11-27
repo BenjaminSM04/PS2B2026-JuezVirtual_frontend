@@ -81,6 +81,54 @@ html[data-lizard-theme='dark'] {
   .el-message-box__btns .el-button--default:not(.el-button--primary) { background: var(--lj-surface) !important; color: var(--lj-text) !important; border-color: var(--lj-border) !important; }
   .simditor .simditor-toolbar { background: var(--lj-soft); border-color: var(--lj-border); }
   .simditor .simditor-toolbar > ul > li > .toolbar-item { color: var(--lj-text); }
+  /* --- Revisión QA: textos con colores fijos que no se leían sobre superficie oscura --- */
+  .panel-title, .panel-title > div, .ivu-card .ivu-dropdown-rel > span { color: var(--lj-primary) !important; }
+  .ivu-upload-drag { background: var(--lj-soft); border-color: var(--lj-border); }
+  /* Menús laterales de concurso y problema (VerticalMenu) */
+  .ivu-card-body > ul > li { color: var(--lj-text); border-bottom-color: var(--lj-border); }
+  .ivu-card-body > ul > li:hover { background: var(--lj-soft); color: var(--lj-primary); }
+  .ivu-card-body > ul > li.disabled { color: var(--lj-muted); background: transparent; }
+  .ivu-card-body > ul > li > .ivu-icon, .stat-card .stat-icon { color: var(--lj-primary); }
+  a.entry { color: var(--lj-text) !important; }
+  /* Tablas de iView: filas alternas, fila bajo el puntero y celdas fijas */
+  .ivu-table-stripe .ivu-table-body tr:nth-child(2n) td,
+  .ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n) td { background-color: var(--lj-soft) !important; }
+  .ivu-table-row-hover td, .ivu-table-row-highlight td { background-color: var(--lj-mint) !important; }
+  .ivu-table-fixed-right, .ivu-table-fixed, .ivu-table-fixed-header th, .ivu-table-tip, .ivu-table-tip td { background: var(--lj-surface); color: var(--lj-text); }
+  .ivu-table-wrapper, .ivu-table-border td, .ivu-table-border th { border-color: var(--lj-border); }
+  /* Lista de concursos y bloques de código del Markdown */
+  .contest-main .detail li, .contest-main ul.detail, ul.detail li { background: transparent !important; color: var(--lj-muted); }
+  .markdown-body pre, .markdown-body code { background: var(--lj-soft) !important; color: var(--lj-text) !important; }
+  /* Avisos de iView (encabezado del envío) y etiquetas de formulario */
+  .ivu-alert { background: var(--lj-soft); border-color: var(--lj-border); }
+  .ivu-alert .ivu-alert-message, .ivu-alert .ivu-alert-message .title, .ivu-alert-desc { color: var(--lj-text) !important; }
+  .ivu-form-item-label { color: var(--lj-muted); }
+  .ivu-select-selection, .ivu-select-dropdown { background: var(--lj-surface); border-color: var(--lj-border); color: var(--lj-text); }
+  .ivu-select-placeholder { color: var(--lj-muted) !important; }
+  .ivu-select-item { color: var(--lj-text); }
+  .ivu-select-item:hover, .ivu-select-item-focus { background: var(--lj-soft); }
+  .ivu-select-item-selected, .ivu-select-item-selected:hover { color: var(--lj-primary); background: var(--lj-soft); }
+  .ivu-page-item, .ivu-page-prev, .ivu-page-next, .ivu-page-options-elevator input { background: var(--lj-surface); border-color: var(--lj-border); }
+  .ivu-page-item a, .ivu-page-prev a, .ivu-page-next a { color: var(--lj-text); }
+  .ivu-dropdown-menu, .ivu-dropdown-item { background: var(--lj-surface); color: var(--lj-text); }
+  .ivu-dropdown-item:hover { background: var(--lj-soft); }
+  .ivu-btn-ghost, .ivu-btn-default { background: var(--lj-surface); color: var(--lj-text); border-color: var(--lj-border); }
+  .ivu-btn-ghost:hover, .ivu-btn-default:hover { color: var(--lj-primary); border-color: var(--lj-primary); }
+  .ivu-modal-header, .ivu-modal-footer { border-color: var(--lj-border); }
+  .ivu-modal-header p, .ivu-modal-header-inner { color: var(--lj-text); }
+  .ivu-poptip-inner, .ivu-tooltip-inner { background: var(--lj-surface); color: var(--lj-text); }
+  /* Administración: servidor de evaluación, editor enriquecido y radios */
+  .admin-shell .el-table .fila-online { background-color: rgba(111, 220, 159, .12) !important; }
+  .admin-shell .el-table .fila-offline { background-color: rgba(241, 181, 200, .12) !important; }
+  .admin-shell .el-table .fila-deshabilitada { background-color: var(--lj-soft) !important; }
+  .simditor .simditor-body, .simditor .simditor-body p, .simditor .simditor-body b { color: var(--lj-text); }
+  .admin-shell .el-radio__label { color: var(--lj-text); }
+  .admin-shell .el-radio__input.is-checked + .el-radio__label { color: var(--lj-primary); }
+  .admin-shell .el-tag { background-color: var(--lj-soft); border-color: var(--lj-border); color: var(--lj-text); }
+  .admin-shell .el-tag.el-tag--success { color: var(--lj-success); }
+  .admin-shell .el-tag.el-tag--info, .admin-shell .el-tag.el-tag--gray { color: var(--lj-muted); }
+  .admin-shell .el-tag.el-tag--danger { color: var(--lj-primary); }
+  .ivu-select-placeholder, .ivu-input::placeholder { color: var(--lj-muted) !important; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
 @media (max-width: 640px) {
@@ -89,3 +137,11 @@ html[data-lizard-theme='dark'] {
   #problem-content p.title { font-size: 18px; word-break: normal; }
   #problem-content p.content { margin-left: 0; margin-right: 0; }
 }
+
+/* Revisión QA (tema claro): verdes de iView y Element con contraste insuficiente sobre blanco. */
+.ivu-tag-green, .ivu-tag-green.ivu-tag-dot .ivu-tag-dot-inner { background: #15803d !important; border-color: #15803d !important; }
+.admin-shell .el-tag.el-tag--success { color: #15803d; }
+.admin-shell .el-tag.el-tag--info { color: #5b6570; }
+.admin-shell .el-tag.el-tag--gray, .admin-shell .el-tag:not([class*='el-tag--']) { color: #1d5d99; }
+.ivu-select-placeholder, .ivu-input::placeholder { color: #7d848c !important; }
+.admin-shell .el-form-item__error { color: #c62828; }

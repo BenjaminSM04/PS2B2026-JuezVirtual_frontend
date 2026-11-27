@@ -102,7 +102,7 @@
             {required: true, validator: CheckAgainPassword, trigger: 'change'}
           ],
           captcha: [
-            {required: true, trigger: 'blur', min: 1, max: 10}
+            {required: true, message: this.$t('m.Captcha_is_required'), trigger: 'blur', min: 1, max: 10}
           ]
         }
       }

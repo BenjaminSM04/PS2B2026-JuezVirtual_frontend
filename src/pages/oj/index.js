@@ -5,8 +5,6 @@ import router from './router'
 import store from '@/store'
 import i18n from '@/i18n'
 import VueClipboard from 'vue-clipboard2'
-import VueAnalytics from 'vue-analytics'
-import { GOOGLE_ANALYTICS_ID } from '@/utils/constants'
 
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
@@ -41,14 +39,12 @@ Vue.config.productionTip = false
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
+// Barra de carga con el color de la marca (iView usa azul por defecto).
+Vue.prototype.$Loading.config({color: '#852344', failedColor: '#c62828', height: 3})
 
 Vue.use(VueClipboard)
 Vue.use(highlight)
 Vue.use(katex)
-Vue.use(VueAnalytics, {
-  id: GOOGLE_ANALYTICS_ID,
-  router
-})
 
 Vue.component('ECharts', ECharts)
 Vue.component(VerticalMenu.name, VerticalMenu)

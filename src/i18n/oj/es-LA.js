@@ -164,7 +164,7 @@ export const m = {
   Problems_List: 'Lista de Problemas',
   No_Problems: 'Sin Problemas',
   // CodeMirror.vue
-  Language: 'Idioma',
+  Language: 'Lenguaje',
   Theme: 'Tema',
   Reset_to_default_code_definition: 'Restablecer a la definición de código por defecto',
   Upload_file: 'Subir archivo',
@@ -238,7 +238,7 @@ export const m = {
   RegisterUsername: 'Nombre de Usuario',
   Email_Address: 'Dirección de Correo',
   RegisterPassword: 'Contraseña',
-  Password_Again: 'Contraseña de Nuevo',
+  Password_Again: 'Repite la contraseña',
   Captcha: 'Captcha',
   UserRegister: 'Registrarse',
   Already_Registed: '¿Ya tienes cuenta? ¡Inicia sesión ahora!',

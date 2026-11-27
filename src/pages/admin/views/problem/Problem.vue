@@ -58,7 +58,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="18">
-            <el-form-item prop="title" :label="$t('m.Title')" required>
+            <el-form-item prop="title" :label="$t('m.Title')">
               <el-input :placeholder="$t('m.Title')" v-model="problem.title"></el-input>
             </el-form-item>
           </el-col>
@@ -73,19 +73,19 @@
 
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item prop="description" :label="$t('m.Description')" required>
+              <el-form-item prop="description" :label="$t('m.Description')">
                 <Simditor :key="$i18n.locale" v-model="problem.description"></Simditor>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item prop="input_description" :label="$t('m.Input_Description')" required>
+              <el-form-item prop="input_description" :label="$t('m.Input_Description')">
                 <Simditor :key="$i18n.locale" v-model="problem.input_description"></Simditor>
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item prop="output_description" :label="$t('m.Output_Description')" required>
+              <el-form-item prop="output_description" :label="$t('m.Output_Description')">
                 <Simditor :key="$i18n.locale" v-model="problem.output_description"></Simditor>
               </el-form-item>
             </el-col>
@@ -134,7 +134,7 @@
           <p class="settings-hint">{{ $t('m.V2_Evaluation_Help') }}</p>
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8">
-              <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)'" required>
+              <el-form-item prop="time_limit" :label="$t('m.Time_Limit') + ' (ms)'">
                 <el-input-number
                   v-model="problem.time_limit"
                   :min="100"
@@ -146,7 +146,7 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="8">
-              <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)'" required>
+              <el-form-item prop="memory_limit" :label="$t('m.Memory_limit') + ' (MB)'">
                 <el-input-number
                   v-model.number="problem.memory_limit"
                   :min="32"
@@ -442,6 +442,7 @@ export default {
       rules: {
         _id: { required: true, message: this.$i18n.t('m.Display_ID_Required'), trigger: 'blur' },
         title: { required: true, message: this.$i18n.t('m.Title_Required'), trigger: 'blur' },
+        description: { required: true, message: this.$i18n.t('m.Description_Required'), trigger: 'blur' },
         input_description: { required: true, message: this.$i18n.t('m.Input_Description_Required'), trigger: 'blur' },
         output_description: { required: true, message: this.$i18n.t('m.Output_Description_Required'), trigger: 'blur' },
         time_limit: [

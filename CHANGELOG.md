@@ -3,6 +3,24 @@
 Las notas visibles en la aplicación se generan desde este archivo al compilar.
 Las entradas describen funciones implementadas; no acreditan un despliegue.
 
+## [2.2.2] - 2026-11-27
+
+### Experiencia
+- Tema oscuro legible en todo el sitio: filas alternas de las tablas, menú lateral de concursos y problemas, tarjetas del resumen del concurso, lista de concursos, encabezado del envío, bloques de código de «Acerca de», etiquetas de la sesión y configuración del perfil y la cuenta ya no muestran texto oscuro sobre fondo oscuro ni paneles blancos.
+- Encabezados de las tablas de envíos y del detalle del envío con texto legible; botones «Rejuzgar» y «Compartir», enlaces, menú de configuración, barra de carga y botón «Volver arriba» con los colores de la marca en lugar del azul por defecto.
+- Etiquetas «Aceptado» y cifras de aciertos con contraste suficiente; la gráfica de estadísticas ya no corta los porcentajes y su leyenda se lee en ambos temas.
+- La tabla de clasificaciones de un concurso sin participantes ya no deja un gran espacio vacío y la lista de concursos queda dentro de su panel.
+- En tema oscuro el editor de código arranca con un tema oscuro; los modales usan la misma tipografía que el resto del sitio.
+- El menú superior ya no falla al cambiar el ancho de la ventana por encima o por debajo de 1120 px.
+
+### Idioma
+- Mensajes de validación en español en el inicio de sesión, el registro, la recuperación de contraseña y el editor de problemas (antes salían «username is required» o «title is required»).
+- El registro vuelve a validar usuario, correo, contraseña y captcha al pulsar «Registrarse».
+- «Lenguaje» para el lenguaje de programación, «Problema» en la columna de envíos, «Repite la contraseña», «Todos los concursos», duración de concursos («2 días»), cuenta regresiva, aviso de inicio de sesión requerido, títulos de las pestañas del navegador y tipo y estado de los concursos en administración.
+
+### Privacidad
+- Se retira Google Analytics heredado del proyecto original: la navegación de los estudiantes ya no se envía a terceros.
+
 ## [2.2.1] - 2026-11-05
 
 ### Tutor

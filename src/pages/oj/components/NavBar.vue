@@ -20,8 +20,11 @@
       :aria-label="$t('m.V2_Close_Menu')"
       @click="mobileMenuOpen = false"
     ></button>
+    <!-- La clave re-monta el menú al cambiar de modo: el Submenu de iView falla
+         (this.$refs.drop indefinido) si el modo pasa a horizontal sin re-montarse. -->
     <Menu
       id="portal-navigation"
+      :key="isMobile ? 'menu-vertical' : 'menu-horizontal'"
       v-show="!isMobile || mobileMenuOpen"
       theme="light"
       :mode="isMobile ? 'vertical' : 'horizontal'"

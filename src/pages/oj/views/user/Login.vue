@@ -54,7 +54,7 @@
         },
         ruleLogin: {
           username: [
-            {required: true, trigger: 'blur'}
+            {required: true, message: this.$t('m.Username_is_required'), trigger: 'blur'}
           ],
           password: [
             {required: true, message: this.$t('m.Password_is_required'), trigger: 'change'}

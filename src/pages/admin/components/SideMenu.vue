@@ -34,7 +34,7 @@
       <el-submenu index="problem" v-if="hasProblemPermission">
         <template slot="title">
           <i class="el-icon-fa-bars"></i>
-          <span>{{$t('m.Problem')}}</span>
+          <span>{{$t('m.Problems')}}</span>
         </template>
         <el-menu-item index="/problems">{{$t('m.Problem_List')}}</el-menu-item>
         <el-menu-item index="/problem/create">{{$t('m.Create_Problem')}}</el-menu-item>

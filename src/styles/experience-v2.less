@@ -2,13 +2,13 @@
 :root {
   --lj-bg: #f5f7f4; --lj-surface: #ffffff; --lj-text: #233d37; --lj-muted: #546b62;
   --lj-border: #dce7e1; --lj-primary: #852344; --lj-green: #245e50;
-  --lj-mint: #e5f3eb; --lj-rose: #f5e8ee; --lj-soft: #eef3ef; --lj-switch-off: #b9c6c0;
+  --lj-mint: #e5f3eb; --lj-rose: #f5e8ee; --lj-soft: #eef3ef; --lj-switch-off: #b9c6c0; --lj-success: #15803d;
   --lj-shadow: 0 6px 26px rgba(25, 64, 50, .045); --lj-radius: 18px;
 }
 html[data-lizard-theme='dark'] {
   --lj-bg: #151f1c; --lj-surface: #1f2c27; --lj-text: #e8f0eb; --lj-muted: #b1c2b9;
   --lj-border: #3a4b43; --lj-primary: #f1b5c8; --lj-green: #bce5d3;
-  --lj-mint: #2b4237; --lj-rose: #49313e; --lj-soft: #273730; --lj-switch-off: #52645c;
+  --lj-mint: #2b4237; --lj-rose: #49313e; --lj-soft: #273730; --lj-switch-off: #52645c; --lj-success: #6fdc9f;
   --lj-shadow: 0 8px 26px rgba(0, 0, 0, .1);
 }
 html { scroll-padding-top: 92px; }
@@ -136,7 +136,7 @@ html .auth-modal .auth-form .auth-link { color: var(--lj-green); font-size: 12px
 .oj-app .training-session h3 { font-size: 18px; margin-bottom: 8px; }
 .oj-app .training-session > p { color: var(--lj-muted); font-size: 13px; line-height: 1.8; }
 .v2-problem-savebar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--lj-border); padding-top: 20px; margin-top: 24px; }
-.v2-problem-savebar span { font-size: 12px; color: var(--lj-muted); }
+.v2-problem-savebar > span { font-size: 12px; color: var(--lj-muted); }
 .v2-editor-context { font-weight: 650; color: var(--lj-text); overflow-wrap: anywhere; margin-bottom: 18px; }
 .v2-editor-nav { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--lj-border); }
 .v2-editor-nav button { padding: 9px 14px; border: 1px solid var(--lj-border); border-radius: 9px; background: var(--lj-surface); color: var(--lj-muted); font-size: 12px; font-weight: 650; cursor: pointer; }
@@ -380,3 +380,17 @@ html .el-dropdown-menu .el-dropdown-menu__item:hover { background: var(--lj-mint
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
+
+/* Revisión QA: iview.css se carga después de estos estilos y devolvía el azul por defecto
+   a enlaces y al menú lateral de configuración. */
+html a { color: var(--lj-primary); }
+html a:hover { color: #6e1b38; }
+html[data-lizard-theme='dark'] a:hover { color: #f6cddb; }
+.oj-app .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) { color: var(--lj-primary); background: var(--lj-rose); }
+.oj-app .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu)::after { background: var(--lj-primary); }
+.oj-app .ivu-menu-vertical .ivu-menu-item:hover { color: var(--lj-primary); }
+.oj-app .ivu-menu-light.ivu-menu-vertical .ivu-menu-item { color: var(--lj-text); }
+.oj-app #info .ivu-card-body { padding-top: 6px; }
+.oj-app .ivu-back-top-inner { background: var(--lj-primary); border-radius: 12px; box-shadow: var(--lj-shadow); }
+.oj-app .ivu-back-top-inner:hover { background: #6e1b38; }
+html[data-lizard-theme='dark'] .oj-app .ivu-back-top-inner { color: #1f2c27; }
